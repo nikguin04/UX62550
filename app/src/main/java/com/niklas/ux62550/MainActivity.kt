@@ -4,8 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,14 +15,20 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -93,10 +101,10 @@ fun BoxWithRoundedImage() {
 }
 
 @Composable
-fun PromoItem(width: Dp, height: Dp, round: Dp, color: Color) {
+fun PromoItem(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
 
         Box(
-            modifier = Modifier.clip(RoundedCornerShape(round)).background(color).size(width, height)
+            modifier = modifier.clip(RoundedCornerShape(round)).background(color).size(width, height).padding()
 
         )
 }
@@ -154,10 +162,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         }
                     }
 
-
-                    PromoItem(width= FigmaPxToDp_w(30f), height=FigmaPxToDp_h(20f), round=FigmaPxToDp_w(2f), color=Color(0xFF000022) )
-                    PromoItem(width= FigmaPxToDp_w(30f), height=FigmaPxToDp_h(20f), round=FigmaPxToDp_w(2f), color=Color(0xFF006600) )
-                    PromoItem(width= FigmaPxToDp_w(30f), height=FigmaPxToDp_h(20f), round=FigmaPxToDp_w(2f), color=Color(0xFF990000) )
+                    HorizontalLazyRowWithSnapEffect()
                     }
 
 
@@ -182,6 +187,45 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
         }
 
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun HorizontalLazyRowWithSnapEffect() {
+    val listState = rememberLazyListState() // To manage the scroll state
+
+    // List of items to display in the LazyRow
+    val itemsList = listOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
+
+    // LazyRow with snapping effect
+    LazyRow(
+        state = listState,
+        flingBehavior = rememberSnapFlingBehavior(listState), // Snap to item effect
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        item { PromoItem(width= FigmaPxToDp_w(300f), height=FigmaPxToDp_h(200f), round=FigmaPxToDp_w(20f), color=Color(0xFF000022), modifier = Modifier.padding(FigmaPxToDp_w(10f) ) ) }
+        item { PromoItem(width= FigmaPxToDp_w(300f), height=FigmaPxToDp_h(200f), round=FigmaPxToDp_w(20f), color=Color(0xFF006600), modifier = Modifier.padding(FigmaPxToDp_w(10f) ) ) }
+        item { PromoItem(width= FigmaPxToDp_w(300f), height=FigmaPxToDp_h(200f), round=FigmaPxToDp_w(20f), color=Color(0xFF990000), modifier = Modifier.padding(FigmaPxToDp_w(10f) ) ) }
+        /*items(itemsList) { item ->
+            // Each item in the row
+            Card(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .width(200.dp)
+                    .height(150.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = item, fontSize = 20.sp)
+                }
+            }
+        }*/
+    }
 }
 
 
