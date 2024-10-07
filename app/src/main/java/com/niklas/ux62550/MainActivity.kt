@@ -6,16 +6,42 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.ThumbUp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -107,13 +133,67 @@ fun MainScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize(),
             color = Color_background,
         ) {
-            Row (modifier.padding(0.dp, 200.dp)) {
-                Greeting("Niklas", modifier)
-                MovieTitle(0)
-                ScreenImage("a", "b")
+            var varb by remember { mutableIntStateOf(0) }
+            ScreenWithGeneralNavBar() {
+                Column(modifier.padding(20.dp, 20.dp)) {
+                    Row(modifier.padding(0.dp, 20.dp, 0.dp, 0.dp)) {
+                        Greeting("Niklas", modifier)
+                        MovieTitle(0)
+                        ScreenImage("a", "b")
+                    }
+                    TextField(
+                        value = varb.toString(),
+                        onValueChange = {
+                            varb = try {
+                                it.toInt()
+                            } catch (e: NumberFormatException) {
+                                0
+                            }
+                        },
+                        label = { Text("Number Label") }
+                    )
+                    Text(text = "Int = $varb")
+                }
             }
         }
 
 
+    }
+}
+
+@Composable
+fun ScreenWithGeneralNavBar(content: @Composable (PaddingValues) -> Unit) {
+    Scaffold ( // NAVBAR COLUMN
+        topBar = {
+
+        },
+
+        bottomBar = { GeneralNavBar() },
+        content = content
+    )
+}
+
+@Composable
+fun GeneralNavBar() {
+    var selectedItem by remember { mutableIntStateOf(0) }
+    val items = listOf("Songs", "Artists", "Playlists")
+    val selectedIcons = listOf(Icons.Filled.Home, Icons.Filled.Favorite, Icons.Filled.Star)
+    val unselectedIcons =
+        listOf(Icons.Outlined.Home, Icons.Outlined.FavoriteBorder, Icons.Outlined.ThumbUp)
+
+    NavigationBar {
+        items.forEachIndexed { index, item ->
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        if (selectedItem == index) selectedIcons[index] else unselectedIcons[index],
+                        contentDescription = item
+                    )
+                },
+                label = { Text(item) },
+                selected = selectedItem == index,
+                onClick = { selectedItem = index }
+            )
+        }
     }
 }
