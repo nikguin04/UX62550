@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.List
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -27,12 +29,17 @@ import androidx.compose.material3.TextField
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +58,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.ui.theme.Color_background
+import com.niklas.ux62550.ui.theme.Color_container
 import com.niklas.ux62550.ui.theme.Purple80
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
@@ -60,6 +68,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             UX62550Theme {
+
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainScreen(
                         modifier = Modifier.padding(innerPadding).background(Color_background)
@@ -115,7 +124,7 @@ fun BoxWithRoundedImage() {
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun ScreenImageA() {
     ScreenImage(
@@ -131,7 +140,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = Color_background,
+            //color = Color_background,
         ) {
             var varb by remember { mutableIntStateOf(0) }
             ScreenWithGeneralNavBar() {
@@ -176,12 +185,15 @@ fun ScreenWithGeneralNavBar(content: @Composable (PaddingValues) -> Unit) {
 @Composable
 fun GeneralNavBar() {
     var selectedItem by remember { mutableIntStateOf(0) }
-    val items = listOf("Songs", "Artists", "Playlists")
-    val selectedIcons = listOf(Icons.Filled.Home, Icons.Filled.Favorite, Icons.Filled.Star)
+    val items = listOf("Home", "Search", "Watch", "Account")
+    val selectedIcons = listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
     val unselectedIcons =
-        listOf(Icons.Outlined.Home, Icons.Outlined.FavoriteBorder, Icons.Outlined.ThumbUp)
+        listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
 
-    NavigationBar {
+    NavigationBar (
+        //containerColor = MaterialTheme.colorScheme.background,
+        //tonalElevation = 1000.dp
+    ) {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 icon = {
@@ -192,7 +204,16 @@ fun GeneralNavBar() {
                 },
                 label = { Text(item) },
                 selected = selectedItem == index,
-                onClick = { selectedItem = index }
+                onClick = { selectedItem = index },
+                /*colors = NavigationBarItemColors(
+                    selectedIconColor = fromToken(NavigationBarTokens.ActiveIconColor),
+                    selectedTextColor = fromToken(NavigationBarTokens.ActiveLabelTextColor),
+                    selectedIndicatorColor = fromToken(NavigationBarTokens.ActiveIndicatorColor),
+                    unselectedIconColor = fromToken(NavigationBarTokens.InactiveIconColor),
+                    unselectedTextColor = fromToken(NavigationBarTokens.InactiveLabelTextColor),
+                    disabledIconColor = fromToken(NavigationBarTokens.InactiveIconColor).copy(alpha = DisabledAlpha),
+                    disabledTextColor = fromToken(NavigationBarTokens.InactiveLabelTextColor).copy(alpha = DisabledAlpha),
+                )*/
             )
         }
     }
