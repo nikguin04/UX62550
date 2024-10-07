@@ -36,15 +36,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -53,6 +57,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,9 +147,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
             //color = Color_background,
         ) {
             ScreenWithGeneralNavBar {
-                Column(modifier.padding(20.dp, 20.dp)) {
+                Column(modifier.padding()) {
                     Row(
-                        modifier.fillMaxWidth().padding(FigmaPxToDp_w(19.5f)), // ConvertPxToDp(29.5f)
+                        modifier.fillMaxWidth().padding(FigmaPxToDp_w(29.5f), FigmaPxToDp_h(40f), 0.dp, FigmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Start
                     ) {
@@ -166,23 +172,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     }
 
 
-                    /*Row(modifier.padding(0.dp, 20.dp, 0.dp, 0.dp)) {
-                        Greeting("Niklas", modifier)
-                        MovieTitle(0)
-                        ScreenImage()
-                    }
-                    TextField(
-                        value = myVar.toString(),
-                        onValueChange = {
-                            myVar = try {
-                                it.toInt()
-                            } catch (e: NumberFormatException) {
-                                0
-                            }
-                        },
-                        label = { Text("Number Label") }
-                    )
-                    Text(text = "Int = $myVar")*/
                 }
             }
         }
@@ -192,18 +181,25 @@ fun MainScreen(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalLazyRowWithSnapEffect() {
-    val listState = rememberLazyListState() // To manage the scroll state
+    val itemWidth = FigmaPxToDp_w(300f) + FigmaPxToDp_w(10f)*2 // width + padding*"
+    val halfScreenWidth = LocalConfiguration.current.screenWidthDp.dp / 2
+    val halfItemWidth = itemWidth / 2
+    val offsetToCenter = halfScreenWidth - halfItemWidth
+    val pixelOffset: Int = offsetToCenter.dpToPx().roundToInt()
+    val listState = rememberLazyListState(1, -pixelOffset) // To manage the scroll state
+
+    val coroutineScope = rememberCoroutineScope()
+
 
     // List of items to display in the LazyRow
     val itemsList = listOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
-
     // LazyRow with snapping effect
     LazyRow(
         state = listState,
         flingBehavior = rememberSnapFlingBehavior(listState), // Snap to item effect
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(0.dp, 0.dp, 0.dp, 0.dp)
     ) {
         item { PromoItem(width= FigmaPxToDp_w(300f), height=FigmaPxToDp_h(200f), round=FigmaPxToDp_w(20f), color=Color(0xFF000022), modifier = Modifier.padding(FigmaPxToDp_w(10f) ) ) }
         item { PromoItem(width= FigmaPxToDp_w(300f), height=FigmaPxToDp_h(200f), round=FigmaPxToDp_w(20f), color=Color(0xFF006600), modifier = Modifier.padding(FigmaPxToDp_w(10f) ) ) }
@@ -226,8 +222,19 @@ fun HorizontalLazyRowWithSnapEffect() {
             }
         }*/
     }
+
+
+    // Automatically scroll to the middle item when the composable is first displayed
+
+    /*LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            listState.scrollToItem(1, offsetToCenter.dpToPx().roundToInt())
+        }
+    }*/
 }
 
+@Composable
+fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
 
 
 @Composable
