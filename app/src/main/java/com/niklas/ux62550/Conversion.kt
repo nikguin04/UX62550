@@ -5,16 +5,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 
 /*
   * Used to convert from pixels used in Figma on a 360x800px screen to dp units
  */
 @Composable
-fun ConvertPxToDp(px: Float): Float {
-    //val density = LocalDensity.current.density // 2.625 = Get current screen density (pixels per dp)
+fun FigmaPxToDp_w(px: Float): Dp {
     val widthDp = LocalConfiguration.current.screenWidthDp.toFloat(); // 411
-
-    return px * (360f/widthDp)
+    val ret: Float = px * (360f/widthDp)
+    return ret.dp
+}
+/*
+  * Used to convert from pixels used in Figma on a 360x800px screen to dp units
+ */
+@Composable
+fun FigmaPxToDp_h(px: Float): Dp {
+    val heightDp = LocalConfiguration.current.screenHeightDp.toFloat(); // ??
+    val ret: Float = px * (800f/heightDp)
+    return ret.dp
 }
 
 fun measureTextWidth(text: String, fontSize: Float): Float {

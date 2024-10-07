@@ -8,50 +8,30 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Bookmark
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.ThumbUp
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
-import androidx.compose.material3.Text
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -64,10 +44,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.widget.TextViewCompat.AutoSizeTextType
-import com.niklas.ux62550.ui.theme.Color_background
-import com.niklas.ux62550.ui.theme.Color_container
-import com.niklas.ux62550.ui.theme.Purple80
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 class MainActivity : ComponentActivity() {
@@ -87,27 +63,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier.padding((20.dp)),
-    )
-}
 
-@Composable fun MovieTitle(id: Int, modifier: Modifier = Modifier) {
-    val textArr: Array<String> = arrayOf("Movie1", "Series2")
-    androidx.compose.material3.Text(
-        text = textArr[id],
-        fontSize = 30.sp, //TextUnit(30f, TextUnitType.Sp)
-        lineHeight = 32.sp,
-        modifier = modifier
-    )
-}
 
 @Composable
-fun ScreenImage(message: String, from: String, modifier: Modifier = Modifier) {
-    val image = painterResource(R.drawable.ic_launcher_background)
+fun ScreenImage() {
+    //val image = painterResource(R.drawable.ic_launcher_background)
 
     BoxWithRoundedImage()
 }
@@ -118,7 +78,7 @@ fun BoxWithRoundedImage() {
     val imageSize = 200.dp
 
     // Compose Box with the image and 5% rounded corners
-    androidx.compose.foundation.layout.Box(
+    Box(
         modifier = Modifier.size(imageSize).clip(RoundedCornerShape(5))
     ) {
         Image(
@@ -133,12 +93,21 @@ fun BoxWithRoundedImage() {
 }
 
 @Composable
+fun PromoItem(width: Dp, height: Dp, round: Dp, color: Color) {
+
+        Box(
+            modifier = Modifier.clip(RoundedCornerShape(round)).background(color).size(width, height)
+
+        )
+}
+
+@Composable
 fun LogoBox(size: Dp) {
     // Image size, for example, 200dp
     val imageSize = size
 
     // Compose Box with the image and 5% rounded corners
-    androidx.compose.foundation.layout.Box(
+    Box(
         modifier = Modifier.size(imageSize).clip(RoundedCornerShape(5))
     ) {
         Image(
@@ -153,17 +122,9 @@ fun LogoBox(size: Dp) {
     }
 }
 
-//@Preview(showBackground = true)
-@Composable
-fun ScreenImageA() {
-    ScreenImage(
-        message = "Happy Birthday Sam!",
-        from = "From Emma",
 
-    )
-}
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "MainPreview")
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     UX62550Theme (darkTheme = true, dynamicColor = false) {
@@ -171,17 +132,16 @@ fun MainScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize()
             //color = Color_background,
         ) {
-            var varb by remember { mutableIntStateOf(0) }
-            ScreenWithGeneralNavBar() {
+            ScreenWithGeneralNavBar {
                 Column(modifier.padding(20.dp, 20.dp)) {
                     Row(
-                        modifier.fillMaxWidth().padding(ConvertPxToDp(19.5f).dp), // ConvertPxToDp(29.5f)
+                        modifier.fillMaxWidth().padding(FigmaPxToDp_w(19.5f)), // ConvertPxToDp(29.5f)
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Start
                     ) {
-                        LogoBox(size=ConvertPxToDp(50f).dp)
+                        LogoBox(size= FigmaPxToDp_w(50f))
 
-                        Box (modifier = Modifier.padding(ConvertPxToDp(20f).dp, 0.dp, 0.dp ,0.dp)) {
+                        Box (modifier = Modifier.padding(FigmaPxToDp_w(20f), 0.dp, 0.dp ,0.dp)) {
 
                             Text(
                                 text = "Welcome, User1",
@@ -193,15 +153,23 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
                         }
                     }
-                    Row(modifier.padding(0.dp, 20.dp, 0.dp, 0.dp)) {
+
+
+                    PromoItem(width= FigmaPxToDp_w(30f), height=FigmaPxToDp_h(20f), round=FigmaPxToDp_w(2f), color=Color(0xFF000022) )
+                    PromoItem(width= FigmaPxToDp_w(30f), height=FigmaPxToDp_h(20f), round=FigmaPxToDp_w(2f), color=Color(0xFF006600) )
+                    PromoItem(width= FigmaPxToDp_w(30f), height=FigmaPxToDp_h(20f), round=FigmaPxToDp_w(2f), color=Color(0xFF990000) )
+                    }
+
+
+                    /*Row(modifier.padding(0.dp, 20.dp, 0.dp, 0.dp)) {
                         Greeting("Niklas", modifier)
                         MovieTitle(0)
-                        ScreenImage("a", "b")
+                        ScreenImage()
                     }
                     TextField(
-                        value = varb.toString(),
+                        value = myVar.toString(),
                         onValueChange = {
-                            varb = try {
+                            myVar = try {
                                 it.toInt()
                             } catch (e: NumberFormatException) {
                                 0
@@ -209,14 +177,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         },
                         label = { Text("Number Label") }
                     )
-                    Text(text = "Int = $varb")
+                    Text(text = "Int = $myVar")*/
                 }
             }
         }
 
-
-    }
 }
+
+
 
 @Composable
 fun ScreenWithGeneralNavBar(content: @Composable (PaddingValues) -> Unit) {
@@ -238,10 +206,7 @@ fun GeneralNavBar() {
     val unselectedIcons =
         listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
 
-    NavigationBar (
-        //containerColor = MaterialTheme.colorScheme.background,
-        //tonalElevation = 1000.dp
-    ) {
+    NavigationBar  {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 icon = {
