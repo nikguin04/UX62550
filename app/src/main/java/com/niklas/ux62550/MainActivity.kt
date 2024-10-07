@@ -124,6 +124,27 @@ fun BoxWithRoundedImage() {
     }
 }
 
+@Composable
+fun LogoBox() {
+    // Image size, for example, 200dp
+    val imageSize = 200.dp
+
+    // Compose Box with the image and 5% rounded corners
+    androidx.compose.foundation.layout.Box(
+        modifier = Modifier.size(imageSize).clip(RoundedCornerShape(5))
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo), // Your image resource
+            contentDescription = null,
+            modifier = Modifier
+                .size(imageSize) // Same size for the image
+                .clip(RoundedCornerShape(0.00f * imageSize.value)), // Apply 5% rounded corners dynamically
+
+            contentScale = ContentScale.Crop // Crops the image to fit the box
+        )
+    }
+}
+
 //@Preview(showBackground = true)
 @Composable
 fun ScreenImageA() {
@@ -145,6 +166,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
             var varb by remember { mutableIntStateOf(0) }
             ScreenWithGeneralNavBar() {
                 Column(modifier.padding(20.dp, 20.dp)) {
+                    Row() {
+                        Text(text="Welcome, User1")
+                        LogoBox()
+                    }
                     Row(modifier.padding(0.dp, 20.dp, 0.dp, 0.dp)) {
                         Greeting("Niklas", modifier)
                         MovieTitle(0)
