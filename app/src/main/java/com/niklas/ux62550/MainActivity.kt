@@ -7,11 +7,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -49,14 +52,19 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.widget.TextViewCompat.AutoSizeTextType
 import com.niklas.ux62550.ui.theme.Color_background
 import com.niklas.ux62550.ui.theme.Color_container
 import com.niklas.ux62550.ui.theme.Purple80
@@ -71,7 +79,7 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainScreen(
-                        modifier = Modifier.padding(innerPadding).background(Color_background)
+                        modifier = Modifier.padding(innerPadding)//.background(Color_background)
                     )
                 }
             }
@@ -125,9 +133,9 @@ fun BoxWithRoundedImage() {
 }
 
 @Composable
-fun LogoBox() {
+fun LogoBox(size: Dp) {
     // Image size, for example, 200dp
-    val imageSize = 200.dp
+    val imageSize = size
 
     // Compose Box with the image and 5% rounded corners
     androidx.compose.foundation.layout.Box(
@@ -138,7 +146,7 @@ fun LogoBox() {
             contentDescription = null,
             modifier = Modifier
                 .size(imageSize) // Same size for the image
-                .clip(RoundedCornerShape(0.00f * imageSize.value)), // Apply 5% rounded corners dynamically
+                .clip(RoundedCornerShape(0.00f * imageSize.value)),
 
             contentScale = ContentScale.Crop // Crops the image to fit the box
         )
@@ -160,15 +168,30 @@ fun ScreenImageA() {
 fun MainScreen(modifier: Modifier = Modifier) {
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         Surface(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
             //color = Color_background,
         ) {
             var varb by remember { mutableIntStateOf(0) }
             ScreenWithGeneralNavBar() {
                 Column(modifier.padding(20.dp, 20.dp)) {
-                    Row() {
-                        Text(text="Welcome, User1")
-                        LogoBox()
+                    Row(
+                        modifier.fillMaxWidth().padding(ConvertPxToDp(19.5f).dp), // ConvertPxToDp(29.5f)
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        LogoBox(size=ConvertPxToDp(50f).dp)
+
+                        Box (modifier = Modifier.padding(ConvertPxToDp(20f).dp, 0.dp, 0.dp ,0.dp)) {
+
+                            Text(
+                                text = "Welcome, User1",
+                                style = TextStyle(
+                                    fontSize = 32.sp,
+                                    fontWeight = FontWeight.Bold,
+                                ),
+                            )
+
+                        }
                     }
                     Row(modifier.padding(0.dp, 20.dp, 0.dp, 0.dp)) {
                         Greeting("Niklas", modifier)
