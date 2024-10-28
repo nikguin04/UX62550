@@ -1,9 +1,11 @@
 package com.niklas.ux62550
 
+import MediaItemsViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -64,6 +66,8 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
+    private val mediaItemsViewModel: MediaItemsViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -72,7 +76,8 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainScreen(
-                        modifier = Modifier.padding(innerPadding)//.background(Color_background)
+                        modifier = Modifier.padding(innerPadding),//.background(Color_background)
+                        mediaItemsViewModel = mediaItemsViewModel
                     )
                 }
             }
@@ -141,16 +146,23 @@ fun LogoBox(size: Dp) {
 
 
 
-@Preview(showBackground = true, name = "MainPreview")
+/*@Preview(showBackground = true, name = "MainPreview")
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun Preview() {
+    MainScreen()
+}*/
+
+@Composable
+fun MainScreen(modifier: Modifier = Modifier, mediaItemsViewModel: MediaItemsViewModel) {
+
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         Surface(
             modifier = Modifier.fillMaxSize()
             //color = Color_background,
         ) {
+
             ScreenWithGeneralNavBar() {
-                ScreenHome()
+                ScreenHome(mediaItemsViewModel = mediaItemsViewModel)
             }
         }
     }
