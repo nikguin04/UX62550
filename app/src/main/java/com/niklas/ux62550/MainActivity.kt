@@ -30,11 +30,14 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -146,139 +149,16 @@ fun MainScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize()
             //color = Color_background,
         ) {
-            ScreenWithGeneralNavBar {
-                Column(modifier.padding()) {
-                    Row(
-                        modifier.fillMaxWidth().padding(FigmaPxToDp_w(29.5f), FigmaPxToDp_h(40f), 0.dp, FigmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Start
-                    ) {
-                        LogoBox(size= FigmaPxToDp_w(50f))
-
-                        Box (modifier = Modifier.padding(FigmaPxToDp_w(20f), 0.dp, 0.dp ,0.dp)) {
-
-                            Text(
-                                text = "Welcome, User1",
-                                style = TextStyle(
-                                    fontSize = 32.sp,
-                                    fontWeight = FontWeight.Bold,
-                                ),
-                            )
-
-                        }
-                    }
-
-                    HorizontalLazyRowWithSnapEffect()
-                    }
-
-
-                }
+            ScreenWithGeneralNavBar() {
+                ScreenHome()
             }
         }
-
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun HorizontalLazyRowWithSnapEffect() {
-    val itemWidth = FigmaPxToDp_w(300f) + FigmaPxToDp_w(10f)*2 // width + padding*"
-    val halfScreenWidth = LocalConfiguration.current.screenWidthDp.dp / 2
-    val halfItemWidth = itemWidth / 2
-    val offsetToCenter = halfScreenWidth - halfItemWidth
-    val pixelOffset: Int = offsetToCenter.dpToPx().roundToInt()
-    val listState = rememberLazyListState(1, -pixelOffset) // To manage the scroll state
-
-    val coroutineScope = rememberCoroutineScope()
-
-
-    // List of items to display in the LazyRow
-    val itemsList = listOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
-    // LazyRow with snapping effect
-    LazyRow(
-        state = listState,
-        flingBehavior = rememberSnapFlingBehavior(listState), // Snap to item effect
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(0.dp, 0.dp, 0.dp, 0.dp)
-    ) {
-        item { PromoItem(width= FigmaPxToDp_w(300f), height=FigmaPxToDp_h(200f), round=FigmaPxToDp_w(20f), color=Color(0xFF000022), modifier = Modifier.padding(FigmaPxToDp_w(10f) ) ) }
-        item { PromoItem(width= FigmaPxToDp_w(300f), height=FigmaPxToDp_h(200f), round=FigmaPxToDp_w(20f), color=Color(0xFF006600), modifier = Modifier.padding(FigmaPxToDp_w(10f) ) ) }
-        item { PromoItem(width= FigmaPxToDp_w(300f), height=FigmaPxToDp_h(200f), round=FigmaPxToDp_w(20f), color=Color(0xFF990000), modifier = Modifier.padding(FigmaPxToDp_w(10f) ) ) }
-        /*items(itemsList) { item ->
-            // Each item in the row
-            Card(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .width(200.dp)
-                    .height(150.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = item, fontSize = 20.sp)
-                }
-            }
-        }*/
     }
-
-
-    // Automatically scroll to the middle item when the composable is first displayed
-
-    /*LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            listState.scrollToItem(1, offsetToCenter.dpToPx().roundToInt())
-        }
-    }*/
 }
+
+
 
 @Composable
 fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
 
 
-@Composable
-fun ScreenWithGeneralNavBar(content: @Composable (PaddingValues) -> Unit) {
-    Scaffold ( // NAVBAR COLUMN
-        topBar = {
-
-        },
-
-        bottomBar = { GeneralNavBar() },
-        content = content
-    )
-}
-
-@Composable
-fun GeneralNavBar() {
-    var selectedItem by remember { mutableIntStateOf(0) }
-    val items = listOf("Home", "Search", "Watch", "Account")
-    val selectedIcons = listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
-    val unselectedIcons =
-        listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
-
-    NavigationBar  {
-        items.forEachIndexed { index, item ->
-            NavigationBarItem(
-                icon = {
-                    Icon(
-                        if (selectedItem == index) selectedIcons[index] else unselectedIcons[index],
-                        contentDescription = item
-                    )
-                },
-                label = { Text(item) },
-                selected = selectedItem == index,
-                onClick = { selectedItem = index },
-                /*colors = NavigationBarItemColors(
-                    selectedIconColor = fromToken(NavigationBarTokens.ActiveIconColor),
-                    selectedTextColor = fromToken(NavigationBarTokens.ActiveLabelTextColor),
-                    selectedIndicatorColor = fromToken(NavigationBarTokens.ActiveIndicatorColor),
-                    unselectedIconColor = fromToken(NavigationBarTokens.InactiveIconColor),
-                    unselectedTextColor = fromToken(NavigationBarTokens.InactiveLabelTextColor),
-                    disabledIconColor = fromToken(NavigationBarTokens.InactiveIconColor).copy(alpha = DisabledAlpha),
-                    disabledTextColor = fromToken(NavigationBarTokens.InactiveLabelTextColor).copy(alpha = DisabledAlpha),
-                )*/
-            )
-        }
-    }
-}
