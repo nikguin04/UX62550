@@ -1,16 +1,25 @@
 package com.niklas.ux62550.screen
 
-import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.absolutePadding
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -20,43 +29,16 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.LogoBox
 import com.niklas.ux62550.R
 import com.niklas.ux62550.ScreenWithGeneralNavBar
+import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import com.niklas.ux62550.figmaPxToDp_h
 import com.niklas.ux62550.figmaPxToDp_w
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
-/*class HomeScreen: ComponentActivity() {
-    private val mediaItemsViewModel: com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            UX62550Theme {
-
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-                    UX62550Theme (darkTheme = true, dynamicColor = false) {
-                        Surface(
-                            modifier = Modifier.fillMaxSize().padding((innerPadding))
-                            //color = Color_background,
-                        ) {
-
-                            ScreenWithGeneralNavBar() {
-                                ScreenHome(mediaItemsViewModel = mediaItemsViewModel)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}*/
-
 @Composable
-@Preview(showBackground = true, name = "MainPreview")
-fun HomePreview() {
+@Preview(showBackground = true, name = "MediaDetailPagePreview")
+fun MediaDetailPagePreview(){
     val mediaItems = listOf(
         MediaItem("Name 1", R.drawable.logo, Color.Blue),
         MediaItem("Name 2", R.drawable.logo, Color.Red)
@@ -64,31 +46,32 @@ fun HomePreview() {
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         ScreenWithGeneralNavBar {
-            ScreenHome(mediaItemsUIState = MediaItemsUIState.Data(mediaItems))
+            ScreenMediaDetail(mediaItemsUIState = MediaItemsUIState.Data(mediaItems))
         }
     }
 }
+
 @Composable
-fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState) {
-    Column(modifier.padding()) {
-        Row(
-            modifier.fillMaxWidth().padding(figmaPxToDp_w(29.5f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState) {
+    Column {
+        Box(
+            modifier.fillMaxWidth()
         ) {
-            LogoBox(size= figmaPxToDp_w(50f))
-
-            Box (modifier = Modifier.padding(figmaPxToDp_w(20f), 0.dp, 0.dp ,0.dp)) {
-
-                Text(
-                    text = "Welcome, User1",
-                    style = TextStyle(
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Normal,
-                    ),
-                )
+            Box(Modifier.alpha(0.5f)) {
+                Box(Modifier.background(Color.Red).fillMaxWidth().height(230.dp))
+            }
+            Box(
+                modifier.fillMaxWidth().padding(30.dp).absolutePadding(0.dp,50.dp,0.dp,0.dp)
+            ) {
+                Box(Modifier.background(Color.Yellow).fillMaxWidth().aspectRatio(16f / 9f))
 
             }
+            Icon(
+                Icons.Outlined.BookmarkBorder,
+                contentDescription = "Bookmark"
+            )
+
+
         }
 
 
@@ -112,5 +95,3 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
 
     }
 }
-
-
