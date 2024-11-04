@@ -11,9 +11,15 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowLeft
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.ArrowLeft
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,13 +69,26 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 Box(Modifier.background(Color.Red).fillMaxWidth().height(230.dp))
             }
             Box(
-                modifier.fillMaxWidth().padding(30.dp).absolutePadding(0.dp,50.dp,0.dp,0.dp)
+                modifier.fillMaxWidth().padding(30.dp).absolutePadding(0.dp,40.dp,0.dp,0.dp)
             ) {
-                Box(Modifier.background(Color.Yellow).fillMaxWidth().aspectRatio(16f / 9f))
-
+                Box(Modifier.background(Color.Blue).fillMaxWidth().aspectRatio(16f / 9f))
+                Image(
+                    Icons.Outlined.PlayCircleOutline,
+                    modifier = Modifier.align(Alignment.Center).padding(12.dp).requiredSize(72.dp),
+                    colorFilter = ColorFilter.tint(Color.White),
+                    contentDescription = "Bookmark"
+                )
             }
-            Icon(
+            Image(
+                Icons.AutoMirrored.Outlined.ArrowBack,
+                modifier = Modifier.padding(12.dp).requiredSize(36.dp),
+                colorFilter = ColorFilter.tint(Color.White),
+                contentDescription = "Bookmark"
+            )
+            Image(
                 Icons.Outlined.BookmarkBorder,
+                modifier = Modifier.align(Alignment.TopEnd).padding(12.dp).requiredSize(36.dp),
+                colorFilter = ColorFilter.tint(Color.White),
                 contentDescription = "Bookmark"
             )
 
