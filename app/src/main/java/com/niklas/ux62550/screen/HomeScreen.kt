@@ -1,5 +1,6 @@
 package com.niklas.ux62550.screen
 
+import androidx.compose.animation.core.VisibilityThreshold
 import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +27,13 @@ import com.niklas.ux62550.figmaPxToDp_w
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.rounded.ShoppingCart
+import androidx.compose.material3.Icon
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.Dp
+import com.niklas.ux62550.modules.HorizontalLazyRowMoviesWithCat
 
 /*class HomeScreen: ComponentActivity() {
     private val mediaItemsViewModel: com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel by viewModels()
@@ -99,18 +108,58 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
         when (mediaItemsUIState) {
             MediaItemsUIState.Empty -> {
                 Text(
-                    text = "No MediasItems",
+                    text = "No Media Items",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
             is MediaItemsUIState.Data -> {
                 HorizontalLazyRowWithSnapEffect(mediaItemsUIState.mediaItems)
+
+                HorizontalDotIndexer(Modifier.size(LocalConfiguration.current.screenWidthDp.dp, 12.dp))
             }
             else -> {
 
             }
         }
 
+        // TODO: PLEASE READ! this is a placeholder for when we get a proper structure for fetching movies
+        when (mediaItemsUIState) {
+            MediaItemsUIState.Empty -> {
+                Text(
+                    text = "No Media Items",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            is MediaItemsUIState.Data -> {
+                Row (Modifier.padding(figmaPxToDp_w(13f),0.dp,0.dp,0.dp)) { Text(text = "Romance") }
+                Row (Modifier.padding(figmaPxToDp_w(5f), 0.dp)) {
+                    HorizontalLazyRowMoviesWithCat(155f, 87.19f, mediaItemsUIState.mediaItems)
+                }
+            }
+            else -> {
+
+            }
+        }
+
+    }
+}
+
+@Composable
+fun HorizontalDotIndexer(modifier: Modifier) {
+    //Icons.AutoMirrored.Filled.Dot
+    Row (
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        for (i in 0..4) {
+            Icon(
+                Icons.Filled.Circle,
+                contentDescription = "test123",
+                modifier = Modifier.padding(1.5.dp,0.dp,1.5.dp,0.dp)
+            )
+        }
     }
 }

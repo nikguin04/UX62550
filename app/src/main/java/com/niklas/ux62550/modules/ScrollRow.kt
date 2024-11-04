@@ -48,12 +48,31 @@ fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>) {
                 )
             }
         }
-        /*item { PromoItem(width= FigmaPxToDp_w(300f), height= FigmaPxToDp_h(200f), round= FigmaPxToDp_w(20f), color= Color(0xFF000022), modifier = Modifier.padding(
-            FigmaPxToDp_w(10f) ) ) }
-        item { PromoItem(width= FigmaPxToDp_w(300f), height= FigmaPxToDp_h(200f), round= FigmaPxToDp_w(20f), color= Color(0xFF006600), modifier = Modifier.padding(
-            FigmaPxToDp_w(10f) ) ) }
-        item { PromoItem(width= FigmaPxToDp_w(300f), height= FigmaPxToDp_h(200f), round= FigmaPxToDp_w(20f), color= Color(0xFF990000), modifier = Modifier.padding(
-            FigmaPxToDp_w(10f) ) ) }*/
+    }
+
+}
+
+
+@Composable
+fun HorizontalLazyRowMoviesWithCat(widthFigmaPx: Float, heightFigmaPx: Float, items: List<MediaItem>) {
+    // LazyRow with snapping effect
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 0.dp, 0.dp, 0.dp)
+    ) {
+
+        items.forEachIndexed { index, mediaItem ->
+            item {
+                PromoItem(
+                    width= figmaPxToDp_w(widthFigmaPx),
+                    height= figmaPxToDp_h(heightFigmaPx),
+                    round= figmaPxToDp_w(5f),
+                    color= mediaItem.tempColor,
+                    modifier = Modifier.padding(figmaPxToDp_w(5f) )
+                )
+            }
+        }
     }
 
 }
