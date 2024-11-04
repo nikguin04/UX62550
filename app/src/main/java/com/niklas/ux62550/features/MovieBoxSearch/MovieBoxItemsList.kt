@@ -1,4 +1,4 @@
-package com.niklas.ux62550.features.MoiveBoxSearch
+package com.niklas.ux62550.features.MovieBoxSearch
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.features.MediaItemList.MediaItemsList
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.ui.theme.UX62550Theme
 

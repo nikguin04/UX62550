@@ -1,5 +1,4 @@
 package com.niklas.ux62550.screen
-import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,13 +18,13 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.LogoBox
 import com.niklas.ux62550.R
 import com.niklas.ux62550.ScreenWithGeneralNavBar
+import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
+import com.niklas.ux62550.features.MovieBoxSearch.MovieBoxItemsUIState
+import com.niklas.ux62550.models.MovieBoxItem
 import com.niklas.ux62550.figmaPxToDp_h
 import com.niklas.ux62550.figmaPxToDp_w
-import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.models.MoiveBoxItem
 import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import com.niklas.ux62550.features.MovieBoxSearch
 
 /*class HomeScreen: ComponentActivity() {
     private val mediaItemsViewModel: com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel by viewModels()
@@ -58,20 +57,21 @@ import com.niklas.ux62550.features.MovieBoxSearch
 @Composable
 @Preview(showBackground = true, name = "SearchPreview")
 fun SearchPreview() {
-    val moiveBoxItems = listOf(
-        MoiveBoxItem("Name 1", R.drawable.logo, Color.Blue, "DINMOR", 4.5f)
+    val MovieBoxItems = listOf(
+        MovieBoxItem("Name 1", R.drawable.logo, Color.Blue, "DINMOR", 4.5f),
+        MovieBoxItem("Name 2", R.drawable.logo, Color.Red, "DINFAR", 4.5f)
     )
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         ScreenWithGeneralNavBar {
-            ScreenHome(mediaItemsUIState = MoiveBoxItemsUIState.Data(moiveBoxItems))
+            ScreenSearch(MovieBoxItemsUIState = MovieBoxItemsUIState.Data(MovieBoxItems))
         }
     }
 }
 
 
 @Composable
-fun ScreenSearch(modifier: Modifier = Modifier, MoiveBoxItemState: MediaItemsUIState) {
+fun ScreenSearch(modifier: Modifier = Modifier, MovieBoxItemsUIState: MovieBoxItemsUIState) {
     Column(modifier.padding()) {
         Row(
             modifier.fillMaxWidth().padding(figmaPxToDp_w(29.5f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
@@ -96,16 +96,16 @@ fun ScreenSearch(modifier: Modifier = Modifier, MoiveBoxItemState: MediaItemsUIS
 
         // Implement viewmodel
         //val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
-        when (MoiveBoxItemsUIState) {
-            MediaItemsUIState.Empty -> {
+        when (MovieBoxItemsUIState) {
+            MovieBoxItemsUIState -> {
                 Text(
                     text = "No MediasItems",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
-            is MediaItemsUIState.Data -> {
-                HorizontalLazyRowWithSnapEffect(mediaItemsUIState.mediaItems)
+            is MovieBoxItemsUIState.Data -> {
+                HorizontalLazyRowWithSnapEffect(MovieBoxItemsUIState.MovieBoxItems)
             }
             else -> {
 

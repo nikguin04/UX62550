@@ -1,4 +1,4 @@
-package com.niklas.ux62550.features.MoiveBoxSearch
+package com.niklas.ux62550.features.MovieBoxSearch
 
 import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import androidx.compose.foundation.layout.Box
@@ -14,15 +14,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.features.MediaItemList.MediaItemsList
 import com.niklas.ux62550.models.MediaItem
 import dk.shape.dtu.androidarchitecture.feature.fruitlist.MediaItemsScreen
 
 @Composable
-fun MovieBoxItemsScreen(MovieBoxItemsUIState: MoiveBoxItemsUIState) {
+fun MovieBoxItemsScreen(MovieBoxItemsUIState: MovieBoxItemsUIState) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        when (MoiveBoxItemsUIState) {
-            MediaItemsUIState.Empty -> {
+        when (MovieBoxItemsUIState) {
+            MovieBoxItemsUIState -> {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
@@ -35,9 +34,9 @@ fun MovieBoxItemsScreen(MovieBoxItemsUIState: MoiveBoxItemsUIState) {
                 }
             }
 
-            is MediaItemsUIState.Data -> {
-                MediaItemsList(
-                    fruits = MoiveBoxItemsUIState.MoiveBoxItems,
+            is MovieBoxItemsUIState.Data -> {
+                MovieBoxItemsList(
+                    fruits = MovieBoxItemsUIState.MovieBoxItems,
                     modifier = Modifier.padding(innerPadding)
                 )
             }
