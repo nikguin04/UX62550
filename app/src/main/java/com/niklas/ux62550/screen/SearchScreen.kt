@@ -56,16 +56,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true, name = "SearchPreview")
 fun SearchPreview() {
-    val mediaItems = listOf(
-        MediaItem("Name 1", R.drawable.logo, Color.Blue),
-        MediaItem("Name 2", R.drawable.logo, Color.Red)
-    )
 
-    UX62550Theme (darkTheme = true, dynamicColor = false) {
-        ScreenWithGeneralNavBar {
-            ScreenSearch(mediaItemsUIState = MediaItemsUIState.Data(mediaItems))
-        }
-    }
 }
 
 
