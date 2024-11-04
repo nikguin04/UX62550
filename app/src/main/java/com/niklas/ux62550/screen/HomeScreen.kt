@@ -124,21 +124,39 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
             }
         }
 
-        // TODO: PLEASE READ! this is a placeholder for when we get a proper structure for fetching movies
-        when (mediaItemsUIState) {
-            MediaItemsUIState.Empty -> {
-                Text(
-                    text = "No Media Items",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            is MediaItemsUIState.Data -> {
-                Row (Modifier.padding(figmaPxToDp_w(13f),0.dp,0.dp,0.dp)) { Text(text = "Romance") }
-                HorizontalLazyRowMoviesWithCat(Modifier.padding(0.dp, 0.dp),155f, 87.19f, mediaItemsUIState.mediaItems)
-            }
-            else -> {
+        val cats = listOf("Romance", "Action", "Comedy", "Drama")
 
+        for (cat in cats) {
+            // TODO: PLEASE READ! this is a placeholder for when we get a proper structure for fetching movies
+            when (mediaItemsUIState) {
+                MediaItemsUIState.Empty -> {
+                    Text(
+                        text = "No Media Items",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                is MediaItemsUIState.Data -> {
+                    Row(
+                        Modifier.padding(
+                            figmaPxToDp_w(13f),
+                            figmaPxToDp_w(10f),
+                            0.dp,
+                            figmaPxToDp_w(2f)
+                        )
+                    ) { Text(text = cat) }
+                    HorizontalLazyRowMoviesWithCat(
+                        Modifier.padding(0.dp, 0.dp),
+                        155f,
+                        87.19f,
+                        mediaItemsUIState.mediaItems
+                    )
+                }
+
+                else -> {
+
+                }
             }
         }
 
