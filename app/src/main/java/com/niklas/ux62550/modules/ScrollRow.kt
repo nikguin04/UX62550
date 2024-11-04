@@ -1,3 +1,5 @@
+package com.niklas.ux62550.modules
+
 import com.niklas.ux62550.models.MediaItem
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +15,6 @@ import com.niklas.ux62550.FigmaPxToDp_w
 import com.niklas.ux62550.PromoItem
 import com.niklas.ux62550.dpToPx
 import kotlin.math.roundToInt
-
 
 @Composable
 fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>) {
