@@ -1,7 +1,6 @@
 package dk.shape.dtu.androidarchitecture.feature.fruitlist
 
-import MediaItemsUIState
-import android.provider.MediaStore.Audio.Media
+import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
+import com.niklas.ux62550.features.MediaItemList.MediaItemsList
 import com.niklas.ux62550.models.MediaItem
 
 @Composable

@@ -1,6 +1,7 @@
 package com.niklas.ux62550
 
-import MediaItemsViewModel
+import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
+import com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,11 +35,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             UX62550Theme {
+                val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainScreen(
                         modifier = Modifier.padding(innerPadding),//.background(Color_background)
-                        mediaItemsViewModel = mediaItemsViewModel
+                        mediaItemsUIState = uiState
                     )
                 }
             }
@@ -114,7 +116,7 @@ fun Preview() {
 }*/
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier, mediaItemsViewModel: MediaItemsViewModel) {
+fun MainScreen(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState) {
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         Surface(
@@ -123,7 +125,7 @@ fun MainScreen(modifier: Modifier = Modifier, mediaItemsViewModel: MediaItemsVie
         ) {
 
             ScreenWithGeneralNavBar() {
-                ScreenHome(mediaItemsViewModel = mediaItemsViewModel)
+                ScreenHome(mediaItemsUIState = mediaItemsUIState)
             }
         }
     }

@@ -1,6 +1,5 @@
-package dk.shape.dtu.androidarchitecture.feature.fruitlist
+package com.niklas.ux62550.features.MediaItemList
 
-import android.provider.MediaStore.Audio.Media
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -61,7 +60,7 @@ private fun FruitItem(fruit: MediaItem, index: Int = 0) {
 private fun FruitListPreview() {
     UX62550Theme {
         MediaItemsList(
-            listOf(MediaItem("TEST NAME", R.drawable.ic_launcher_background, Color.Black),)
+            listOf(MediaItem("TEST NAME", R.drawable.ic_launcher_background, Color.Black))
         )
     }
 }

@@ -1,6 +1,6 @@
-import androidx.compose.foundation.Image
+package com.niklas.ux62550.features.MediaItemList
+
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.R
