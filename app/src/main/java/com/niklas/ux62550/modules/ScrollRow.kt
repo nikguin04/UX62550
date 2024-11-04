@@ -10,15 +10,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import com.niklas.ux62550.FigmaPxToDp_h
-import com.niklas.ux62550.FigmaPxToDp_w
+import com.niklas.ux62550.figmaPxToDp_h
+import com.niklas.ux62550.figmaPxToDp_w
 import com.niklas.ux62550.PromoItem
 import com.niklas.ux62550.dpToPx
 import kotlin.math.roundToInt
 
 @Composable
 fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>) {
-    val itemWidth = FigmaPxToDp_w(300f) + FigmaPxToDp_w(10f) *2 // width + padding*"
+    val itemWidth = figmaPxToDp_w(300f) + figmaPxToDp_w(10f) *2 // width + padding*"
     val halfScreenWidth = LocalConfiguration.current.screenWidthDp.dp / 2
     val halfItemWidth = itemWidth / 2
     val offsetToCenter = halfScreenWidth - halfItemWidth
@@ -40,11 +40,11 @@ fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>) {
         items.forEachIndexed { index, mediaItem ->
             item {
                 PromoItem(
-                    width= FigmaPxToDp_w(300f),
-                    height= FigmaPxToDp_h(200f),
-                    round= FigmaPxToDp_w(20f),
+                    width= figmaPxToDp_w(300f),
+                    height= figmaPxToDp_h(200f),
+                    round= figmaPxToDp_w(20f),
                     color= mediaItem.tempColor,
-                    modifier = Modifier.padding(FigmaPxToDp_w(10f) )
+                    modifier = Modifier.padding(figmaPxToDp_w(10f) )
                 )
             }
         }

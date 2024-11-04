@@ -1,18 +1,16 @@
 package com.niklas.ux62550
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
 /*
   * Used to convert from pixels used in Figma on a 360x800px screen to dp units
  */
 @Composable
-fun FigmaPxToDp_w(px: Float): Dp {
-    val widthDp = LocalConfiguration.current.screenWidthDp.toFloat(); // 411
+fun figmaPxToDp_w(px: Float): Dp {
+    val widthDp = LocalConfiguration.current.screenWidthDp.toFloat() // 411
     val ret: Float = px * (360f/widthDp)
     return ret.dp
 }
@@ -20,8 +18,8 @@ fun FigmaPxToDp_w(px: Float): Dp {
   * Used to convert from pixels used in Figma on a 360x800px screen to dp units
  */
 @Composable
-fun FigmaPxToDp_h(px: Float): Dp {
-    val heightDp = LocalConfiguration.current.screenHeightDp.toFloat(); // ??
+fun figmaPxToDp_h(px: Float): Dp {
+    val heightDp = LocalConfiguration.current.screenHeightDp.toFloat() // ??
     val ret: Float = px * (800f/heightDp)
     return ret.dp
 }
