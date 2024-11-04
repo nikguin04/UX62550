@@ -54,12 +54,11 @@ fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>) {
 
 
 @Composable
-fun HorizontalLazyRowMoviesWithCat(widthFigmaPx: Float, heightFigmaPx: Float, items: List<MediaItem>) {
+fun HorizontalLazyRowMoviesWithCat(modifier: Modifier = Modifier, widthFigmaPx: Float, heightFigmaPx: Float, items: List<MediaItem>) {
     // LazyRow with snapping effect
     LazyRow(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(0.dp, 0.dp, 0.dp, 0.dp)
     ) {
 
         items.forEachIndexed { index, mediaItem ->
@@ -69,7 +68,12 @@ fun HorizontalLazyRowMoviesWithCat(widthFigmaPx: Float, heightFigmaPx: Float, it
                     height= figmaPxToDp_h(heightFigmaPx),
                     round= figmaPxToDp_w(5f),
                     color= mediaItem.tempColor,
-                    modifier = Modifier.padding(figmaPxToDp_w(5f) )
+                    modifier = Modifier.padding(
+                        figmaPxToDp_w(if (index == 0) 10f else 5f),
+                            0.dp,
+                        figmaPxToDp_w(if (index == items.size-1) 10f else 5f),
+                            0.dp
+                    )
                 )
             }
         }

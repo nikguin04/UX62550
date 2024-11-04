@@ -68,7 +68,8 @@ import com.niklas.ux62550.modules.HorizontalLazyRowMoviesWithCat
 fun HomePreview() {
     val mediaItems = listOf(
         MediaItem("Name 1", R.drawable.logo, Color.Blue),
-        MediaItem("Name 2", R.drawable.logo, Color.Red)
+        MediaItem("Name 2", R.drawable.logo, Color.Red),
+        MediaItem("Name 3", R.drawable.logo, Color.Yellow)
     )
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
@@ -134,9 +135,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
             }
             is MediaItemsUIState.Data -> {
                 Row (Modifier.padding(figmaPxToDp_w(13f),0.dp,0.dp,0.dp)) { Text(text = "Romance") }
-                Row (Modifier.padding(figmaPxToDp_w(5f), 0.dp)) {
-                    HorizontalLazyRowMoviesWithCat(155f, 87.19f, mediaItemsUIState.mediaItems)
-                }
+                HorizontalLazyRowMoviesWithCat(Modifier.padding(0.dp, 0.dp),155f, 87.19f, mediaItemsUIState.mediaItems)
             }
             else -> {
 
