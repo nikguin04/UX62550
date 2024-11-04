@@ -22,8 +22,10 @@ import com.niklas.ux62550.ScreenWithGeneralNavBar
 import com.niklas.ux62550.figmaPxToDp_h
 import com.niklas.ux62550.figmaPxToDp_w
 import com.niklas.ux62550.models.MediaItem
+import com.niklas.ux62550.models.MoiveBoxItem
 import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import com.niklas.ux62550.features.MovieBoxSearch
 
 /*class HomeScreen: ComponentActivity() {
     private val mediaItemsViewModel: com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel by viewModels()
@@ -56,12 +58,20 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true, name = "SearchPreview")
 fun SearchPreview() {
+    val moiveBoxItems = listOf(
+        MoiveBoxItem("Name 1", R.drawable.logo, Color.Blue, "DINMOR", 4.5f)
+    )
 
+    UX62550Theme (darkTheme = true, dynamicColor = false) {
+        ScreenWithGeneralNavBar {
+            ScreenHome(mediaItemsUIState = MoiveBoxItemsUIState.Data(moiveBoxItems))
+        }
+    }
 }
 
 
 @Composable
-fun ScreenSearch(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState) {
+fun ScreenSearch(modifier: Modifier = Modifier, MoiveBoxItemState: MediaItemsUIState) {
     Column(modifier.padding()) {
         Row(
             modifier.fillMaxWidth().padding(figmaPxToDp_w(29.5f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
@@ -86,7 +96,7 @@ fun ScreenSearch(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIS
 
         // Implement viewmodel
         //val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
-        when (mediaItemsUIState) {
+        when (MoiveBoxItemsUIState) {
             MediaItemsUIState.Empty -> {
                 Text(
                     text = "No MediasItems",
