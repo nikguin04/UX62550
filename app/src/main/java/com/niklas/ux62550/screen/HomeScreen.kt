@@ -1,4 +1,4 @@
-package com.niklas.ux62550
+package com.niklas.ux62550.screen
 
 import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +17,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niklas.ux62550.LogoBox
+import com.niklas.ux62550.R
+import com.niklas.ux62550.ScreenWithGeneralNavBar
+import com.niklas.ux62550.figmaPxToDp_h
+import com.niklas.ux62550.figmaPxToDp_w
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.UX62550Theme
