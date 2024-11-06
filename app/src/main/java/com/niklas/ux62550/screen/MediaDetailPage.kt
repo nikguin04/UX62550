@@ -14,18 +14,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.outlined.ArrowLeft
 import androidx.compose.material.icons.automirrored.outlined.StarHalf
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.ArrowLeft
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +38,7 @@ import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
@@ -105,7 +111,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
             )
 
             Row(
-                modifier = Modifier.align(Alignment.BottomStart).padding(10.dp,0.dp,0.dp,10.dp),
+                modifier = Modifier.align(Alignment.BottomStart).padding(10.dp,0.dp,0.dp,0.dp),
                 verticalAlignment = Alignment.CenterVertically
             )
             {
@@ -121,19 +127,53 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 Text("Year",fontSize = 18.sp)
                 Text("18+", fontSize = 18.sp)
             }
-            Row(
-                modifier = Modifier.align(Alignment.BottomStart).padding(10.dp,10.dp,0.dp,0.dp),
-                verticalAlignment = Alignment.CenterVertically
-            )
-            {
-                Text("PLACEHOLDER")
-            }
+
+        }
+        Row(
+            modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            Text("PLACEHOLDER")
         }
         ResumeText()
+
+        Text("Actors and Directors",  modifier.padding(4.dp,0.dp,0.dp,0.dp))
+        Row {
+            repeat(4) {
+                DrawCircle(Modifier.size(64.dp))
+            }
+        }
+        Row(
+            modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                imageVector = Icons.Outlined.EmojiEvents,
+                modifier = Modifier.requiredSize(18.dp),
+                colorFilter = ColorFilter.tint(Color.White),
+                contentDescription = "Star icon"
+            )
+            Text("Award...")
+        }
+        Row(
+            modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            //Needs to be made to a button later on
+            Text("Detailed Rating")
+            Image(
+                imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
+                modifier = Modifier.requiredSize(12.dp),
+                colorFilter = ColorFilter.tint(Color.White),
+                contentDescription = "Star icon"
+            )
+        }
 
 
         // Implement viewmodel
         //val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
+        Text("Movies similar to this one", modifier.padding(4.dp,0.dp,0.dp,0.dp))
         when (mediaItemsUIState) {
             MediaItemsUIState.Empty -> {
                 Text(
@@ -174,6 +214,20 @@ fun ResumeText(){
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Start,
         ),
-        modifier = Modifier.fillMaxWidth().padding(4.dp, 10.dp, 0.dp, 0.dp),
+        modifier = Modifier.fillMaxWidth().padding(4.dp, 0.dp, 0.dp, 0.dp),
+    )
+}
+@Composable
+fun DrawCircle(modifier: Modifier = Modifier) {
+    androidx.compose.foundation.layout.Box(
+        modifier = modifier.drawBehind {
+            // Set the radius based on the smaller of the box dimensions
+            val radius = size.minDimension / 2
+            drawCircle(
+                color = Color.Red,
+                radius = radius,
+                center = center
+            )
+        }
     )
 }
