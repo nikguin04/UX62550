@@ -25,9 +25,11 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
 import com.niklas.ux62550.ScreenWithGeneralNavBar
 import com.niklas.ux62550.features.MovieBoxSearch.MovieBoxItemsUIState
+import com.niklas.ux62550.features.MovieBoxSearch.NonMovieBoxItemsUIState
 import com.niklas.ux62550.models.MovieBox
 import com.niklas.ux62550.figmaPxToDp_h
 import com.niklas.ux62550.figmaPxToDp_w
+import com.niklas.ux62550.models.NonMovieBox
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 
@@ -38,10 +40,15 @@ fun SearchPreview() {
         MovieBox("Name 1", R.drawable.logo, Color.Blue, "Movie", 3.5f),
         MovieBox("Name 2", R.drawable.logo, Color.Red, "Series", 4.5f)
     )
+    val nonMovieBoxes = listOf(
+        NonMovieBox("Name 1", R.drawable.logo, Color.Yellow, "Movie"),
+        NonMovieBox("Name 2", R.drawable.logo, Color.Green, "Series")
+    )
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         ScreenWithGeneralNavBar {
-            ScreenSearch(movieBoxItemsUIState = MovieBoxItemsUIState.Data(movieBoxes))
+            ScreenSearch(movieBoxItemsUIState = MovieBoxItemsUIState.Data(movieBoxes),
+                nonMovieBoxItemsUIState = NonMovieBoxItemsUIState.Data(nonMovieBoxes))
         }
     }
 }
@@ -109,7 +116,56 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxItemsUIState) {
+fun NonMovieBoxRow(nonMovieBox: NonMovieBox, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+        //.background(Color.White, shape= RoundedCornerShape(8.dp))
+        //.padding(8.dp)
+    ) {
+
+        movieBoxMoviePicture(
+            width = 90.dp,
+            height = 50.62.dp,
+            round = 12.dp,
+            color = nonMovieBox.tempColor,
+            modifier = Modifier.padding(end = 8.dp)
+        )
+
+        Column (
+            modifier = Modifier
+                //.fillMaxWidth()
+                .align(Alignment.CenterVertically)
+                .padding(start = 16.dp)
+        ) {
+
+            Text(
+                text = nonMovieBox.name,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Row(
+            modifier = Modifier
+            //.fillMaxWidth()
+        )
+        {
+            Text(
+                text = nonMovieBox.genre,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+
+    }
+}
+
+@Composable
+fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxItemsUIState,
+                 nonMovieBoxItemsUIState: NonMovieBoxItemsUIState) {
     Column(modifier.padding()) {
         Row(
             modifier.fillMaxWidth().padding(figmaPxToDp_w(29.5f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
@@ -135,6 +191,24 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
 
         // Implement viewmodel
         //val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
+        when (nonMovieBoxItemsUIState) {
+            NonMovieBoxItemsUIState.Empty -> {
+                Text(
+                    text = "No movies to be found",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            is NonMovieBoxItemsUIState.Data -> {
+                // Display list of movie items in LazyColumn
+                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                    items(nonMovieBoxItemsUIState.nonMovieBoxes) { nonMovieBoxItem ->
+                        NonMovieBoxRow(nonMovieBox = nonMovieBoxItem)
+                    }
+                }
+            }
+        }
+
         when (movieBoxItemsUIState) {
             MovieBoxItemsUIState.Empty -> {
                 Text(
@@ -152,5 +226,6 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
                 }
             }
         }
+
     }
 }

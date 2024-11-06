@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.R
 import com.niklas.ux62550.models.MovieBox
+import com.niklas.ux62550.models.NonMovieBox
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,3 +41,9 @@ sealed class MovieBoxItemsUIState {
     data object Empty: MovieBoxItemsUIState()
     data class Data(val movieBoxes: List<MovieBox>): MovieBoxItemsUIState()
 }
+
+sealed class NonMovieBoxItemsUIState {
+    data object Empty: NonMovieBoxItemsUIState()
+    data class Data(val nonMovieBoxes: List<NonMovieBox>): NonMovieBoxItemsUIState()
+}
+
