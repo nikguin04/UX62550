@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
@@ -38,6 +41,7 @@ import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -111,7 +115,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
             )
 
             Row(
-                modifier = Modifier.align(Alignment.BottomStart).padding(10.dp,0.dp,0.dp,0.dp),
+                modifier = Modifier.align(Alignment.BottomStart).padding(4.dp,0.dp,0.dp,0.dp),
                 verticalAlignment = Alignment.CenterVertically
             )
             {
@@ -119,12 +123,17 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                     Image(
                         imageVector = Icons.Outlined.StarOutline,
                         modifier = Modifier.requiredSize(18.dp),
-                        colorFilter = ColorFilter.tint(Color.White),
+                        colorFilter = ColorFilter.tint(Color.Yellow),
                         contentDescription = "Star icon"
                     )
                 }
+                Spacer(modifier = Modifier.width(4.dp))
                 Text("0/5", fontSize = 18.sp) //Needs get a function for how many stars
+                Spacer(modifier = Modifier.width(42.dp))
                 Text("Year",fontSize = 18.sp)
+                Spacer(modifier = Modifier.width(32.dp))
+                Text("Time", fontSize = 18.sp)
+                Spacer(modifier = Modifier.width(64.dp))
                 Text("18+", fontSize = 18.sp)
             }
 
@@ -134,13 +143,23 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
             verticalAlignment = Alignment.CenterVertically
         )
         {
-            Text("PLACEHOLDER")
+            Box(){
+                Box(modifier = Modifier
+                    .height(22.dp)
+                    .width(124.dp)
+                    .clip(RoundedCornerShape(40.dp))
+                    .background(Color.Gray)
+                )
+                Text("PLACEHOLDER",Modifier.align(Alignment.TopCenter), color = Color.White)
+            }
+
         }
-        ResumeText()
+        DescriptionText()
 
         Text("Actors and Directors",  modifier.padding(4.dp,0.dp,0.dp,0.dp))
-        Row {
+        Row(modifier.padding(4.dp,0.dp,0.dp,0.dp)) {
             repeat(4) {
+                Spacer(modifier = Modifier.width(2.dp))
                 DrawCircle(Modifier.size(64.dp))
             }
         }
@@ -155,6 +174,12 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 contentDescription = "Star icon"
             )
             Text("Award...")
+            Image(
+                imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
+                modifier = Modifier.requiredSize(12.dp),
+                colorFilter = ColorFilter.tint(Color.White),
+                contentDescription = "Star icon"
+            )
         }
         Row(
             modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
@@ -207,7 +232,7 @@ fun TitleText() {
         )
 }
 @Composable
-fun ResumeText(){
+fun DescriptionText(){
     Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
         style = TextStyle(
             fontSize = 14.sp,
@@ -220,7 +245,7 @@ fun ResumeText(){
 @Composable
 fun DrawCircle(modifier: Modifier = Modifier) {
     androidx.compose.foundation.layout.Box(
-        modifier = modifier.drawBehind {
+        modifier = modifier.drawBehind{
             // Set the radius based on the smaller of the box dimensions
             val radius = size.minDimension / 2
             drawCircle(
