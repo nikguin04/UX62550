@@ -1,6 +1,5 @@
 package com.niklas.ux62550.features.MovieBoxSearch
 
-import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,14 +13,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.models.MediaItem
-import dk.shape.dtu.androidarchitecture.feature.fruitlist.MediaItemsScreen
+import com.niklas.ux62550.models.MovieBoxItem
 
 @Composable
-fun MovieBoxItemsScreen(MovieBoxItemsUIState: MovieBoxItemsUIState) {
+fun MovieBoxItemsScreen(movieBoxItemsUIState: MovieBoxItemsUIState) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        when (MovieBoxItemsUIState) {
-            MovieBoxItemsUIState -> {
+        when (movieBoxItemsUIState) {
+            movieBoxItemsUIState -> {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
@@ -36,7 +34,7 @@ fun MovieBoxItemsScreen(MovieBoxItemsUIState: MovieBoxItemsUIState) {
 
             is MovieBoxItemsUIState.Data -> {
                 MovieBoxItemsList(
-                    fruits = MovieBoxItemsUIState.MovieBoxItems,
+                    fruits = movieBoxItemsUIState.movieBoxItems,
                     modifier = Modifier.padding(innerPadding)
                 )
             }
@@ -51,21 +49,21 @@ fun MovieBoxItemsScreen(MovieBoxItemsUIState: MovieBoxItemsUIState) {
 
 @Preview(showBackground = true)
 @Composable
-private fun MediaItemsScreenEmptyPreview() {
-    MediaItemsScreen(
-        MediaItemsUIState.Empty
+private fun MovieBoxItemsScreenEmptyPreview() {
+    MovieBoxItemsScreen(
+        MovieBoxItemsUIState.Empty
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun FruitsScreenDataPreview() {
-    val mediaItems = listOf(
-        MediaItem("Name 1", R.drawable.logo, Color.Blue),
-        MediaItem("Name 2", R.drawable.logo, Color.Red)
+    val MovieBoxItems = listOf(
+        MovieBoxItem("Name 1", R.drawable.logo, Color.Blue, genre="Lol", rating=3f),
+        MovieBoxItem("Name 2", R.drawable.logo, Color.Red, genre="Lol", rating=3f)
     )
-    MediaItemsScreen(
-        MediaItemsUIState.Data(mediaItems)
+    MovieBoxItemsScreen(
+        MovieBoxItemsUIState.Data(MovieBoxItems)
     )
 }
 

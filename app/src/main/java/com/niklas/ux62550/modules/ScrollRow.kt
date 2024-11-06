@@ -1,6 +1,5 @@
 package com.niklas.ux62550.modules
 
-import com.niklas.ux62550.models.MediaItem
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +13,7 @@ import com.niklas.ux62550.figmaPxToDp_h
 import com.niklas.ux62550.figmaPxToDp_w
 import com.niklas.ux62550.PromoItem
 import com.niklas.ux62550.dpToPx
+import com.niklas.ux62550.models.MediaItem
 import kotlin.math.roundToInt
 
 @Composable

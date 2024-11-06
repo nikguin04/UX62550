@@ -12,12 +12,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MediaItemsViewModel : ViewModel() {
+class MovieBoxItemsViewModel : ViewModel() {
 
-    private val MovieBoxItems: List<MediaItem> = listOf(
-        MediaItem("Name 1", R.drawable.logo, Color.Blue),
-        MediaItem("Name 2", R.drawable.logo, Color.Red),
-        MediaItem("Name 3", R.drawable.logo, Color.Green),
+    private val MovieBoxItems: List<MovieBoxItem> = listOf(
+        MovieBoxItem("Name 1", R.drawable.logo, Color.Blue, genre="Lol", rating=3f),
+        MovieBoxItem("Name 2", R.drawable.logo, Color.Red, genre="Lol", rating=3f),
+        MovieBoxItem("Name 3", R.drawable.logo, Color.Green, genre="Lol", rating=3f),
     )
 
     private val mutableMovieBoxItemsState = MutableStateFlow<MovieBoxItemsUIState>(MovieBoxItemsUIState.Empty)
@@ -29,7 +29,7 @@ class MediaItemsViewModel : ViewModel() {
                 delay(5000L)
                 mutableMovieBoxItemsState.update {
                     MovieBoxItemsUIState.Data(
-                        MovieBoxItems = MovieBoxItems.shuffled()
+                        movieBoxItems = MovieBoxItems.shuffled()
                     )
                 }
             }
@@ -39,5 +39,5 @@ class MediaItemsViewModel : ViewModel() {
 
 sealed class MovieBoxItemsUIState {
     data object Empty: MovieBoxItemsUIState()
-    data class Data(val MovieBoxItems: List<MovieBoxItem>): MovieBoxItemsUIState()
+    data class Data(val movieBoxItems: List<MovieBoxItem>): MovieBoxItemsUIState()
 }

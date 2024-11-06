@@ -84,7 +84,6 @@ fun PromoItem(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier
 
         Box(
             modifier = modifier.clip(RoundedCornerShape(round)).background(color).size(width, height).padding()
-
         )
 }
 

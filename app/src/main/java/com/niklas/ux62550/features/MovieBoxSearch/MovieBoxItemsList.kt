@@ -17,10 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
 import com.niklas.ux62550.models.MediaItem
+import com.niklas.ux62550.models.MovieBoxItem
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-fun MovieBoxItemsList(fruits: List<MediaItem>, modifier: Modifier = Modifier) {
+fun MovieBoxItemsList(fruits: List<MovieBoxItem>, modifier: Modifier = Modifier) {
     val scrollState = rememberLazyListState()
 
     LaunchedEffect(fruits) {
@@ -39,7 +40,7 @@ fun MovieBoxItemsList(fruits: List<MediaItem>, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun FruitItem(fruit: MediaItem, index: Int = 0) {
+private fun FruitItem(fruit: MovieBoxItem, index: Int = 0) {
     Column(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
@@ -60,7 +61,7 @@ private fun FruitItem(fruit: MediaItem, index: Int = 0) {
 private fun FruitListPreview() {
     UX62550Theme {
         MovieBoxItemsList(
-            listOf(MediaItem("TEST NAME", R.drawable.ic_launcher_background, Color.Black))
+            listOf(MovieBoxItem("TEST NAME", R.drawable.ic_launcher_background, Color.Black, genre="Lol", rating=3f))
         )
     }
 }
