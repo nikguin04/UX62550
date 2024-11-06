@@ -200,36 +200,35 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
 
         }
 
-        Column() {
-            Column(
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HorizontalDivider(
+                color = Color.Gray,
+                thickness = 1.dp,
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                HorizontalDivider(
-                    color = Color.Gray,
-                    thickness = 1.dp,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth(0.7f)
-                )
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth(0.7f)
+            )
 
-                Text(
-                    text = "Actors and Genres",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Normal,
-                    )
+            Text(
+                text = "Actors and Genres",
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Normal,
                 )
+            )
 
-                HorizontalDivider(
-                    color = Color.Gray,
-                    thickness = 1.dp,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth(0.7f)
-                )
-            }
+            HorizontalDivider(
+                color = Color.Gray,
+                thickness = 1.dp,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth(0.7f)
+            )
         }
 
 
@@ -253,36 +252,36 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
             }
         }
 
-        Column() {
-            Column(
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HorizontalDivider(
+                color = Color.Gray,
+                thickness = 1.dp,
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                HorizontalDivider(
-                    color = Color.Gray,
-                    thickness = 1.dp,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth(0.7f)
-                )
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth(0.7f)
+            )
 
-                Text(
-                    text = "Movies and Series",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Normal,
-                    )
+            Text(
+                text = "Movies and Series",
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Normal,
                 )
+            )
 
-                HorizontalDivider(
-                    color = Color.Gray,
-                    thickness = 1.dp,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth(0.7f)
-                )
-            }
+            HorizontalDivider(
+                color = Color.Gray,
+                thickness = 1.dp,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth(0.7f)
+            )
+
         }
 
 
