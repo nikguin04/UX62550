@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -23,29 +22,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.niklas.ux62550.LogoBox
-import com.niklas.ux62550.PromoItem
 import com.niklas.ux62550.R
 import com.niklas.ux62550.ScreenWithGeneralNavBar
 import com.niklas.ux62550.features.MovieBoxSearch.MovieBoxItemsUIState
-import com.niklas.ux62550.models.MovieBoxItem
+import com.niklas.ux62550.models.MovieBox
 import com.niklas.ux62550.figmaPxToDp_h
 import com.niklas.ux62550.figmaPxToDp_w
-import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 
 @Composable
 @Preview(showBackground = true, name = "SearchPreview")
 fun SearchPreview() {
-    val movieBoxItems = listOf(
-        MovieBoxItem("Name 1", R.drawable.logo, Color.Blue, "DINMOR", 4.5f),
-        MovieBoxItem("Name 2", R.drawable.logo, Color.Red, "DINFAR", 4.5f)
+    val movieBoxes = listOf(
+        MovieBox("Name 1", R.drawable.logo, Color.Blue, "DINMOR", 4.5f),
+        MovieBox("Name 2", R.drawable.logo, Color.Red, "DINFAR", 4.5f)
     )
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         ScreenWithGeneralNavBar {
-            ScreenSearch(movieBoxItemsUIState = MovieBoxItemsUIState.Data(movieBoxItems))
+            ScreenSearch(movieBoxItemsUIState = MovieBoxItemsUIState.Data(movieBoxes))
         }
     }
 }
@@ -59,7 +55,7 @@ fun movieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifie
 }
 
 @Composable
-fun MovieBoxRow(movieBoxItem: MovieBoxItem, modifier: Modifier = Modifier) {
+fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -72,7 +68,7 @@ fun MovieBoxRow(movieBoxItem: MovieBoxItem, modifier: Modifier = Modifier) {
             width = 90.dp,
             height = 50.62.dp,
             round = 12.dp,
-            color = movieBoxItem.tempColor,
+            color = movieBox.tempColor,
             modifier = Modifier.padding(end = 8.dp)
         )
 
@@ -82,12 +78,12 @@ fun MovieBoxRow(movieBoxItem: MovieBoxItem, modifier: Modifier = Modifier) {
               .padding(start = 8.dp)
         ) {
             Text(
-                text = movieBoxItem.name,
+                text = movieBox.name,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = movieBoxItem.genre,
+                text = movieBox.genre,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -135,8 +131,8 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
             is MovieBoxItemsUIState.Data -> {
                 // Display list of movie items in LazyColumn
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    items(movieBoxItemsUIState.movieBoxItems) { movieBoxItem ->
-                        MovieBoxRow(movieBoxItem = movieBoxItem)
+                    items(movieBoxItemsUIState.movieBoxes) { movieBoxItem ->
+                        MovieBoxRow(movieBox = movieBoxItem)
                     }
                 }
             }

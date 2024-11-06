@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.models.MovieBoxItem
+import com.niklas.ux62550.models.MovieBox
 
 @Composable
 fun MovieBoxItemsScreen(movieBoxItemsUIState: MovieBoxItemsUIState) {
@@ -34,7 +34,7 @@ fun MovieBoxItemsScreen(movieBoxItemsUIState: MovieBoxItemsUIState) {
 
             is MovieBoxItemsUIState.Data -> {
                 MovieBoxItemsList(
-                    fruits = movieBoxItemsUIState.movieBoxItems,
+                    fruits = movieBoxItemsUIState.movieBoxes,
                     modifier = Modifier.padding(innerPadding)
                 )
             }
@@ -58,12 +58,12 @@ private fun MovieBoxItemsScreenEmptyPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun FruitsScreenDataPreview() {
-    val MovieBoxItems = listOf(
-        MovieBoxItem("Name 1", R.drawable.logo, Color.Blue, genre="Lol", rating=3f),
-        MovieBoxItem("Name 2", R.drawable.logo, Color.Red, genre="Lol", rating=3f)
+    val MovieBoxes = listOf(
+        MovieBox("Name 1", R.drawable.logo, Color.Blue, genre="Lol", rating=3f),
+        MovieBox("Name 2", R.drawable.logo, Color.Red, genre="Lol", rating=3f)
     )
     MovieBoxItemsScreen(
-        MovieBoxItemsUIState.Data(MovieBoxItems)
+        MovieBoxItemsUIState.Data(MovieBoxes)
     )
 }
 

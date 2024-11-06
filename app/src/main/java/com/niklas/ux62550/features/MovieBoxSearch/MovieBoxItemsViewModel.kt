@@ -4,8 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.R
-import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.models.MovieBoxItem
+import com.niklas.ux62550.models.MovieBox
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,10 +13,10 @@ import kotlinx.coroutines.launch
 
 class MovieBoxItemsViewModel : ViewModel() {
 
-    private val MovieBoxItems: List<MovieBoxItem> = listOf(
-        MovieBoxItem("Name 1", R.drawable.logo, Color.Blue, genre="Lol", rating=3f),
-        MovieBoxItem("Name 2", R.drawable.logo, Color.Red, genre="Lol", rating=3f),
-        MovieBoxItem("Name 3", R.drawable.logo, Color.Green, genre="Lol", rating=3f),
+    private val movieBoxes: List<MovieBox> = listOf(
+        MovieBox("Name 1", R.drawable.logo, Color.Blue, genre="Lol", rating=3f),
+        MovieBox("Name 2", R.drawable.logo, Color.Red, genre="Lol", rating=3f),
+        MovieBox("Name 3", R.drawable.logo, Color.Green, genre="Lol", rating=3f),
     )
 
     private val mutableMovieBoxItemsState = MutableStateFlow<MovieBoxItemsUIState>(MovieBoxItemsUIState.Empty)
@@ -29,7 +28,7 @@ class MovieBoxItemsViewModel : ViewModel() {
                 delay(5000L)
                 mutableMovieBoxItemsState.update {
                     MovieBoxItemsUIState.Data(
-                        movieBoxItems = MovieBoxItems.shuffled()
+                        movieBoxes = movieBoxes.shuffled()
                     )
                 }
             }
@@ -39,5 +38,5 @@ class MovieBoxItemsViewModel : ViewModel() {
 
 sealed class MovieBoxItemsUIState {
     data object Empty: MovieBoxItemsUIState()
-    data class Data(val movieBoxItems: List<MovieBoxItem>): MovieBoxItemsUIState()
+    data class Data(val movieBoxes: List<MovieBox>): MovieBoxItemsUIState()
 }

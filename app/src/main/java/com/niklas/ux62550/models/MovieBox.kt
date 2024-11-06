@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 
 
-data class MovieBoxItem  (
+data class MovieBox  (
     val name: String,
     @DrawableRes val backdrop: Int,
     val tempColor: Color,
