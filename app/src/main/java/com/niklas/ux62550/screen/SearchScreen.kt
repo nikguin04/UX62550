@@ -100,6 +100,11 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
                     )
                 }
                 Text(
+                    text = " | ",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
                     text = movieBox.genre,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
@@ -136,6 +141,11 @@ fun NonMovieBoxRow(nonMovieBox: NonMovieBox, modifier: Modifier = Modifier) {
 
             Text(
                 text = nonMovieBox.name,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = " | ",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
