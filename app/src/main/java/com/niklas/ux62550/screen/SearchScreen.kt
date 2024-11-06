@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -58,6 +59,17 @@ fun SearchPreview() {
 fun movieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.clip(RoundedCornerShape(round)).background(color).size(width, height).padding()
+    )
+}
+
+@Composable
+fun nonMovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .clip(CircleShape)
+            .background(color)
+            .size(width, height)
+            .padding()
     )
 }
 
@@ -124,9 +136,9 @@ fun NonMovieBoxRow(nonMovieBox: NonMovieBox, modifier: Modifier = Modifier) {
         //.padding(8.dp)
     ) {
 
-        movieBoxMoviePicture(
-            width = 90.dp,
-            height = 50.62.dp,
+        nonMovieBoxMoviePicture(
+            width = 40.dp,
+            height = 40.dp,
             round = 12.dp,
             color = nonMovieBox.tempColor,
             modifier = Modifier.padding(end = 8.dp)
