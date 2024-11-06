@@ -85,33 +85,27 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
               .align(Alignment.CenterVertically)
               .padding(start = 16.dp)
         ) {
-
-            Text(
-                text = movieBox.name,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = movieBox.rating.toString() + "/5",
-                //text =  "3/5",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Row {
+                Column {
+                    Text(
+                        text = movieBox.name,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = movieBox.rating.toString() + "/5",
+                        //text =  "3/5",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Text(
+                    text = movieBox.genre,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
-
-        Row(
-            modifier = Modifier
-                //.fillMaxWidth()
-        )
-        {
-            Text(
-                text = movieBox.genre,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-
     }
 }
 
