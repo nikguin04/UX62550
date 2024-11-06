@@ -127,7 +127,7 @@ fun NonMovieBoxRow(nonMovieBox: NonMovieBox, modifier: Modifier = Modifier) {
             modifier = Modifier.padding(end = 8.dp)
         )
 
-        Column (
+        Row (
             modifier = Modifier
                 //.fillMaxWidth()
                 .align(Alignment.CenterVertically)
@@ -139,21 +139,12 @@ fun NonMovieBoxRow(nonMovieBox: NonMovieBox, modifier: Modifier = Modifier) {
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
-        }
-
-        Row(
-            modifier = Modifier
-            //.fillMaxWidth()
-        )
-        {
             Text(
                 text = nonMovieBox.genre,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
         }
-
-
     }
 }
 
