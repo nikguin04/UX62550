@@ -35,8 +35,8 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Preview(showBackground = true, name = "SearchPreview")
 fun SearchPreview() {
     val movieBoxes = listOf(
-        MovieBox("Name 1", R.drawable.logo, Color.Blue, "DINMOR", 4.5f),
-        MovieBox("Name 2", R.drawable.logo, Color.Red, "DINFAR", 4.5f)
+        MovieBox("Name 1", R.drawable.logo, Color.Blue, "Movie", 3.5f),
+        MovieBox("Name 2", R.drawable.logo, Color.Red, "Series", 4.5f)
     )
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
@@ -59,9 +59,9 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .background(Color.White, shape= RoundedCornerShape(8.dp))
-            .padding(8.dp)
+            .padding(16.dp)
+            //.background(Color.White, shape= RoundedCornerShape(8.dp))
+            //.padding(8.dp)
     ) {
 
         movieBoxMoviePicture(
@@ -74,14 +74,29 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
 
         Column (
           modifier = Modifier
+              //.fillMaxWidth()
               .align(Alignment.CenterVertically)
-              .padding(start = 8.dp)
+              .padding(start = 16.dp)
         ) {
+
             Text(
                 text = movieBox.name,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
+            Text(
+                text = movieBox.rating.toString() + "/5",
+                //text =  "3/5",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                //.fillMaxWidth()
+        )
+        {
             Text(
                 text = movieBox.genre,
                 fontSize = 20.sp,
