@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -175,7 +177,9 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
                  nonMovieBoxItemsUIState: NonMovieBoxItemsUIState) {
     Column(modifier.padding()) {
         Row(
-            modifier.fillMaxWidth().padding(figmaPxToDp_w(29.5f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
+            modifier
+                .fillMaxWidth()
+                .padding(figmaPxToDp_w(0f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
@@ -192,8 +196,41 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
                 )
 
             }
+
+
         }
 
+        Column() {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                HorizontalDivider(
+                    color = Color.Gray,
+                    thickness = 1.dp,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth(0.7f)
+                )
+
+                Text(
+                    text = "Actors and Genres",
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Normal,
+                    )
+                )
+
+                HorizontalDivider(
+                    color = Color.Gray,
+                    thickness = 1.dp,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth(0.7f)
+                )
+            }
+        }
 
 
         // Implement viewmodel
@@ -215,6 +252,40 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
                 }
             }
         }
+
+        Column() {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                HorizontalDivider(
+                    color = Color.Gray,
+                    thickness = 1.dp,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth(0.7f)
+                )
+
+                Text(
+                    text = "Movies and Series",
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Normal,
+                    )
+                )
+
+                HorizontalDivider(
+                    color = Color.Gray,
+                    thickness = 1.dp,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth(0.7f)
+                )
+            }
+        }
+
+
 
         when (movieBoxItemsUIState) {
             MovieBoxItemsUIState.Empty -> {
