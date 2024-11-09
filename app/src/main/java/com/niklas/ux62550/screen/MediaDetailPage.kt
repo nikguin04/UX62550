@@ -50,9 +50,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.LogoBox
 import com.niklas.ux62550.R
@@ -61,65 +63,96 @@ import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import com.niklas.ux62550.figmaPxToDp_h
 import com.niklas.ux62550.figmaPxToDp_w
 import com.niklas.ux62550.models.MediaItem
+import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import kotlin.time.Duration.Companion.minutes
 
 @Composable
 @Preview(showBackground = true, name = "MediaDetailPagePreview")
 fun MediaDetailPagePreview(){
+    val movie = Movie("RED: The Movie",
+            "2090",
+            3000.minutes,
+            3.5,
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
+            listOf("Hentai", "Action"),
+            13
+            )
+
     val mediaItems = listOf(
         MediaItem("Name 1", R.drawable.logo, Color.Blue),
         MediaItem("Name 2", R.drawable.logo, Color.Red)
     )
-
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         ScreenWithGeneralNavBar {
-            ScreenMediaDetail(mediaItemsUIState = MediaItemsUIState.Data(mediaItems))
+            ScreenMediaDetail(mediaItemsUIState = MediaItemsUIState.Data(mediaItems), movie = movie)
         }
     }
 }
 
 @Composable
-fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState) {
+fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, movie: Movie) {
     Column{
         Box(
             modifier.fillMaxWidth()
         ) {
             Box(Modifier.alpha(0.5f)) {
-                Box(Modifier.background(Color.Red).fillMaxWidth().height(230.dp))
+                Box(
+                    Modifier
+                        .background(Color.Red)
+                        .fillMaxWidth()
+                        .height(230.dp))
             }
             Box(
-                modifier.fillMaxWidth().padding(30.dp).absolutePadding(0.dp,40.dp,4.dp,0.dp)
+                modifier
+                    .fillMaxWidth()
+                    .padding(30.dp)
+                    .absolutePadding(0.dp, 40.dp, 4.dp, 0.dp)
             ) {
-                Box(Modifier.background(Color.Blue).fillMaxWidth().aspectRatio(16f / 9f))
+                Box(
+                    Modifier
+                        .background(Color.Blue)
+                        .fillMaxWidth()
+                        .aspectRatio(16f / 9f))
                 Image(
                     Icons.Outlined.PlayCircleOutline,
-                    modifier = Modifier.align(Alignment.Center).absolutePadding(0.dp,0.dp,0.dp,40.dp)
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .absolutePadding(0.dp, 0.dp, 0.dp, 40.dp)
                         .requiredSize(72.dp),
                     colorFilter = ColorFilter.tint(Color.White),
                     contentDescription = "Play circle"
                 )
-                TitleText()
+                TitleText(movie.name)
             }
             Image(
                 Icons.AutoMirrored.Outlined.ArrowBack,
-                modifier = Modifier.padding(12.dp).requiredSize(36.dp),
+                modifier = Modifier
+                    .padding(12.dp)
+                    .requiredSize(36.dp),
                 colorFilter = ColorFilter.tint(Color.White),
                 contentDescription = "Arrow back"
             )
             Image(
                 Icons.Outlined.BookmarkBorder,
-                modifier = Modifier.align(Alignment.TopEnd).padding(12.dp).requiredSize(36.dp),
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(12.dp)
+                    .requiredSize(36.dp),
                 colorFilter = ColorFilter.tint(Color.White),
                 contentDescription = "Bookmark"
             )
 
             Row(
-                modifier = Modifier.align(Alignment.BottomStart).padding(4.dp,0.dp,0.dp,0.dp),
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(4.dp, 0.dp, 0.dp, 0.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             )
             {
-                repeat(5) {
+                for(i in 0..4) {
                     Image(
                         imageVector = Icons.Outlined.StarOutline,
                         modifier = Modifier.requiredSize(18.dp),
@@ -128,38 +161,61 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("0/5", fontSize = 18.sp) //Needs get a function for how many stars
-                Spacer(modifier = Modifier.width(42.dp))
-                Text("Year",fontSize = 18.sp)
-                Spacer(modifier = Modifier.width(32.dp))
-                Text("Time", fontSize = 18.sp)
-                Spacer(modifier = Modifier.width(64.dp))
-                Text("18+", fontSize = 18.sp)
+                Text(
+                    movie.rating.toString(),
+                    fontSize = 18.sp,
+                    modifier = Modifier.weight(0.5f)
+                ) //Needs get a function for how many stars
+                Text(
+                    movie.year,
+                    fontSize = 18.sp,
+                    modifier = Modifier.weight(0.5f)
+                )
+                Text(
+                    movie.duration.toString(),
+                    fontSize = 18.sp,
+                    modifier = Modifier.weight(0.5f)
+                )
+                Text(
+                    movie.pgRating.toString() + "+",
+                    fontSize = 18.sp,
+                    modifier = Modifier.weight(0.3f)
+                )
             }
 
         }
         Row(
-            modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
+            modifier = Modifier
+                .padding(4.dp, 10.dp, 0.dp, 0.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         )
         {
-            Box(){
-                Box(modifier = Modifier
-                    .height(22.dp)
-                    .width(124.dp)
-                    .clip(RoundedCornerShape(40.dp))
-                    .background(Color.Gray)
-                )
-                Text("PLACEHOLDER",Modifier.align(Alignment.TopCenter), color = Color.White)
+            for(genre in movie.genres) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(40.dp))
+                        .background(Color.Gray)
+                        .padding(
+                            horizontal = 8.dp,
+                            vertical = 4.dp
+                        ) // Padding inside the box to give space around the text
+                ) {
+                    Text(
+                        text = genre,
+                        color = Color.White,
+                        modifier = Modifier.align(Alignment.Center) // Center the text within the Box
+                    )
+                }
+                Spacer(modifier = Modifier.width(4.dp))
             }
-
         }
-        DescriptionText()
+        DescriptionText(movie.description)
 
-        Text("Actors and Directors",  modifier.padding(4.dp,0.dp,0.dp,0.dp))
-        Row(modifier.padding(4.dp,0.dp,0.dp,0.dp)) {
+        Text("Actors and Directors",  modifier.padding(4.dp,2.dp,0.dp,0.dp))
+        Row() {
             repeat(4) {
-                Spacer(modifier = Modifier.width(2.dp))
+                Spacer(modifier = Modifier.width(4.dp))
                 DrawCircle(Modifier.size(64.dp))
             }
         }
@@ -218,8 +274,8 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
     }
 }
 @Composable
-fun TitleText() {
-    Text("RED: The Movie",
+fun TitleText(movieTitle: String) {
+    Text(movieTitle,
         style = TextStyle(
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
@@ -228,18 +284,23 @@ fun TitleText() {
             ),
             textAlign = TextAlign.Center,
         ),
-        modifier = Modifier.fillMaxWidth().padding(0.dp, 200.dp, 0.dp, 0.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 200.dp, 0.dp, 0.dp),
         )
 }
 @Composable
-fun DescriptionText(){
-    Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
+fun DescriptionText(movieDescription: String){
+    Text(movieDescription,
         style = TextStyle(
+            lineHeight = 1.25.em,
+            lineBreak = LineBreak.Paragraph,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Start,
         ),
-        modifier = Modifier.fillMaxWidth().padding(4.dp, 0.dp, 0.dp, 0.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp, 0.dp, 0.dp, 0.dp),
     )
 }
 @Composable
