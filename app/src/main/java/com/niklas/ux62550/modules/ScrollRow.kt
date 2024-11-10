@@ -1,18 +1,24 @@
 package com.niklas.ux62550.modules
 
+import androidx.compose.foundation.background
 import com.niklas.ux62550.models.MediaItem
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.niklas.ux62550.figmaPxToDp_h
 import com.niklas.ux62550.figmaPxToDp_w
-import com.niklas.ux62550.PromoItem
 import com.niklas.ux62550.dpToPx
 import kotlin.math.roundToInt
 
@@ -79,4 +85,13 @@ fun HorizontalLazyRowMoviesWithCat(modifier: Modifier = Modifier, widthFigmaPx: 
         }
     }
 
+}
+
+@Composable
+fun PromoItem(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
+
+    Box(
+        modifier = modifier.clip(RoundedCornerShape(round)).background(color).size(width, height).padding()
+
+    )
 }
