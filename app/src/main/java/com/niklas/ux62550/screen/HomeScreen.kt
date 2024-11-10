@@ -1,5 +1,6 @@
 package com.niklas.ux62550.screen
 
+import androidx.activity.viewModels
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -32,12 +34,20 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.rounded.ShoppingCart
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.google.android.libraries.mapsplatform.transportation.consumer.model.Route
+import com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel
 import com.niklas.ux62550.modules.HorizontalLazyRowMoviesWithCat
 
 /*class HomeScreen: ComponentActivity() {
@@ -79,7 +89,40 @@ fun HomePreview() {
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         ScreenWithGeneralNavBar {
-            ScreenHome(mediaItemsUIState = MediaItemsUIState.Data(mediaItems))
+            HomeScreen(onNavigateToMediaDeatilsScreen = {})
+        }
+    }
+}
+
+@Composable
+fun HomeScreen(
+    onNavigateToMediaDeatilsScreen: (String) -> Unit,
+    mediaItemsViewModel: MediaItemsViewModel = viewModel()
+) {
+
+    //val mediaItemsViewModel: MediaItemsViewModel by viewModels()
+    val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
+    Surface(
+        modifier = Modifier.fillMaxSize()
+        //color = Color_background,
+    ) {
+
+
+        ScreenWithGeneralNavBar() {
+            // WARNING, TEMPORARY BUTTON
+            Button(
+                onClick = {
+                    onNavigateToMediaDeatilsScreen("Hello123")
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Red
+                )
+            ) {
+                Text(text = "Go to media details page")
+            }
+            // WARNING, TEMPORARY BUTTON
+
+            ScreenHome(mediaItemsUIState = uiState)
         }
     }
 }
@@ -87,6 +130,7 @@ fun HomePreview() {
 
 @Composable
 fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState) {
+
     Column(modifier.padding()) {
         Row(
             modifier.fillMaxWidth().padding(figmaPxToDp_w(29.5f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
