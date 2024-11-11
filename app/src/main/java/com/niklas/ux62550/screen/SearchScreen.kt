@@ -33,6 +33,8 @@ import com.niklas.ux62550.models.MovieBox
 import com.niklas.ux62550.figmaPxToDp_h
 import com.niklas.ux62550.figmaPxToDp_w
 import com.niklas.ux62550.models.NonMovieBox
+import com.niklas.ux62550.modules.MovieBoxRow
+import com.niklas.ux62550.modules.NonMovieBoxRow
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 
@@ -73,103 +75,6 @@ fun nonMovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modi
             .size(width, height)
             .padding()
     )
-}
-
-@Composable
-fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            //.background(Color.White, shape= RoundedCornerShape(8.dp))
-            //.padding(8.dp)
-    ) {
-
-        movieBoxMoviePicture(
-            width = 90.dp,
-            height = 50.62.dp,
-            round = 12.dp,
-            color = movieBox.tempColor,
-            modifier = Modifier.padding(end = 8.dp)
-        )
-
-        Column (
-          modifier = Modifier
-              //.fillMaxWidth()
-              .align(Alignment.CenterVertically)
-              .padding(start = 16.dp)
-        ) {
-            Row {
-                Column {
-                    Text(
-                        text = movieBox.name,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = movieBox.rating.toString() + "/5",
-                        //text =  "3/5",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Text(
-                    text = " | ",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = movieBox.genre,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun NonMovieBoxRow(nonMovieBox: NonMovieBox, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-        //.background(Color.White, shape= RoundedCornerShape(8.dp))
-        //.padding(8.dp)
-    ) {
-
-        nonMovieBoxMoviePicture(
-            width = 40.dp,
-            height = 40.dp,
-            round = 12.dp,
-            color = nonMovieBox.tempColor,
-            modifier = Modifier.padding(end = 8.dp)
-        )
-
-        Row (
-            modifier = Modifier
-                //.fillMaxWidth()
-                .align(Alignment.CenterVertically)
-                .padding(start = 16.dp)
-        ) {
-
-            Text(
-                text = nonMovieBox.name,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = " | ",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = nonMovieBox.genre,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-    }
 }
 
 @Composable
