@@ -50,7 +50,9 @@ import androidx.navigation.NavHostController
 import com.google.android.libraries.mapsplatform.transportation.consumer.model.Route
 import com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.font.FontFamily
 import com.niklas.ux62550.modules.HorizontalLazyRowMoviesWithCat
+import com.niklas.ux62550.ui.theme.Roboto
 
 /*class HomeScreen: ComponentActivity() {
     private val mediaItemsViewModel: com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel by viewModels()
@@ -148,6 +150,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                     style = TextStyle(
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Normal,
+                        fontFamily = Roboto
                     ),
                 )
 
