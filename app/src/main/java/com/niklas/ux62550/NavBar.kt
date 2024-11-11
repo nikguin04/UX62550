@@ -1,7 +1,7 @@
 package com.niklas.ux62550
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material.icons.Icons
+    import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Bookmark
