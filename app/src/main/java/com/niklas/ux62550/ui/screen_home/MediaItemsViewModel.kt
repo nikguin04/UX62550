@@ -1,4 +1,4 @@
-package com.niklas.ux62550.features.MediaItemList
+package com.niklas.ux62550.ui.screen_home
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel

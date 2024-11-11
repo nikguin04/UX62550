@@ -1,4 +1,4 @@
-package com.niklas.ux62550
+package com.niklas.ux62550.navigation
 
 import kotlinx.serialization.Serializable
 

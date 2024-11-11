@@ -1,4 +1,4 @@
-package com.niklas.ux62550
+package com.niklas.ux62550.models
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration

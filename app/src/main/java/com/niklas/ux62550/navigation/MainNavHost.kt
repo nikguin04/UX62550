@@ -1,4 +1,4 @@
-package com.niklas.ux62550
+package com.niklas.ux62550.navigation
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -8,8 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel
-import com.niklas.ux62550.screen.HomeScreen
+import com.niklas.ux62550.ui.screen_home.HomeScreen
 
 // Step1: define routes ✅
 

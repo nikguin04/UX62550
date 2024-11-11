@@ -1,4 +1,4 @@
-package com.niklas.ux62550.modules
+package com.niklas.ux62550.ui.screen_search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,41 +1,28 @@
-package com.niklas.ux62550.screen
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.snapping.SnapPosition
+package com.niklas.ux62550.ui.screen_search
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.ScreenWithGeneralNavBar
-import com.niklas.ux62550.features.MovieBoxSearch.MovieBoxItemsUIState
-import com.niklas.ux62550.features.MovieBoxSearch.NonMovieBoxItemsUIState
+import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
 import com.niklas.ux62550.models.MovieBox
-import com.niklas.ux62550.figmaPxToDp_h
-import com.niklas.ux62550.figmaPxToDp_w
+import com.niklas.ux62550.models.figmaPxToDp_h
+import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.models.NonMovieBox
-import com.niklas.ux62550.modules.MovieBoxRow
-import com.niklas.ux62550.modules.NonMovieBoxRow
 import com.niklas.ux62550.ui.theme.SeachColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
@@ -63,7 +50,8 @@ fun SearchPreview() {
 
 @Composable
 fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxItemsUIState,
-                 nonMovieBoxItemsUIState: NonMovieBoxItemsUIState) {
+                 nonMovieBoxItemsUIState: NonMovieBoxItemsUIState
+) {
     Column(modifier.padding()) {
         Row(
             modifier

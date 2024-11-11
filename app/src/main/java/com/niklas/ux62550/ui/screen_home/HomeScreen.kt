@@ -1,11 +1,8 @@
-package com.niklas.ux62550.screen
+package com.niklas.ux62550.ui.screen_home
 
 
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,15 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.ScreenWithGeneralNavBar
-import com.niklas.ux62550.figmaPxToDp_h
-import com.niklas.ux62550.figmaPxToDp_w
+import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
+import com.niklas.ux62550.models.figmaPxToDp_h
+import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
-import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -46,14 +41,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.text.font.FontFamily
-import com.niklas.ux62550.modules.HorizontalLazyRowMoviesWithCat
-import com.niklas.ux62550.ui.theme.Roboto
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 /*class HomeScreen: ComponentActivity() {
     private val mediaItemsViewModel: com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel by viewModels()

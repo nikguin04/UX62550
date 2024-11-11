@@ -1,4 +1,4 @@
-package com.niklas.ux62550.features.MediaItemList
+package com.niklas.ux62550.ui.screen_home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

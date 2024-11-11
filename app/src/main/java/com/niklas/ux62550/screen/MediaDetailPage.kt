@@ -42,11 +42,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.ScreenWithGeneralNavBar
-import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
+import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
+import com.niklas.ux62550.ui.screen_home.MediaItemsUIState
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
-import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
+import com.niklas.ux62550.ui.screen_home.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme

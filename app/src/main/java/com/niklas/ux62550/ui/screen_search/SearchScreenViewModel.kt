@@ -1,4 +1,4 @@
-package com.niklas.ux62550.features.MovieBoxSearch
+package com.niklas.ux62550.ui.screen_search
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -20,7 +20,9 @@ class MovieBoxItemsViewModel : ViewModel() {
         MovieBox("Name 3", R.drawable.logo, Color.Green, genre="Lol", rating=3f),
     )
 
-    private val mutableMovieBoxItemsState = MutableStateFlow<MovieBoxItemsUIState>(MovieBoxItemsUIState.Empty)
+    private val mutableMovieBoxItemsState = MutableStateFlow<MovieBoxItemsUIState>(
+        MovieBoxItemsUIState.Empty
+    )
     val MovieBoxItemsState: StateFlow<MovieBoxItemsUIState> = mutableMovieBoxItemsState
 
     init {

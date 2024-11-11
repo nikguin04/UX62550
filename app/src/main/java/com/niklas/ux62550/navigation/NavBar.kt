@@ -1,4 +1,4 @@
-package com.niklas.ux62550
+package com.niklas.ux62550.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
     import androidx.compose.material.icons.Icons

@@ -1,4 +1,4 @@
-package com.niklas.ux62550.modules
+package com.niklas.ux62550.ui.screen_home
 
 import androidx.compose.foundation.background
 import com.niklas.ux62550.models.MediaItem
@@ -17,9 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.niklas.ux62550.figmaPxToDp_h
-import com.niklas.ux62550.figmaPxToDp_w
-import com.niklas.ux62550.dpToPx
+import com.niklas.ux62550.models.figmaPxToDp_h
+import com.niklas.ux62550.models.figmaPxToDp_w
+import com.niklas.ux62550.ui.dpToPx
 import kotlin.math.roundToInt
 
 @Composable
