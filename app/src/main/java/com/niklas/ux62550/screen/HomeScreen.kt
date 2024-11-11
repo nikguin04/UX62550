@@ -52,6 +52,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontFamily
 import com.niklas.ux62550.modules.HorizontalLazyRowMoviesWithCat
 import com.niklas.ux62550.ui.theme.Roboto
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 /*class HomeScreen: ComponentActivity() {
     private val mediaItemsViewModel: com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel by viewModels()
@@ -89,6 +91,14 @@ fun HomePreview() {
         MediaItem("Name 2", R.drawable.logo, Color.Red),
         MediaItem("Name 3", R.drawable.logo, Color.Yellow)
     )
+
+    val mvm: MediaItemsViewModel = viewModel()
+
+    /*val state = mvm.mediaItemsState.collectAsState()
+    state.
+    val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
+    val mediaItemsState: StateFlow<MediaItemsUIState> = mutableMediaItemsState*/
+    mvm.initPreview()
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         ScreenWithGeneralNavBar {

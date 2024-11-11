@@ -34,6 +34,14 @@ class MediaItemsViewModel : ViewModel() {
             }
         }
     }
+
+    fun initPreview() {
+        mutableMediaItemsState.update {
+            MediaItemsUIState.Data(
+                mediaItems = MediaItems
+            )
+        }
+    }
 }
 
 sealed class MediaItemsUIState {
