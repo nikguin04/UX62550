@@ -1,12 +1,9 @@
 package com.niklas.ux62550.screen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absolutePadding
@@ -17,27 +14,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
-import androidx.compose.material.icons.automirrored.outlined.ArrowLeft
-import androidx.compose.material.icons.automirrored.outlined.StarHalf
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.ArrowForwardIos
-import androidx.compose.material.icons.outlined.ArrowLeft
-import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.StarOutline
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -46,9 +32,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
@@ -56,12 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.niklas.ux62550.LogoBox
 import com.niklas.ux62550.R
 import com.niklas.ux62550.ScreenWithGeneralNavBar
 import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
-import com.niklas.ux62550.figmaPxToDp_h
-import com.niklas.ux62550.figmaPxToDp_w
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
@@ -153,7 +134,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
             )
             {
                 for(i in 0..4) {
-                    Image(
+                    Image( //Needs to be made button
                         imageVector = Icons.Outlined.StarOutline,
                         modifier = Modifier.requiredSize(18.dp),
                         colorFilter = ColorFilter.tint(Color.Yellow),
@@ -161,11 +142,11 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(
+                Text(  //Needs get a function for how many stars
                     movie.rating.toString(),
                     fontSize = 18.sp,
                     modifier = Modifier.weight(0.5f)
-                ) //Needs get a function for how many stars
+                )
                 Text(
                     movie.year,
                     fontSize = 18.sp,
@@ -208,9 +189,9 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-                Spacer(modifier = Modifier.weight(0.05f))
+                Spacer(modifier = Modifier.weight(0.02f))
             }
-            repeat(3) {
+            repeat(3) { //Needs to be made button
                 Spacer(modifier = Modifier.width(4.dp))
                 DrawLittleCircle(Modifier.size(10.dp))
             }
@@ -233,7 +214,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 DrawCircle(Modifier.size(64.dp))
             }
             Spacer(modifier = Modifier.width(4.dp))
-            repeat(3) {
+            repeat(3) { //Needs to be made button
                 Spacer(modifier = Modifier.width(4.dp))
                 DrawLittleCircle(Modifier.size(10.dp))
             }
@@ -249,7 +230,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 contentDescription = "Star icon"
             )
             Text("Award...")
-            Image(
+            Image( //Needs to be made button
                 imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
                 modifier = Modifier.requiredSize(12.dp),
                 colorFilter = ColorFilter.tint(Color.White),
