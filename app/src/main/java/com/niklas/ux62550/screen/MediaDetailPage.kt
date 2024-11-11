@@ -208,12 +208,18 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.weight(0.05f))
             }
             repeat(3) {
                 Spacer(modifier = Modifier.width(4.dp))
                 DrawLittleCircle(Modifier.size(10.dp))
             }
+            Spacer(modifier = Modifier.weight(0.3f))
+            repeat(3) { // Needs to be changed to Where to Watch
+                Spacer(modifier = Modifier.width(4.dp))
+                DrawLittleCircle(Modifier.size(10.dp))
+            }
+            Spacer(modifier = Modifier.weight(0.05f))
         }
         DescriptionText(movie.description)
 
