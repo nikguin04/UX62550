@@ -1,6 +1,7 @@
 package com.niklas.ux62550.screen
 
-import androidx.compose.animation.core.VisibilityThreshold
+
+import androidx.compose.foundation.shape.CircleShape
 import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,10 +30,9 @@ import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
-import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.Icon
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.Dp
 import com.niklas.ux62550.modules.HorizontalLazyRowMoviesWithCat
 
 /*class HomeScreen: ComponentActivity() {
@@ -175,7 +175,16 @@ fun HorizontalDotIndexer(modifier: Modifier) {
             Icon(
                 Icons.Filled.Circle,
                 contentDescription = "test123",
-                modifier = Modifier.padding(1.5.dp,0.dp,1.5.dp,0.dp)
+                modifier = Modifier
+                    .padding(1.5.dp,0.dp,1.5.dp,0.dp)
+                    .size(12.dp)
+                    .shadow(
+                        elevation = 4.dp,
+                        shape = CircleShape,
+                        ambientColor = Color.Black.copy(alpha = 255f), // Slightly less opaque for a softer effect
+                        spotColor = Color.Black.copy(alpha = 255f)
+
+                        )
             )
         }
     }
