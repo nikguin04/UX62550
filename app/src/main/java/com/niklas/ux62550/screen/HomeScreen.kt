@@ -47,7 +47,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.google.android.libraries.mapsplatform.transportation.consumer.model.Route
 import com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontFamily
@@ -149,8 +148,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                     text = "Welcome, User1",
                     style = TextStyle(
                         fontSize = 32.sp,
-                        fontWeight = FontWeight.Normal,
-                        fontFamily = Roboto
+                        fontWeight = FontWeight.Normal
                     ),
                 )
 
