@@ -76,7 +76,7 @@ fun MediaDetailPagePreview(){
             3000.minutes,
             3.5,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
-            listOf("Hentai", "Action"),
+            listOf("Action", "Dinosaur Adventure"),
             13
             )
 
@@ -199,24 +199,37 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                         .padding(
                             horizontal = 8.dp,
                             vertical = 4.dp
-                        ) // Padding inside the box to give space around the text
-                ) {
+                        )
+                )
+                {
                     Text(
                         text = genre,
                         color = Color.White,
-                        modifier = Modifier.align(Alignment.Center) // Center the text within the Box
+                        modifier = Modifier.align(Alignment.Center)
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
+            }
+            repeat(3) {
+                Spacer(modifier = Modifier.width(4.dp))
+                DrawLittleCircle(Modifier.size(10.dp))
             }
         }
         DescriptionText(movie.description)
 
         Text("Actors and Directors",  modifier.padding(4.dp,2.dp,0.dp,0.dp))
-        Row() {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             repeat(4) {
                 Spacer(modifier = Modifier.width(4.dp))
                 DrawCircle(Modifier.size(64.dp))
+            }
+            Spacer(modifier = Modifier.width(4.dp))
+            repeat(3) {
+                Spacer(modifier = Modifier.width(4.dp))
+                DrawLittleCircle(Modifier.size(10.dp))
             }
         }
         Row(
@@ -311,6 +324,20 @@ fun DrawCircle(modifier: Modifier = Modifier) {
             val radius = size.minDimension / 2
             drawCircle(
                 color = Color.Red,
+                radius = radius,
+                center = center
+            )
+        }
+    )
+}
+@Composable
+fun DrawLittleCircle(modifier: Modifier = Modifier) {
+    androidx.compose.foundation.layout.Box(
+        modifier = modifier.drawBehind{
+            // Set the radius based on the smaller of the box dimensions
+            val radius = size.minDimension / 2
+            drawCircle(
+                color = Color.LightGray,
                 radius = radius,
                 center = center
             )

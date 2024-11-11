@@ -17,6 +17,7 @@ data class Movie (
     val pgRating: Int,
     //val actorsAndDirectors: String,
     //val award: String
+    //val whereToWatch: Image
 ){
 
 }
