@@ -1,11 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     namespace = "com.niklas.ux62550"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.niklas.ux62550"
@@ -39,9 +41,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -62,6 +61,15 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.graphics.shapes.android)
+    implementation(libs.androidx.datastore)
+
+    implementation(libs.retrofit)
+    implementation(libs.kotlin.serialization.converter)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.coil)
+    implementation(libs.coil.httpok)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
