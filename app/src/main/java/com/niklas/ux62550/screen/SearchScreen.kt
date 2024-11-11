@@ -60,24 +60,6 @@ fun SearchPreview() {
 
 
 @Composable
-fun movieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.clip(RoundedCornerShape(round)).background(color).size(width, height).padding()
-    )
-}
-
-@Composable
-fun nonMovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .clip(CircleShape)
-            .background(color)
-            .size(width, height)
-            .padding()
-    )
-}
-
-@Composable
 fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxItemsUIState,
                  nonMovieBoxItemsUIState: NonMovieBoxItemsUIState) {
     Column(modifier.padding()) {
