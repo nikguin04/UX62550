@@ -1,4 +1,4 @@
-package com.niklas.ux62550.screen
+package com.niklas.ux62550.ui.screen_mediadetails
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
