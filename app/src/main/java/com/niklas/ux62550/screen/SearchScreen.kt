@@ -44,8 +44,8 @@ fun SearchPreview() {
         MovieBox("Name 2", R.drawable.logo, Color.Red, "Series", 4.5f)
     )
     val nonMovieBoxes = listOf(
-        NonMovieBox("Name 1", R.drawable.logo, Color.Yellow, "Movie"),
-        NonMovieBox("Name 2", R.drawable.logo, Color.Green, "Series")
+        NonMovieBox("someActor", R.drawable.logo, Color.Yellow, "Movie"),
+        NonMovieBox("someGenre", R.drawable.logo, Color.Green, "Series")
     )
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
@@ -184,20 +184,6 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
             horizontalArrangement = Arrangement.Start
         ) {
             //LogoBox(size= figmaPxToDp_w(50f))
-
-            Box (modifier = Modifier.padding(figmaPxToDp_w(20f), 0.dp, 0.dp ,0.dp)) {
-
-                Text(
-                    text = "Welcome, User1",
-                    style = TextStyle(
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Normal,
-                    ),
-                )
-
-            }
-
-
         }
 
 
