@@ -1,6 +1,7 @@
 package com.niklas.ux62550.screen
 
-import androidx.activity.viewModels
+
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,6 +49,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.android.libraries.mapsplatform.transportation.consumer.model.Route
 import com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel
+import androidx.compose.ui.draw.shadow
 import com.niklas.ux62550.modules.HorizontalLazyRowMoviesWithCat
 
 /*class HomeScreen: ComponentActivity() {
@@ -224,7 +226,16 @@ fun HorizontalDotIndexer(modifier: Modifier) {
             Icon(
                 Icons.Filled.Circle,
                 contentDescription = "test123",
-                modifier = Modifier.padding(1.5.dp,0.dp,1.5.dp,0.dp)
+                modifier = Modifier
+                    .padding(1.5.dp,0.dp,1.5.dp,0.dp)
+                    .size(12.dp)
+                    .shadow(
+                        elevation = 4.dp,
+                        shape = CircleShape,
+                        ambientColor = Color.Black.copy(alpha = 255f), // Slightly less opaque for a softer effect
+                        spotColor = Color.Black.copy(alpha = 255f)
+
+                        )
             )
         }
     }
