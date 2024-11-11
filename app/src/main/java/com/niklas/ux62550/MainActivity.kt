@@ -45,6 +45,7 @@ import com.niklas.ux62550.screen.ScreenHome
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 class MainActivity : ComponentActivity() {
+    private val mediaItemsViewModel: MediaItemsViewModel by viewModels()
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.niklas.ux62550.figmaPxToDp_h
 import com.niklas.ux62550.figmaPxToDp_w
+import com.niklas.ux62550.PromoItem
 import com.niklas.ux62550.dpToPx
 import kotlin.math.roundToInt
 
@@ -89,9 +90,7 @@ fun HorizontalLazyRowMoviesWithCat(modifier: Modifier = Modifier, widthFigmaPx: 
 
 @Composable
 fun PromoItem(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
-
     Box(
         modifier = modifier.clip(RoundedCornerShape(round)).background(color).size(width, height).padding()
-
     )
 }

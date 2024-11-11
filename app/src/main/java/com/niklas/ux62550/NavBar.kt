@@ -26,6 +26,7 @@ fun ScreenWithGeneralNavBar(content: @Composable (PaddingValues) -> Unit) {
 
         bottomBar = { GeneralNavBar() },
         content = content
+
     )
 }
 
