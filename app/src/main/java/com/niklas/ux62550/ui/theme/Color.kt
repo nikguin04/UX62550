@@ -15,3 +15,6 @@ val Color_background = Color(0xFF393939)
 val Color_container = Color(0xFFF3EDF7)
 
 val TestWhite = Color(0xFFFFFFFF)
+
+val DescriptionColor = Color(0xFFB2B2B2)
+val AwardAndDetailRating = Color(0xFFE0E0E0)

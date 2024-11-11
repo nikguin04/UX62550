@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +47,8 @@ import com.niklas.ux62550.features.MediaItemList.MediaItemsUIState
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.modules.HorizontalLazyRowWithSnapEffect
+import com.niklas.ux62550.ui.theme.AwardAndDetailRating
+import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
 
@@ -57,7 +60,7 @@ fun MediaDetailPagePreview(){
             3000.minutes,
             3.5,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
-            listOf("Action", "Dinosaur Adventure"),
+            listOf("Action", "Dinosaur Adventure", "Hentai"),
             13
             )
 
@@ -185,15 +188,15 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 {
                     Text(
                         text = genre,
+                        fontSize = 12.sp,
+                        fontWeight = Bold,
                         color = Color.White,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-                Spacer(modifier = Modifier.weight(0.02f))
-            }
-            repeat(3) { //Needs to be made button
                 Spacer(modifier = Modifier.width(4.dp))
                 DrawLittleCircle(Modifier.size(10.dp))
+                Spacer(modifier = Modifier.weight(0.02f))
             }
             Spacer(modifier = Modifier.weight(0.3f))
             repeat(3) { // Needs to be changed to Where to Watch
@@ -226,10 +229,10 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
             Image(
                 imageVector = Icons.Outlined.EmojiEvents,
                 modifier = Modifier.requiredSize(18.dp),
-                colorFilter = ColorFilter.tint(Color.White),
+                colorFilter = ColorFilter.tint(Color.Yellow),
                 contentDescription = "Star icon"
             )
-            Text("Award...")
+            Text("Award...", color = AwardAndDetailRating)
             Image( //Needs to be made button
                 imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
                 modifier = Modifier.requiredSize(12.dp),
@@ -242,7 +245,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
             verticalAlignment = Alignment.CenterVertically
         ){
             //Needs to be made to a button later on
-            Text("Detailed Rating")
+            Text("Detailed Rating", color = AwardAndDetailRating)
             Image(
                 imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
                 modifier = Modifier.requiredSize(12.dp),
@@ -297,6 +300,7 @@ fun DescriptionText(movieDescription: String){
             lineBreak = LineBreak.Paragraph,
             fontSize = 14.sp,
             textAlign = TextAlign.Start,
+            color = DescriptionColor
         ),
         modifier = Modifier
             .fillMaxWidth()
