@@ -1,5 +1,6 @@
 package com.niklas.ux62550.screen
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,6 +36,7 @@ import com.niklas.ux62550.figmaPxToDp_w
 import com.niklas.ux62550.models.NonMovieBox
 import com.niklas.ux62550.modules.MovieBoxRow
 import com.niklas.ux62550.modules.NonMovieBoxRow
+import com.niklas.ux62550.ui.theme.SeachColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 
@@ -80,7 +82,7 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HorizontalDivider(
-                color = Color.Gray,
+                color = SeachColorForText,
                 thickness = 1.dp,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -92,11 +94,13 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Normal,
+                    //fontFamily = "Roboto",
+                    color = SeachColorForText
                 )
             )
 
             HorizontalDivider(
-                color = Color.Gray,
+                color = SeachColorForText,
                 thickness = 1.dp,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -112,15 +116,30 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
                 Text(
                     text = "No movies to be found",
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = SeachColorForText
                 )
             }
             is NonMovieBoxItemsUIState.Data -> {
                 // Display list of movie items in LazyColumn
-                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                LazyColumn(modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                    var FirstTimeRun = 0;
                     items(nonMovieBoxItemsUIState.nonMovieBoxes) { nonMovieBoxItem ->
+                        if(FirstTimeRun == 0){
+                            FirstTimeRun = 1;
+                        } else {
+                            HorizontalDivider(
+                                color = SeachColorForText,
+                                thickness = 1.dp,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .fillMaxWidth(0.7f)
+                            )
+                        }
                         NonMovieBoxRow(nonMovieBox = nonMovieBoxItem)
                     }
+
                 }
             }
         }
@@ -132,7 +151,7 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HorizontalDivider(
-                color = Color.Gray,
+                color = SeachColorForText,
                 thickness = 1.dp,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -144,11 +163,12 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Normal,
+                    color = SeachColorForText,
                 )
             )
 
             HorizontalDivider(
-                color = Color.Gray,
+                color = SeachColorForText,
                 thickness = 1.dp,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -164,13 +184,27 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
                 Text(
                     text = "No movies to be found",
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = SeachColorForText
                 )
             }
             is MovieBoxItemsUIState.Data -> {
                 // Display list of movie items in LazyColumn
-                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                LazyColumn(modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    var FirstTimeRun = 0;
                     items(movieBoxItemsUIState.movieBoxes) { movieBoxItem ->
+                        if(FirstTimeRun == 0){
+                            FirstTimeRun = 1;
+                        } else {
+                            HorizontalDivider(
+                                color = SeachColorForText,
+                                thickness = 1.dp,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .fillMaxWidth(0.7f)
+                            )
+                        }
                         MovieBoxRow(movieBox = movieBoxItem)
                     }
                 }
