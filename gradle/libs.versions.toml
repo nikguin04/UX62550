@@ -11,6 +11,9 @@ navigation = "2.8.3"
 composeBom = "2024.10.00"
 graphicsShapesAndroid = "1.0.1"
 transportationConsumer = "2.3.0"
+androidTimesSquare = "1.7.11"
+converterScalars = "2.11.0"
+kotlinxSerializationJson = "1.7.3"retrofit2KotlinxSerializationConverter = "placeholder"retrofit2KotlinxSerializationConverter = "placeholder"retrofit2KotlinxSerializationConverter = "placeholder"retrofit2KotlinxSerializationConverter = "placeholder"retrofit2KotlinxSerializationConverter = "placeholder"retrofit2KotlinxSerializationConverter = "placeholder"retrofit2KotlinxSerializationConverter = "placeholder"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +36,9 @@ androidx-material-icons-extended = { group = "androidx.compose.material", name =
 androidx-graphics-shapes-android = { group = "androidx.graphics", name = "graphics-shapes-android", version.ref = "graphicsShapesAndroid" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json" }
 transportation-consumer = { group = "com.google.android.libraries.mapsplatform.transportation", name = "transportation-consumer", version.ref = "transportationConsumer" }
+android-times-square = { group = "com.squareup", name = "android-times-square", version.ref = "androidTimesSquare" }
+converter-scalars = { group = "com.squareup.retrofit2", name = "converter-scalars", version.ref = "converterScalars" }
+jetbrains-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
