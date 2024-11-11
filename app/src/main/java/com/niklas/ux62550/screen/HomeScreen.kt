@@ -139,8 +139,6 @@ fun HomeScreen(
         }
     }
 }
-
-
 @Composable
 fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState) {
 

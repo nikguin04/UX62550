@@ -17,3 +17,5 @@ val Color_container = Color(0xFFF3EDF7)
 val TestWhite = Color(0xFFFFFFFF)
 
 val SeachColorForText = Color(0xFF958E9F)
+val DescriptionColor = Color(0xFFB2B2B2)
+val AwardAndDetailRating = Color(0xFFE0E0E0)
