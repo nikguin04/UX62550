@@ -22,15 +22,16 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 
 @Composable
-fun ScreenWithGeneralNavBar(content: @Composable (ColumnScope) -> Unit) {
+fun ScreenWithGeneralNavBar(navController: NavHostController, content: @Composable (ColumnScope) -> Unit) {
     Scaffold ( // NAVBAR COLUMN
         topBar = {
 
         },
 
-        bottomBar = { GeneralNavBar() },
+        bottomBar = { GeneralNavBar(navController) },
     ) {
         innerPadding ->
         Column (modifier = Modifier.padding(innerPadding).fillMaxSize(), content = content)
@@ -39,9 +40,17 @@ fun ScreenWithGeneralNavBar(content: @Composable (ColumnScope) -> Unit) {
 }
 
 @Composable
-fun GeneralNavBar() {
+fun GeneralNavBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf("Home", "Search", "Watch", "Account")
+
+    val routes: List<Route> = listOf(
+        Route.HomeScreen,
+        Route.HomeScreen,
+        Route.HomeScreen,
+        Route.LoginRegisterScreen
+    ) // TODO: Do not just route to account, instead check if user is logged in and route to profile/loginregister
+
     val selectedIcons = listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
     val unselectedIcons =
         listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
@@ -60,7 +69,7 @@ fun GeneralNavBar() {
                 },
                 label = { Text(item) },
                 selected = selectedItem == index,
-                onClick = { selectedItem = index },
+                onClick = { selectedItem = index; navController.navigate<Route>(route = routes[index]) },
                 /*colors = NavigationBarItemColors(
                     selectedIconColor = fromToken(NavigationBarTokens.ActiveIconColor),
                     selectedTextColor = fromToken(NavigationBarTokens.ActiveLabelTextColor),

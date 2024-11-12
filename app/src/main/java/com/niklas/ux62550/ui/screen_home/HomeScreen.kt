@@ -42,6 +42,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.draw.shadow
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 /*class HomeScreen: ComponentActivity() {
     private val mediaItemsViewModel: com.niklas.ux62550.features.MediaItemList.MediaItemsViewModel by viewModels()
@@ -87,9 +89,9 @@ fun HomePreview() {
     val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
     val mediaItemsState: StateFlow<MediaItemsUIState> = mutableMediaItemsState*/
     mvm.initPreview()
-
+    val navController = rememberNavController()
     UX62550Theme (darkTheme = true, dynamicColor = false) {
-        ScreenWithGeneralNavBar {
+        ScreenWithGeneralNavBar(navController) {
             HomeScreen(onNavigateToMediaDeatilsScreen = {})
         }
     }
@@ -107,24 +109,20 @@ fun HomeScreen(
         modifier = Modifier.fillMaxSize()
         //color = Color_background,
     ) {
+        // WARNING, TEMPORARY BUTTON
+        /*Button(
+            onClick = {
+                onNavigateToMediaDeatilsScreen("Hello123")
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Red
+            )
+        ) {
+            Text(text = "Go to media details page")
+        }*/
+        // WARNING, TEMPORARY BUTTON
 
-
-        ScreenWithGeneralNavBar() {
-            // WARNING, TEMPORARY BUTTON
-            Button(
-                onClick = {
-                    onNavigateToMediaDeatilsScreen("Hello123")
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Red
-                )
-            ) {
-                Text(text = "Go to media details page")
-            }
-            // WARNING, TEMPORARY BUTTON
-
-            ScreenHome(mediaItemsUIState = uiState)
-        }
+        ScreenHome(mediaItemsUIState = uiState)
     }
 }
 @Composable

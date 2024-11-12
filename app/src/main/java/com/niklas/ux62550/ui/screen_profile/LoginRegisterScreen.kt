@@ -26,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
 import com.niklas.ux62550.ui.screen_home.LogoBox
@@ -36,14 +37,17 @@ import com.niklas.ux62550.ui.theme.redColorGradient
 
 @Composable
 @Preview(showBackground = true, name = "Register and login pewview")
-fun RegisterLoginPreview() {
+fun LoginRegisterPreview() {
+    val navController = rememberNavController()
     UX62550Theme (darkTheme = true, dynamicColor = false) {
-        RegisterLoginScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
+        ScreenWithGeneralNavBar(navController) {
+            LoginRegisterScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
+        }
     }
 }
 
 @Composable
-fun RegisterLoginScreen(
+fun LoginRegisterScreen (
     onNavigateToLoginScreen: (String) -> Unit,
     onNavigateToRegisterScreen: (String) -> Unit,
     //profileViewModel: ProfileViewModel = viewModel()
@@ -56,8 +60,6 @@ fun RegisterLoginScreen(
         //color = Color_background,
     ) {
         val content: @Composable (PaddingValues) -> Unit = {}
-        ScreenWithGeneralNavBar() {
-
             Box {
                 Box(
                     modifier = Modifier
@@ -120,7 +122,5 @@ fun RegisterLoginScreen(
                     Box(modifier = Modifier.size(0.dp,figmaPxToDp_w(118f))) { }
                 }
             }
-
-        }
     }
 }
