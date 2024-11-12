@@ -6,37 +6,29 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
-import com.niklas.ux62550.ui.screen_home.HomeScreen
 import com.niklas.ux62550.ui.screen_home.LogoBox
-import com.niklas.ux62550.ui.screen_home.MediaItemsViewModel
-import com.niklas.ux62550.ui.screen_home.ScreenHome
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -80,7 +72,7 @@ fun HomeScreen(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    LogoBox(figmaPxToDp_w(180f))
+                    LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)),size = figmaPxToDp_w(180f))
                 }
             }
 
@@ -90,8 +82,10 @@ fun HomeScreen(
                 verticalAlignment = Alignment.Bottom
             ) {
                 Column (modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "Already a member?", fontSize = 20.sp,
-                        modifier = Modifier.padding(0.dp,0.dp,0.dp,figmaPxToDp_w(10f)))
+                    Text(text = "Not a member yet?",
+                        modifier = Modifier.padding(0.dp,0.dp,0.dp,figmaPxToDp_w(10f)),
+                        style = TextStyle( fontSize = 20.sp, shadow = textShadow)
+                    )
                     Button(
                         onClick = {
                             onNavigateToLoginScreen("Register")
@@ -99,15 +93,18 @@ fun HomeScreen(
                         colors = ButtonDefaults.buttonColors(
                             containerColor = RegisterButtonBlue
                         ),
-                        modifier = Modifier.size(figmaPxToDp_w(120f), figmaPxToDp_w(40f))
+                        modifier = Modifier.size(figmaPxToDp_w(120f), figmaPxToDp_w(40f)).shadow(elevation = 4.dp, shape=ButtonDefaults.shape)
                     ) {
-                        Text(text = "Register", fontSize = 20.sp, color = Color.White,)
+                        Text(text = "Register", color = Color.White, style = TextStyle( fontSize = 20.sp, shadow = textShadow))
                     }
 
                     Box(Modifier.size(0.dp, figmaPxToDp_w(60f)))
 
-                    Text(text = "Not a member yet?", fontSize = 20.sp,
-                        modifier = Modifier.padding(0.dp,0.dp,0.dp,figmaPxToDp_w(10f)))
+
+                    Text(text = "Already a member?",
+                        modifier = Modifier.padding(0.dp,0.dp,0.dp,figmaPxToDp_w(10f)),
+                        style = TextStyle( fontSize = 20.sp, shadow = textShadow)
+                    )
                     Button(
                         onClick = {
                             onNavigateToLoginScreen("Login")
@@ -115,9 +112,9 @@ fun HomeScreen(
                         colors = ButtonDefaults.buttonColors(
                             containerColor = LoginButtonGray
                         ),
-                        modifier = Modifier.size(figmaPxToDp_w(120f), figmaPxToDp_w(40f))
+                        modifier = Modifier.size(figmaPxToDp_w(120f), figmaPxToDp_w(40f)).shadow(elevation = 4.dp, shape=ButtonDefaults.shape)
                     ) {
-                        Text(text = "Sign in", fontSize = 20.sp, color = Color.White)
+                        Text(text = "Sign in", color = Color.White, style = TextStyle( fontSize = 20.sp, shadow = textShadow))
                     }
 
                     Box(modifier = Modifier.size(0.dp,figmaPxToDp_w(118f))) { }

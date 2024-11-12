@@ -271,13 +271,13 @@ fun BoxWithRoundedImage() {
 
 
 @Composable
-fun LogoBox(size: Dp) {
+fun LogoBox(modifier: Modifier = Modifier, size: Dp) {
     // Image size, for example, 200dp
     val imageSize = size
 
     // Compose Box with the image and 5% rounded corners
     Box(
-        modifier = Modifier.size(imageSize).clip(RoundedCornerShape(5))
+        modifier = modifier.size(imageSize).clip(RoundedCornerShape(5))
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo), // Your image resource
