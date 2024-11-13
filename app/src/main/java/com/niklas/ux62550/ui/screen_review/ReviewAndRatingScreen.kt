@@ -9,15 +9,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
@@ -32,6 +36,7 @@ import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
+
 
 @Composable
 @Preview(showBackground = true, name = "ReviewAndRatingPreview")
@@ -107,9 +112,29 @@ fun ReviewLayout(MovieTitle: String, MovieRating: Double){
     }
 }
 @Composable
-fun PublishReview(){
-    //TextField
-    //Button
+fun PublishReview() {
+    var text by remember { mutableStateOf("") }
+
+    TextField(
+        value = text,
+        onValueChange = { text = it },
+        modifier = Modifier
+            .clip(RoundedCornerShape(60.dp))
+            .requiredSize(400.dp, 200.dp)
+            .padding(20.dp, 0.dp),
+        label = { Text("Write a review with accordance to the rating") },
+        textStyle = TextStyle(
+            fontSize = 12.sp
+        )
+    )
+    // Button
+    Button(onClick = {
+        TODO("Implement this button functionality")
+    },
+        modifier = Modifier.padding(150.dp, 20.dp)
+    ) {
+        Text("Publish")
+    }
 }
 
 @Composable
