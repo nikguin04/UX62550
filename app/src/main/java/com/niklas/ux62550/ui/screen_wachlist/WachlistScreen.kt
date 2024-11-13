@@ -5,10 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -36,6 +40,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,6 +54,7 @@ import com.niklas.ux62550.ui.screen_home.LogoBox
 import com.niklas.ux62550.ui.screen_search.MovieBoxRow
 import com.niklas.ux62550.ui.theme.SeachColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import org.jetbrains.annotations.ApiStatus.OverrideOnly
 
 
 @Composable
@@ -86,12 +92,16 @@ fun ScreenWachlist(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBox
                 inputField = {
                     var text = ""
                     var expanded = false
+
                     SearchBarDefaults.InputField(query = text,
                         onQueryChange = { text = it },
                         onSearch = { expanded = false },
                         expanded = expanded,
                         onExpandedChange = { expanded = it },
-                        placeholder = { Text(text = "Search in Favorites", color = Color(0xFF707070), fontSize = 12.sp) },
+                        placeholder = {
+
+                            Text(text = "Search in Favorites", color = Color(0xFF707070), fontSize = 12.sp, overflow = TextOverflow.Visible)
+                        },
                         leadingIcon = {
                             Image( //Needs to be made button
                                 imageVector = Icons.Filled.Search,
@@ -99,15 +109,13 @@ fun ScreenWachlist(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBox
                                 colorFilter = ColorFilter.tint(Color.Black),
                                 contentDescription = "Star icon"
                             )
-                        }
+                        },
                     )
-
                 },
                 colors = SearchBarDefaults.colors(containerColor = Color(0xFFACACAC)),
                 expanded = false,
                 onExpandedChange = {},
                 content = {},
-
                 modifier = Modifier.padding(0.dp,0.dp,0.dp,20.dp)
             )
             LogoBox(size= figmaPxToDp_w(180f))
