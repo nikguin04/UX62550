@@ -2,18 +2,25 @@ package com.niklas.ux62550.ui.screen_review
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -22,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
@@ -35,6 +43,7 @@ import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 import kotlin.time.Duration.Companion.minutes
 
 
@@ -127,73 +136,120 @@ fun PublishReview() {
             fontSize = 12.sp
         )
     )
-    // Button
-    Button(onClick = {
-        TODO("Implement this button functionality")
-    },
-        modifier = Modifier.padding(150.dp, 20.dp)
-    ) {
-        Text("Publish")
+    Box(
+        modifier = Modifier.fillMaxWidth()
+            .padding(0.dp,10.dp),
+        contentAlignment = Alignment.Center
+    ){
+        Button(onClick = {
+            TODO("functionality")
+        },
+            modifier = Modifier
+                .width(150.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
+        ) {
+            Text("Publish", color = Color.White)
+        }
     }
 }
+    // Button
 
 @Composable
 fun MoreDetailedReview(){
-    Text("More detailed review", color = ReviewColor)
-    Row(
-        modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
-        verticalAlignment = Alignment.CenterVertically
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
     ) {
-        Text("Music", color = Color.White)
-        for(i in 0..4) {
-            Image( //Needs to be made button
-                imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(18.dp),
-                colorFilter = ColorFilter.tint(Color.Yellow),
-                contentDescription = "Star icon"
-            )
-        }
+        Text(
+            "More detailed review",
+            color = ReviewColor,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(40.dp, 10.dp)
+        )
     }
     Row(
-        modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = Modifier.fillMaxWidth()
+            .padding(30.dp,6.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ){
-        Text("Plot", color = Color.White)
+        Text("Music:",
+            color = Color.White,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f)
+        )
         for(i in 0..4) {
             Image( //Needs to be made button
                 imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(18.dp),
+                modifier = Modifier.requiredSize(34.dp),
                 colorFilter = ColorFilter.tint(Color.Yellow),
-                contentDescription = "Star icon"
+                contentDescription = "Star icon",
             )
+            Spacer(modifier = Modifier.width(4.dp))
         }
     }
     Row(
-        modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text("Acting", color = Color.White)
-        for(i in 0..4) {
-            Image( //Needs to be made button
-                imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(18.dp),
-                colorFilter = ColorFilter.tint(Color.Yellow),
-                contentDescription = "Star icon"
-            )
-        }
-    }
-    Row(
-        modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = Modifier.fillMaxWidth()
+            .padding(30.dp,6.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ){
-        Text("Directing", color = Color.White)
+        Text("Plot:",
+            color = Color.White,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f)
+        )
         for(i in 0..4) {
             Image( //Needs to be made button
                 imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(18.dp),
+                modifier = Modifier.requiredSize(34.dp),
                 colorFilter = ColorFilter.tint(Color.Yellow),
-                contentDescription = "Star icon"
+                contentDescription = "Star icon",
             )
+            Spacer(modifier = Modifier.width(4.dp))
+        }
+    }
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(30.dp,6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ){
+        Text("Acting:",
+            color = Color.White,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f)
+        )
+        for(i in 0..4) {
+            Image( //Needs to be made button
+                imageVector = Icons.Outlined.StarOutline,
+                modifier = Modifier.requiredSize(34.dp),
+                colorFilter = ColorFilter.tint(Color.Yellow),
+                contentDescription = "Star icon",
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+        }
+    }
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(30.dp,6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ){
+        Text("Directing:",
+            color = Color.White,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f)
+        )
+        for(i in 0..4) {
+            Image( //Needs to be made button
+                imageVector = Icons.Outlined.StarOutline,
+                modifier = Modifier.requiredSize(34.dp),
+                colorFilter = ColorFilter.tint(Color.Yellow),
+                contentDescription = "Star icon",
+            )
+            Spacer(modifier = Modifier.width(4.dp))
         }
     }
 }
