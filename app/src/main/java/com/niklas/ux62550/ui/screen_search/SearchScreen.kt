@@ -1,17 +1,25 @@
 package com.niklas.ux62550.ui.screen_search
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +56,7 @@ fun SearchPreview() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxItemsUIState,
                  nonMovieBoxItemsUIState: NonMovieBoxItemsUIState
@@ -56,11 +65,39 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
         Row(
             modifier
                 .fillMaxWidth()
-                .padding(figmaPxToDp_w(0f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
+                .padding(figmaPxToDp_w(0f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(17.5f)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.Center
         ) {
             //LogoBox(size= figmaPxToDp_w(50f))
+            SearchBar(
+                inputField = {
+                    var text = ""
+                    var expanded = false
+                    SearchBarDefaults.InputField(query = text,
+                        onQueryChange = { text = it },
+                        onSearch = { expanded = false },
+                        expanded = expanded,
+                        onExpandedChange = { expanded = it },
+                        placeholder = { Text(text = "Search", color = Color(0xFF707070), fontSize = 12.sp) },
+                        leadingIcon = {
+                            Image( //Needs to be made button
+                                imageVector = Icons.Filled.Search,
+                                modifier = Modifier.requiredSize(24.dp),
+                                colorFilter = ColorFilter.tint(Color.Black),
+                                contentDescription = "Star icon"
+                            )
+                        }
+                    )
+
+                },
+                colors = SearchBarDefaults.colors(containerColor = Color(0xFFACACAC)),
+                expanded = false,
+                onExpandedChange = {},
+                content = {},
+
+                modifier = Modifier.padding(0.dp,0.dp,0.dp,20.dp)
+            )
         }
 
 
