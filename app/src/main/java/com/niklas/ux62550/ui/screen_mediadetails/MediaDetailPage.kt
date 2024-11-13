@@ -22,6 +22,7 @@ import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,11 +43,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
-import com.niklas.ux62550.ui.screen_home.MediaItemsUIState
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.ui.screen_home.HorizontalLazyRowWithSnapEffect
+import com.niklas.ux62550.ui.screen_home.MediaItemsUIState
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -69,14 +69,14 @@ fun MediaDetailPagePreview(){
         MediaItem("Name 2", R.drawable.logo, Color.Red)
     )
     UX62550Theme (darkTheme = true, dynamicColor = false) {
-        ScreenWithGeneralNavBar {
-            ScreenMediaDetail(mediaItemsUIState = MediaItemsUIState.Data(mediaItems), movie = movie)
+        Surface {
+            ScreenMediaDetail(similarMedia = MediaItemsUIState.Data(mediaItems), movie = movie, onNavigateToOtherMedia = {})
         }
     }
 }
 
 @Composable
-fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, movie: Movie) {
+fun ScreenMediaDetail(modifier: Modifier = Modifier, similarMedia: MediaItemsUIState, movie: Movie, onNavigateToOtherMedia: (String) -> Unit) {
     Column{
         Box(
             modifier.fillMaxWidth()
@@ -258,7 +258,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
         // Implement viewmodel
         //val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
         Text("Movies similar to this one", modifier.padding(4.dp,0.dp,0.dp,0.dp))
-        when (mediaItemsUIState) {
+        when (similarMedia) {
             MediaItemsUIState.Empty -> {
                 Text(
                     text = "No MediasItems",
@@ -267,7 +267,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 )
             }
             is MediaItemsUIState.Data -> {
-                HorizontalLazyRowWithSnapEffect(mediaItemsUIState.mediaItems)
+                HorizontalLazyRowWithSnapEffect(similarMedia.mediaItems)
             }
             else -> {
 

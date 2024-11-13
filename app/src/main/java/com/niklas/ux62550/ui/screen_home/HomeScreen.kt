@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
 import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.models.MediaItem
@@ -89,50 +88,23 @@ fun HomePreview() {
     mvm.initPreview()
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
-        ScreenWithGeneralNavBar {
-            HomeScreen(onNavigateToMediaDeatilsScreen = {})
-        }
+        HomeScreen(onNavigateToMedia = {})
     }
 }
 
 @Composable
 fun HomeScreen(
-    onNavigateToMediaDeatilsScreen: (String) -> Unit,
+    onNavigateToMedia: (String) -> Unit,
     mediaItemsViewModel: MediaItemsViewModel = viewModel()
 ) {
-
-    //val mediaItemsViewModel: MediaItemsViewModel by viewModels()
     val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
-    Surface(
-        modifier = Modifier.fillMaxSize()
-        //color = Color_background,
-    ) {
-
-
-        ScreenWithGeneralNavBar() {
-            // WARNING, TEMPORARY BUTTON
-            Button(
-                onClick = {
-                    onNavigateToMediaDeatilsScreen("Hello123")
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Red
-                )
-            ) {
-                Text(text = "Go to media details page")
-            }
-            // WARNING, TEMPORARY BUTTON
-
-            ScreenHome(mediaItemsUIState = uiState)
-        }
-    }
+    ScreenHome(mediaItemsUIState = uiState, onNavigateToMedia = onNavigateToMedia)
 }
 @Composable
-fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState) {
-
+fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, onNavigateToMedia: (String) -> Unit) {
     Column(modifier.padding()) {
         Row(
-            modifier.fillMaxWidth().padding(figmaPxToDp_w(29.5f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
+            modifier.fillMaxWidth().padding(figmaPxToDp_w(29.5f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {

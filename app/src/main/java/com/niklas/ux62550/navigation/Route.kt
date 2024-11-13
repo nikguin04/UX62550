@@ -8,5 +8,8 @@ sealed class Route(val title: String) {
     data object HomeScreen : Route("Home Screen")
 
     @Serializable
+    data object SearchScreen : Route("Search Screen")
+
+    @Serializable
     data class MediaDetailsScreen(val name: String) : Route("Media Details Screen")
 }

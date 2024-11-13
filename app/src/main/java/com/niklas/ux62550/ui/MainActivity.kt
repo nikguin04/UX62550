@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.niklas.ux62550.navigation.GeneralNavBar
 import com.niklas.ux62550.navigation.MainNavHost
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
@@ -38,50 +40,46 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            UX62550Theme (darkTheme = true, dynamicColor = false) {
-                val navController = rememberNavController()
-                var canNavigateBack by remember { mutableStateOf(false) }
-                var currentScreenTitle by remember { mutableStateOf("") }
-                LaunchedEffect(navController.currentBackStackEntryAsState().value) {
-                    canNavigateBack = navController.previousBackStackEntry != null
-                }
+            UX62550Theme(darkTheme = true, dynamicColor = false) {
+                Surface {
+                    val navController = rememberNavController()
+                    var canNavigateBack by remember { mutableStateOf(false) }
+                    var currentScreenTitle by remember { mutableStateOf("") }
+                    LaunchedEffect(navController.currentBackStackEntryAsState().value) {
+                        canNavigateBack = navController.previousBackStackEntry != null
+                    }
 
-
-                Scaffold(modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(text = currentScreenTitle)
-                        },
-                        navigationIcon = {
-                            if (canNavigateBack) {
-                                IconButton(onClick = { navController.popBackStack() }) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = null
-                                    )
+                    Scaffold(modifier = Modifier.fillMaxSize(),
+                        topBar = {
+                            TopAppBar(
+                                title = {
+                                    Text(text = currentScreenTitle)
+                                },
+                                navigationIcon = {
+                                    if (canNavigateBack) {
+                                        IconButton(onClick = { navController.popBackStack() }) {
+                                            Icon(
+                                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                                contentDescription = "Back"
+                                            )
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                    )
-                }) {
-                    MainNavHost(
-                        navController = navController,
-                        onRouteChanged = { route -> currentScreenTitle = route.title },
-                        modifier = Modifier.padding(it)
-                    )
+                            )
+                        },
+                        bottomBar = { GeneralNavBar(navController) }
+                    ) {
+                        MainNavHost(
+                            navController = navController,
+                            onRouteChanged = { route -> currentScreenTitle = route.title },
+                            modifier = Modifier.padding(it)
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-
-
-
-
-
 @Composable
 fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
-
-

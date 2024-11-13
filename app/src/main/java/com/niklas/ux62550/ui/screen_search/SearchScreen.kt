@@ -1,12 +1,15 @@
 package com.niklas.ux62550.ui.screen_search
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
 import com.niklas.ux62550.models.MovieBox
 import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.models.figmaPxToDp_w
@@ -40,17 +42,23 @@ fun SearchPreview() {
     )
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
-        ScreenWithGeneralNavBar {
-            ScreenSearch(movieBoxItemsUIState = MovieBoxItemsUIState.Data(movieBoxes),
-                nonMovieBoxItemsUIState = NonMovieBoxItemsUIState.Data(nonMovieBoxes))
+        Surface(modifier = Modifier.fillMaxSize()) {
+            ScreenSearch(
+                movieBoxItemsUIState = MovieBoxItemsUIState.Data(movieBoxes),
+                nonMovieBoxItemsUIState = NonMovieBoxItemsUIState.Data(nonMovieBoxes),
+                onNavigateToMedia = {}
+            )
         }
     }
 }
 
 
 @Composable
-fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxItemsUIState,
-                 nonMovieBoxItemsUIState: NonMovieBoxItemsUIState
+fun ScreenSearch(
+    modifier: Modifier = Modifier,
+    movieBoxItemsUIState: MovieBoxItemsUIState,
+    nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
+    onNavigateToMedia: (String) -> Unit
 ) {
     Column(modifier.padding()) {
         Row(
@@ -193,7 +201,12 @@ fun ScreenSearch(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxIt
                                     .fillMaxWidth(0.7f)
                             )
                         }
-                        MovieBoxRow(movieBox = movieBoxItem)
+                        MovieBoxRow(
+                            movieBox = movieBoxItem,
+                            modifier = Modifier.clickable(
+                                onClick = { onNavigateToMedia(movieBoxItem.name) }
+                            )
+                        )
                     }
                 }
             }
