@@ -131,7 +131,7 @@ fun PublishReview() {
         shape = RoundedCornerShape(30.dp),
         modifier = Modifier
             .requiredSize(400.dp, 200.dp)
-            .padding(20.dp, 0.dp),
+            .padding(20.dp, 10.dp),
         colors = OutlinedTextFieldDefaults.colors( unfocusedContainerColor = TextFieldColor),
         label = { Text("Write a review with accordance to the rating") },
         textStyle = TextStyle(
