@@ -88,7 +88,7 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
 
                 }
                 Text(
-                    text = " | ",
+                    text = " · ",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
