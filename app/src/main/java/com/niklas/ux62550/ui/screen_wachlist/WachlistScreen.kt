@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import com.niklas.ux62550.models.MovieBox
 import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.models.NonMovieBox
+import com.niklas.ux62550.ui.screen_home.LogoBox
 import com.niklas.ux62550.ui.theme.SeachColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
@@ -42,20 +44,35 @@ fun WachlistPreview() {
     }
 }
 
+fun setTrue(){
+
+}
 
 @Composable
 fun ScreenWachlist(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBoxItemsUIState
 ) {
     Column(modifier.padding()) {
-        Row(
+        Column(
             modifier
                 .fillMaxWidth()
-                .padding(figmaPxToDp_w(0f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)), // ConvertPxToDp(29.5f)
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+                .padding(figmaPxToDp_w(0f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(17.5f)), // ConvertPxToDp(29.5f)
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            //LogoBox(size= figmaPxToDp_w(50f))
+            LogoBox(size= figmaPxToDp_w(180f))
+            Row(
+                modifier
+                    .fillMaxWidth()
+                    .padding(figmaPxToDp_w(0f), figmaPxToDp_h(20f), 0.dp), // ConvertPxToDp(29.5f)
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(text = "Watch List", fontSize = 36.sp)
+                Button(onClick = { /* Do something! */ }) { Text("Sort by") }
+            }
+
         }
+
 
 
 
