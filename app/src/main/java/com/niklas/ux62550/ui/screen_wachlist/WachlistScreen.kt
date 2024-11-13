@@ -25,6 +25,7 @@ import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.models.NonMovieBox
 import com.niklas.ux62550.ui.screen_home.LogoBox
+import com.niklas.ux62550.ui.screen_search.MovieBoxRow
 import com.niklas.ux62550.ui.theme.SeachColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 

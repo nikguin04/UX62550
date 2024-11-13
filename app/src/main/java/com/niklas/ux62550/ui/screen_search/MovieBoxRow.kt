@@ -2,6 +2,7 @@ package com.niklas.ux62550.ui.screen_search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -67,7 +68,8 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
                     )
                     Row (modifier
                         .padding(),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(5.dp)
 
                     ){
                         Image( //Needs to be made button
