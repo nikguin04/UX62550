@@ -12,30 +12,30 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.StarOutline
-import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.niklas.ux62550.R
-import com.niklas.ux62550.models.MediaItem
+import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
-import com.niklas.ux62550.ui.screen_home.MediaItemsUIState
-import com.niklas.ux62550.ui.screen_mediadetails.ScreenMediaDetail
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
-@Preview(showBackground = true, name = "MediaDetailPagePreview")
-fun MediaDetailPagePreview(){
+@Preview(showBackground = true, name = "ReviewAndRatingPreview")
+fun ReviewAndRatingPreview(){
     val movie = Movie("RED: The Movie",
         "2090",
         3000.minutes,
@@ -52,7 +52,7 @@ fun MediaDetailPagePreview(){
 }
 
 @Composable
-fun ScreenReviewAndRating(modifier: Modifier = Modifier, movie: Movie) {
+fun ScreenReviewAndRating(movie: Movie) {
     Column {
         ReviewLayout(movie.name, movie.rating)
         PublishReview()
@@ -78,21 +78,31 @@ fun ReviewLayout(MovieTitle: String, MovieRating: Double){
                     .fillMaxWidth()
                     .height(230.dp))
         }
-        Text("Write a review for", color = ReviewColor)
-        Text(MovieTitle, color = Color.White)
+        ReviewText()
+        TitleText(MovieTitle)
         Row(
-            modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.align(Alignment.BottomCenter).
+            padding(0.dp,186.dp,0.dp,0.dp),
+            verticalAlignment = Alignment.CenterVertically,
+
         ) {
-            for(i in 0..4) {
-                Image( //Needs to be made button
+            for (i in 0..4) {
+                Icon(
                     imageVector = Icons.Outlined.StarOutline,
-                    modifier = Modifier.requiredSize(18.dp),
-                    colorFilter = ColorFilter.tint(Color.Yellow),
-                    contentDescription = "Star icon"
+                    contentDescription = "Star icon",
+                    tint = ReviewColor,
+                    modifier = Modifier
+                        .requiredSize(54.dp)
                 )
             }
-            Text(MovieRating.toString())
+            Text(MovieRating.toString() + "/5",
+                style = TextStyle(
+                    fontSize = 34.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Color.White,
+                modifier = Modifier.padding(4.dp,0.dp,0.dp,0.dp)
+            )
         }
     }
 }
@@ -161,4 +171,37 @@ fun MoreDetailedReview(){
             )
         }
     }
+}
+@Composable
+fun ReviewText() {
+    Text("Write a review for",
+        style = TextStyle(
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            shadow = Shadow(
+                color = Color.DarkGray, blurRadius = 10f
+            ),
+            textAlign = TextAlign.Center,
+            color = ReviewColor
+        ),
+        modifier = Modifier.
+            fillMaxWidth()
+            .padding(0.dp, 90.dp, 0.dp, 0.dp),
+    )
+}
+@Composable
+fun TitleText(movieTitle: String) {
+    Text(movieTitle,
+        style = TextStyle(
+            fontSize = 36.sp,
+            fontWeight = FontWeight.Bold,
+            shadow = Shadow(
+                color = Color.Black, blurRadius = 10f
+            ),
+            textAlign = TextAlign.Center,
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 130.dp, 0.dp, 0.dp),
+    )
 }
