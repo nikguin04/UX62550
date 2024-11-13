@@ -1,6 +1,5 @@
 package com.niklas.ux62550.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -9,20 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.niklas.ux62550.ui.screen_home.HomeScreen
-
-// Step1: define routes ✅
-
-// Step2: get nav controller ✅
-
-// Step3: call NavHost ✅
-
-// Step4: add screens to nav graph ✅
-
-// Step5: add navigation actions ✅
-
-// Step6: add navigation arguments ✅
-
-// Step7: add top app bar with back arrow and screen title ✅
 
 @Composable
 fun MainNavHost(
@@ -38,7 +23,7 @@ fun MainNavHost(
         composable<Route.HomeScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
 
-            HomeScreen (
+            HomeScreen(
                 onNavigateToMediaDeatilsScreen = { name ->
                     navController.navigate(Route.MediaDetailsScreen(name))
                 }
@@ -49,31 +34,12 @@ fun MainNavHost(
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>()) }
 
             MediaDetailsScreen(
-                name = backStackEntry.toRoute<Route.MediaDetailsScreen>().md_name,
+                name = backStackEntry.toRoute<Route.MediaDetailsScreen>().name,
                 //onNavigateToGreenScreen = { navController.navigate(Route.GreenScreen) }
             )
         }
-
-        /*composable<Route.BlueScreen> { backStackEntry ->
-            LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.BlueScreen>()) }
-
-            BlueScreen(
-                name = backStackEntry.toRoute<Route.BlueScreen>().name,
-                onNavigateToGreenScreen = { navController.navigate(Route.GreenScreen) }
-            )
-        }
-
-        composable<Route.GreenScreen> {
-            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.GreenScreen>()) }
-
-            GreenScreen(
-                onNavigateToRedScreen = { navController.navigate(Route.RedScreen) }
-            )
-        }*/
     }
 }
 
 @Composable
-fun MediaDetailsScreen(name: Any) {
-    Text(text = "THIS IS A TEMPORARY PLACEHOLDER!!!")
-}
+fun MediaDetailsScreen(name: String) {}
