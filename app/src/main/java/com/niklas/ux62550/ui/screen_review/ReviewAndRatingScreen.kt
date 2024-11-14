@@ -86,7 +86,7 @@ fun ReviewLayout(MovieTitle: String, MovieRating: Double){
             colorFilter = ColorFilter.tint(Color.White),
             contentDescription = "Arrow back"
         )
-        Box(Modifier.alpha(0.5f)) {
+        Box(Modifier.alpha(0.3f)) {
             Box(
                 Modifier
                     .background(Color.Red)
