@@ -22,6 +22,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,9 +67,9 @@ fun ProfileScreen (
     onNavigateToLoginRegister: (String) -> Unit,
     //profileViewModel: ProfileViewModel = viewModel()
 ) {
-    var nameValueTemp by remember { mutableStateOf("Your name") }
-    var emailValueTemp by remember { mutableStateOf("*****@gmail.com") }
-    var passwordValueTemp by remember { mutableStateOf("**********") }
+    var nameValueTemp = remember { mutableStateOf("Your name") }
+    var emailValueTemp = remember { mutableStateOf("*****@gmail.com") }
+    var passwordValueTemp = remember { mutableStateOf("**********") }
 
     //val mediaItemsViewModel: MediaItemsViewModel by viewModels()
     //val uiState = profileViewModel.profileState.collectAsState().value
@@ -141,37 +142,61 @@ fun ProfileScreen (
             // Profile data
 
             Box(Modifier.size(0.dp, figmaPxToDp_w(28f)))
-            Row (Modifier.fillMaxWidth(), Arrangement.Start, Alignment.CenterVertically) {
-                TextField(
-                    modifier = Modifier.size(figmaPxToDp_w(244f), figmaPxToDp_w(43f)).padding(figmaPxToDp_w(14f),0.dp,0.dp,0.dp),
-                    value = nameValueTemp,
-                    onValueChange = { nameValueTemp = it },
-                    label = { Text("Display Name") },
-                    textStyle = TextStyle(fontSize = 15.sp)
+            ProfileAttribute("Display Name", nameValueTemp)
+            Box(Modifier.size(0.dp, figmaPxToDp_w(15f)))
+            ProfileAttribute("Email", emailValueTemp)
+            Box(Modifier.size(0.dp, figmaPxToDp_w(132f)))
+            ProfileAttribute("Password", passwordValueTemp)
+            Box(Modifier.size(0.dp, figmaPxToDp_w(85f)))
+
+            Button(
+                onClick = { },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = LoginButtonGray
+                ),
+                modifier = Modifier
+                    .size(figmaPxToDp_w(120f), figmaPxToDp_w(40f))
+                    .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+            ) {
+                Text(
+                    text = "Sign out",
+                    color = Color.White,
+                    style = TextStyle(fontSize = 20.sp, shadow = textShadow)
                 )
-                Box(Modifier.size(figmaPxToDp_w(19f), 0.dp))
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = ProfileBtnRed
-                    ),
-                    modifier = Modifier
-                        .size(figmaPxToDp_w(64f), figmaPxToDp_w(21f))
-                        .shadow(elevation = 4.dp, shape = ButtonDefaults.shape),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text(
-                        text = "Edit",
-                        color = Color.White,
-                        style = TextStyle(fontSize = 15.sp, shadow = textShadow),
-                        modifier = Modifier.align(Alignment.CenterVertically)
-                    )
-                }
             }
-            Box(Modifier.size(figmaPxToDp_w(19f), 0.dp))
 
 
+        }
+    }
+}
 
+@Composable
+fun ProfileAttribute(label: String, value: MutableState<String>) {
+    Row (Modifier.fillMaxWidth(), Arrangement.Start, Alignment.CenterVertically) {
+        TextField(
+            value = value.value,
+            modifier = Modifier.size(figmaPxToDp_w(244f), figmaPxToDp_w(43f)).padding(figmaPxToDp_w(14f),0.dp,0.dp,0.dp),
+            onValueChange = { value.value = it },
+            label = { Text(text = label) },
+            textStyle = TextStyle(fontSize = 15.sp)
+        )
+        Box(Modifier.size(figmaPxToDp_w(19f), 0.dp))
+        Button(
+            onClick = { },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = ProfileBtnRed
+            ),
+            modifier = Modifier
+                .size(figmaPxToDp_w(64f), figmaPxToDp_w(21f))
+                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape),
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            Text(
+                text = "Edit",
+                color = Color.White,
+                style = TextStyle(fontSize = 15.sp, shadow = textShadow),
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
         }
     }
 }
