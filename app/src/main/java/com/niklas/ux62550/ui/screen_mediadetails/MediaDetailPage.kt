@@ -216,7 +216,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
         ) {
             repeat(4) {
                 Spacer(modifier = Modifier.width(4.dp))
-                DrawCircle(Modifier.size(64.dp))
+                DrawCircle(Modifier.size(64.dp), Color.Red)
             }
             Spacer(modifier = Modifier.width(4.dp))
             repeat(3) { //Needs to be made button
@@ -310,13 +310,13 @@ fun DescriptionText(movieDescription: String){
     )
 }
 @Composable
-fun DrawCircle(modifier: Modifier = Modifier) {
+fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
     androidx.compose.foundation.layout.Box(
         modifier = modifier.drawBehind{
             // Set the radius based on the smaller of the box dimensions
             val radius = size.minDimension / 2
             drawCircle(
-                color = Color.Red,
+                color = color,
                 radius = radius,
                 center = center
             )

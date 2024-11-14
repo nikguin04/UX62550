@@ -20,6 +20,10 @@ val SeachColorForText = Color(0xFF958E9F)
 val DescriptionColor = Color(0xFFB2B2B2)
 val AwardAndDetailRating = Color(0xFFE0E0E0)
 
+val placeholderIconColor = Color(0xFFD9D9D9)
+val starYellow = Color(0xFFF1D338)
+val ProfileBtnRed = Color(0xFFFF1D21)
+
 val TextfieldDescColor = Color(0xFFB9B9B9)
 
 val RegisterButtonBlue = Color(0xFF1D9DFF)
