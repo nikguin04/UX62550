@@ -46,8 +46,8 @@ fun GeneralNavBar(navController: NavHostController) {
 
     val routes: List<Route> = listOf(
         Route.HomeScreen,
-        Route.HomeScreen,
-        Route.HomeScreen,
+        Route.,
+        Route.,
         Route.ProfileScreen
     ) // TODO: Do not just route to account, instead check if user is logged in and route to profile/loginregister
 

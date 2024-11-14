@@ -14,6 +14,8 @@ import com.niklas.ux62550.ui.screen_profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.screen_profile.LoginScreen
 import com.niklas.ux62550.ui.screen_profile.ProfileScreen
 import com.niklas.ux62550.ui.screen_profile.RegisterScreen
+import com.niklas.ux62550.ui.screen_search.ScreenSearch
+import com.niklas.ux62550.ui.screen_wachlist.ScreenWachlist
 
 // Step1: define routes ✅
 
@@ -53,10 +55,7 @@ fun MainNavHost(
             composable<Route.MediaDetailsScreen> { backStackEntry ->
                 LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>()) }
 
-                MediaDetailsScreen(
-                    name = backStackEntry.toRoute<Route.MediaDetailsScreen>().md_name,
-                    //onNavigateToGreenScreen = { navController.navigate(Route.GreenScreen) }
-                )
+                //ScreenMediaDetail(.... wtf)
             }
 
             composable<Route.LoginRegisterScreen> {
@@ -80,6 +79,15 @@ fun MainNavHost(
                 LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ProfileScreen>()) }
                 ProfileScreen(onNavigateToLoginRegister = {navigateAndClearNavBackStack(navController, Route.LoginRegisterScreen)})
             }
+
+            composable<Route.SearchScreen> {
+                LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
+                //ScreenSearch(.... wtf?)
+            }
+            composable<Route.WatchScreen> {
+                LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
+                //ScreenWachlist(.... wtf)
+            }
         }
 }
 
@@ -91,9 +99,4 @@ fun navigateAndClearNavBackStack(navController: NavHostController, route: Route)
         // Set launchSingleTop to prevent multiple copies of the same destination on the backstack
         launchSingleTop = true
     }
-}
-
-@Composable
-fun MediaDetailsScreen(name: Any) {
-    Text(text = "THIS IS A TEMPORARY PLACEHOLDER!!!")
 }
