@@ -131,10 +131,10 @@ fun ScreenWachlist(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBox
                     onClick = { /* Do something! */ },
                     shape = RoundedCornerShape(7.dp),
                     colors = ButtonDefaults.buttonColors(Color(0xFFACACAC)),
-                    contentPadding = PaddingValues(horizontal = 5.dp, vertical = 0.dp),
+                    contentPadding = PaddingValues(20.dp, 0.dp, 0.dp, 0.dp),
                     modifier = modifier
-                        .height(25.dp)
-                        .width(90.dp)
+                        .height(30.dp)
+                        .width(100.dp)
                 )
                 { Text(
                     "Sort by"
