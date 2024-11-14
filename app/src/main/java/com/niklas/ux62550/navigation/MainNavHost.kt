@@ -12,6 +12,7 @@ import androidx.navigation.toRoute
 import com.niklas.ux62550.ui.screen_home.HomeScreen
 import com.niklas.ux62550.ui.screen_profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.screen_profile.LoginScreen
+import com.niklas.ux62550.ui.screen_profile.ProfileScreen
 import com.niklas.ux62550.ui.screen_profile.RegisterScreen
 
 // Step1: define routes ✅
@@ -75,7 +76,21 @@ fun MainNavHost(
                 LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
                 RegisterScreen()
             }
+            composable<Route.ProfileScreen> {
+                LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ProfileScreen>()) }
+                ProfileScreen(onNavigateToLoginRegister = {navigateAndClearNavBackStack(navController, Route.LoginRegisterScreen)})
+            }
         }
+}
+
+fun navigateAndClearNavBackStack(navController: NavHostController, route: Route) {
+    navController.navigate<Route>(route = route) {
+        popUpTo(navController.graph.id) {
+            inclusive = true // This removes the start destination from the backstack
+        }
+        // Set launchSingleTop to prevent multiple copies of the same destination on the backstack
+        launchSingleTop = true
+    }
 }
 
 @Composable

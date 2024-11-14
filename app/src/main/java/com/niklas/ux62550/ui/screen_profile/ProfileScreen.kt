@@ -150,7 +150,7 @@ fun ProfileScreen (
             Box(Modifier.size(0.dp, figmaPxToDp_w(85f)))
 
             Button(
-                onClick = { },
+                onClick = { onNavigateToLoginRegister("Sign out") },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = LoginButtonGray
                 ),

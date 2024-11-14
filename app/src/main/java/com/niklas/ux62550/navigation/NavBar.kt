@@ -48,7 +48,7 @@ fun GeneralNavBar(navController: NavHostController) {
         Route.HomeScreen,
         Route.HomeScreen,
         Route.HomeScreen,
-        Route.LoginRegisterScreen
+        Route.ProfileScreen
     ) // TODO: Do not just route to account, instead check if user is logged in and route to profile/loginregister
 
     val selectedIcons = listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
@@ -70,14 +70,8 @@ fun GeneralNavBar(navController: NavHostController) {
                 label = { Text(item) },
                 selected = selectedItem == index,
                 onClick = {
-                    selectedItem = index;
-                    navController.navigate<Route>(route = routes[index]) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true // This removes the start destination from the backstack
-                        }
-                        // Set launchSingleTop to prevent multiple copies of the same destination on the backstack
-                        launchSingleTop = true
-                    }
+                    selectedItem = index
+                    navigateAndClearNavBackStack(navController, routes[index])
                 },
                 /*colors = NavigationBarItemColors(
                     selectedIconColor = fromToken(NavigationBarTokens.ActiveIconColor),

@@ -22,4 +22,6 @@ sealed class Route(val title: String) {
     data object  LoginScreen : Route("Login")
     @Serializable
     data object  RegisterScreen : Route("Register")
+    @Serializable
+    data object  ProfileScreen : Route("Profile")
 }
