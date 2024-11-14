@@ -1,7 +1,12 @@
 package com.niklas.ux62550.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-    import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Bookmark
@@ -16,24 +21,36 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 
 @Composable
-fun ScreenWithGeneralNavBar(content: @Composable (PaddingValues) -> Unit) {
+fun ScreenWithGeneralNavBar(navController: NavHostController, content: @Composable (ColumnScope) -> Unit) {
     Scaffold ( // NAVBAR COLUMN
         topBar = {
 
         },
 
-        bottomBar = { GeneralNavBar() },
-        content = content
-
-    )
+        bottomBar = { GeneralNavBar(navController) },
+    ) {
+        innerPadding ->
+        Column (modifier = Modifier.padding(innerPadding).fillMaxSize(), content = content)
+    }
+        
 }
 
 @Composable
-fun GeneralNavBar() {
+fun GeneralNavBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf("Home", "Search", "Watch", "Account")
+
+    val routes: List<Route> = listOf(
+        Route.HomeScreen,
+        Route.SearchScreen,
+        Route.WatchScreen,
+        Route.ProfileScreen
+    ) // TODO: Do not just route to account, instead check if user is logged in and route to profile/loginregister
+
     val selectedIcons = listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
     val unselectedIcons =
         listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
@@ -52,7 +69,10 @@ fun GeneralNavBar() {
                 },
                 label = { Text(item) },
                 selected = selectedItem == index,
-                onClick = { selectedItem = index },
+                onClick = {
+                    selectedItem = index
+                    navigateAndClearNavBackStack(navController, routes[index])
+                },
                 /*colors = NavigationBarItemColors(
                     selectedIconColor = fromToken(NavigationBarTokens.ActiveIconColor),
                     selectedTextColor = fromToken(NavigationBarTokens.ActiveLabelTextColor),

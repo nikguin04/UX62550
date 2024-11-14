@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.niklas.ux62550.R
 import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
 import com.niklas.ux62550.models.MovieBox
@@ -51,6 +52,7 @@ import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.models.NonMovieBox
 import com.niklas.ux62550.ui.screen_home.LogoBox
+import com.niklas.ux62550.ui.screen_review.ScreenReviewAndRating
 import com.niklas.ux62550.ui.screen_search.MovieBoxRow
 import com.niklas.ux62550.ui.theme.SeachColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -66,8 +68,11 @@ fun WachlistPreview() {
     )
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
-        ScreenWithGeneralNavBar {
-            ScreenWachlist(movieBoxItemsUIState = MovieBoxItemsUIState.Data(movieBoxes))
+        val navController = rememberNavController()
+        UX62550Theme (darkTheme = true, dynamicColor = false) {
+            ScreenWithGeneralNavBar(navController) {
+                ScreenWachlist(movieBoxItemsUIState = MovieBoxItemsUIState.Data(movieBoxes))
+            }
         }
     }
 }

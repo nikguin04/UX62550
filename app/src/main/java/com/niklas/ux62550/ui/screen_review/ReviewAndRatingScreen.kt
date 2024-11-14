@@ -38,8 +38,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
+import com.niklas.ux62550.ui.screen_profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -58,8 +60,11 @@ fun ReviewAndRatingPreview(){
         13
     )
     UX62550Theme (darkTheme = true, dynamicColor = false) {
-        ScreenWithGeneralNavBar {
-            ScreenReviewAndRating(movie = movie)
+        val navController = rememberNavController()
+        UX62550Theme (darkTheme = true, dynamicColor = false) {
+            ScreenWithGeneralNavBar(navController) {
+                ScreenReviewAndRating(movie = movie)
+            }
         }
     }
 }

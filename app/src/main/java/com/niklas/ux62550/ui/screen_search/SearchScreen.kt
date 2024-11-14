@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.niklas.ux62550.R
 import com.niklas.ux62550.navigation.ScreenWithGeneralNavBar
 import com.niklas.ux62550.models.MovieBox
@@ -46,9 +47,9 @@ fun SearchPreview() {
         NonMovieBox("someActor", R.drawable.logo, Color.Yellow, "Movie"),
         NonMovieBox("someGenre", R.drawable.logo, Color.Green, "Series")
     )
-
+    val navController = rememberNavController()
     UX62550Theme (darkTheme = true, dynamicColor = false) {
-        ScreenWithGeneralNavBar {
+        ScreenWithGeneralNavBar(navController) {
             ScreenSearch(movieBoxItemsUIState = MovieBoxItemsUIState.Data(movieBoxes),
                 nonMovieBoxItemsUIState = NonMovieBoxItemsUIState.Data(nonMovieBoxes))
         }
