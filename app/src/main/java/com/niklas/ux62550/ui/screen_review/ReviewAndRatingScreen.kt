@@ -21,7 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
@@ -132,7 +130,9 @@ fun PublishReview() {
         modifier = Modifier
             .requiredSize(400.dp, 200.dp)
             .padding(20.dp, 10.dp),
-        colors = OutlinedTextFieldDefaults.colors( unfocusedContainerColor = TextFieldColor, focusedContainerColor = TextFieldColor),
+        colors = OutlinedTextFieldDefaults.colors(
+            unfocusedContainerColor = TextFieldColor,
+            focusedContainerColor = TextFieldColor),
         label = { Text("Write a review with accordance to the rating") },
         textStyle = TextStyle(
             fontSize = 12.sp,
