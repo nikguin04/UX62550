@@ -62,7 +62,7 @@ fun NonMovieBoxRow(nonMovieBox: NonMovieBox, modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = " | ",
+                text = " · ",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
