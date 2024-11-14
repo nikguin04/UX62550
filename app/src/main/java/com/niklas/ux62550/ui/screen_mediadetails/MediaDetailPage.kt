@@ -177,7 +177,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
             verticalAlignment = Alignment.CenterVertically
         )
         {
-            for(genre in movie.genres) {
+            for ((index, genre) in movie.genres.withIndex()) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(40.dp))
@@ -196,9 +196,11 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-                Spacer(modifier = Modifier.width(4.dp))
-                DrawLittleCircle(Modifier.size(10.dp))
-                Spacer(modifier = Modifier.weight(0.02f))
+                if (index != movie.genres.lastIndex) {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    DrawLittleCircle(Modifier.size(10.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
             }
             Spacer(modifier = Modifier.weight(0.3f))
             repeat(3) { // Needs to be changed to Where to Watch
