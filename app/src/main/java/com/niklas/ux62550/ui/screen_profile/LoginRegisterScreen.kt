@@ -36,7 +36,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 import com.niklas.ux62550.ui.theme.redColorGradient
 
 @Composable
-@Preview(showBackground = true, name = "Register and login pewview")
+@Preview(showBackground = true, name = "Register and login preview")
 fun LoginRegisterPreview() {
     val navController = rememberNavController()
     UX62550Theme (darkTheme = true, dynamicColor = false) {
@@ -90,7 +90,7 @@ fun LoginRegisterScreen (
                     )
                     Button(
                         onClick = {
-                            onNavigateToLoginScreen("Register")
+                            onNavigateToRegisterScreen("Register")
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = RegisterButtonBlue

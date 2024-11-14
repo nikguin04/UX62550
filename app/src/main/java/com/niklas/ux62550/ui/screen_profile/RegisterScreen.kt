@@ -42,19 +42,20 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 import com.niklas.ux62550.ui.theme.redColorGradient
 
 @Composable
-@Preview(showBackground = true, name = "Login preview")
-fun LoginPreview() {
+@Preview(showBackground = true, name = "Register preview")
+fun RegisterPreview() {
     val navController = rememberNavController()
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         ScreenWithGeneralNavBar(navController) {
-            LoginScreen()
+            RegisterScreen()
         }
     }
 }
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
 ) {
+    var usenameValue by remember { mutableStateOf("") }
     var emailValue by remember { mutableStateOf("") }
     var passValue by remember { mutableStateOf("") }
     //val mediaItemsViewModel: MediaItemsViewModel by viewModels()
@@ -86,14 +87,32 @@ fun LoginScreen(
                     LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)),size = figmaPxToDp_w(180f))
                 }
 
+                // USERNAME INPUT
+                TextField(
+                    modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
+                    value = usenameValue,
+                    onValueChange = { usenameValue = it },
+                    label = { Text("Username") }
+                )
+                Text(
+                    text = "Please choose an appropriate username",
+                    color = TextfieldDescColor,
+                    modifier = Modifier.align(Alignment.Start)
+                        .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
+                    style = TextStyle(fontSize = 12.sp, shadow = textShadow)
+                )
+
+                // EMAIL INPUT
+                Box (Modifier.padding(0.dp,figmaPxToDp_w(20f),0.dp,0.dp))
+
                 TextField(
                     modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
                     value = emailValue,
                     onValueChange = { emailValue = it },
-                    label = { Text("Username or Email") }
+                    label = { Text("Email") }
                 )
                 Text(
-                    text = "Input your username or email",
+                    text = "Please choose your own email",
                     color = TextfieldDescColor,
                     modifier = Modifier.align(Alignment.Start)
                         .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
@@ -102,6 +121,7 @@ fun LoginScreen(
 
                 Box (Modifier.padding(0.dp,figmaPxToDp_w(20f),0.dp,0.dp))
 
+                // PASSWORD INPUT
                 TextField(
                     modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
                     value = passValue,
@@ -109,7 +129,7 @@ fun LoginScreen(
                     label = { Text("Password") }
                 )
                 Text(
-                    text = "Input your password",
+                    text = "Please choose a safe password",
                     color = TextfieldDescColor,
                     modifier = Modifier.align(Alignment.Start)
                         .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
@@ -129,7 +149,7 @@ fun LoginScreen(
                             .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
                     ) {
                         Text(
-                            text = "Sign in",
+                            text = "Register",
                             color = Color.White,
                             style = TextStyle(fontSize = 20.sp, shadow = textShadow)
                         )

@@ -12,6 +12,7 @@ import androidx.navigation.toRoute
 import com.niklas.ux62550.ui.screen_home.HomeScreen
 import com.niklas.ux62550.ui.screen_profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.screen_profile.LoginScreen
+import com.niklas.ux62550.ui.screen_profile.RegisterScreen
 
 // Step1: define routes ✅
 
@@ -33,7 +34,6 @@ fun MainNavHost(
     onRouteChanged: (Route) -> Unit,
     modifier: Modifier
 ) {
-    ScreenWithGeneralNavBar(navController) {
         NavHost(
             navController = navController,
             startDestination = Route.HomeScreen,
@@ -63,17 +63,19 @@ fun MainNavHost(
 
                 LoginRegisterScreen(
                     onNavigateToLoginScreen = { navController.navigate(Route.LoginScreen) },
-                    onNavigateToRegisterScreen = { /*navController.navigate(Route.RegisterScreen)*/ }
+                    onNavigateToRegisterScreen = { navController.navigate(Route.RegisterScreen) }
                 )
             }
 
             composable<Route.LoginScreen> {
                 LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginScreen>()) }
-
                 LoginScreen()
             }
+            composable<Route.RegisterScreen> {
+                LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
+                RegisterScreen()
+            }
         }
-    }
 }
 
 @Composable
