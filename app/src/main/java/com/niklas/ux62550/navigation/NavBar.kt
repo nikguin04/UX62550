@@ -69,7 +69,16 @@ fun GeneralNavBar(navController: NavHostController) {
                 },
                 label = { Text(item) },
                 selected = selectedItem == index,
-                onClick = { selectedItem = index; navController.navigate<Route>(route = routes[index]) },
+                onClick = {
+                    selectedItem = index;
+                    navController.navigate<Route>(route = routes[index]) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true // This removes the start destination from the backstack
+                        }
+                        // Set launchSingleTop to prevent multiple copies of the same destination on the backstack
+                        launchSingleTop = true
+                    }
+                },
                 /*colors = NavigationBarItemColors(
                     selectedIconColor = fromToken(NavigationBarTokens.ActiveIconColor),
                     selectedTextColor = fromToken(NavigationBarTokens.ActiveLabelTextColor),
