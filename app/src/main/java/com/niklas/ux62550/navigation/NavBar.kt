@@ -7,7 +7,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -32,11 +32,11 @@ data class NavItem(
 fun GeneralNavBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf(
-        NavItem(name = "Home", icon = Icons.AutoMirrored.Filled.List, selectedIcon = Icons.AutoMirrored.Outlined.List, onNavigate = { nav -> nav.navigate(Route.HomeScreen) }),
-        NavItem(name = "Search", icon = Icons.Filled.Search, selectedIcon = Icons.Outlined.Search, onNavigate = { nav -> nav.navigate(Route.SearchScreen) }),
-        NavItem(name = "Watch", icon = Icons.Filled.Bookmark, selectedIcon = Icons.Outlined.Bookmark, onNavigate = { nav -> nav.navigate(Route.WatchScreen) }),
+        NavItem(name = "Home", icon = Icons.AutoMirrored.Outlined.List, selectedIcon = Icons.AutoMirrored.Filled.List, onNavigate = { nav -> nav.navigate(Route.HomeScreen) }),
+        NavItem(name = "Search", icon = Icons.Outlined.Search, selectedIcon = Icons.Filled.Search, onNavigate = { nav -> nav.navigate(Route.SearchScreen) }),
+        NavItem(name = "Watch", icon = Icons.Outlined.BookmarkBorder, selectedIcon = Icons.Filled.Bookmark, onNavigate = { nav -> nav.navigate(Route.WatchScreen) }),
         // TODO: Do not just route to account, instead check if user is logged in and route to profile/loginregister
-        NavItem(name = "Account", icon = Icons.Filled.AccountCircle, selectedIcon = Icons.Outlined.AccountCircle, onNavigate = { nav -> nav.navigate(Route.ProfileScreen) })
+        NavItem(name = "Account", icon = Icons.Outlined.AccountCircle, selectedIcon = Icons.Filled.AccountCircle, onNavigate = { nav -> nav.navigate(Route.ProfileScreen) })
     )
 
     NavigationBar {
