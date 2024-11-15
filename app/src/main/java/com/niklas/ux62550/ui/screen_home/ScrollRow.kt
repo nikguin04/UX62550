@@ -1,6 +1,7 @@
 package com.niklas.ux62550.ui.screen_home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import com.niklas.ux62550.models.MediaItem
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
@@ -23,7 +24,7 @@ import com.niklas.ux62550.ui.dpToPx
 import kotlin.math.roundToInt
 
 @Composable
-fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>) {
+fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>, onNavigateToMedia: (String) -> Unit) {
     val itemWidth = figmaPxToDp_w(300f) + figmaPxToDp_w(10f) *2 // width + padding*"
     val halfScreenWidth = LocalConfiguration.current.screenWidthDp.dp / 2
     val halfItemWidth = itemWidth / 2
@@ -50,7 +51,7 @@ fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>) {
                     height= figmaPxToDp_h(200f),
                     round= figmaPxToDp_w(20f),
                     color= mediaItem.tempColor,
-                    modifier = Modifier.padding(figmaPxToDp_w(10f) )
+                    modifier = Modifier.padding(figmaPxToDp_w(10f)).clickable(onClick = { onNavigateToMedia(mediaItem.name) })
                 )
             }
         }
@@ -60,7 +61,7 @@ fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>) {
 
 
 @Composable
-fun HorizontalLazyRowMoviesWithCat(modifier: Modifier = Modifier, widthFigmaPx: Float, heightFigmaPx: Float, items: List<MediaItem>) {
+fun HorizontalLazyRowMoviesWithCat(modifier: Modifier = Modifier, widthFigmaPx: Float, heightFigmaPx: Float, items: List<MediaItem>, onNavigateToMedia: (String) -> Unit) {
     // LazyRow with snapping effect
     LazyRow(
         modifier = modifier
@@ -74,12 +75,11 @@ fun HorizontalLazyRowMoviesWithCat(modifier: Modifier = Modifier, widthFigmaPx: 
                     height= figmaPxToDp_h(heightFigmaPx),
                     round= figmaPxToDp_w(5f),
                     color= mediaItem.tempColor,
-                    modifier = Modifier.padding(
-                        figmaPxToDp_w(if (index == 0) 10f else 5f),
-                            0.dp,
-                        figmaPxToDp_w(if (index == items.size-1) 10f else 5f),
-                            0.dp
-                    )
+                    modifier = Modifier
+                        .padding(
+                            figmaPxToDp_w(if (index == 0) 10f else 5f), 0.dp,
+                            figmaPxToDp_w(if (index == items.size-1) 10f else 5f), 0.dp
+                        ).clickable(onClick = { onNavigateToMedia(mediaItem.name) })
                 )
             }
         }

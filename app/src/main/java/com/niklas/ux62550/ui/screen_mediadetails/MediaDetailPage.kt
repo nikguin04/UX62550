@@ -25,6 +25,7 @@ import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -42,41 +43,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.niklas.ux62550.R
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.ui.screen_home.HorizontalLazyRowWithSnapEffect
-import com.niklas.ux62550.ui.screen_home.MediaItemsUIState
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import kotlin.time.Duration.Companion.minutes
 
 @Composable
 @Preview(showBackground = true, name = "MediaDetailPagePreview")
 fun MediaDetailPagePreview(){
-    val movie = Movie("RED: The Movie",
-            "2090",
-            3000.minutes,
-            3.5,
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
-            listOf("Action", "Dinosaur Adventure", "Hentai"),
-            13
-            )
-
-    val mediaItems = listOf(
-        MediaItem("Name 1", R.drawable.logo, Color.Blue),
-        MediaItem("Name 2", R.drawable.logo, Color.Red)
-    )
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         Surface {
-            ScreenMediaDetail(similarMedia = MediaItemsUIState.Data(mediaItems), movie = movie, onNavigateToOtherMedia = {})
+            MediaDetailsScreen(onNavigateToOtherMedia = {})
         }
     }
 }
 
 @Composable
-fun ScreenMediaDetail(modifier: Modifier = Modifier, similarMedia: MediaItemsUIState, movie: Movie, onNavigateToOtherMedia: (String) -> Unit) {
+fun MediaDetailsScreen(viewModel: MovieViewModel = viewModel(), onNavigateToOtherMedia: (String) -> Unit) {
+    val movie = viewModel.movieState.collectAsState().value
+    val similarMedia = viewModel.similarMediaState.collectAsState().value
+    MediaDetailsContent(movie = movie, similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia)
+}
+
+@Composable
+fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit) {
     Column{
         Box(
             modifier.fillMaxWidth()
@@ -256,26 +249,8 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, similarMedia: MediaItemsUIS
             )
         }
 
-
-        // Implement viewmodel
-        //val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
         Text("Movies similar to this one", modifier.padding(4.dp,0.dp,0.dp,0.dp))
-        when (similarMedia) {
-            MediaItemsUIState.Empty -> {
-                Text(
-                    text = "No MediasItems",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            is MediaItemsUIState.Data -> {
-                HorizontalLazyRowWithSnapEffect(similarMedia.mediaItems)
-            }
-            else -> {
-
-            }
-        }
-
+        HorizontalLazyRowWithSnapEffect(similarMedia, onNavigateToOtherMedia)
     }
 }
 @Composable

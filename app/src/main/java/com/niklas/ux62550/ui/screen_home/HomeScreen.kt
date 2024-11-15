@@ -135,7 +135,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                 )
             }
             is MediaItemsUIState.Data -> {
-                HorizontalLazyRowWithSnapEffect(mediaItemsUIState.mediaItems)
+                HorizontalLazyRowWithSnapEffect(mediaItemsUIState.mediaItems, onNavigateToMedia)
 
                 HorizontalDotIndexer(Modifier.size(LocalConfiguration.current.screenWidthDp.dp, 12.dp))
             }
@@ -170,7 +170,8 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                         Modifier.padding(0.dp, 0.dp),
                         155f,
                         87.19f,
-                        mediaItemsUIState.mediaItems
+                        mediaItemsUIState.mediaItems,
+                        onNavigateToMedia
                     )
                 }
 

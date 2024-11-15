@@ -9,13 +9,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.niklas.ux62550.R
-import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.models.MovieBox
 import com.niklas.ux62550.models.NonMovieBox
 import com.niklas.ux62550.ui.screen_home.HomeScreen
-import com.niklas.ux62550.ui.screen_home.MediaItemsUIState
-import com.niklas.ux62550.ui.screen_mediadetails.ScreenMediaDetail
+import com.niklas.ux62550.ui.screen_mediadetails.MediaDetailsScreen
 import com.niklas.ux62550.ui.screen_profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.screen_profile.LoginScreen
 import com.niklas.ux62550.ui.screen_profile.ProfileScreen
@@ -24,7 +21,6 @@ import com.niklas.ux62550.ui.screen_search.MovieBoxItemsUIState
 import com.niklas.ux62550.ui.screen_search.NonMovieBoxItemsUIState
 import com.niklas.ux62550.ui.screen_search.ScreenSearch
 import kotlin.collections.listOf
-import kotlin.time.Duration.Companion.minutes
 
 @Composable
 fun MainNavHost(
@@ -66,21 +62,7 @@ fun MainNavHost(
 
         composable<Route.MediaDetailsScreen> { backStackEntry ->
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>()) }
-            ScreenMediaDetail(
-                // TODO: mock data just to get navigation working
-                movie = Movie(
-                    name = backStackEntry.toRoute<Route.MediaDetailsScreen>().name,
-                    year = "2022",
-                    duration = 131.minutes,
-                    rating = 3.5,
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-                    genres = listOf("Action", "Dinosaur Adventure", "Romance"),
-                    pgRating = 18
-                ),
-                similarMedia = MediaItemsUIState.Data(listOf(
-                    MediaItem("Movie 1", R.drawable.logo, Color.Blue),
-                    MediaItem("Movie 2", R.drawable.logo, Color.Red)
-                )),
+            MediaDetailsScreen(
                 onNavigateToOtherMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
             )
         }
