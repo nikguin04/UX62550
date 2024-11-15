@@ -232,6 +232,8 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
         DescriptionText(movie.description)
 
         Text("Actors and Directors",  modifier.padding(4.dp,2.dp,0.dp,0.dp))
+        val sheetState = rememberModalBottomSheetState()
+        var showBottomSheet by remember { mutableStateOf(false) }
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -240,12 +242,64 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 Spacer(modifier = Modifier.width(4.dp))
                 DrawCircle(Modifier.size(64.dp), Color.Red)
             }
-            Spacer(modifier = Modifier.width(4.dp))
-            repeat(3) { //Needs to be made button
-                Spacer(modifier = Modifier.width(4.dp))
-                DrawLittleCircle(Modifier.size(10.dp))
+            Spacer(modifier = Modifier.width(2.dp))
+            repeat(3) { // Create clickable circles
+                Spacer(modifier = Modifier.width(2.dp))
+                IconButton(
+                    onClick = {
+                        showBottomSheet = true
+                    },
+                    modifier = Modifier.size(12.dp) // Size of the clickable button area
+                ) {
+                    DrawLittleCircle(Modifier.size(10.dp)) // Circle inside the button
+                }
+                if (showBottomSheet) {
+                    ModalBottomSheet(
+                        onDismissRequest = {
+                            showBottomSheet = false
+                        },
+                        sheetState = sheetState
+                    ) {
+                        for (i in 0..3) {
+                            Row (
+                                modifier = Modifier.padding(50.dp,0.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            )
+                            {
+
+                                DrawCircle(Modifier.size(65.dp), color=Color.Red)
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column() {
+                                    Text("Some Actor Name",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White
+                                    )
+
+                                    HorizontalDivider(
+                                        modifier = Modifier.width(130.dp).
+                                        padding(0.dp,0.dp),
+                                        thickness = 0.5.dp,
+                                        color = Color.Gray
+                                    )
+
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+                            HorizontalDivider(
+                                modifier = Modifier.fillMaxWidth().
+                                padding(110.dp,0.dp),
+                                thickness = 0.5.dp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                    }
+                }
 
             }
+
         }
         Row(
             modifier = Modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
