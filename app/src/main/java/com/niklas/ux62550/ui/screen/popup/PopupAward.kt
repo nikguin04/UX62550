@@ -62,7 +62,7 @@ fun PopupAward(movie: Movie) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
-    Scaffold(
+    Scaffold( // TODO FAT CHRISTIAN
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 text = { Text("Show bottom sheet") },
@@ -105,16 +105,6 @@ fun PopupAward(movie: Movie) {
                         color = Color.Gray
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                }
-                // Sheet content
-                Button(onClick = {
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) {
-                            showBottomSheet = false
-                        }
-                    }
-                }) {
-                    Text("Hide bottom sheet")
                 }
             }
         }
