@@ -2,6 +2,7 @@ package com.niklas.ux62550.ui.screen_mediadetails
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -243,6 +244,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
             repeat(3) { //Needs to be made button
                 Spacer(modifier = Modifier.width(4.dp))
                 DrawLittleCircle(Modifier.size(10.dp))
+
             }
         }
         Row(
@@ -269,7 +271,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                     modifier = Modifier.size(40.dp) // Set size directly on the IconButton if needed
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Add,
+                        imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
                         contentDescription = "Show bottom sheet",
                         tint = Color.White // Adjust color if necessary
                     )
@@ -314,13 +316,68 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
         ){
             //Needs to be made to a button later on
             Text("Detailed Rating", color = AwardAndDetailRating)
-            Image(
-                imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
-                modifier = Modifier.requiredSize(18.dp),
-                colorFilter = ColorFilter.tint(Color.White),
-                contentDescription = "Star icon"
-            )
+            val sheetState = rememberModalBottomSheetState()
+            var showBottomSheet by remember { mutableStateOf(false) }
+            IconButton(
+                onClick = {
+                    showBottomSheet = true
+                },
+                modifier = Modifier.size(40.dp) // Set size directly on the IconButton if needed
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
+                    contentDescription = "Show bottom sheet",
+                    tint = Color.White // Adjust color if necessary
+                )
+            }
+
+            // Show the bottom sheet
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = { showBottomSheet = false },
+                    sheetState = sheetState
+                ) {
+                    for (i in 1..4) {
+                        Row (
+                            modifier = Modifier.padding(50.dp,0.dp),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp), // Space between stars
+                            verticalAlignment = Alignment.CenterVertically
+                        )
+                        {
+
+                            Text("Category"+ i, )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Row () {
+                                for(j in 0..4)
+                                Image(
+                                    imageVector = Icons.Outlined.StarOutline,
+                                    modifier = Modifier.requiredSize(18.dp),
+                                    colorFilter = ColorFilter.tint(Color.Yellow),
+                                    contentDescription = "Star icon"
+                                )
+
+
+                                HorizontalDivider(
+                                    modifier = Modifier.width(130.dp).
+                                    padding(0.dp,0.dp),
+                                    thickness = 0.5.dp,
+                                    color = Color.Gray
+                                )
+
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(12.dp))
+                        HorizontalDivider(
+
+                            modifier = Modifier.fillMaxWidth().
+                            padding(110.dp,0.dp),
+                            thickness = 0.5.dp,
+                            color = Color.Gray)
+                }
+            }
         }
+       }
 
 
         // Implement viewmodel
