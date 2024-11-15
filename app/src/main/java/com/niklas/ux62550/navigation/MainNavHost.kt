@@ -16,6 +16,10 @@ import com.niklas.ux62550.models.NonMovieBox
 import com.niklas.ux62550.ui.screen_home.HomeScreen
 import com.niklas.ux62550.ui.screen_home.MediaItemsUIState
 import com.niklas.ux62550.ui.screen_mediadetails.ScreenMediaDetail
+import com.niklas.ux62550.ui.screen_profile.LoginRegisterScreen
+import com.niklas.ux62550.ui.screen_profile.LoginScreen
+import com.niklas.ux62550.ui.screen_profile.ProfileScreen
+import com.niklas.ux62550.ui.screen_profile.RegisterScreen
 import com.niklas.ux62550.ui.screen_search.MovieBoxItemsUIState
 import com.niklas.ux62550.ui.screen_search.NonMovieBoxItemsUIState
 import com.niklas.ux62550.ui.screen_search.ScreenSearch
@@ -35,7 +39,6 @@ fun MainNavHost(
     ) {
         composable<Route.HomeScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
-
             HomeScreen(
                 onNavigateToMedia = { name ->
                     navController.navigate(Route.MediaDetailsScreen(name))
@@ -45,7 +48,6 @@ fun MainNavHost(
 
         composable<Route.SearchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
-
             ScreenSearch(
                 // TODO: more mock data because no viewmodel >:(
                 movieBoxItemsUIState = MovieBoxItemsUIState.Data(listOf(
@@ -64,7 +66,6 @@ fun MainNavHost(
 
         composable<Route.MediaDetailsScreen> { backStackEntry ->
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>()) }
-
             ScreenMediaDetail(
                 // TODO: mock data just to get navigation working
                 movie = Movie(
@@ -83,5 +84,48 @@ fun MainNavHost(
                 onNavigateToOtherMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
             )
         }
+
+        composable<Route.LoginRegisterScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginRegisterScreen>()) }
+            LoginRegisterScreen(
+                onNavigateToLoginScreen = { navController.navigate(Route.LoginScreen) },
+                onNavigateToRegisterScreen = { navController.navigate(Route.RegisterScreen) }
+            )
+        }
+
+        composable<Route.LoginScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginScreen>()) }
+            LoginScreen()
+        }
+
+        composable<Route.RegisterScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
+            RegisterScreen()
+        }
+
+        composable<Route.ProfileScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ProfileScreen>()) }
+            ProfileScreen(onNavigateToLoginRegister = { navigateAndClearNavBackStack(navController, Route.LoginRegisterScreen) })
+        }
+
+        composable<Route.SearchScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
+            //ScreenSearch(.... wtf?)
+        }
+
+        composable<Route.WatchScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
+            //ScreenWachlist(.... wtf)
+        }
+    }
+}
+
+fun navigateAndClearNavBackStack(navController: NavHostController, route: Route) {
+    navController.navigate<Route>(route = route) {
+        popUpTo(navController.graph.id) {
+            inclusive = true // This removes the start destination from the backstack
+        }
+        // Set launchSingleTop to prevent multiple copies of the same destination on the backstack
+        launchSingleTop = true
     }
 }

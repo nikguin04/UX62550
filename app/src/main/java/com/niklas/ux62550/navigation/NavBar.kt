@@ -34,8 +34,9 @@ fun GeneralNavBar(navController: NavHostController) {
     val items = listOf(
         NavItem(name = "Home", icon = Icons.AutoMirrored.Filled.List, selectedIcon = Icons.AutoMirrored.Outlined.List, onNavigate = { nav -> nav.navigate(Route.HomeScreen) }),
         NavItem(name = "Search", icon = Icons.Filled.Search, selectedIcon = Icons.Outlined.Search, onNavigate = { nav -> nav.navigate(Route.SearchScreen) }),
-        NavItem(name = "Watch", icon = Icons.Filled.Bookmark, selectedIcon = Icons.Outlined.Bookmark, onNavigate = {}),
-        NavItem(name = "Account", icon = Icons.Filled.AccountCircle, selectedIcon = Icons.Outlined.AccountCircle, onNavigate = {})
+        NavItem(name = "Watch", icon = Icons.Filled.Bookmark, selectedIcon = Icons.Outlined.Bookmark, onNavigate = { nav -> nav.navigate(Route.WatchScreen) }),
+        // TODO: Do not just route to account, instead check if user is logged in and route to profile/loginregister
+        NavItem(name = "Account", icon = Icons.Filled.AccountCircle, selectedIcon = Icons.Outlined.AccountCircle, onNavigate = { nav -> nav.navigate(Route.ProfileScreen) })
     )
 
     NavigationBar {
