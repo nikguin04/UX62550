@@ -66,6 +66,21 @@ fun ReviewAndRatingPreview() {
 }
 
 @Composable
+fun ReviewScreen() {
+    val movie = Movie(
+        name = "RED: The Movie",
+        year = "2090",
+        duration = 3000.minutes,
+        rating = 3.5,
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
+        genres = listOf("Action", "Dinosaur Adventure", "Hentai"),
+        pgRating = 13,
+        tempColor = Color.Red
+    )
+    ScreenReviewAndRating(movie = movie)
+}
+
+@Composable
 fun ScreenReviewAndRating(movie: Movie) {
     Column {
         ReviewLayout(movie.name, movie.rating)

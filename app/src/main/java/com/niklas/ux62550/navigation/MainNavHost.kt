@@ -13,6 +13,7 @@ import com.niklas.ux62550.ui.feature.profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.feature.profile.LoginScreen
 import com.niklas.ux62550.ui.feature.profile.ProfileScreen
 import com.niklas.ux62550.ui.feature.profile.RegisterScreen
+import com.niklas.ux62550.ui.feature.review.ReviewScreen
 import com.niklas.ux62550.ui.feature.search.SearchScreen
 import com.niklas.ux62550.ui.feature.watchlist.WatchlistScreen
 
@@ -30,26 +31,28 @@ fun MainNavHost(
         composable<Route.HomeScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
             HomeScreen(
-                onNavigateToMedia = { name ->
-                    navController.navigate(Route.MediaDetailsScreen(name))
-                }
+                onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
             )
         }
 
         composable<Route.SearchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
             SearchScreen(
-                onNavigateToMedia = { name ->
-                    navController.navigate(Route.MediaDetailsScreen(name))
-                }
+                onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
             )
         }
 
         composable<Route.MediaDetailsScreen> { backStackEntry ->
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>()) }
             MediaDetailsScreen(
-                onNavigateToOtherMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
+                onNavigateToOtherMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) },
+                onNavigateToReview = { name -> navController.navigate(Route.ReviewScreen(name)) }
             )
+        }
+
+        composable<Route.ReviewScreen> { backStackEntry ->
+            LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
+            ReviewScreen()
         }
 
         composable<Route.LoginRegisterScreen> {

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.outlined.StarHalf
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.PlayCircleOutline
@@ -68,21 +69,21 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun MediaDetailPagePreview() {
     UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface {
-            MediaDetailsScreen(onNavigateToOtherMedia = {})
+            MediaDetailsScreen(onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
     }
 }
 
 @Composable
-fun MediaDetailsScreen(viewModel: MovieViewModel = viewModel(), onNavigateToOtherMedia: (String) -> Unit) {
+fun MediaDetailsScreen(viewModel: MovieViewModel = viewModel(), onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
     val movie = viewModel.movieState.collectAsState().value
     val similarMedia = viewModel.similarMediaState.collectAsState().value
-    MediaDetailsContent(movie = movie, similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia)
+    MediaDetailsContent(movie = movie, similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia, onNavigateToReview = onNavigateToReview)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit) {
+fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
     Column {
         Box(modifier = modifier.fillMaxWidth()) {
             Box(modifier = Modifier.alpha(0.5f)) {
@@ -128,46 +129,47 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
             Row(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(4.dp, 0.dp, 0.dp, 0.dp)
+                    .padding(4.dp, 0.dp, 8.dp, 0.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // var rating by remember { mutableStateOf(0) }
-                for (i in 1..5) {
-                    // val isFilled = i <= rating
-                    // val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
-                    Image(
-                        imageVector = Icons.Outlined.StarOutline,
-                        modifier = Modifier
-                            .requiredSize(18.dp),
-                        // .clickable {
-                        //     rating = i // Update rating when a star is clicked
-                        // },
-                        // colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
-                        colorFilter = ColorFilter.tint(Color.Yellow),
-                        contentDescription = "Star icon"
+                Row(
+                    modifier = Modifier.clickable(onClick = { onNavigateToReview(movie.name) }),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    for (i in 1..5) {
+                        val starIcon = when {
+                            i <= movie.rating -> Icons.Outlined.Star
+                            i <= movie.rating + 0.5 -> Icons.AutoMirrored.Outlined.StarHalf
+                            else -> Icons.Outlined.StarOutline
+                        }
+                        Image(
+                            imageVector = starIcon,
+                            modifier = Modifier.requiredSize(18.dp),
+                            colorFilter = ColorFilter.tint(Color.Yellow),
+                            contentDescription = "Rating star"
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        movie.rating.toString(),
+                        fontSize = 18.sp
                     )
                 }
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    movie.rating.toString(),
-                    fontSize = 18.sp,
-                    modifier = Modifier.weight(0.5f)
-                )
+                Spacer(modifier = Modifier.weight(1f))
                 Text(
                     movie.year,
-                    fontSize = 18.sp,
-                    modifier = Modifier.weight(0.5f)
+                    fontSize = 18.sp
                 )
+                Spacer(modifier = Modifier.weight(1f))
                 Text(
                     movie.duration.toString(),
-                    fontSize = 18.sp,
-                    modifier = Modifier.weight(0.5f)
+                    fontSize = 18.sp
                 )
+                Spacer(modifier = Modifier.weight(1f))
                 Text(
                     movie.pgRating.toString() + "+",
-                    fontSize = 18.sp,
-                    modifier = Modifier.weight(0.3f)
+                    fontSize = 18.sp
                 )
             }
 
