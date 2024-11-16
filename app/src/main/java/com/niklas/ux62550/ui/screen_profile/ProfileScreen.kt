@@ -142,25 +142,33 @@ fun ProfileScreen (
             ProfileAttribute("Display Name", nameValueTemp)
             Box(Modifier.size(0.dp, figmaPxToDp_w(15f)))
             ProfileAttribute("Email", emailValueTemp)
-            Box(Modifier.size(0.dp, figmaPxToDp_w(132f)))
+            Box(Modifier.size(0.dp, figmaPxToDp_w(100f)))
             ProfileAttribute("Password", passwordValueTemp)
-            Box(Modifier.size(0.dp, figmaPxToDp_w(85f)))
+            //Box(Modifier.size(0.dp, figmaPxToDp_w(85f)))
 
-            Button(
-                onClick = { onNavigateToLoginRegister("Sign out") },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = LoginButtonGray
-                ),
-                modifier = Modifier
-                    .size(figmaPxToDp_w(120f), figmaPxToDp_w(40f))
-                    .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+            Row (
+                modifier = Modifier.fillMaxSize().padding(0.dp,0.dp,0.dp,20.dp),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = "Sign out",
-                    color = Color.White,
-                    style = TextStyle(fontSize = 20.sp, shadow = textShadow)
-                )
+                Button(
+                    onClick = { onNavigateToLoginRegister("Sign out") },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = LoginButtonGray
+                    ),
+                    modifier = Modifier
+                        .size(figmaPxToDp_w(120f), figmaPxToDp_w(40f))
+                        .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+
+                ) {
+                    Text(
+                        text = "Sign out",
+                        color = Color.White,
+                        style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+                    )
+                }
             }
+
 
 
         }
