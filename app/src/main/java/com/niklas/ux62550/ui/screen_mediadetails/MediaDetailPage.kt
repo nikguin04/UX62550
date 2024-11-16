@@ -154,24 +154,27 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
             )
             {
 
-                var rating by remember { mutableStateOf(0) }
+               // var rating by remember { mutableStateOf(0) }
                 for(i in 1..5) {
-                    val isFilled = i <= rating
-                    val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
+                //    val isFilled = i <= rating
+                //    val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
 
                     Image(
-                        imageVector = starIcon,
+                        imageVector = Icons.Outlined.StarOutline,
+
                         modifier = Modifier
-                            .requiredSize(18.dp)
-                            .clickable {
-                                rating = i // Update rating when a star is clicked
-                            },
-                        colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
+                            .requiredSize(18.dp),
+                        colorFilter = ColorFilter.tint(Color.Yellow),
+                         //   .clickable {
+                             //   rating = i // Update rating when a star is clicked
+                       //     },
+                     //   colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
+
                         contentDescription = "Star icon"
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("$rating",
+                Text(movie.rating.toString(),
                     fontSize = 18.sp,
                     modifier = Modifier.weight(0.5f)
                 )
@@ -408,8 +411,8 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                             Spacer(modifier = Modifier.width(12.dp))
                             Row () {
                                 var rating by remember { mutableStateOf(0) }
-                                for(n in 0..4) {
-                                    val isFilled = n <= rating
+                                for(i in 1..5) {
+                                    val isFilled = i <= rating
                                     val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
 
                                     Image(
@@ -417,12 +420,17 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                                         modifier = Modifier
                                             .requiredSize(18.dp)
                                             .clickable {
-                                                rating = n // Update rating when a star is clicked
+                                                rating = i // Update rating when a star is clicked
                                             },
                                         colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
                                         contentDescription = "Star icon"
                                     )
                                 }
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("$rating",
+                                    fontSize = 18.sp,
+                                    modifier = Modifier.weight(0.5f)
+                                )
 
                                 HorizontalDivider(
                                     modifier = Modifier.width(130.dp).
