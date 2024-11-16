@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.niklas.ux62550.models.MovieBox
+import com.niklas.ux62550.models.Movie
 
 @Composable
 fun movieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
@@ -34,7 +34,7 @@ fun movieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifie
 }
 
 @Composable
-fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
+fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -47,7 +47,7 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
             width = 90.dp,
             height = 50.62.dp,
             round = 12.dp,
-            color = movieBox.tempColor,
+            color = movie.tempColor,
             modifier = Modifier.padding(end = 8.dp)
         )
 
@@ -60,7 +60,7 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
             Row {
                 Column {
                     Text(
-                        text = movieBox.name,
+                        text = movie.name,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -77,7 +77,7 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
                             contentDescription = "Star icon"
                         )
                         Text(
-                            text = movieBox.rating.toString() + "/5",
+                            text = movie.rating.toString() + "/5",
                             //text =  "3/5",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
@@ -91,7 +91,7 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = movieBox.genre,
+                    text = movie.year,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )

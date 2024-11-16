@@ -20,6 +20,7 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,9 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.niklas.ux62550.R
-import com.niklas.ux62550.models.MovieBox
-import com.niklas.ux62550.models.NonMovieBox
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.ui.theme.SeachColorForText
@@ -40,32 +39,25 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true, name = "SearchPreview")
 fun SearchPreview() {
-    val movieBoxes = listOf(
-        MovieBox("Name 1", R.drawable.logo, Color.Blue, "Movie", 3.5f),
-        MovieBox("Name 2", R.drawable.logo, Color.Red, "Series", 4.5f)
-    )
-    val nonMovieBoxes = listOf(
-        NonMovieBox("someActor", R.drawable.logo, Color.Yellow, "Movie"),
-        NonMovieBox("someGenre", R.drawable.logo, Color.Green, "Series")
-    )
-
-    UX62550Theme (darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenSearch(
-                movieBoxItemsUIState = MovieBoxItemsUIState.Data(movieBoxes),
-                nonMovieBoxItemsUIState = NonMovieBoxItemsUIState.Data(nonMovieBoxes),
-                onNavigateToMedia = {}
-            )
+            SearchScreen(onNavigateToMedia = {})
         }
     }
 }
 
+@Composable
+fun SearchScreen(viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
+    val nonMoviesState = viewModel.nonMoviesState.collectAsState().value
+    val moviesState = viewModel.moviesState.collectAsState().value
+    SearchContent(movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenSearch(
+fun SearchContent(
     modifier: Modifier = Modifier,
-    movieBoxItemsUIState: MovieBoxItemsUIState,
+    movieItemsUIState: MovieItemsUIState,
     nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
     onNavigateToMedia: (String) -> Unit
 ) {
@@ -212,8 +204,8 @@ fun ScreenSearch(
 
 
 
-        when (movieBoxItemsUIState) {
-            MovieBoxItemsUIState.Empty -> {
+        when (movieItemsUIState) {
+            MovieItemsUIState.Empty -> {
                 Text(
                     text = "No movies to be found",
                     fontSize = 20.sp,
@@ -221,12 +213,12 @@ fun ScreenSearch(
                     color = SeachColorForText
                 )
             }
-            is MovieBoxItemsUIState.Data -> {
+            is MovieItemsUIState.Data -> {
                 // Display list of movie items in LazyColumn
                 LazyColumn(modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally) {
                     var FirstTimeRun = 0;
-                    items(movieBoxItemsUIState.movieBoxes) { movieBoxItem ->
+                    items(movieItemsUIState.movies) { movieBoxItem ->
                         if(FirstTimeRun == 0){
                             FirstTimeRun = 1;
                         } else {
@@ -239,7 +231,7 @@ fun ScreenSearch(
                             )
                         }
                         MovieBoxRow(
-                            movieBox = movieBoxItem,
+                            movie = movieBoxItem,
                             modifier = Modifier.clickable(
                                 onClick = { onNavigateToMedia(movieBoxItem.name) }
                             )

@@ -46,7 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.R
-import com.niklas.ux62550.models.MovieBox
+import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.models.NonMovieBox
@@ -55,6 +55,7 @@ import com.niklas.ux62550.ui.screen_review.ScreenReviewAndRating
 import com.niklas.ux62550.ui.screen_search.MovieBoxRow
 import com.niklas.ux62550.ui.theme.SeachColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import kotlin.time.Duration.Companion.minutes
 import org.jetbrains.annotations.ApiStatus.OverrideOnly
 
 
@@ -62,8 +63,8 @@ import org.jetbrains.annotations.ApiStatus.OverrideOnly
 @Preview(showBackground = true, name = "SearchPreview")
 fun WachlistPreview() {
     val movieBoxes = listOf(
-        MovieBox("Name 1", R.drawable.logo, Color.Blue, "Movie", 3.5f),
-        MovieBox("Name 2", R.drawable.logo, Color.Red, "Series", 4.5f)
+        Movie("Name 1", "2000", 90.minutes, 3.5, "N/A", listOf(), 13, Color.Blue),
+        Movie("Name 2", "2000", 90.minutes, 4.5, "N/A", listOf(), 13, Color.Red)
     )
 
     UX62550Theme (darkTheme = true, dynamicColor = false) {
@@ -171,7 +172,7 @@ fun ScreenWachlist(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBox
                 // Display list of movie items in LazyColumn
                 LazyColumn(modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally) {
-                    items(movieBoxItemsUIState.movieBoxes) { movieBoxItem ->
+                    items(movieBoxItemsUIState.movies) { movieBoxItem ->
                         HorizontalDivider(
                             color = SeachColorForText,
                             thickness = 1.dp,
@@ -179,7 +180,7 @@ fun ScreenWachlist(modifier: Modifier = Modifier, movieBoxItemsUIState: MovieBox
                                 .padding(horizontal = 16.dp)
                                 .fillMaxWidth(0.7f)
                         )
-                        MovieBoxRow(movieBox = movieBoxItem)
+                        MovieBoxRow(movie = movieBoxItem)
                     }
                 }
             }

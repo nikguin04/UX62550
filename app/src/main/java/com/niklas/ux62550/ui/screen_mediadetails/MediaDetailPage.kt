@@ -89,7 +89,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
             ) {
                 Box(
                     Modifier
-                        .background(Color.Blue)
+                        .background(movie.tempColor)
                         .fillMaxWidth()
                         .aspectRatio(16f / 9f))
                 Image(

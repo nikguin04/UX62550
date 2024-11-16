@@ -56,7 +56,8 @@ fun ReviewAndRatingPreview(){
         3.5,
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
         listOf("Action", "Dinosaur Adventure", "Hentai"),
-        13
+        13,
+        Color.Red
     )
     UX62550Theme (darkTheme = true, dynamicColor = false) {
         Surface {

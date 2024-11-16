@@ -17,10 +17,11 @@ class MovieViewModel : ViewModel() {
         rating = 3.5,
         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
         genres = listOf("Action", "Dinosaur Adventure", "Romance"),
-        pgRating = 18
+        pgRating = 18,
+        tempColor = Color.Red
     )
 
-    private val similarMedia: List<MediaItem> = listOf(
+    private val similarMedia = listOf(
         MediaItem("Name 1", R.drawable.logo, Color.Blue),
         MediaItem("Name 2", R.drawable.logo, Color.Red),
         MediaItem("Name 3", R.drawable.logo, Color.Green),

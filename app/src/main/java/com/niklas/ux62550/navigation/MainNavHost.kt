@@ -3,24 +3,17 @@ package com.niklas.ux62550.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.niklas.ux62550.R
-import com.niklas.ux62550.models.MovieBox
-import com.niklas.ux62550.models.NonMovieBox
 import com.niklas.ux62550.ui.screen_home.HomeScreen
 import com.niklas.ux62550.ui.screen_mediadetails.MediaDetailsScreen
 import com.niklas.ux62550.ui.screen_profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.screen_profile.LoginScreen
 import com.niklas.ux62550.ui.screen_profile.ProfileScreen
 import com.niklas.ux62550.ui.screen_profile.RegisterScreen
-import com.niklas.ux62550.ui.screen_search.MovieBoxItemsUIState
-import com.niklas.ux62550.ui.screen_search.NonMovieBoxItemsUIState
-import com.niklas.ux62550.ui.screen_search.ScreenSearch
-import kotlin.collections.listOf
+import com.niklas.ux62550.ui.screen_search.SearchScreen
 
 @Composable
 fun MainNavHost(
@@ -43,17 +36,8 @@ fun MainNavHost(
         }
 
         composable<Route.SearchScreen> {
-            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
-            ScreenSearch(
-                // TODO: more mock data because no viewmodel >:(
-                movieBoxItemsUIState = MovieBoxItemsUIState.Data(listOf(
-                    MovieBox("Name 1", R.drawable.logo, Color.Blue, "Movie", 3.5f),
-                    MovieBox("Name 2", R.drawable.logo, Color.Red, "Series", 4.5f)
-                )),
-                nonMovieBoxItemsUIState = NonMovieBoxItemsUIState.Data(listOf(
-                    NonMovieBox("someActor", R.drawable.logo, Color.Yellow, "Movie"),
-                    NonMovieBox("someGenre", R.drawable.logo, Color.Green, "Series")
-                )),
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
+            SearchScreen(
                 onNavigateToMedia = { name ->
                     navController.navigate(Route.MediaDetailsScreen(name))
                 }
@@ -88,11 +72,6 @@ fun MainNavHost(
         composable<Route.ProfileScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ProfileScreen>()) }
             ProfileScreen(onNavigateToLoginRegister = { navController.navigateAndClearBackStack(Route.LoginRegisterScreen) })
-        }
-
-        composable<Route.SearchScreen> {
-            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
-            //ScreenSearch(.... wtf?)
         }
 
         composable<Route.WatchScreen> {
