@@ -33,11 +33,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.models.figmaPxToDp_w
-import com.niklas.ux62550.ui.theme.SeachColorForText
+import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true, name = "SearchPreview")
+@Preview(showBackground = true)
 fun SearchPreview() {
     UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface(modifier = Modifier.fillMaxSize()) {
@@ -61,15 +61,14 @@ fun SearchContent(
     nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
     onNavigateToMedia: (String) -> Unit
 ) {
-    Column(modifier.padding()) {
+    Column(modifier = modifier.padding()) {
         Row(
-            modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(figmaPxToDp_w(0f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(17.5f)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            //LogoBox(size= figmaPxToDp_w(50f))
             SearchBar(
                 inputField = {
                     var text = ""
@@ -79,7 +78,13 @@ fun SearchContent(
                         onSearch = { expanded = false },
                         expanded = expanded,
                         onExpandedChange = { expanded = it },
-                        placeholder = { Text(text = "Search", color = Color(0xFF707070), fontSize = 12.sp) },
+                        placeholder = {
+                            Text(
+                                text = "Search",
+                                color = Color(0xFF707070),
+                                fontSize = 12.sp
+                            )
+                        },
                         leadingIcon = {
                             Image( //Needs to be made button
                                 imageVector = Icons.Filled.Search,
@@ -95,19 +100,16 @@ fun SearchContent(
                 expanded = false,
                 onExpandedChange = {},
                 content = {},
-
-                modifier = Modifier.padding(0.dp,0.dp,0.dp,20.dp)
+                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp)
             )
         }
 
-
         Column(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HorizontalDivider(
-                color = SeachColorForText,
+                color = SearchColorForText,
                 thickness = 1.dp,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -119,13 +121,12 @@ fun SearchContent(
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Normal,
-                    //fontFamily = "Roboto",
-                    color = SeachColorForText
+                    color = SearchColorForText
                 )
             )
 
             HorizontalDivider(
-                color = SeachColorForText,
+                color = SearchColorForText,
                 thickness = 1.dp,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -133,29 +134,30 @@ fun SearchContent(
             )
         }
 
-
-        // Implement viewmodel
-        //val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
+        // Implement ViewModel
         when (nonMovieBoxItemsUIState) {
             NonMovieBoxItemsUIState.Empty -> {
                 Text(
                     text = "No movies to be found",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = SeachColorForText
+                    color = SearchColorForText
                 )
             }
+
             is NonMovieBoxItemsUIState.Data -> {
                 // Display list of movie items in LazyColumn
-                LazyColumn(modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally) {
-                    var FirstTimeRun = 0;
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    var putDivider = false;
                     items(nonMovieBoxItemsUIState.nonMovieBoxes) { nonMovieBoxItem ->
-                        if(FirstTimeRun == 0){
-                            FirstTimeRun = 1;
+                        if (!putDivider) {
+                            putDivider = true;
                         } else {
                             HorizontalDivider(
-                                color = SeachColorForText,
+                                color = SearchColorForText,
                                 thickness = 1.dp,
                                 modifier = Modifier
                                     .padding(horizontal = 16.dp)
@@ -164,19 +166,16 @@ fun SearchContent(
                         }
                         NonMovieBoxRow(nonMovieBox = nonMovieBoxItem)
                     }
-
                 }
             }
         }
 
-
         Column(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HorizontalDivider(
-                color = SeachColorForText,
+                color = SearchColorForText,
                 thickness = 1.dp,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -188,21 +187,18 @@ fun SearchContent(
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Normal,
-                    color = SeachColorForText,
+                    color = SearchColorForText,
                 )
             )
 
             HorizontalDivider(
-                color = SeachColorForText,
+                color = SearchColorForText,
                 thickness = 1.dp,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .fillMaxWidth(0.7f)
             )
-
         }
-
-
 
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
@@ -210,20 +206,23 @@ fun SearchContent(
                     text = "No movies to be found",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = SeachColorForText
+                    color = SearchColorForText
                 )
             }
+
             is MovieItemsUIState.Data -> {
                 // Display list of movie items in LazyColumn
-                LazyColumn(modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    var FirstTimeRun = 0;
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    var putDivider = false;
                     items(movieItemsUIState.movies) { movieBoxItem ->
-                        if(FirstTimeRun == 0){
-                            FirstTimeRun = 1;
+                        if (!putDivider) {
+                            putDivider = true;
                         } else {
                             HorizontalDivider(
-                                color = SeachColorForText,
+                                color = SearchColorForText,
                                 thickness = 1.dp,
                                 modifier = Modifier
                                     .padding(horizontal = 16.dp)
@@ -240,6 +239,5 @@ fun SearchContent(
                 }
             }
         }
-
     }
 }

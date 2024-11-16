@@ -45,6 +45,6 @@ class MediaItemsViewModel : ViewModel() {
 }
 
 sealed class MediaItemsUIState {
-    data object Empty: MediaItemsUIState()
-    data class Data(val mediaItems: List<MediaItem>): MediaItemsUIState()
+    data object Empty : MediaItemsUIState()
+    data class Data(val mediaItems: List<MediaItem>) : MediaItemsUIState()
 }

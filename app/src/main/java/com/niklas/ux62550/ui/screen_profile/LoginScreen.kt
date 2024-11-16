@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,14 +33,14 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.ui.screen_home.LogoBox
 import com.niklas.ux62550.ui.theme.RegisterButtonBlue
-import com.niklas.ux62550.ui.theme.TextfieldDescColor
+import com.niklas.ux62550.ui.theme.TextFieldDescColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import com.niklas.ux62550.ui.theme.redColorGradient
+import com.niklas.ux62550.ui.theme.RedColorGradient
 
 @Composable
 @Preview(showBackground = true, name = "Login preview")
 fun LoginPreview() {
-    UX62550Theme (darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface {
             LoginScreen()
         }
@@ -49,8 +48,7 @@ fun LoginPreview() {
 }
 
 @Composable
-fun LoginScreen(
-) {
+fun LoginScreen() {
     var emailValue by remember { mutableStateOf("") }
     var passValue by remember { mutableStateOf("") }
     //val mediaItemsViewModel: MediaItemsViewModel by viewModels()
@@ -59,81 +57,78 @@ fun LoginScreen(
         modifier = Modifier.fillMaxSize()
         //color = Color_background,
     ) {
-        val content: @Composable (PaddingValues) -> Unit = {}
-            Box {
-                Box(
+        Box {
+            Box(
+                modifier = Modifier
+                    .size(
+                        LocalConfiguration.current.screenWidthDp.dp,
+                        LocalConfiguration.current.screenWidthDp.dp / 3 * 2
+                    )
+                    .background(Brush.verticalGradient(colorStops = RedColorGradient))
+            )
+        }
+
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(
+                modifier = Modifier.padding(0.dp, figmaPxToDp_w(164f), 0.dp, figmaPxToDp_w(20f)).fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = figmaPxToDp_w(180f))
+            }
+
+            TextField(
+                modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
+                value = emailValue,
+                onValueChange = { emailValue = it },
+                label = { Text("Username or Email") }
+            )
+            Text(
+                text = "Input your username or email",
+                color = TextFieldDescColor,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
+                style = TextStyle(fontSize = 12.sp, shadow = textShadow)
+            )
+
+            Box(Modifier.padding(0.dp, figmaPxToDp_w(20f), 0.dp, 0.dp))
+
+            TextField(
+                modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
+                value = passValue,
+                onValueChange = { passValue = it },
+                label = { Text("Password") }
+            )
+            Text(
+                text = "Input your password",
+                color = TextFieldDescColor,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
+                style = TextStyle(fontSize = 12.sp, shadow = textShadow)
+            )
+
+            Box(
+                modifier = Modifier.align(Alignment.End).padding(figmaPxToDp_w(15f), 0.dp)
+            ) {
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RegisterButtonBlue
+                    ),
                     modifier = Modifier
-                        .size(
-                            LocalConfiguration.current.screenWidthDp.dp,
-                            LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                        )
-                        .background(Brush.verticalGradient(colorStops = redColorGradient))
-                )
-
+                        .size(figmaPxToDp_w(120f), figmaPxToDp_w(40f))
+                        .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+                ) {
+                    Text(
+                        text = "Sign in",
+                        color = Color.White,
+                        style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+                    )
+                }
             }
 
-
-            Column (modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Row(
-                    modifier = Modifier.padding(0.dp, figmaPxToDp_w(164f), 0.dp, figmaPxToDp_w(20f))
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)),size = figmaPxToDp_w(180f))
-                }
-
-                TextField(
-                    modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
-                    value = emailValue,
-                    onValueChange = { emailValue = it },
-                    label = { Text("Username or Email") }
-                )
-                Text(
-                    text = "Input your username or email",
-                    color = TextfieldDescColor,
-                    modifier = Modifier.align(Alignment.Start)
-                        .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
-                    style = TextStyle(fontSize = 12.sp, shadow = textShadow)
-                )
-
-                Box (Modifier.padding(0.dp,figmaPxToDp_w(20f),0.dp,0.dp))
-
-                TextField(
-                    modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
-                    value = passValue,
-                    onValueChange = { passValue = it },
-                    label = { Text("Password") }
-                )
-                Text(
-                    text = "Input your password",
-                    color = TextfieldDescColor,
-                    modifier = Modifier.align(Alignment.Start)
-                        .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
-                    style = TextStyle(fontSize = 12.sp, shadow = textShadow)
-                )
-
-                Box(
-                    modifier = Modifier.align(Alignment.End).padding(figmaPxToDp_w(15f), 0.dp)
-                ) {
-                    Button(
-                        onClick = { },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = RegisterButtonBlue
-                        ),
-                        modifier = Modifier
-                            .size(figmaPxToDp_w(120f), figmaPxToDp_w(40f))
-                            .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-                    ) {
-                        Text(
-                            text = "Sign in",
-                            color = Color.White,
-                            style = TextStyle(fontSize = 20.sp, shadow = textShadow)
-                        )
-                    }
-                }
-
-
-                Box(modifier = Modifier.size(0.dp,figmaPxToDp_w(142f))) { }
-            }
+            Box(modifier = Modifier.size(0.dp, figmaPxToDp_w(142f)))
+        }
     }
 }

@@ -10,23 +10,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -39,20 +35,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.models.figmaPxToDp_w
-import com.niklas.ux62550.ui.screen_home.LogoBox
 import com.niklas.ux62550.ui.screen_mediadetails.DrawCircle
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.ProfileBtnRed
-import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import com.niklas.ux62550.ui.theme.placeholderIconColor
-import com.niklas.ux62550.ui.theme.redColorGradient
+import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.starYellow
 
 @Composable
 @Preview(showBackground = true, name = "Profile preview")
 fun ProfilePreview() {
-    UX62550Theme (darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface {
             ProfileScreen(onNavigateToLoginRegister = {})
         }
@@ -60,7 +54,7 @@ fun ProfilePreview() {
 }
 
 @Composable
-fun ProfileScreen (
+fun ProfileScreen(
     onNavigateToLoginRegister: (String) -> Unit,
     //profileViewModel: ProfileViewModel = viewModel()
 ) {
@@ -74,7 +68,6 @@ fun ProfileScreen (
         modifier = Modifier.fillMaxSize()
         //color = Color_background,
     ) {
-        val content: @Composable (PaddingValues) -> Unit = {}
         Box {
             Box(
                 modifier = Modifier
@@ -82,21 +75,21 @@ fun ProfileScreen (
                         LocalConfiguration.current.screenWidthDp.dp,
                         LocalConfiguration.current.screenWidthDp.dp / 3 * 2
                     )
-                    .background(Brush.verticalGradient(colorStops = redColorGradient))
+                    .background(Brush.verticalGradient(colorStops = RedColorGradient))
             )
         }
-
 
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(Modifier.size(0.dp, figmaPxToDp_w(58f)))
+            Box(modifier = Modifier.size(0.dp, figmaPxToDp_w(58f)))
 
             // Profile name and picture
-            Row (Modifier.fillMaxWidth().padding(figmaPxToDp_w(14f), 0.dp), Arrangement.End) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(figmaPxToDp_w(14f), 0.dp), Arrangement.End) {
                 Column {
-                    Box() {
+                    Box {
                         DrawCircle(Modifier.size(figmaPxToDp_w(93f)), color = placeholderIconColor)
 
                         Box(Modifier.padding(figmaPxToDp_w((93 - 24) / 2f))) {
@@ -110,19 +103,38 @@ fun ProfileScreen (
 
                     }
 
-                    Text(text = "Profile Name", style = TextStyle( fontSize = 12.sp, shadow = textShadow),
-                        modifier = Modifier.align(Alignment.CenterHorizontally).padding(0.dp,4.dp,0.dp,0.dp))
+                    Text(
+                        text = "Profile Name",
+                        style = TextStyle(fontSize = 12.sp, shadow = textShadow),
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(0.dp, 4.dp, 0.dp, 0.dp)
+                    )
                 }
             }
 
             // Your top rated movies??
             Box(Modifier.size(0.dp, figmaPxToDp_w(20f)))
-            Text(text = "Your Top Rated Movies", style = TextStyle( fontSize = 20.sp, shadow = textShadow),
-                modifier = Modifier.padding(figmaPxToDp_w(16f),0.dp,0.dp,0.dp).align(Alignment.Start))
+            Text(
+                text = "Your Top Rated Movies",
+                style = TextStyle(fontSize = 20.sp, shadow = textShadow),
+                modifier = Modifier
+                    .padding(figmaPxToDp_w(16f), 0.dp, 0.dp, 0.dp)
+                    .align(Alignment.Start)
+            )
 
-            Row (modifier = Modifier.fillMaxWidth().padding(0.dp,figmaPxToDp_w(10f),0.dp,0.dp), horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Red: The Movie", style = TextStyle( fontSize = 12.sp, shadow = textShadow),
-                    modifier = Modifier.padding(figmaPxToDp_w(16f),0.dp,0.dp,0.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, figmaPxToDp_w(10f), 0.dp, 0.dp),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Red: The Movie",
+                    style = TextStyle(fontSize = 12.sp, shadow = textShadow),
+                    modifier = Modifier.padding(figmaPxToDp_w(16f), 0.dp, 0.dp, 0.dp)
+                )
                 Box(Modifier.size(figmaPxToDp_w(12f), 0.dp))
                 for (i in 0..4) {
                     Icon(
@@ -132,12 +144,18 @@ fun ProfileScreen (
                         tint = starYellow
                     )
                 }
-                Text(text = "5/5", style = TextStyle( fontSize = 13.sp, shadow = textShadow, fontWeight = FontWeight.Bold),
-                    modifier = Modifier.padding(figmaPxToDp_w(4f),0.dp,0.dp,0.dp))
+                Text(
+                    text = "5/5",
+                    style = TextStyle(
+                        fontSize = 13.sp,
+                        shadow = textShadow,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier.padding(figmaPxToDp_w(4f), 0.dp, 0.dp, 0.dp)
+                )
             }
 
             // Profile data
-
             Box(Modifier.size(0.dp, figmaPxToDp_w(28f)))
             ProfileAttribute("Display Name", nameValueTemp)
             Box(Modifier.size(0.dp, figmaPxToDp_w(15f)))
@@ -146,8 +164,10 @@ fun ProfileScreen (
             ProfileAttribute("Password", passwordValueTemp)
             //Box(Modifier.size(0.dp, figmaPxToDp_w(85f)))
 
-            Row (
-                modifier = Modifier.fillMaxSize().padding(0.dp,0.dp,0.dp,20.dp),
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp, 0.dp, 0.dp, 20.dp),
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -159,7 +179,6 @@ fun ProfileScreen (
                     modifier = Modifier
                         .size(figmaPxToDp_w(120f), figmaPxToDp_w(40f))
                         .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-
                 ) {
                     Text(
                         text = "Sign out",
@@ -168,26 +187,25 @@ fun ProfileScreen (
                     )
                 }
             }
-
-
-
         }
     }
 }
 
 @Composable
 fun ProfileAttribute(label: String, value: MutableState<String>) {
-    Row (Modifier.fillMaxWidth(), Arrangement.Start, Alignment.CenterVertically) {
+    Row(Modifier.fillMaxWidth(), Arrangement.Start, Alignment.CenterVertically) {
         TextField(
             value = value.value,
-            modifier = Modifier.size(figmaPxToDp_w(244f), figmaPxToDp_w(43f)).padding(figmaPxToDp_w(14f),0.dp,0.dp,0.dp),
+            modifier = Modifier
+                .size(figmaPxToDp_w(244f), figmaPxToDp_w(43f))
+                .padding(figmaPxToDp_w(14f), 0.dp, 0.dp, 0.dp),
             onValueChange = { value.value = it },
             label = { Text(text = label) },
             textStyle = TextStyle(fontSize = 15.sp)
         )
         Box(Modifier.size(figmaPxToDp_w(19f), 0.dp))
         Button(
-            onClick = { },
+            onClick = {},
             colors = ButtonDefaults.buttonColors(
                 containerColor = ProfileBtnRed
             ),

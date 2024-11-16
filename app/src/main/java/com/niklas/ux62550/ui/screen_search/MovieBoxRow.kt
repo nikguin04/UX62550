@@ -27,9 +27,13 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.models.Movie
 
 @Composable
-fun movieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
+fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier.clip(RoundedCornerShape(round)).background(color).size(width, height).padding()
+        modifier = modifier
+            .clip(RoundedCornerShape(round))
+            .background(color)
+            .size(width, height)
+            .padding()
     )
 }
 
@@ -39,21 +43,16 @@ fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
-        //.background(Color.White, shape= RoundedCornerShape(8.dp))
-        //.padding(8.dp)
     ) {
-
-        movieBoxMoviePicture(
+        MovieBoxMoviePicture(
             width = 90.dp,
             height = 50.62.dp,
             round = 12.dp,
             color = movie.tempColor,
             modifier = Modifier.padding(end = 8.dp)
         )
-
-        Column (
+        Column(
             modifier = Modifier
-                //.fillMaxWidth()
                 .align(Alignment.CenterVertically)
                 .padding(start = 16.dp)
         ) {
@@ -64,11 +63,11 @@ fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Row (
+                    Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
-                    ){
-                        Image( //Needs to be made button
+                    ) {
+                        Image( // Needs to be made button
                             imageVector = Icons.Filled.Star,
                             modifier = Modifier.requiredSize(18.dp),
                             colorFilter = ColorFilter.tint(Color.Yellow),
@@ -76,12 +75,10 @@ fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
                         )
                         Text(
                             text = movie.rating.toString() + "/5",
-                            //text =  "3/5",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
-
                 }
                 Text(
                     text = " · ",

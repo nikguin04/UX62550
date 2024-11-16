@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -33,12 +32,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.niklas.ux62550.navigation.GeneralNavBar
 import com.niklas.ux62550.navigation.MainNavHost
-import com.niklas.ux62550.ui.screen_home.MediaItemsViewModel
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 class MainActivity : ComponentActivity() {
-    private val mediaItemsViewModel: MediaItemsViewModel by viewModels()
-
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

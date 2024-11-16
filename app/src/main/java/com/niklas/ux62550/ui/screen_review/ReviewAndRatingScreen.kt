@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,17 +41,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.models.Movie
-import com.niklas.ux62550.ui.screen_profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
 
-
 @Composable
 @Preview(showBackground = true, name = "ReviewAndRatingPreview")
-fun ReviewAndRatingPreview(){
-    val movie = Movie("RED: The Movie",
+fun ReviewAndRatingPreview() {
+    val movie = Movie(
+        "RED: The Movie",
         "2090",
         3000.minutes,
         3.5,
@@ -59,8 +59,8 @@ fun ReviewAndRatingPreview(){
         13,
         Color.Red
     )
-    UX62550Theme (darkTheme = true, dynamicColor = false) {
-        Surface {
+    UX62550Theme(darkTheme = true, dynamicColor = false) {
+        Surface(modifier = Modifier.fillMaxSize()) {
             ScreenReviewAndRating(movie = movie)
         }
     }
@@ -76,8 +76,8 @@ fun ScreenReviewAndRating(movie: Movie) {
 }
 
 @Composable
-fun ReviewLayout(MovieTitle: String, MovieRating: Double){
-    Box(){
+fun ReviewLayout(movieTitle: String, movieRating: Double) {
+    Box {
         Image(
             Icons.AutoMirrored.Outlined.ArrowBack,
             modifier = Modifier
@@ -86,41 +86,43 @@ fun ReviewLayout(MovieTitle: String, MovieRating: Double){
             colorFilter = ColorFilter.tint(Color.White),
             contentDescription = "Arrow back"
         )
-        Box(Modifier.alpha(0.3f)) {
+        Box(modifier = Modifier.alpha(0.3f)) {
             Box(
-                Modifier
+                modifier = Modifier
                     .background(Color.Red)
                     .fillMaxWidth()
-                    .height(230.dp))
+                    .height(230.dp)
+            )
         }
         ReviewText()
-        TitleText(MovieTitle)
+        TitleText(movieTitle)
         Row(
-            modifier = Modifier.align(Alignment.BottomCenter).
-            padding(0.dp,186.dp,0.dp,0.dp),
-            verticalAlignment = Alignment.CenterVertically,
-
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(0.dp, 186.dp, 0.dp, 0.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             for (i in 0..4) {
                 Icon(
                     imageVector = Icons.Outlined.StarOutline,
                     contentDescription = "Star icon",
                     tint = ReviewColor,
-                    modifier = Modifier
-                        .requiredSize(54.dp)
+                    modifier = Modifier.requiredSize(54.dp)
                 )
             }
-            Text(MovieRating.toString() + "/5",
+            Text(
+                text = "$movieRating/5",
                 style = TextStyle(
                     fontSize = 34.sp,
                     fontWeight = FontWeight.Bold
                 ),
                 color = Color.White,
-                modifier = Modifier.padding(4.dp,0.dp,0.dp,0.dp)
+                modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
             )
         }
     }
 }
+
 @Composable
 fun PublishReview() {
     var text by remember { mutableStateOf("") }
@@ -134,7 +136,8 @@ fun PublishReview() {
             .padding(20.dp, 10.dp),
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedContainerColor = TextFieldColor,
-            focusedContainerColor = TextFieldColor),
+            focusedContainerColor = TextFieldColor
+        ),
         label = { Text("Write a review with accordance to the rating") },
         textStyle = TextStyle(
             fontSize = 12.sp,
@@ -142,31 +145,27 @@ fun PublishReview() {
         )
     )
     Box(
-        modifier = Modifier.fillMaxWidth()
-            .padding(0.dp,10.dp),
+        modifier = Modifier.fillMaxWidth().padding(0.dp, 10.dp),
         contentAlignment = Alignment.Center
-    ){
-        Button(onClick = {
-            TODO("functionality")
-        },
-            modifier = Modifier
-                .width(150.dp),
+    ) {
+        Button(
+            onClick = { TODO("functionality") },
+            modifier = Modifier.width(150.dp),
             colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
         ) {
             Text("Publish", color = Color.White)
         }
     }
 }
-    // Button
 
 @Composable
-fun MoreDetailedReview(){
+fun MoreDetailedReview() {
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            "More detailed review",
+            text = "More detailed review",
             color = ReviewColor,
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
@@ -174,18 +173,19 @@ fun MoreDetailedReview(){
         )
     }
     Row(
-        modifier = Modifier.fillMaxWidth()
-            .padding(30.dp,6.dp),
+        modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
         verticalAlignment = Alignment.CenterVertically,
-    ){
-        Text("Music:",
+    ) {
+        Text(
+            text = "Music:",
             color = Color.White,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
-        for(i in 0..4) {
-            Image( //Needs to be made button
+        for (i in 0..4) {
+            Image(
+                // Needs to be made button
                 imageVector = Icons.Outlined.StarOutline,
                 modifier = Modifier.requiredSize(34.dp),
                 colorFilter = ColorFilter.tint(Color.Yellow),
@@ -195,18 +195,19 @@ fun MoreDetailedReview(){
         }
     }
     Row(
-        modifier = Modifier.fillMaxWidth()
-            .padding(30.dp,6.dp),
+        modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
         verticalAlignment = Alignment.CenterVertically,
-    ){
-        Text("Plot:",
+    ) {
+        Text(
+            text = "Plot:",
             color = Color.White,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
-        for(i in 0..4) {
-            Image( //Needs to be made button
+        for (i in 0..4) {
+            Image(
+                // Needs to be made button
                 imageVector = Icons.Outlined.StarOutline,
                 modifier = Modifier.requiredSize(34.dp),
                 colorFilter = ColorFilter.tint(Color.Yellow),
@@ -216,18 +217,19 @@ fun MoreDetailedReview(){
         }
     }
     Row(
-        modifier = Modifier.fillMaxWidth()
-            .padding(30.dp,6.dp),
+        modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
         verticalAlignment = Alignment.CenterVertically,
-    ){
-        Text("Acting:",
+    ) {
+        Text(
+            text = "Acting:",
             color = Color.White,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
-        for(i in 0..4) {
-            Image( //Needs to be made button
+        for (i in 0..4) {
+            Image(
+                // Needs to be made button
                 imageVector = Icons.Outlined.StarOutline,
                 modifier = Modifier.requiredSize(34.dp),
                 colorFilter = ColorFilter.tint(Color.Yellow),
@@ -237,18 +239,19 @@ fun MoreDetailedReview(){
         }
     }
     Row(
-        modifier = Modifier.fillMaxWidth()
-            .padding(30.dp,6.dp),
+        modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
         verticalAlignment = Alignment.CenterVertically,
-    ){
-        Text("Directing:",
+    ) {
+        Text(
+            text = "Directing:",
             color = Color.White,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
-        for(i in 0..4) {
-            Image( //Needs to be made button
+        for (i in 0..4) {
+            Image(
+                // Needs to be made button
                 imageVector = Icons.Outlined.StarOutline,
                 modifier = Modifier.requiredSize(34.dp),
                 colorFilter = ColorFilter.tint(Color.Yellow),
@@ -258,9 +261,11 @@ fun MoreDetailedReview(){
         }
     }
 }
+
 @Composable
 fun ReviewText() {
-    Text("Write a review for",
+    Text(
+        text = "Write a review for",
         style = TextStyle(
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
@@ -270,14 +275,16 @@ fun ReviewText() {
             textAlign = TextAlign.Center,
             color = ReviewColor
         ),
-        modifier = Modifier.
-            fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(0.dp, 90.dp, 0.dp, 0.dp),
     )
 }
+
 @Composable
 fun TitleText(movieTitle: String) {
-    Text(movieTitle,
+    Text(
+        text = movieTitle,
         style = TextStyle(
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold,

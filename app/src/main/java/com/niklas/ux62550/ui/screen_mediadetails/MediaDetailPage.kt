@@ -36,6 +36,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -66,8 +67,8 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
 @Preview(showBackground = true, name = "MediaDetailPagePreview")
-fun MediaDetailPagePreview(){
-    UX62550Theme (darkTheme = true, dynamicColor = false) {
+fun MediaDetailPagePreview() {
+    UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface {
             MediaDetailsScreen(onNavigateToOtherMedia = {})
         }
@@ -84,28 +85,28 @@ fun MediaDetailsScreen(viewModel: MovieViewModel = viewModel(), onNavigateToOthe
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit) {
-    Column{
-        Box(
-            modifier.fillMaxWidth()
-        ) {
-            Box(Modifier.alpha(0.5f)) {
+    Column {
+        Box(modifier = modifier.fillMaxWidth()) {
+            Box(modifier = Modifier.alpha(0.5f)) {
                 Box(
-                    Modifier
+                    modifier = Modifier
                         .background(Color.Red)
                         .fillMaxWidth()
-                        .height(230.dp))
+                        .height(230.dp)
+                )
             }
             Box(
-                modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(30.dp)
                     .absolutePadding(0.dp, 40.dp, 4.dp, 0.dp)
             ) {
                 Box(
-                    Modifier
+                    modifier = Modifier
                         .background(movie.tempColor)
                         .fillMaxWidth()
-                        .aspectRatio(16f / 9f))
+                        .aspectRatio(16f / 9f)
+                )
                 Image(
                     Icons.Outlined.PlayCircleOutline,
                     modifier = Modifier
@@ -141,13 +142,11 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                     .padding(4.dp, 0.dp, 0.dp, 0.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
-            )
-            {
-
-               // var rating by remember { mutableStateOf(0) }
-                for(i in 1..5) {
-                //    val isFilled = i <= rating
-                //    val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
+            ) {
+                // var rating by remember { mutableStateOf(0) }
+                for (i in 1..5) {
+                    //    val isFilled = i <= rating
+                    //    val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
 
                     Image(
                         imageVector = Icons.Outlined.StarOutline,
@@ -155,16 +154,17 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                         modifier = Modifier
                             .requiredSize(18.dp),
                         colorFilter = ColorFilter.tint(Color.Yellow),
-                         //   .clickable {
-                             //   rating = i // Update rating when a star is clicked
-                       //     },
-                     //   colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
+                        //   .clickable {
+                        //   rating = i // Update rating when a star is clicked
+                        //     },
+                        //   colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
 
                         contentDescription = "Star icon"
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(movie.rating.toString(),
+                Text(
+                    movie.rating.toString(),
                     fontSize = 18.sp,
                     modifier = Modifier.weight(0.5f)
                 )
@@ -191,19 +191,14 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                 .padding(4.dp, 10.dp, 0.dp, 0.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
-        )
-        {
+        ) {
             for ((index, genre) in movie.genres.withIndex()) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(40.dp))
                         .background(Color.Gray)
-                        .padding(
-                            horizontal = 8.dp,
-                            vertical = 4.dp
-                        )
-                )
-                {
+                        .padding(8.dp, 4.dp)
+                ) {
                     Text(
                         text = genre,
                         fontSize = 12.sp,
@@ -227,7 +222,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
         }
         DescriptionText(movie.description)
 
-        Text("Actors and Directors",  modifier.padding(4.dp,2.dp,0.dp,0.dp))
+        Text("Actors and Directors", modifier.padding(4.dp, 2.dp, 0.dp, 0.dp))
         val sheetState = rememberModalBottomSheetState()
         var showBottomSheet by remember { mutableStateOf(false) }
         Row(
@@ -258,24 +253,22 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                         sheetState = sheetState
                     ) {
                         for (i in 0..3) {
-                            Row (
-                                modifier = Modifier.padding(50.dp,0.dp),
+                            Row(
+                                modifier = Modifier.padding(50.dp, 0.dp),
                                 verticalAlignment = Alignment.CenterVertically
-                            )
-                            {
-
-                                DrawCircle(Modifier.size(65.dp), color=Color.Red)
+                            ) {
+                                DrawCircle(Modifier.size(65.dp), color = Color.Red)
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column() {
-                                    Text("Some Actor Name",
+                                    Text(
+                                        text = "Some Actor Name",
                                         fontSize = 14.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
                                     )
 
                                     HorizontalDivider(
-                                        modifier = Modifier.width(130.dp).
-                                        padding(0.dp,0.dp),
+                                        modifier = Modifier.width(130.dp).padding(0.dp, 0.dp),
                                         thickness = 0.5.dp,
                                         color = Color.Gray
                                     )
@@ -285,8 +278,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
 
                             Spacer(modifier = Modifier.height(12.dp))
                             HorizontalDivider(
-                                modifier = Modifier.fillMaxWidth().
-                                padding(110.dp,0.dp),
+                                modifier = Modifier.fillMaxWidth().padding(110.dp, 0.dp),
                                 thickness = 0.5.dp,
                                 color = Color.Gray
                             )
@@ -294,7 +286,6 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                         }
                     }
                 }
-
             }
         }
 
@@ -314,57 +305,52 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
             val sheetState = rememberModalBottomSheetState()
             var showBottomSheet by remember { mutableStateOf(false) }
 
-                // IconButton to trigger the Bottom Sheet
-                IconButton(
-                    onClick = {
-                        showBottomSheet = true
-                    },
-                    modifier = Modifier.size(40.dp) // Set size directly on the IconButton if needed
+            // IconButton to trigger the Bottom Sheet
+            IconButton(
+                onClick = { showBottomSheet = true },
+                modifier = Modifier.size(40.dp) // Set size directly on the IconButton if needed
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
+                    contentDescription = "Show bottom sheet",
+                    tint = Color.White // Adjust color if necessary
+                )
+            }
+
+            // Show the bottom sheet
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = { showBottomSheet = false },
+                    sheetState = sheetState
                 ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
-                        contentDescription = "Show bottom sheet",
-                        tint = Color.White // Adjust color if necessary
-                    )
-                }
+                    for (i in 0..2) {
+                        Row(
+                            modifier = Modifier.padding(50.dp, 0.dp),
+                            verticalAlignment = Alignment.CenterVertically
 
-                // Show the bottom sheet
-                if (showBottomSheet) {
-                    ModalBottomSheet(
-                        onDismissRequest = { showBottomSheet = false },
-                        sheetState = sheetState
-                    ) {
-                        for (i in 0..2) {
-                            Row (
-                                modifier = Modifier.padding(50.dp,0.dp),
-                                verticalAlignment = Alignment.CenterVertically
-
+                        ) {
+                            Text(
+                                text = "Emmy ${2020 + i}",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
                             )
-                            {
-                                Text("Emmy ${2020 + i}",
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(4.dp))
-                            HorizontalDivider(
-                                modifier = Modifier.width(300.dp).
-                                padding(50.dp,0.dp),
-                                thickness = 0.5.dp,
-                                color = Color.Gray)
-
                         }
-
-
+                        Spacer(modifier = Modifier.height(4.dp))
+                        HorizontalDivider(
+                            modifier = Modifier.width(300.dp).padding(50.dp, 0.dp),
+                            thickness = 0.5.dp,
+                            color = Color.Gray
+                        )
+                    }
                 }
             }
         }
 
         Row(
-            modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
+            modifier = Modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             //Needs to be made to a button later on
             Text("Detailed Rating", color = AwardAndDetailRating)
             val sheetState = rememberModalBottomSheetState()
@@ -388,18 +374,16 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                     sheetState = sheetState
                 ) {
                     for (i in 1..4) {
-                        Row (
-                            modifier = Modifier.padding(50.dp,0.dp),
+                        Row(
+                            modifier = Modifier.padding(50.dp, 0.dp),
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
                             verticalAlignment = Alignment.CenterVertically
-                        )
-                        {
-
-                            Text("Category: $i" )
+                        ) {
+                            Text("Category: $i")
                             Spacer(modifier = Modifier.width(12.dp))
-                            Row () {
-                                var rating by remember { mutableStateOf(0) }
-                                for(i in 1..5) {
+                            Row() {
+                                var rating by remember { mutableIntStateOf(0) }
+                                for (i in 1..5) {
                                     val isFilled = i <= rating
                                     val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
 
@@ -415,25 +399,23 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                                     )
                                 }
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("$rating",
+                                Text(
+                                    text = "$rating",
                                     fontSize = 18.sp,
                                     modifier = Modifier.weight(0.5f)
                                 )
 
                                 HorizontalDivider(
-                                    modifier = Modifier.width(130.dp).
-                                    padding(0.dp,0.dp),
+                                    modifier = Modifier.width(130.dp).padding(0.dp, 0.dp),
                                     thickness = 0.5.dp,
                                     color = Color.Gray
                                 )
-
                             }
                         }
 
                         Spacer(modifier = Modifier.height(12.dp))
                         HorizontalDivider(
-                            modifier = Modifier.fillMaxWidth().
-                            padding(110.dp,0.dp),
+                            modifier = Modifier.fillMaxWidth().padding(110.dp, 0.dp),
                             thickness = 0.5.dp,
                             color = Color.Gray
                         )
@@ -442,16 +424,18 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
             }
         }
 
-        Text("Movies similar to this one", modifier.padding(4.dp,0.dp,0.dp,0.dp))
+        Text("Movies similar to this one", modifier.padding(4.dp, 0.dp, 0.dp, 0.dp))
         HorizontalLazyRowWithSnapEffect(similarMedia, onNavigateToOtherMedia)
     }
 }
+
 @Composable
 fun TitleText(movieTitle: String) {
-    Text(movieTitle,
+    Text(
+        text = movieTitle,
         style = TextStyle(
             fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = Bold,
             shadow = Shadow(
                 color = Color.Black, blurRadius = 10f
             ),
@@ -460,11 +444,13 @@ fun TitleText(movieTitle: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(0.dp, 200.dp, 0.dp, 0.dp),
-        )
+    )
 }
+
 @Composable
-fun DescriptionText(movieDescription: String){
-    Text(movieDescription,
+fun DescriptionText(movieDescription: String) {
+    Text(
+        text = movieDescription,
         style = TextStyle(
             lineHeight = 1.25.em,
             lineBreak = LineBreak.Paragraph,
@@ -477,10 +463,11 @@ fun DescriptionText(movieDescription: String){
             .padding(4.dp, 0.dp, 0.dp, 0.dp),
     )
 }
+
 @Composable
 fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
-    androidx.compose.foundation.layout.Box(
-        modifier = modifier.drawBehind{
+    Box(
+        modifier = modifier.drawBehind {
             // Set the radius based on the smaller of the box dimensions
             val radius = size.minDimension / 2
             drawCircle(
@@ -491,10 +478,11 @@ fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
         }
     )
 }
+
 @Composable
 fun DrawLittleCircle(modifier: Modifier = Modifier) {
-    androidx.compose.foundation.layout.Box(
-        modifier = modifier.drawBehind{
+    Box(
+        modifier = modifier.drawBehind {
             // Set the radius based on the smaller of the box dimensions
             val radius = size.minDimension / 2
             drawCircle(
