@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_mediadetails
+package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel

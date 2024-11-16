@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_search
+package com.niklas.ux62550.ui.feature.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

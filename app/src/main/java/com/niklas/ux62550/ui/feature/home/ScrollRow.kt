@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_home
+package com.niklas.ux62550.ui.feature.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -66,8 +66,7 @@ fun HorizontalLazyRowMovies(
 ) {
     // LazyRow with snapping effect
     LazyRow(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         items.forEachIndexed { index, mediaItem ->
             item {

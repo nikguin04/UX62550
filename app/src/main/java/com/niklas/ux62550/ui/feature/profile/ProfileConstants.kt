@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_profile
+package com.niklas.ux62550.ui.feature.profile
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color

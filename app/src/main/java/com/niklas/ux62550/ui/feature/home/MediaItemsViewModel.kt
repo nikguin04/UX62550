@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_home
+package com.niklas.ux62550.ui.feature.home
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -12,8 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MediaItemsViewModel : ViewModel() {
-
-    private val MediaItems: List<MediaItem> = listOf(
+    private val mediaItems: List<MediaItem> = listOf(
         MediaItem("Name 1", R.drawable.logo, Color.Blue),
         MediaItem("Name 2", R.drawable.logo, Color.Red),
         MediaItem("Name 3", R.drawable.logo, Color.Green),
@@ -28,7 +27,7 @@ class MediaItemsViewModel : ViewModel() {
                 delay(5000L)
                 mutableMediaItemsState.update {
                     MediaItemsUIState.Data(
-                        mediaItems = MediaItems.shuffled()
+                        mediaItems = mediaItems.shuffled()
                     )
                 }
             }
@@ -38,7 +37,7 @@ class MediaItemsViewModel : ViewModel() {
     fun initPreview() {
         mutableMediaItemsState.update {
             MediaItemsUIState.Data(
-                mediaItems = MediaItems
+                mediaItems = mediaItems
             )
         }
     }

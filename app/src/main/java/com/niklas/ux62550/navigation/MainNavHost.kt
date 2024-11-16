@@ -7,14 +7,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.niklas.ux62550.ui.screen_home.HomeScreen
-import com.niklas.ux62550.ui.screen_mediadetails.MediaDetailsScreen
-import com.niklas.ux62550.ui.screen_profile.LoginRegisterScreen
-import com.niklas.ux62550.ui.screen_profile.LoginScreen
-import com.niklas.ux62550.ui.screen_profile.ProfileScreen
-import com.niklas.ux62550.ui.screen_profile.RegisterScreen
-import com.niklas.ux62550.ui.screen_search.SearchScreen
-import com.niklas.ux62550.ui.screen_wachlist.WatchlistScreen
+import com.niklas.ux62550.ui.feature.home.HomeScreen
+import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsScreen
+import com.niklas.ux62550.ui.feature.profile.LoginRegisterScreen
+import com.niklas.ux62550.ui.feature.profile.LoginScreen
+import com.niklas.ux62550.ui.feature.profile.ProfileScreen
+import com.niklas.ux62550.ui.feature.profile.RegisterScreen
+import com.niklas.ux62550.ui.feature.search.SearchScreen
+import com.niklas.ux62550.ui.feature.watchlist.WatchlistScreen
 
 @Composable
 fun MainNavHost(

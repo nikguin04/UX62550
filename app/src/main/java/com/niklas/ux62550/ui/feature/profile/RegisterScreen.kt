@@ -1,9 +1,10 @@
-package com.niklas.ux62550.ui.screen_profile
+package com.niklas.ux62550.ui.feature.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,59 +32,82 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.models.figmaPxToDp_w
-import com.niklas.ux62550.ui.screen_home.LogoBox
+import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.TextFieldDescColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import com.niklas.ux62550.ui.theme.RedColorGradient
 
 @Composable
-@Preview(showBackground = true, name = "Login preview")
-fun LoginPreview() {
+@Preview(showBackground = true, name = "Register preview")
+fun RegisterPreview() {
     UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface {
-            LoginScreen()
+            RegisterScreen()
         }
     }
 }
 
 @Composable
-fun LoginScreen() {
+fun RegisterScreen() {
+    var usenameValue by remember { mutableStateOf("") }
     var emailValue by remember { mutableStateOf("") }
     var passValue by remember { mutableStateOf("") }
-    //val mediaItemsViewModel: MediaItemsViewModel by viewModels()
-    //val uiState = profileViewModel.profileState.collectAsState().value
     Surface(
         modifier = Modifier.fillMaxSize()
-        //color = Color_background,
     ) {
-        Box {
-            Box(
-                modifier = Modifier
-                    .size(
-                        LocalConfiguration.current.screenWidthDp.dp,
-                        LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                    )
-                    .background(Brush.verticalGradient(colorStops = RedColorGradient))
-            )
-        }
+        Box(
+            modifier = Modifier
+                .size(
+                    LocalConfiguration.current.screenWidthDp.dp,
+                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
+                )
+                .background(Brush.verticalGradient(colorStops = RedColorGradient))
+        )
 
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Row(
-                modifier = Modifier.padding(0.dp, figmaPxToDp_w(164f), 0.dp, figmaPxToDp_w(20f)).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(0.dp, figmaPxToDp_w(164f), 0.dp, figmaPxToDp_w(20f))
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = figmaPxToDp_w(180f))
+                LogoBox(
+                    modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)),
+                    size = figmaPxToDp_w(180f)
+                )
             }
+
+            // USERNAME INPUT
+            TextField(
+                modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
+                value = usenameValue,
+                onValueChange = { usenameValue = it },
+                label = { Text("Username") }
+            )
+            Text(
+                text = "Please choose an appropriate username",
+                color = TextFieldDescColor,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
+                style = TextStyle(fontSize = 12.sp, shadow = textShadow)
+            )
+
+            // EMAIL INPUT
+            Box(Modifier.padding(0.dp, figmaPxToDp_w(20f), 0.dp, 0.dp))
 
             TextField(
                 modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
                 value = emailValue,
                 onValueChange = { emailValue = it },
-                label = { Text("Username or Email") }
+                label = { Text("Email") }
             )
             Text(
-                text = "Input your username or email",
+                text = "Please choose your own email",
                 color = TextFieldDescColor,
                 modifier = Modifier
                     .align(Alignment.Start)
@@ -93,6 +117,7 @@ fun LoginScreen() {
 
             Box(Modifier.padding(0.dp, figmaPxToDp_w(20f), 0.dp, 0.dp))
 
+            // PASSWORD INPUT
             TextField(
                 modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
                 value = passValue,
@@ -100,7 +125,7 @@ fun LoginScreen() {
                 label = { Text("Password") }
             )
             Text(
-                text = "Input your password",
+                text = "Please choose a safe password",
                 color = TextFieldDescColor,
                 modifier = Modifier
                     .align(Alignment.Start)
@@ -109,7 +134,9 @@ fun LoginScreen() {
             )
 
             Box(
-                modifier = Modifier.align(Alignment.End).padding(figmaPxToDp_w(15f), 0.dp)
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(figmaPxToDp_w(15f), 0.dp)
             ) {
                 Button(
                     onClick = {},
@@ -121,7 +148,7 @@ fun LoginScreen() {
                         .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
                 ) {
                     Text(
-                        text = "Sign in",
+                        text = "Register",
                         color = Color.White,
                         style = TextStyle(fontSize = 20.sp, shadow = textShadow)
                     )

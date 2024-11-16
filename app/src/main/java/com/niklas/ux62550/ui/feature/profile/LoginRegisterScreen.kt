@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_profile
+package com.niklas.ux62550.ui.feature.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,14 +26,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.models.figmaPxToDp_w
-import com.niklas.ux62550.ui.screen_home.LogoBox
+import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.theme.LoginButtonGray
+import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import com.niklas.ux62550.ui.theme.RedColorGradient
 
 @Composable
-@Preview(showBackground = true, name = "Register and login preview")
+@Preview(showBackground = true)
 fun LoginRegisterPreview() {
     UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface {
@@ -46,14 +46,8 @@ fun LoginRegisterPreview() {
 fun LoginRegisterScreen(
     onNavigateToLoginScreen: (String) -> Unit,
     onNavigateToRegisterScreen: (String) -> Unit,
-    //profileViewModel: ProfileViewModel = viewModel()
 ) {
-    //val mediaItemsViewModel: MediaItemsViewModel by viewModels()
-    //val uiState = profileViewModel.profileState.collectAsState().value
-    Surface(
-        modifier = Modifier.fillMaxSize()
-        //color = Color_background,
-    ) {
+    Surface(modifier = Modifier.fillMaxSize()) {
         Box {
             Box(
                 modifier = Modifier
@@ -82,9 +76,7 @@ fun LoginRegisterScreen(
                     style = TextStyle(fontSize = 20.sp, shadow = textShadow)
                 )
                 Button(
-                    onClick = {
-                        onNavigateToRegisterScreen("Register")
-                    },
+                    onClick = { onNavigateToRegisterScreen("Register") },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = RegisterButtonBlue
                     ),
@@ -110,7 +102,7 @@ fun LoginRegisterScreen(
                     Text(text = "Sign in", color = Color.White, style = TextStyle(fontSize = 20.sp, shadow = textShadow))
                 }
 
-                Box(modifier = Modifier.size(0.dp, figmaPxToDp_w(118f))) { }
+                Box(modifier = Modifier.size(0.dp, figmaPxToDp_w(118f)))
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_wachlist
+package com.niklas.ux62550.ui.feature.watchlist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -42,9 +42,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.models.figmaPxToDp_w
-import com.niklas.ux62550.ui.screen_home.LogoBox
-import com.niklas.ux62550.ui.screen_search.MovieBoxRow
-import com.niklas.ux62550.ui.screen_search.MovieItemsUIState
+import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.feature.search.MovieBoxRow
+import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
 import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 

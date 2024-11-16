@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen.popup
+package com.niklas.ux62550.ui.feature.popup
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -35,17 +35,17 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
-@Preview(showBackground = true, name = "MediaDetailPagePreview")
-fun MediaDetailPagePreview() {
+@Preview(showBackground = true)
+fun AwardPopupPreview() {
     val movie = Movie(
-        "RED: The Movie",
-        "2090",
-        3000.minutes,
-        3.5,
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
-        listOf("Action", "Dinosaur Adventure", "Hentai"),
-        13,
-        Color.Red
+        name = "RED: The Movie",
+        year = "2090",
+        duration = 3000.minutes,
+        rating = 3.5,
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
+        genres = listOf("Action", "Dinosaur Adventure", "Hentai"),
+        pgRating = 13,
+        tempColor = Color.Red
     )
     UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface {
@@ -86,7 +86,6 @@ fun PopupAward(movie: Movie) {
                     Row(
                         modifier = Modifier.padding(50.dp, 0.dp),
                         verticalAlignment = Alignment.CenterVertically
-
                     ) {
                         Text(
                             text = "Emmy ${2020 + i}",

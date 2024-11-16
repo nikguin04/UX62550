@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_profile
+package com.niklas.ux62550.ui.feature.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.models.figmaPxToDp_w
-import com.niklas.ux62550.ui.screen_mediadetails.DrawCircle
+import com.niklas.ux62550.ui.feature.mediadetails.DrawCircle
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.ProfileBtnRed
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -44,7 +44,7 @@ import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.starYellow
 
 @Composable
-@Preview(showBackground = true, name = "Profile preview")
+@Preview(showBackground = true)
 fun ProfilePreview() {
     UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface {
@@ -56,18 +56,12 @@ fun ProfilePreview() {
 @Composable
 fun ProfileScreen(
     onNavigateToLoginRegister: (String) -> Unit,
-    //profileViewModel: ProfileViewModel = viewModel()
 ) {
     var nameValueTemp = remember { mutableStateOf("Your name") }
     var emailValueTemp = remember { mutableStateOf("*****@gmail.com") }
     var passwordValueTemp = remember { mutableStateOf("**********") }
 
-    //val mediaItemsViewModel: MediaItemsViewModel by viewModels()
-    //val uiState = profileViewModel.profileState.collectAsState().value
-    Surface(
-        modifier = Modifier.fillMaxSize()
-        //color = Color_background,
-    ) {
+    Surface(modifier = Modifier.fillMaxSize()) {
         Box {
             Box(
                 modifier = Modifier
@@ -87,7 +81,11 @@ fun ProfileScreen(
 
             // Profile name and picture
             Row(
-                modifier = Modifier.fillMaxWidth().padding(figmaPxToDp_w(14f), 0.dp), Arrangement.End) {
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(figmaPxToDp_w(14f), 0.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
                 Column {
                     Box {
                         DrawCircle(Modifier.size(figmaPxToDp_w(93f)), color = placeholderIconColor)
@@ -162,7 +160,6 @@ fun ProfileScreen(
             ProfileAttribute("Email", emailValueTemp)
             Box(Modifier.size(0.dp, figmaPxToDp_w(100f)))
             ProfileAttribute("Password", passwordValueTemp)
-            //Box(Modifier.size(0.dp, figmaPxToDp_w(85f)))
 
             Row(
                 modifier = Modifier

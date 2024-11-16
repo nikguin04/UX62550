@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_mediadetails
+package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.EmojiEvents
@@ -50,7 +49,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,13 +58,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
-import com.niklas.ux62550.ui.screen_home.HorizontalLazyRowWithSnapEffect
+import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true, name = "MediaDetailPagePreview")
+@Preview(showBackground = true)
 fun MediaDetailPagePreview() {
     UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface {
@@ -136,20 +134,17 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
             ) {
                 // var rating by remember { mutableStateOf(0) }
                 for (i in 1..5) {
-                    //    val isFilled = i <= rating
-                    //    val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
-
+                    // val isFilled = i <= rating
+                    // val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
                     Image(
                         imageVector = Icons.Outlined.StarOutline,
-
                         modifier = Modifier
                             .requiredSize(18.dp),
+                        // .clickable {
+                        //     rating = i // Update rating when a star is clicked
+                        // },
+                        // colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
                         colorFilter = ColorFilter.tint(Color.Yellow),
-                        //   .clickable {
-                        //   rating = i // Update rating when a star is clicked
-                        //     },
-                        //   colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
-
                         contentDescription = "Star icon"
                     )
                 }
@@ -193,7 +188,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                     Text(
                         text = genre,
                         fontSize = 12.sp,
-                        fontWeight = Bold,
+                        fontWeight = FontWeight.Bold,
                         color = Color.White,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -250,7 +245,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                             ) {
                                 DrawCircle(Modifier.size(65.dp), color = Color.Red)
                                 Spacer(modifier = Modifier.width(12.dp))
-                                Column() {
+                                Column {
                                     Text(
                                         text = "Some Actor Name",
                                         fontSize = 14.sp,
@@ -263,7 +258,6 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                                         thickness = 0.5.dp,
                                         color = Color.Gray
                                     )
-
                                 }
                             }
 
@@ -342,7 +336,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
             modifier = Modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            //Needs to be made to a button later on
+            // Needs to be made to a button later on
             Text("Detailed Rating", color = AwardAndDetailRating)
             val sheetState = rememberModalBottomSheetState()
             var showBottomSheet by remember { mutableStateOf(false) }
@@ -372,7 +366,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                         ) {
                             Text("Category: $i")
                             Spacer(modifier = Modifier.width(12.dp))
-                            Row() {
+                            Row {
                                 var rating by remember { mutableIntStateOf(0) }
                                 for (i in 1..5) {
                                     val isFilled = i <= rating
@@ -426,7 +420,7 @@ fun TitleText(movieTitle: String) {
         text = movieTitle,
         style = TextStyle(
             fontSize = 30.sp,
-            fontWeight = Bold,
+            fontWeight = FontWeight.Bold,
             shadow = Shadow(
                 color = Color.Black, blurRadius = 10f
             ),

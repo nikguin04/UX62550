@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_review
+package com.niklas.ux62550.ui.feature.review
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -47,17 +46,17 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
-@Preview(showBackground = true, name = "ReviewAndRatingPreview")
+@Preview(showBackground = true)
 fun ReviewAndRatingPreview() {
     val movie = Movie(
-        "RED: The Movie",
-        "2090",
-        3000.minutes,
-        3.5,
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
-        listOf("Action", "Dinosaur Adventure", "Hentai"),
-        13,
-        Color.Red
+        name = "RED: The Movie",
+        year = "2090",
+        duration = 3000.minutes,
+        rating = 3.5,
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
+        genres = listOf("Action", "Dinosaur Adventure", "Hentai"),
+        pgRating = 13,
+        tempColor = Color.Red
     )
     UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface(modifier = Modifier.fillMaxSize()) {
@@ -78,14 +77,13 @@ fun ScreenReviewAndRating(movie: Movie) {
 @Composable
 fun ReviewLayout(movieTitle: String, movieRating: Double) {
     Box {
-        Box(modifier = Modifier.alpha(0.3f)) {
-            Box(
-                modifier = Modifier
-                    .background(Color.Red)
-                    .fillMaxWidth()
-                    .height(230.dp)
-            )
-        }
+        Box(
+            modifier = Modifier
+                .alpha(0.3f)
+                .background(Color.Red)
+                .fillMaxWidth()
+                .height(230.dp)
+        )
         ReviewText()
         TitleText(movieTitle)
         Row(
