@@ -2,6 +2,7 @@ package com.niklas.ux62550.ui.screen_mediadetails
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,26 +20,22 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.PlayCircleOutline
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,7 +64,6 @@ import com.niklas.ux62550.ui.screen_home.MediaItemsUIState
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
@@ -158,17 +153,25 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 verticalAlignment = Alignment.CenterVertically
             )
             {
-                for(i in 0..4) {
-                    Image( //Needs to be made button
-                        imageVector = Icons.Outlined.StarOutline,
-                        modifier = Modifier.requiredSize(18.dp),
-                        colorFilter = ColorFilter.tint(Color.Yellow),
+
+                var rating by remember { mutableStateOf(0) }
+                for(i in 1..5) {
+                    val isFilled = i <= rating
+                    val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
+
+                    Image(
+                        imageVector = starIcon,
+                        modifier = Modifier
+                            .requiredSize(18.dp)
+                            .clickable {
+                                rating = i // Update rating when a star is clicked
+                            },
+                        colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
                         contentDescription = "Star icon"
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(  //Needs get a function for how many stars
-                    movie.rating.toString(),
+                Text("$rating",
                     fontSize = 18.sp,
                     modifier = Modifier.weight(0.5f)
                 )
@@ -255,6 +258,7 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 }
                 if (showBottomSheet) {
                     ModalBottomSheet(
+                        scrimColor = Color.Transparent,
                         onDismissRequest = {
                             showBottomSheet = false
                         },
@@ -312,7 +316,9 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 contentDescription = "Star icon"
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Award...", color = AwardAndDetailRating)
+
+
+            Text("Awards...", color = AwardAndDetailRating)
             val sheetState = rememberModalBottomSheetState()
             var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -376,16 +382,15 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                 onClick = {
                     showBottomSheet = true
                 },
-                modifier = Modifier.size(40.dp) // Set size directly on the IconButton if needed
+                modifier = Modifier.size(40.dp)
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
                     contentDescription = "Show bottom sheet",
-                    tint = Color.White // Adjust color if necessary
+                    tint = Color.White
                 )
             }
 
-            // Show the bottom sheet
             if (showBottomSheet) {
                 ModalBottomSheet(
                     onDismissRequest = { showBottomSheet = false },
@@ -394,22 +399,30 @@ fun ScreenMediaDetail(modifier: Modifier = Modifier, mediaItemsUIState: MediaIte
                     for (i in 1..4) {
                         Row (
                             modifier = Modifier.padding(50.dp,0.dp),
-                            horizontalArrangement = Arrangement.spacedBy(4.dp), // Space between stars
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
                             verticalAlignment = Alignment.CenterVertically
                         )
                         {
 
-                            Text("Category"+ i, )
+                            Text("Category: $i" )
                             Spacer(modifier = Modifier.width(12.dp))
                             Row () {
-                                for(j in 0..4)
-                                Image(
-                                    imageVector = Icons.Outlined.StarOutline,
-                                    modifier = Modifier.requiredSize(18.dp),
-                                    colorFilter = ColorFilter.tint(Color.Yellow),
-                                    contentDescription = "Star icon"
-                                )
+                                var rating by remember { mutableStateOf(0) }
+                                for(n in 0..4) {
+                                    val isFilled = n <= rating
+                                    val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
 
+                                    Image(
+                                        imageVector = starIcon,
+                                        modifier = Modifier
+                                            .requiredSize(18.dp)
+                                            .clickable {
+                                                rating = n // Update rating when a star is clicked
+                                            },
+                                        colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
+                                        contentDescription = "Star icon"
+                                    )
+                                }
 
                                 HorizontalDivider(
                                     modifier = Modifier.width(130.dp).
