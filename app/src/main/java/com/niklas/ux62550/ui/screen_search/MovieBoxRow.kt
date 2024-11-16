@@ -64,11 +64,9 @@ fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Row (modifier
-                        .padding(),
+                    Row (
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
-
                     ){
                         Image( //Needs to be made button
                             imageVector = Icons.Filled.Star,

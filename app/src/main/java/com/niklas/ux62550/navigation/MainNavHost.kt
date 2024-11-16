@@ -14,6 +14,7 @@ import com.niklas.ux62550.ui.screen_profile.LoginScreen
 import com.niklas.ux62550.ui.screen_profile.ProfileScreen
 import com.niklas.ux62550.ui.screen_profile.RegisterScreen
 import com.niklas.ux62550.ui.screen_search.SearchScreen
+import com.niklas.ux62550.ui.screen_wachlist.WatchlistScreen
 
 @Composable
 fun MainNavHost(
@@ -75,8 +76,8 @@ fun MainNavHost(
         }
 
         composable<Route.WatchScreen> {
-            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
-            //ScreenWachlist(.... wtf)
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.WatchScreen>()) }
+            WatchlistScreen(onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) })
         }
     }
 }
