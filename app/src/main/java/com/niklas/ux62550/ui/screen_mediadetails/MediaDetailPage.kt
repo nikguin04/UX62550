@@ -2,6 +2,8 @@ package com.niklas.ux62550.ui.screen_mediadetails
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,11 +23,22 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.PlayCircleOutline
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -68,6 +81,7 @@ fun MediaDetailsScreen(viewModel: MovieViewModel = viewModel(), onNavigateToOthe
     MediaDetailsContent(movie = movie, similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit) {
     Column{
@@ -129,17 +143,28 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                 verticalAlignment = Alignment.CenterVertically
             )
             {
-                for(i in 0..4) {
-                    Image( //Needs to be made button
+
+               // var rating by remember { mutableStateOf(0) }
+                for(i in 1..5) {
+                //    val isFilled = i <= rating
+                //    val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
+
+                    Image(
                         imageVector = Icons.Outlined.StarOutline,
-                        modifier = Modifier.requiredSize(18.dp),
+
+                        modifier = Modifier
+                            .requiredSize(18.dp),
                         colorFilter = ColorFilter.tint(Color.Yellow),
+                         //   .clickable {
+                             //   rating = i // Update rating when a star is clicked
+                       //     },
+                     //   colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
+
                         contentDescription = "Star icon"
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(  //Needs get a function for how many stars
-                    movie.rating.toString(),
+                Text(movie.rating.toString(),
                     fontSize = 18.sp,
                     modifier = Modifier.weight(0.5f)
                 )
@@ -203,6 +228,8 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
         DescriptionText(movie.description)
 
         Text("Actors and Directors",  modifier.padding(4.dp,2.dp,0.dp,0.dp))
+        val sheetState = rememberModalBottomSheetState()
+        var showBottomSheet by remember { mutableStateOf(false) }
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -211,42 +238,208 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                 Spacer(modifier = Modifier.width(4.dp))
                 DrawCircle(Modifier.size(64.dp), Color.Red)
             }
-            Spacer(modifier = Modifier.width(4.dp))
-            repeat(3) { //Needs to be made button
-                Spacer(modifier = Modifier.width(4.dp))
-                DrawLittleCircle(Modifier.size(10.dp))
+            Spacer(modifier = Modifier.width(2.dp))
+            repeat(3) { // Create clickable circles
+                Spacer(modifier = Modifier.width(2.dp))
+                IconButton(
+                    onClick = {
+                        showBottomSheet = true
+                    },
+                    modifier = Modifier.size(12.dp) // Size of the clickable button area
+                ) {
+                    DrawLittleCircle(Modifier.size(10.dp)) // Circle inside the button
+                }
+                if (showBottomSheet) {
+                    ModalBottomSheet(
+                        scrimColor = Color.Transparent,
+                        onDismissRequest = {
+                            showBottomSheet = false
+                        },
+                        sheetState = sheetState
+                    ) {
+                        for (i in 0..3) {
+                            Row (
+                                modifier = Modifier.padding(50.dp,0.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            )
+                            {
+
+                                DrawCircle(Modifier.size(65.dp), color=Color.Red)
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column() {
+                                    Text("Some Actor Name",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White
+                                    )
+
+                                    HorizontalDivider(
+                                        modifier = Modifier.width(130.dp).
+                                        padding(0.dp,0.dp),
+                                        thickness = 0.5.dp,
+                                        color = Color.Gray
+                                    )
+
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+                            HorizontalDivider(
+                                modifier = Modifier.fillMaxWidth().
+                                padding(110.dp,0.dp),
+                                thickness = 0.5.dp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                    }
+                }
+
             }
         }
+
         Row(
-            modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
+            modifier = Modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 imageVector = Icons.Outlined.EmojiEvents,
-                modifier = Modifier.requiredSize(18.dp),
+                modifier = Modifier.size(18.dp),
                 colorFilter = ColorFilter.tint(Color.Yellow),
                 contentDescription = "Star icon"
             )
-            Text("Award...", color = AwardAndDetailRating)
-            Image( //Needs to be made button
-                imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
-                modifier = Modifier.requiredSize(12.dp),
-                colorFilter = ColorFilter.tint(Color.White),
-                contentDescription = "Star icon"
-            )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text("Awards...", color = AwardAndDetailRating)
+            val sheetState = rememberModalBottomSheetState()
+            var showBottomSheet by remember { mutableStateOf(false) }
+
+                // IconButton to trigger the Bottom Sheet
+                IconButton(
+                    onClick = {
+                        showBottomSheet = true
+                    },
+                    modifier = Modifier.size(40.dp) // Set size directly on the IconButton if needed
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
+                        contentDescription = "Show bottom sheet",
+                        tint = Color.White // Adjust color if necessary
+                    )
+                }
+
+                // Show the bottom sheet
+                if (showBottomSheet) {
+                    ModalBottomSheet(
+                        onDismissRequest = { showBottomSheet = false },
+                        sheetState = sheetState
+                    ) {
+                        for (i in 0..2) {
+                            Row (
+                                modifier = Modifier.padding(50.dp,0.dp),
+                                verticalAlignment = Alignment.CenterVertically
+
+                            )
+                            {
+                                Text("Emmy ${2020 + i}",
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(4.dp))
+                            HorizontalDivider(
+                                modifier = Modifier.width(300.dp).
+                                padding(50.dp,0.dp),
+                                thickness = 0.5.dp,
+                                color = Color.Gray)
+
+                        }
+
+
+                }
+            }
         }
+
         Row(
             modifier = Modifier.padding(4.dp,10.dp,0.dp,0.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
             //Needs to be made to a button later on
             Text("Detailed Rating", color = AwardAndDetailRating)
-            Image(
-                imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
-                modifier = Modifier.requiredSize(12.dp),
-                colorFilter = ColorFilter.tint(Color.White),
-                contentDescription = "Star icon"
-            )
+            val sheetState = rememberModalBottomSheetState()
+            var showBottomSheet by remember { mutableStateOf(false) }
+            IconButton(
+                onClick = {
+                    showBottomSheet = true
+                },
+                modifier = Modifier.size(40.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
+                    contentDescription = "Show bottom sheet",
+                    tint = Color.White
+                )
+            }
+
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = { showBottomSheet = false },
+                    sheetState = sheetState
+                ) {
+                    for (i in 1..4) {
+                        Row (
+                            modifier = Modifier.padding(50.dp,0.dp),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        )
+                        {
+
+                            Text("Category: $i" )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Row () {
+                                var rating by remember { mutableStateOf(0) }
+                                for(i in 1..5) {
+                                    val isFilled = i <= rating
+                                    val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
+
+                                    Image(
+                                        imageVector = starIcon,
+                                        modifier = Modifier
+                                            .requiredSize(18.dp)
+                                            .clickable {
+                                                rating = i // Update rating when a star is clicked
+                                            },
+                                        colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
+                                        contentDescription = "Star icon"
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("$rating",
+                                    fontSize = 18.sp,
+                                    modifier = Modifier.weight(0.5f)
+                                )
+
+                                HorizontalDivider(
+                                    modifier = Modifier.width(130.dp).
+                                    padding(0.dp,0.dp),
+                                    thickness = 0.5.dp,
+                                    color = Color.Gray
+                                )
+
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(12.dp))
+                        HorizontalDivider(
+                            modifier = Modifier.fillMaxWidth().
+                            padding(110.dp,0.dp),
+                            thickness = 0.5.dp,
+                            color = Color.Gray
+                        )
+                    }
+                }
+            }
         }
 
         Text("Movies similar to this one", modifier.padding(4.dp,0.dp,0.dp,0.dp))
