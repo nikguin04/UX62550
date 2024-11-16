@@ -119,19 +119,10 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                 TitleText(movie.name)
             }
             Image(
-                Icons.AutoMirrored.Outlined.ArrowBack,
-                modifier = Modifier
-                    .padding(12.dp)
-                    .requiredSize(36.dp),
-                colorFilter = ColorFilter.tint(Color.White),
-                contentDescription = "Arrow back"
-            )
-            Image(
                 Icons.Outlined.BookmarkBorder,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(12.dp)
-                    .requiredSize(36.dp),
+                    .padding(20.dp),
                 colorFilter = ColorFilter.tint(Color.White),
                 contentDescription = "Bookmark"
             )

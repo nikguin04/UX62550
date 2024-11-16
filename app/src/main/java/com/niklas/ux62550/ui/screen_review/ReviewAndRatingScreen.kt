@@ -78,14 +78,6 @@ fun ScreenReviewAndRating(movie: Movie) {
 @Composable
 fun ReviewLayout(movieTitle: String, movieRating: Double) {
     Box {
-        Image(
-            Icons.AutoMirrored.Outlined.ArrowBack,
-            modifier = Modifier
-                .padding(12.dp)
-                .requiredSize(36.dp),
-            colorFilter = ColorFilter.tint(Color.White),
-            contentDescription = "Arrow back"
-        )
         Box(modifier = Modifier.alpha(0.3f)) {
             Box(
                 modifier = Modifier
