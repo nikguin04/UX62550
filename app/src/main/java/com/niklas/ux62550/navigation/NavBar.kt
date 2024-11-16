@@ -32,11 +32,11 @@ data class NavItem(
 fun GeneralNavBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf(
-        NavItem(name = "Home", icon = Icons.AutoMirrored.Outlined.List, selectedIcon = Icons.AutoMirrored.Filled.List, onNavigate = { nav -> nav.navigate(Route.HomeScreen) }),
-        NavItem(name = "Search", icon = Icons.Outlined.Search, selectedIcon = Icons.Filled.Search, onNavigate = { nav -> nav.navigate(Route.SearchScreen) }),
-        NavItem(name = "Watch", icon = Icons.Outlined.BookmarkBorder, selectedIcon = Icons.Filled.Bookmark, onNavigate = { nav -> nav.navigate(Route.WatchScreen) }),
+        NavItem(name = "Home", icon = Icons.AutoMirrored.Outlined.List, selectedIcon = Icons.AutoMirrored.Filled.List, onNavigate = { it.navigateAndClearBackStack(Route.HomeScreen) }),
+        NavItem(name = "Search", icon = Icons.Outlined.Search, selectedIcon = Icons.Filled.Search, onNavigate = { it.navigateAndClearBackStack(Route.SearchScreen) }),
+        NavItem(name = "Watch", icon = Icons.Outlined.BookmarkBorder, selectedIcon = Icons.Filled.Bookmark, onNavigate = { it.navigateAndClearBackStack(Route.WatchScreen) }),
         // TODO: Do not just route to account, instead check if user is logged in and route to profile/loginregister
-        NavItem(name = "Account", icon = Icons.Outlined.AccountCircle, selectedIcon = Icons.Filled.AccountCircle, onNavigate = { nav -> nav.navigate(Route.ProfileScreen) })
+        NavItem(name = "Account", icon = Icons.Outlined.AccountCircle, selectedIcon = Icons.Filled.AccountCircle, onNavigate = { it.navigateAndClearBackStack(Route.ProfileScreen) })
     )
 
     NavigationBar {

@@ -87,7 +87,7 @@ fun MainNavHost(
 
         composable<Route.ProfileScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ProfileScreen>()) }
-            ProfileScreen(onNavigateToLoginRegister = { navigateAndClearNavBackStack(navController, Route.LoginRegisterScreen) })
+            ProfileScreen(onNavigateToLoginRegister = { navController.navigateAndClearBackStack(Route.LoginRegisterScreen) })
         }
 
         composable<Route.SearchScreen> {
@@ -102,9 +102,9 @@ fun MainNavHost(
     }
 }
 
-fun navigateAndClearNavBackStack(navController: NavHostController, route: Route) {
-    navController.navigate<Route>(route = route) {
-        popUpTo(navController.graph.id) {
+fun NavHostController.navigateAndClearBackStack(route: Route) {
+    navigate(route) {
+        popUpTo(graph.id) {
             inclusive = true // This removes the start destination from the backstack
         }
         // Set launchSingleTop to prevent multiple copies of the same destination on the backstack
