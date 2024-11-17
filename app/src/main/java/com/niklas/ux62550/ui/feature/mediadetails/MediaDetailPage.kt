@@ -377,32 +377,25 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                                     Image(
                                         imageVector = starIcon,
                                         modifier = Modifier
-                                            .requiredSize(18.dp)
-                                            .clickable {
-                                                rating = i // Update rating when a star is clicked
-                                            },
+                                            .requiredSize(18.dp),
                                         colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
                                         contentDescription = "Star icon"
                                     )
                                 }
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = "$rating",
+                                    text = "$rating/5",
                                     fontSize = 18.sp,
                                     modifier = Modifier.weight(0.5f)
                                 )
 
-                                HorizontalDivider(
-                                    modifier = Modifier.width(130.dp).padding(0.dp, 0.dp),
-                                    thickness = 0.5.dp,
-                                    color = Color.Gray
-                                )
+
                             }
                         }
 
                         Spacer(modifier = Modifier.height(12.dp))
                         HorizontalDivider(
-                            modifier = Modifier.fillMaxWidth().padding(110.dp, 0.dp),
+                            modifier = Modifier.fillMaxWidth().padding(30.dp, 5.dp),
                             thickness = 0.5.dp,
                             color = Color.Gray
                         )
