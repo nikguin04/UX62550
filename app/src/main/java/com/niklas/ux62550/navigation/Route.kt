@@ -4,29 +4,30 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Route(val title: String) {
-    /*@Serializable
-    data class BlueScreen(val name: String) : Route("Blue Screen")
-
-    @Serializable
-    data object GreenScreen : Route("Green Screen")*/
-
     @Serializable
     data object HomeScreen : Route("Home Screen")
 
     @Serializable
-    data class MediaDetailsScreen(val md_name: String) : Route("Media Details Screen")
+    data object SearchScreen : Route("Search Screen")
 
     @Serializable
-    data object LoginRegisterScreen : Route("Login / Register")
+    data object WatchScreen : Route("Watch")
+
     @Serializable
-    data object LoginScreen : Route("Login")
+    data class MediaDetailsScreen(val name: String) : Route("Media Details Screen")
+
     @Serializable
-    data object RegisterScreen : Route("Register")
+    data class ReviewScreen(val name: String) : Route("Review Screen")
+
     @Serializable
     data object ProfileScreen : Route("Profile")
 
     @Serializable
-    data object SearchScreen : Route("Search")
+    data object LoginRegisterScreen : Route("Login / Register")
+
     @Serializable
-    data object WatchScreen : Route("Watch")
+    data object LoginScreen : Route("Login")
+
+    @Serializable
+    data object RegisterScreen : Route("Register")
 }

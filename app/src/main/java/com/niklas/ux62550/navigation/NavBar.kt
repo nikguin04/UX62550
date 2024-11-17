@@ -1,87 +1,59 @@
 package com.niklas.ux62550.navigation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.outlined.List
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 
-@Composable
-fun ScreenWithGeneralNavBar(navController: NavHostController, content: @Composable (ColumnScope) -> Unit) {
-    Scaffold ( // NAVBAR COLUMN
-        topBar = {
-
-        },
-
-        bottomBar = { GeneralNavBar(navController) },
-    ) {
-        innerPadding ->
-        Column (modifier = Modifier.padding(innerPadding).fillMaxSize(), content = content)
-    }
-        
-}
+data class NavItem(
+    val name: String,
+    val icon: ImageVector,
+    val selectedIcon: ImageVector,
+    val onNavigate: (NavHostController) -> Unit
+)
 
 @Composable
 fun GeneralNavBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(0) }
-    val items = listOf("Home", "Search", "Watch", "Account")
+    val items = listOf(
+        NavItem(name = "Home", icon = Icons.AutoMirrored.Outlined.List, selectedIcon = Icons.AutoMirrored.Filled.List, onNavigate = { it.navigateAndClearBackStack(Route.HomeScreen) }),
+        NavItem(name = "Search", icon = Icons.Outlined.Search, selectedIcon = Icons.Filled.Search, onNavigate = { it.navigateAndClearBackStack(Route.SearchScreen) }),
+        NavItem(name = "Watch", icon = Icons.Outlined.BookmarkBorder, selectedIcon = Icons.Filled.Bookmark, onNavigate = { it.navigateAndClearBackStack(Route.WatchScreen) }),
+        // TODO: Do not just route to account, instead check if user is logged in and route to profile/loginregister
+        NavItem(name = "Account", icon = Icons.Outlined.AccountCircle, selectedIcon = Icons.Filled.AccountCircle, onNavigate = { it.navigateAndClearBackStack(Route.ProfileScreen) })
+    )
 
-    val routes: List<Route> = listOf(
-        Route.HomeScreen,
-        Route.SearchScreen,
-        Route.WatchScreen,
-        Route.ProfileScreen
-    ) // TODO: Do not just route to account, instead check if user is logged in and route to profile/loginregister
-
-    val selectedIcons = listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
-    val unselectedIcons =
-        listOf(Icons.AutoMirrored.Outlined.List, Icons.Outlined.Search, Icons.Outlined.Bookmark, Icons.Outlined.AccountCircle)
-
-    NavigationBar (
-        //containerColor = colorScheme.contentColorFor(NavigationBarDefaults.containerColor)
-        //containerColor = colorScheme.Primary
-    )  {
+    NavigationBar {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 icon = {
                     Icon(
-                        if (selectedItem == index) selectedIcons[index] else unselectedIcons[index],
-                        contentDescription = item
+                        imageVector = if (selectedItem == index) item.selectedIcon else item.icon,
+                        contentDescription = item.name
                     )
                 },
-                label = { Text(item) },
+                label = { Text(item.name) },
                 selected = selectedItem == index,
                 onClick = {
                     selectedItem = index
-                    navigateAndClearNavBackStack(navController, routes[index])
-                },
-                /*colors = NavigationBarItemColors(
-                    selectedIconColor = fromToken(NavigationBarTokens.ActiveIconColor),
-                    selectedTextColor = fromToken(NavigationBarTokens.ActiveLabelTextColor),
-                    selectedIndicatorColor = fromToken(NavigationBarTokens.ActiveIndicatorColor),
-                    unselectedIconColor = fromToken(NavigationBarTokens.InactiveIconColor),
-                    unselectedTextColor = fromToken(NavigationBarTokens.InactiveLabelTextColor),
-                    disabledIconColor = fromToken(NavigationBarTokens.InactiveIconColor).copy(alpha = DisabledAlpha),
-                    disabledTextColor = fromToken(NavigationBarTokens.InactiveLabelTextColor).copy(alpha = DisabledAlpha),
-                )*/
+                    item.onNavigate(navController)
+                }
             )
         }
     }
