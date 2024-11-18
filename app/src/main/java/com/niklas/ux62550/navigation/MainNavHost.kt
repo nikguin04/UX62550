@@ -52,7 +52,9 @@ fun MainNavHost(
 
         composable<Route.ReviewScreen> { backStackEntry ->
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
-            ReviewScreen()
+            ReviewScreen(
+                onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
+            )
         }
 
         composable<Route.LoginRegisterScreen> {

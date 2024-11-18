@@ -23,6 +23,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,7 +40,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.Movie
+import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsContent
+import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -48,40 +52,20 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 @Preview(showBackground = true)
 fun ReviewAndRatingPreview() {
-    val movie = Movie(
-        name = "RED: The Movie",
-        year = "2090",
-        duration = 3000.minutes,
-        rating = 3.5,
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
-        genres = listOf("Action", "Dinosaur Adventure", "Hentai"),
-        pgRating = 13,
-        tempColor = Color.Red
-    )
     UX62550Theme(darkTheme = true, dynamicColor = false) {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(movie = movie)
-        }
+        Surface {
+            ReviewScreen(onNavigateToMedia = {})
     }
 }
-
+}
 @Composable
-fun ReviewScreen() {
-    val movie = Movie(
-        name = "RED: The Movie",
-        year = "2090",
-        duration = 3000.minutes,
-        rating = 3.5,
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
-        genres = listOf("Action", "Dinosaur Adventure", "Hentai"),
-        pgRating = 13,
-        tempColor = Color.Red
-    )
-    ScreenReviewAndRating(movie = movie)
+fun ReviewScreen(viewModel: MovieViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
+    val movie = viewModel.movieState.collectAsState().value
+    ScreenReviewAndRating(movie = movie, onNavigateToMedia = onNavigateToMedia)
 }
 
 @Composable
-fun ScreenReviewAndRating(movie: Movie) {
+fun ScreenReviewAndRating(movie: Movie, onNavigateToMedia: (String) -> Unit) {
     Column {
         ReviewLayout(movie.name, movie.rating)
         PublishReview()
@@ -154,7 +138,7 @@ fun PublishReview() {
         contentAlignment = Alignment.Center
     ) {
         Button(
-            onClick = { TODO("functionality") },
+            onClick = {},
             modifier = Modifier.width(150.dp),
             colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
         ) {
