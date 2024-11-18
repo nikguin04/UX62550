@@ -3,6 +3,7 @@ package com.niklas.ux62550.ui.feature.search
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,101 +63,73 @@ fun SearchContent(
     nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
     onNavigateToMedia: (String) -> Unit
 ) {
-    Column(modifier = modifier.padding()) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(figmaPxToDp_w(0f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(17.5f)),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            SearchBar(
-                inputField = {
-                    var text = ""
-                    var expanded = false
-                    SearchBarDefaults.InputField(query = text,
-                        onQueryChange = { text = it },
-                        onSearch = { expanded = false },
-                        expanded = expanded,
-                        onExpandedChange = { expanded = it },
-                        placeholder = {
-                            Text(
-                                text = "Search",
-                                color = Color(0xFF707070),
-                                fontSize = 12.sp
-                            )
-                        },
-                        leadingIcon = {
-                            Image( //Needs to be made button
-                                imageVector = Icons.Filled.Search,
-                                modifier = Modifier.requiredSize(24.dp),
-                                colorFilter = ColorFilter.tint(Color.Black),
-                                contentDescription = "Star icon"
-                            )
-                        }
-                    )
-
-                },
-                colors = SearchBarDefaults.colors(containerColor = Color(0xFFACACAC)),
-                expanded = false,
-                onExpandedChange = {},
-                content = {},
-                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp)
-            )
-        }
-
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            HorizontalDivider(
-                color = SearchColorForText,
-                thickness = 1.dp,
+    LazyColumn(modifier = modifier.padding()) {
+        item {
+            Row(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(0.7f)
-            )
-
-            Text(
-                text = "Actors and Genres",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = SearchColorForText
-                )
-            )
-
-            HorizontalDivider(
-                color = SearchColorForText,
-                thickness = 1.dp,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(0.7f)
-            )
-        }
-
-        // Implement ViewModel
-        when (nonMovieBoxItemsUIState) {
-            NonMovieBoxItemsUIState.Empty -> {
-                Text(
-                    text = "No movies to be found",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = SearchColorForText
+                    .fillMaxWidth()
+                    .padding(figmaPxToDp_w(0f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(17.5f)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                SearchBar(
+                    inputField = {
+                        var text = ""
+                        var expanded = false
+                        SearchBarDefaults.InputField(
+                            query = text,
+                            onQueryChange = { text = it },
+                            onSearch = { expanded = false },
+                            expanded = expanded,
+                            onExpandedChange = { expanded = it },
+                            placeholder = {
+                                Text(
+                                    text = "Search",
+                                    color = Color(0xFF707070),
+                                    fontSize = 12.sp
+                                )
+                            },
+                            leadingIcon = {
+                                Image(
+                                    imageVector = Icons.Filled.Search,
+                                    modifier = Modifier.requiredSize(24.dp),
+                                    colorFilter = ColorFilter.tint(Color.Black),
+                                    contentDescription = "Star icon"
+                                )
+                            }
+                        )
+                    },
+                    colors = SearchBarDefaults.colors(containerColor = Color(0xFFACACAC)),
+                    expanded = false,
+                    onExpandedChange = {},
+                    content = {},
+                    modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp)
                 )
             }
+        }
+        item {
+            SectionHeader(title = "Actors and Genres")
+        }
 
+        when (nonMovieBoxItemsUIState) {
+            NonMovieBoxItemsUIState.Empty -> {
+                item {
+                    Text(
+                        text = "No movies to be found",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = SearchColorForText
+                    )
+                }
+            }
             is NonMovieBoxItemsUIState.Data -> {
-                // Display list of movie items in LazyColumn
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    var putDivider = false;
-                    items(nonMovieBoxItemsUIState.nonMovieBoxes) { nonMovieBoxItem ->
-                        if (!putDivider) {
-                            putDivider = true;
-                        } else {
+                var putDivider = false;
+                itemsIndexed(nonMovieBoxItemsUIState.nonMovieBoxes) { index, nonMovieBoxItem ->
+                    if (index > 0) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                            ) {
                             HorizontalDivider(
                                 color = SearchColorForText,
                                 thickness = 1.dp,
@@ -164,63 +138,33 @@ fun SearchContent(
                                     .fillMaxWidth(0.7f)
                             )
                         }
-                        NonMovieBoxRow(nonMovieBox = nonMovieBoxItem)
                     }
+                    NonMovieBoxRow(nonMovieBox = nonMovieBoxItem)
                 }
             }
         }
-
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            HorizontalDivider(
-                color = SearchColorForText,
-                thickness = 1.dp,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(0.7f)
-            )
-
-            Text(
-                text = "Movies and Series",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = SearchColorForText,
-                )
-            )
-
-            HorizontalDivider(
-                color = SearchColorForText,
-                thickness = 1.dp,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(0.7f)
-            )
+        item {
+            SectionHeader(title = "Movies and Series")
         }
 
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
-                Text(
-                    text = "No movies to be found",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = SearchColorForText
-                )
+                item {
+                    Text(
+                        text = "No movies to be found",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = SearchColorForText
+                    )
+                }
             }
-
             is MovieItemsUIState.Data -> {
-                // Display list of movie items in LazyColumn
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    var putDivider = false;
-                    items(movieItemsUIState.movies) { movieBoxItem ->
-                        if (!putDivider) {
-                            putDivider = true;
-                        } else {
+                itemsIndexed(movieItemsUIState.movies) { index, movieBoxItem ->
+                    if (index > 0) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
                             HorizontalDivider(
                                 color = SearchColorForText,
                                 thickness = 1.dp,
@@ -229,15 +173,48 @@ fun SearchContent(
                                     .fillMaxWidth(0.7f)
                             )
                         }
-                        MovieBoxRow(
-                            movie = movieBoxItem,
-                            modifier = Modifier.clickable(
-                                onClick = { onNavigateToMedia(movieBoxItem.name) }
-                            )
-                        )
                     }
+                    MovieBoxRow(
+                        movie = movieBoxItem,
+                        modifier = Modifier.clickable(
+                            onClick = { onNavigateToMedia(movieBoxItem.name) }
+                        )
+                    )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun SectionHeader(title: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        HorizontalDivider(
+            color = SearchColorForText,
+            thickness = 1.dp,
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(0.7f)
+        )
+        Text(
+            text = title,
+            style = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Normal,
+                color = SearchColorForText
+            )
+        )
+        HorizontalDivider(
+            color = SearchColorForText,
+            thickness = 1.dp,
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(0.7f)
+        )
     }
 }
