@@ -140,7 +140,7 @@ fun PublishReview() {
         contentAlignment = Alignment.Center
     ) {
         Button(
-            onClick = {},
+            onClick = {"TODO"},
             modifier = Modifier.width(150.dp),
             colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
         ) {
