@@ -15,7 +15,6 @@ class ProfileViewModel : ViewModel() {
         name = "Simone",
         Email = "Simone@gmail.com",
         FacvritMovieID = 1,
-        backdrop = ,
         tempColor = Color.Red
 
     )
