@@ -80,7 +80,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                 )
             }
             is MediaItemsUIState.Data -> {
-                HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaItems, onNavigateToMedia)
+                HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaObjects, onNavigateToMedia)
 
                 HorizontalDotIndexer(Modifier.size(LocalConfiguration.current.screenWidthDp.dp, 12.dp))
             }
@@ -91,14 +91,14 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
 
         for (genre in genres) {
             // TODO: PLEASE READ! this is a placeholder for when we get a proper structure for fetching movies
-            when (mediaItemsUIState) {
-                MediaItemsUIState.Empty -> {
+            /*when (mediaItemsUIState) {
+                MediaItemsUIState.Empty -> {*/
                     Text(
                         text = "No Media Items",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
-                }
+                /*}
                 is MediaItemsUIState.Data -> {
                     Row(
                         Modifier.padding(
@@ -119,7 +119,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                     )
                 }
                 else -> {}
-            }
+            }*/
         }
     }
 }

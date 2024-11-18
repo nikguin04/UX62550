@@ -25,6 +25,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
 import androidx.compose.ui.util.lerp
+import coil3.compose.AsyncImage
+import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.models.figmaPxToDp_w
@@ -66,7 +69,7 @@ fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>, onNavigateToMedia: (
 }
 
 @Composable
-fun HomeFeaturedMediaHorizontalPager(items: List<MediaItem>, onNavigateToMedia: (String) -> Unit) {
+fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia: (String) -> Unit) {
     val pagerState = rememberPagerState(pageCount = { items.size }, initialPage = items.size/2)
     val w = 350f
     val h = w/16*9
@@ -97,13 +100,12 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaItem>, onNavigateToMedia: 
 
         )  {
             // Card content
-            PromoItem(
+            MediaItem(
+                uri = items[page].backdrop_path,
                 width = Dp(w),
                 height = Dp(h),
-                round = 0.dp,
-                color = items[page].tempColor,
                 modifier = Modifier
-                    .clickable(onClick = { onNavigateToMedia(items[page].name) })
+                    .clickable(onClick = { onNavigateToMedia(items[page].title) })
                     .align(Alignment.CenterHorizontally)
             )
         }
@@ -142,6 +144,7 @@ fun HorizontalLazyRowMovies(
     }
 }
 
+// TODO: Deprecate this
 @Composable
 fun PromoItem(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
     Box(
@@ -150,5 +153,18 @@ fun PromoItem(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier
             .background(color)
             .size(width, height)
             .padding()
+    )
+}
+
+
+@Composable
+fun MediaItem(uri: String?, width: Dp, height: Dp, round: Dp = 0.dp, modifier: Modifier = Modifier) {
+    val imguri = if (uri!=null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
+    AsyncImage(
+        model = imguri,
+        contentDescription = null, // TODO: include content description
+        modifier = modifier
+            .clip(RoundedCornerShape(round))
+            .size(width, height)
     )
 }
