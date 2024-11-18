@@ -23,13 +23,10 @@ class MediaItemsViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            while (true) {
-                delay(5000L)
-                mutableMediaItemsState.update {
-                    MediaItemsUIState.Data(
-                        mediaItems = mediaItems.shuffled()
-                    )
-                }
+            mutableMediaItemsState.update {
+                MediaItemsUIState.Data(
+                    mediaItems = mediaItems.shuffled()
+                )
             }
         }
     }

@@ -80,7 +80,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                 )
             }
             is MediaItemsUIState.Data -> {
-                HorizontalLazyRowWithSnapEffect(mediaItemsUIState.mediaItems, onNavigateToMedia)
+                HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaItems, onNavigateToMedia)
 
                 HorizontalDotIndexer(Modifier.size(LocalConfiguration.current.screenWidthDp.dp, 12.dp))
             }
