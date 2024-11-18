@@ -26,12 +26,3 @@ class ReviewViewModel : ViewModel() {
 
 }
 
-sealed class MovieItemsUIState {
-    data object Empty : MovieItemsUIState()
-    data class Data(val movies: List<Movie>) : MovieItemsUIState()
-}
-
-sealed class NonMovieBoxItemsUIState {
-    data object Empty : NonMovieBoxItemsUIState()
-    data class Data(val nonMovieBoxes: List<NonMovieBox>) : NonMovieBoxItemsUIState()
-}
