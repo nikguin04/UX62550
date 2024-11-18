@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.niklas.ux62550.R
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
+import com.niklas.ux62550.models.NonMovieBox
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.time.Duration.Companion.minutes
@@ -23,4 +24,14 @@ class ReviewViewModel : ViewModel() {
     private val mutableMovieState = MutableStateFlow<Movie>(movie)
     val movieState: StateFlow<Movie> = mutableMovieState
 
+}
+
+sealed class MovieItemsUIState {
+    data object Empty : MovieItemsUIState()
+    data class Data(val movies: List<Movie>) : MovieItemsUIState()
+}
+
+sealed class NonMovieBoxItemsUIState {
+    data object Empty : NonMovieBoxItemsUIState()
+    data class Data(val nonMovieBoxes: List<NonMovieBox>) : NonMovieBoxItemsUIState()
 }

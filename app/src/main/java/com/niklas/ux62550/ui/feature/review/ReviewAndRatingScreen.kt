@@ -125,13 +125,15 @@ fun PublishReview() {
             .padding(20.dp, 10.dp),
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedContainerColor = TextFieldColor,
-            focusedContainerColor = TextFieldColor
+            focusedContainerColor = TextFieldColor,
         ),
-        label = { Text("Write a review with accordance to the rating") },
+        prefix = { Text("Write a review with accordance to the rating") },
         textStyle = TextStyle(
             fontSize = 12.sp,
             color = Color.Black
         )
+
+
     )
     Box(
         modifier = Modifier.fillMaxWidth().padding(0.dp, 10.dp),
