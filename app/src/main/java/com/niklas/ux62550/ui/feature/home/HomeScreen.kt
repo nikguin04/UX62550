@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.figmaPxToDp_h
-import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
@@ -54,13 +53,13 @@ fun HomeScreen(
 fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, onNavigateToMedia: (String) -> Unit) {
     Column(modifier.padding()) {
         Row(
-            modifier.fillMaxWidth().padding(figmaPxToDp_w(29.5f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(35f)),
+            modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            LogoBox(size = figmaPxToDp_w(50f))
+            LogoBox(size = 55.dp)
 
-            Box(modifier = Modifier.padding(figmaPxToDp_w(20f), 0.dp, 0.dp, 0.dp)) {
+            Box(modifier = Modifier.padding(20.dp, 0.dp, 0.dp, 0.dp)) {
                 Text(
                     text = "Welcome, User1",
                     style = TextStyle(
@@ -103,10 +102,10 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                 is MediaItemsUIState.Data -> {
                     Row(
                         Modifier.padding(
-                            figmaPxToDp_w(13f),
-                            figmaPxToDp_w(10f),
+                            15.dp,
+                            12.dp,
                             0.dp,
-                            figmaPxToDp_w(2f)
+                            2.dp
                         )
                     ) {
                         Text(text = genre)
