@@ -25,7 +25,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.RedColorGradient
@@ -33,8 +32,18 @@ import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, device="spec:width=411dp,height=700dp")
 fun LoginRegisterPreview() {
+    UX62550Theme(darkTheme = true, dynamicColor = false) {
+        Surface {
+            LoginRegisterScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true, device="spec:width=300dp,height=500dp")
+fun LoginRegisterPreviewSmall() {
     UX62550Theme(darkTheme = true, dynamicColor = false) {
         Surface {
             LoginRegisterScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
@@ -57,53 +66,49 @@ fun LoginRegisterScreen(
                     )
                     .background(Brush.verticalGradient(colorStops = RedColorGradient))
             )
-            Row(
-                modifier = Modifier.padding(0.dp, figmaPxToDp_w(164f), 0.dp, 0.dp).fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = figmaPxToDp_w(180f))
-            }
         }
 
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.Bottom
-        ) {
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "Not a member yet?",
-                    modifier = Modifier.padding(0.dp, 0.dp, 0.dp, figmaPxToDp_w(10f)),
-                    style = TextStyle(fontSize = 20.sp, shadow = textShadow)
-                )
-                Button(
-                    onClick = { onNavigateToRegisterScreen("Register") },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = RegisterButtonBlue
-                    ),
-                    modifier = Modifier.size(figmaPxToDp_w(120f), figmaPxToDp_w(40f)).shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-                ) {
-                    Text(text = "Register", color = Color.White, style = TextStyle(fontSize = 20.sp, shadow = textShadow))
-                }
 
-                Box(Modifier.size(0.dp, figmaPxToDp_w(60f)))
-
-                Text(
-                    text = "Already a member?",
-                    modifier = Modifier.padding(0.dp, 0.dp, 0.dp, figmaPxToDp_w(10f)),
-                    style = TextStyle(fontSize = 20.sp, shadow = textShadow)
-                )
-                Button(
-                    onClick = { onNavigateToLoginScreen("Login") },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = LoginButtonGray
-                    ),
-                    modifier = Modifier.size(figmaPxToDp_w(120f), figmaPxToDp_w(40f)).shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-                ) {
-                    Text(text = "Sign in", color = Color.White, style = TextStyle(fontSize = 20.sp, shadow = textShadow))
-                }
-
-                Box(modifier = Modifier.size(0.dp, figmaPxToDp_w(118f)))
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(
+                modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
             }
+            Text(
+                text = "Not a member yet?",
+                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 12.dp),
+                style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+            )
+            Button(
+                onClick = { onNavigateToRegisterScreen("Register") },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RegisterButtonBlue
+                ),
+                modifier = Modifier.size(140.dp, 45.dp).shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+            ) {
+                Text(text = "Register", color = Color.White, style = TextStyle(fontSize = 20.sp, shadow = textShadow))
+            }
+
+            Box(Modifier.size(0.dp, 50.dp))
+
+            Text(
+                text = "Already a member?",
+                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 12.dp),
+                style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+            )
+            Button(
+                onClick = { onNavigateToLoginScreen("Login") },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = LoginButtonGray
+                ),
+                modifier = Modifier.size(140.dp, 45.dp).shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+            ) {
+                Text(text = "Sign in", color = Color.White, style = TextStyle(fontSize = 20.sp, shadow = textShadow))
+            }
+
+            Box(modifier = Modifier.size(0.dp, 140.dp))
         }
     }
 }

@@ -17,6 +17,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,112 +51,104 @@ fun RegisterPreview() {
 
 @Composable
 fun RegisterScreen() {
-    var usenameValue by remember { mutableStateOf("") }
-    var emailValue by remember { mutableStateOf("") }
-    var passValue by remember { mutableStateOf("") }
-    Surface(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Box(
-            modifier = Modifier
-                .size(
-                    LocalConfiguration.current.screenWidthDp.dp,
-                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                )
-                .background(Brush.verticalGradient(colorStops = RedColorGradient))
-        )
+    var usernameValue = remember { mutableStateOf("") }
+    var emailValue = remember { mutableStateOf("") }
+    var passValue = remember { mutableStateOf("") }
 
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                modifier = Modifier
-                    .padding(0.dp, figmaPxToDp_w(164f), 0.dp, figmaPxToDp_w(20f))
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                LogoBox(
-                    modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)),
-                    size = figmaPxToDp_w(180f)
-                )
-            }
-
-            // USERNAME INPUT
-            TextField(
-                modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
-                value = usenameValue,
-                onValueChange = { usenameValue = it },
-                label = { Text("Username") }
-            )
-            Text(
-                text = "Please choose an appropriate username",
-                color = TextFieldDescColor,
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
-                style = TextStyle(fontSize = 12.sp, shadow = textShadow)
-            )
-
-            // EMAIL INPUT
-            Box(Modifier.padding(0.dp, figmaPxToDp_w(20f), 0.dp, 0.dp))
-
-            TextField(
-                modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
-                value = emailValue,
-                onValueChange = { emailValue = it },
-                label = { Text("Email") }
-            )
-            Text(
-                text = "Please choose your own email",
-                color = TextFieldDescColor,
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
-                style = TextStyle(fontSize = 12.sp, shadow = textShadow)
-            )
-
-            Box(Modifier.padding(0.dp, figmaPxToDp_w(20f), 0.dp, 0.dp))
-
-            // PASSWORD INPUT
-            TextField(
-                modifier = Modifier.size(figmaPxToDp_w(328f), figmaPxToDp_w(56f)),
-                value = passValue,
-                onValueChange = { passValue = it },
-                label = { Text("Password") }
-            )
-            Text(
-                text = "Please choose a safe password",
-                color = TextFieldDescColor,
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .padding(figmaPxToDp_w(33f), figmaPxToDp_w(4f), 0.dp, 0.dp),
-                style = TextStyle(fontSize = 12.sp, shadow = textShadow)
-            )
-
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Box {
             Box(
                 modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(figmaPxToDp_w(15f), 0.dp)
-            ) {
-                Button(
-                    onClick = {},
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = RegisterButtonBlue
-                    ),
-                    modifier = Modifier
-                        .size(figmaPxToDp_w(120f), figmaPxToDp_w(40f))
-                        .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-                ) {
-                    Text(
-                        text = "Register",
-                        color = Color.White,
-                        style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+                    .size(
+                        LocalConfiguration.current.screenWidthDp.dp,
+                        LocalConfiguration.current.screenWidthDp.dp / 3 * 2
                     )
-                }
-            }
+                    .background(Brush.verticalGradient(colorStops = RedColorGradient))
+            )
+        }
 
-            Box(modifier = Modifier.size(0.dp, figmaPxToDp_w(142f)))
+
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(
+                modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
+            }
+            RegisterInputHolder(usernameValue, emailValue, passValue)
+        }
+    }
+}
+
+@Composable
+fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: MutableState<String>, passValue: MutableState<String>) {
+    Column {
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp, 0.dp),
+            value = usernameValue.value,
+            onValueChange = { usernameValue.value = it },
+            label = { Text("Username") }
+        )
+        Text(
+            text = "Please choose an appropriate username",
+            color = TextFieldDescColor,
+            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            style = TextStyle(fontSize = 12.sp, shadow = textShadow)
+        )
+
+        Box(Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp))
+
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp, 0.dp),
+            value = emailValue.value,
+            onValueChange = { emailValue.value = it },
+            label = { Text("Email") }
+        )
+        Text(
+            text = "Please choose your own email",
+            color = TextFieldDescColor,
+            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            style = TextStyle(fontSize = 12.sp, shadow = textShadow)
+        )
+
+        Box(Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp))
+
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp, 0.dp),
+            value = passValue.value,
+            onValueChange = { passValue.value = it },
+            label = { Text("Password") }
+        )
+        Text(
+            text = "Please choose a safe password",
+            color = TextFieldDescColor,
+            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            style = TextStyle(fontSize = 12.sp, shadow = textShadow)
+        )
+
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RegisterButtonBlue
+            ),
+            modifier = Modifier
+                .size(145.dp, 45.dp)
+                .padding(10.dp, 0.dp)
+                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+                .align(Alignment.End)
+        ) {
+            Text(
+                text = "Register",
+                color = Color.White,
+                style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+            )
+
         }
     }
 }
