@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_search
+package com.niklas.ux62550.ui.feature.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,67 +24,61 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.niklas.ux62550.models.MovieBox
-//import com.niklas.ux62550.screen.movieBoxMoviePicture
+import com.niklas.ux62550.models.Movie
 
 @Composable
-fun movieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
+fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier.clip(RoundedCornerShape(round)).background(color).size(width, height).padding()
+        modifier = modifier
+            .clip(RoundedCornerShape(round))
+            .background(color)
+            .size(width, height)
+            .padding()
     )
 }
 
 @Composable
-fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
+fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
-        //.background(Color.White, shape= RoundedCornerShape(8.dp))
-        //.padding(8.dp)
     ) {
-
-        movieBoxMoviePicture(
+        MovieBoxMoviePicture(
             width = 90.dp,
             height = 50.62.dp,
             round = 12.dp,
-            color = movieBox.tempColor,
+            color = movie.tempColor,
             modifier = Modifier.padding(end = 8.dp)
         )
-
-        Column (
+        Column(
             modifier = Modifier
-                //.fillMaxWidth()
                 .align(Alignment.CenterVertically)
                 .padding(start = 16.dp)
         ) {
             Row {
                 Column {
                     Text(
-                        text = movieBox.name,
+                        text = movie.name,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Row (modifier
-                        .padding(),
+                    Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
-
-                    ){
-                        Image( //Needs to be made button
+                    ) {
+                        Image( // Needs to be made button
                             imageVector = Icons.Filled.Star,
                             modifier = Modifier.requiredSize(18.dp),
                             colorFilter = ColorFilter.tint(Color.Yellow),
                             contentDescription = "Star icon"
                         )
                         Text(
-                            text = movieBox.rating.toString() + "/5",
-                            //text =  "3/5",
+                            text = movie.rating.toString() + "/5",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
-
                 }
                 Text(
                     text = " · ",
@@ -93,7 +86,7 @@ fun MovieBoxRow(movieBox: MovieBox, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = movieBox.genre,
+                    text = movie.year,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )

@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.screen_search
+package com.niklas.ux62550.ui.feature.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,10 +18,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.models.NonMovieBox
-//import com.niklas.ux62550.screen.nonMovieBoxMoviePicture
 
 @Composable
-fun nonMovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
+fun NonMovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .clip(CircleShape)
@@ -37,25 +36,19 @@ fun NonMovieBoxRow(nonMovieBox: NonMovieBox, modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
-        //.background(Color.White, shape= RoundedCornerShape(8.dp))
-        //.padding(8.dp)
     ) {
-
-        nonMovieBoxMoviePicture(
+        NonMovieBoxMoviePicture(
             width = 40.dp,
             height = 40.dp,
             round = 12.dp,
             color = nonMovieBox.tempColor,
             modifier = Modifier.padding(end = 8.dp)
         )
-
-        Row (
+        Row(
             modifier = Modifier
-                //.fillMaxWidth()
                 .align(Alignment.CenterVertically)
                 .padding(start = 16.dp)
         ) {
-
             Text(
                 text = nonMovieBox.name,
                 fontSize = 20.sp,

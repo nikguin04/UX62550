@@ -1,8 +1,6 @@
+/*.xml
 /caches
-/libraries
 /inspectionProfiles
-/modules.xml
-/workspace.xml
-/navEditor.xml
-/assetWizardSettings.xml
-/deploymentTargetSelector.xml
+/libraries
+/modules
+/shelf

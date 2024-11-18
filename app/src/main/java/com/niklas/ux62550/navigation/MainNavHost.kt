@@ -1,6 +1,5 @@
 package com.niklas.ux62550.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -8,21 +7,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.niklas.ux62550.ui.screen_home.HomeScreen
-
-// Step1: define routes ✅
-
-// Step2: get nav controller ✅
-
-// Step3: call NavHost ✅
-
-// Step4: add screens to nav graph ✅
-
-// Step5: add navigation actions ✅
-
-// Step6: add navigation arguments ✅
-
-// Step7: add top app bar with back arrow and screen title ✅
+import com.niklas.ux62550.ui.feature.home.HomeScreen
+import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsScreen
+import com.niklas.ux62550.ui.feature.profile.LoginRegisterScreen
+import com.niklas.ux62550.ui.feature.profile.LoginScreen
+import com.niklas.ux62550.ui.feature.profile.ProfileScreen
+import com.niklas.ux62550.ui.feature.profile.RegisterScreen
+import com.niklas.ux62550.ui.feature.review.ReviewScreen
+import com.niklas.ux62550.ui.feature.search.SearchScreen
+import com.niklas.ux62550.ui.feature.watchlist.WatchlistScreen
 
 @Composable
 fun MainNavHost(
@@ -37,43 +30,67 @@ fun MainNavHost(
     ) {
         composable<Route.HomeScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
+            HomeScreen(
+                onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
+            )
+        }
 
-            HomeScreen (
-                onNavigateToMediaDeatilsScreen = { name ->
-                    navController.navigate(Route.MediaDetailsScreen(name))
-                }
+        composable<Route.SearchScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
+            SearchScreen(
+                onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
             )
         }
 
         composable<Route.MediaDetailsScreen> { backStackEntry ->
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>()) }
-
             MediaDetailsScreen(
-                name = backStackEntry.toRoute<Route.MediaDetailsScreen>().md_name,
-                //onNavigateToGreenScreen = { navController.navigate(Route.GreenScreen) }
+                onNavigateToOtherMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) },
+                onNavigateToReview = { name -> navController.navigate(Route.ReviewScreen(name)) }
             )
         }
 
-        /*composable<Route.BlueScreen> { backStackEntry ->
-            LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.BlueScreen>()) }
+        composable<Route.ReviewScreen> { backStackEntry ->
+            LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
+            ReviewScreen()
+        }
 
-            BlueScreen(
-                name = backStackEntry.toRoute<Route.BlueScreen>().name,
-                onNavigateToGreenScreen = { navController.navigate(Route.GreenScreen) }
+        composable<Route.LoginRegisterScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginRegisterScreen>()) }
+            LoginRegisterScreen(
+                onNavigateToLoginScreen = { navController.navigate(Route.LoginScreen) },
+                onNavigateToRegisterScreen = { navController.navigate(Route.RegisterScreen) }
             )
         }
 
-        composable<Route.GreenScreen> {
-            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.GreenScreen>()) }
+        composable<Route.LoginScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginScreen>()) }
+            LoginScreen()
+        }
 
-            GreenScreen(
-                onNavigateToRedScreen = { navController.navigate(Route.RedScreen) }
-            )
-        }*/
+        composable<Route.RegisterScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
+            RegisterScreen()
+        }
+
+        composable<Route.ProfileScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ProfileScreen>()) }
+            ProfileScreen(onNavigateToLoginRegister = { navController.navigateAndClearBackStack(Route.LoginRegisterScreen) })
+        }
+
+        composable<Route.WatchScreen> {
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.WatchScreen>()) }
+            WatchlistScreen(onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) })
+        }
     }
 }
 
-@Composable
-fun MediaDetailsScreen(name: Any) {
-    Text(text = "THIS IS A TEMPORARY PLACEHOLDER!!!")
+fun NavHostController.navigateAndClearBackStack(route: Route) {
+    navigate(route) {
+        popUpTo(graph.id) {
+            inclusive = true // This removes the start destination from the backstack
+        }
+        // Set launchSingleTop to prevent multiple copies of the same destination on the backstack
+        launchSingleTop = true
+    }
 }
