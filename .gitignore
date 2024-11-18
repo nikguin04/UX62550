@@ -3,6 +3,7 @@
 .cxx
 .externalNativeBuild
 .gradle
+/.kotlin
 /captures
 /local.properties
 build
