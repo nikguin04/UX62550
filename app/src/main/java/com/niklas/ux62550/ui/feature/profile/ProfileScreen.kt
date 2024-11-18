@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,13 +35,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.models.Profile
 import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.ui.feature.mediadetails.DrawCircle
+import com.niklas.ux62550.ui.feature.mediadetails.ProfileViewModel
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.ProfileBtnRed
+import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import com.niklas.ux62550.ui.theme.placeholderIconColor
-import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.starYellow
 
 @Composable
@@ -52,13 +56,18 @@ fun ProfilePreview() {
         }
     }
 }
-
 @Composable
-fun ProfileScreen(
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit) {
+    val profile = viewModel.profileState.collectAsState().value
+    ProfileContent(profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
+}
+@Composable
+fun ProfileContent(
     onNavigateToLoginRegister: (String) -> Unit,
+    profile: Profile
 ) {
-    var nameValueTemp = remember { mutableStateOf("Your name") }
-    var emailValueTemp = remember { mutableStateOf("*****@gmail.com") }
+    var nameValueTemp = remember { mutableStateOf(profile.name) }
+    var emailValueTemp = remember { mutableStateOf(profile.Email) }
     var passwordValueTemp = remember { mutableStateOf("**********") }
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -102,7 +111,7 @@ fun ProfileScreen(
                     }
 
                     Text(
-                        text = "Profile Name",
+                        text = profile.name,
                         style = TextStyle(fontSize = 12.sp, shadow = textShadow),
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
