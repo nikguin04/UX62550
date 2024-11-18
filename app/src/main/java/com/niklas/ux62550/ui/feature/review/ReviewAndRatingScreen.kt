@@ -137,7 +137,7 @@ fun PublishReview() {
         onValueChange = { text = it },
         shape = RoundedCornerShape(30.dp),
         modifier = Modifier
-            //.requiredSize(400.dp, 200.dp)
+            .requiredSize(400.dp, 200.dp)
             .padding(20.dp, 10.dp),
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedContainerColor = TextFieldColor,
