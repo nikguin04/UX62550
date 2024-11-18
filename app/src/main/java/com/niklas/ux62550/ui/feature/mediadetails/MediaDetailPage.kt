@@ -90,8 +90,9 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
         InfoRow(movie = movie, onNavigateToReview = onNavigateToReview)
         Genres(genres = movie.genres)
         DescriptionText(description = movie.description)
-        ActorsAndDirectors(movie = movie)
-        OtherDetails(movie = movie)
+        ActorsAndDirectors()
+        Awards()
+        DetailedRating()
         SimilarMedia(similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia)
     }
 }
@@ -107,7 +108,7 @@ fun Header(modifier: Modifier = Modifier, movie: Movie) {
         )
         Column(
             modifier = Modifier
-                .padding(30.dp, 70.dp, 30.dp, 30.dp)
+                .padding(30.dp, 70.dp, 30.dp, 8.dp)
                 .fillMaxWidth()
         ) {
             Box( // Trailer
@@ -129,6 +130,7 @@ fun Header(modifier: Modifier = Modifier, movie: Movie) {
                     contentDescription = "Play circle"
                 )
             }
+            Spacer(modifier = Modifier.height(12.dp))
             TitleText(movie.name)
         }
         Image( // Bookmark button
@@ -231,12 +233,12 @@ fun Genres(modifier: Modifier = Modifier, genres: List<String>) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ActorsAndDirectors(modifier: Modifier = Modifier, movie: Movie) {
+fun ActorsAndDirectors(modifier: Modifier = Modifier) {
     Text("Actors and Directors", Modifier.padding(4.dp, 2.dp, 0.dp, 0.dp))
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         repeat(4) {
@@ -262,7 +264,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, movie: Movie) {
                     },
                     sheetState = sheetState
                 ) {
-                    for (i in 0..3) {
+                    for (i in 1..4) {
                         Row(
                             modifier = Modifier.padding(50.dp, 0.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -271,7 +273,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, movie: Movie) {
                             Spacer(modifier = Modifier.width(12.dp))
                             Column {
                                 Text(
-                                    text = "Some Actor Name",
+                                    text = "Actor $i",
                                     fontSize = 14.sp,
                                     textDecoration = TextDecoration.Underline,
                                     fontWeight = FontWeight.Bold,
@@ -298,9 +300,9 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, movie: Movie) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OtherDetails(modifier: Modifier = Modifier, movie: Movie) {
+fun Awards(modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
+        modifier = modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -358,9 +360,13 @@ fun OtherDetails(modifier: Modifier = Modifier, movie: Movie) {
             }
         }
     }
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailedRating(modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
+        modifier = modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Needs to be made to a button later on
@@ -413,8 +419,6 @@ fun OtherDetails(modifier: Modifier = Modifier, movie: Movie) {
                                 fontSize = 18.sp,
                                 modifier = Modifier.weight(0.5f)
                             )
-
-
                         }
                     }
 
@@ -439,20 +443,18 @@ fun SimilarMedia(modifier: Modifier = Modifier, similarMedia: List<MediaItem>, o
 }
 
 @Composable
-fun TitleText(movieTitle: String) {
+fun TitleText(title: String) {
     Text(
-        text = movieTitle,
+        modifier = Modifier.fillMaxWidth(),
+        text = title,
         style = TextStyle(
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             shadow = Shadow(
                 color = Color.Black, blurRadius = 10f
             ),
-            textAlign = TextAlign.Center,
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(0.dp, 200.dp, 0.dp, 0.dp),
+            textAlign = TextAlign.Center
+        )
     )
 }
 
