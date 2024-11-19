@@ -100,12 +100,15 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
 @Composable
 fun Header(modifier: Modifier = Modifier, movie: Movie) {
     Box(modifier = modifier.fillMaxWidth()) {
+        // This is the black to the preview.
         Box( // Background gradient
             modifier = Modifier
                 .background(Brush.verticalGradient(colorStops = RedColorGradient))
                 .fillMaxWidth()
                 .height(230.dp)
         )
+
+        // this is the preview and the play button in one box
         Column(
             modifier = Modifier
                 .padding(30.dp, 70.dp, 30.dp, 8.dp)
@@ -131,9 +134,12 @@ fun Header(modifier: Modifier = Modifier, movie: Movie) {
                 )
             }
             Spacer(modifier = Modifier.height(12.dp))
+
+            // Moive Title
             TitleText(movie.name)
         }
-        Image( // Bookmark button
+        // Bookmark button
+        Image(
             Icons.Outlined.BookmarkBorder,
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -148,10 +154,12 @@ fun Header(modifier: Modifier = Modifier, movie: Movie) {
 fun InfoRow(modifier: Modifier = Modifier, movie: Movie, onNavigateToReview: (String) -> Unit) {
     Row(
         modifier = modifier
-            .padding(4.dp, 0.dp, 8.dp, 0.dp)
+            //.padding(4.dp, 0.dp, 4.dp, 0.dp)
             .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
+        // Row for the stars so that we can use spaced evenly.
         Row(
             modifier = Modifier.clickable(onClick = { onNavigateToReview(movie.name) }),
             verticalAlignment = Alignment.CenterVertically
@@ -175,17 +183,17 @@ fun InfoRow(modifier: Modifier = Modifier, movie: Movie, onNavigateToReview: (St
                 fontSize = 18.sp
             )
         }
-        Spacer(modifier = Modifier.weight(1f))
+        //Spacer(modifier = Modifier.weight(1f))
         Text(
             movie.year,
             fontSize = 18.sp
         )
-        Spacer(modifier = Modifier.weight(1f))
+        //Spacer(modifier = Modifier.weight(1f))
         Text(
             movie.duration.toString(),
             fontSize = 18.sp
         )
-        Spacer(modifier = Modifier.weight(1f))
+        //Spacer(modifier = Modifier.weight(1f))
         Text(
             movie.pgRating.toString() + "+",
             fontSize = 18.sp
