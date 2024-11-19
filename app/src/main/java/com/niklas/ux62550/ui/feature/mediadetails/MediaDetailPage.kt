@@ -57,10 +57,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
+import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
+import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_URL
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowWithSnapEffect
@@ -462,5 +466,23 @@ fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
                 center = center
             )
         }
+    )
+}
+@Composable
+fun MovieItem(uri: String?, modifier: Modifier = Modifier) {
+    val title = if (uri!=null) BASE_URL + uri else "Hello World"
+    Text(
+        text = title,
+        style = TextStyle(
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            shadow = Shadow(
+                color = Color.Black, blurRadius = 10f
+            ),
+            textAlign = TextAlign.Center,
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 200.dp, 0.dp, 0.dp),
     )
 }
