@@ -54,13 +54,3 @@ private fun FruitItem(fruit: MediaItem, index: Int = 0) {
         )
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-private fun FruitListPreview() {
-    UX62550Theme {
-        MediaItemsList(
-            listOf(MediaItem("TEST NAME", R.drawable.ic_launcher_background, Color.Black))
-        )
-    }
-}

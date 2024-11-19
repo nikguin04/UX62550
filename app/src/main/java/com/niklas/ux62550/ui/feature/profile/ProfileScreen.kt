@@ -86,24 +86,24 @@ fun ProfileContent(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(modifier = Modifier.size(0.dp, figmaPxToDp_w(58f)))
+            Box(modifier = Modifier.size(0.dp, 70.dp))
 
             // Profile name and picture
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(figmaPxToDp_w(14f), 0.dp),
+                    .padding(16.dp, 0.dp),
                 horizontalArrangement = Arrangement.End
             ) {
                 Column {
                     Box {
-                        DrawCircle(Modifier.size(figmaPxToDp_w(93f)), color = placeholderIconColor)
+                        DrawCircle(Modifier.size(105.dp), color = placeholderIconColor)
 
-                        Box(Modifier.padding(figmaPxToDp_w((93 - 24) / 2f))) {
+                        Box(Modifier.padding(((105 - 26) / 2).dp)) {
                             Icon(
                                 imageVector = Icons.Outlined.AddCircleOutline,
                                 contentDescription = null,
-                                Modifier.size(figmaPxToDp_w(24f)),
+                                Modifier.size(26.dp),
                                 Color.Black
                             )
                         }
@@ -121,31 +121,31 @@ fun ProfileContent(
             }
 
             // Your top rated movies??
-            Box(Modifier.size(0.dp, figmaPxToDp_w(20f)))
+            Box(Modifier.size(0.dp, 30.dp))
             Text(
                 text = "Your Top Rated Movies",
                 style = TextStyle(fontSize = 20.sp, shadow = textShadow),
                 modifier = Modifier
-                    .padding(figmaPxToDp_w(16f), 0.dp, 0.dp, 0.dp)
+                    .padding(18.dp, 0.dp, 0.dp, 0.dp)
                     .align(Alignment.Start)
             )
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(0.dp, figmaPxToDp_w(10f), 0.dp, 0.dp),
+                    .padding(0.dp, 12.dp, 0.dp, 0.dp),
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = "Red: The Movie",
                     style = TextStyle(fontSize = 12.sp, shadow = textShadow),
-                    modifier = Modifier.padding(figmaPxToDp_w(16f), 0.dp, 0.dp, 0.dp)
+                    modifier = Modifier.padding(18.dp, 0.dp, 0.dp, 0.dp)
                 )
-                Box(Modifier.size(figmaPxToDp_w(12f), 0.dp))
+                Box(Modifier.size(13.dp, 0.dp))
                 for (i in 0..4) {
                     Icon(
-                        modifier = Modifier.size(figmaPxToDp_w(24f)),
+                        modifier = Modifier.size(26.dp),
                         imageVector = Icons.Filled.Star,
                         contentDescription = null,
                         tint = starYellow
@@ -158,41 +158,35 @@ fun ProfileContent(
                         shadow = textShadow,
                         fontWeight = FontWeight.Bold
                     ),
-                    modifier = Modifier.padding(figmaPxToDp_w(4f), 0.dp, 0.dp, 0.dp)
+                    modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
                 )
             }
 
             // Profile data
-            Box(Modifier.size(0.dp, figmaPxToDp_w(28f)))
+            Box(Modifier.size(0.dp, 30.dp))
             ProfileAttribute("Display Name", nameValueTemp)
-            Box(Modifier.size(0.dp, figmaPxToDp_w(15f)))
+            Box(Modifier.size(0.dp, 17.dp))
             ProfileAttribute("Email", emailValueTemp)
-            Box(Modifier.size(0.dp, figmaPxToDp_w(100f)))
+            Box(Modifier.size(0.dp, 110.dp))
             ProfileAttribute("Password", passwordValueTemp)
 
-            Row(
+            Box(Modifier.size(0.dp, 20.dp))
+            Button  (
+                onClick = { onNavigateToLoginRegister("Sign out") },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = LoginButtonGray
+                ),
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(0.dp, 0.dp, 0.dp, 20.dp),
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.Center
+                    .size(145.dp, 45.dp)
+                    .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
             ) {
-                Button(
-                    onClick = { onNavigateToLoginRegister("Sign out") },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = LoginButtonGray
-                    ),
-                    modifier = Modifier
-                        .size(figmaPxToDp_w(120f), figmaPxToDp_w(40f))
-                        .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-                ) {
-                    Text(
-                        text = "Sign out",
-                        color = Color.White,
-                        style = TextStyle(fontSize = 20.sp, shadow = textShadow)
-                    )
-                }
+                Text(
+                    text = "Sign out",
+                    color = Color.White,
+                    style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+                )
             }
+
         }
     }
 }
@@ -203,20 +197,20 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
         TextField(
             value = value.value,
             modifier = Modifier
-                .size(figmaPxToDp_w(244f), figmaPxToDp_w(43f))
-                .padding(figmaPxToDp_w(14f), 0.dp, 0.dp, 0.dp),
+                .size(260.dp, 55.dp)
+                .padding(16.dp, 0.dp, 0.dp, 0.dp),
             onValueChange = { value.value = it },
             label = { Text(text = label) },
             textStyle = TextStyle(fontSize = 15.sp)
         )
-        Box(Modifier.size(figmaPxToDp_w(19f), 0.dp))
+        Box(Modifier.size(22.dp, 0.dp))
         Button(
             onClick = {},
             colors = ButtonDefaults.buttonColors(
                 containerColor = ProfileBtnRed
             ),
             modifier = Modifier
-                .size(figmaPxToDp_w(64f), figmaPxToDp_w(21f))
+                .size(70.dp, 23.dp)
                 .shadow(elevation = 4.dp, shape = ButtonDefaults.shape),
             contentPadding = PaddingValues(0.dp)
         ) {
