@@ -35,7 +35,7 @@ class MovieViewModel : ViewModel() {
         getMovie()
     }
     private fun getMovie() = viewModelScope.launch {
-        homeRepository.getMultiSearch("The Office") // TODO: Don't hardcore this, get some proper featured films
+        homeRepository.getMultiSearch("Scream") // TODO: Don't hardcore this, get some proper featured films
     }
 
     private val mutableMovieState = MutableStateFlow<Movie>(movie)
@@ -43,4 +43,6 @@ class MovieViewModel : ViewModel() {
 
     private val mutableSimilarMediaState = MutableStateFlow<List<MediaItem>>(similarMedia)
     val similarMediaState: StateFlow<List<MediaItem>> = mutableSimilarMediaState
+
+
 }

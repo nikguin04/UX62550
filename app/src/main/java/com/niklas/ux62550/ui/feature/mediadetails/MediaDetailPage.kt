@@ -3,8 +3,6 @@ package com.niklas.ux62550.ui.feature.mediadetails
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,22 +50,25 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil3.compose.AsyncImage
-import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
+import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_MOVIE_URL
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_URL
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
+import com.niklas.ux62550.ui.feature.home.HomeFeaturedMediaHorizontalPager
+import com.niklas.ux62550.ui.feature.home.HorizontalDotIndexer
 import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowWithSnapEffect
+import com.niklas.ux62550.ui.feature.home.MediaItemsUIState
+import com.niklas.ux62550.ui.feature.home.MediaItemsViewModel
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -83,15 +84,26 @@ fun MediaDetailPagePreview() {
 }
 
 @Composable
-fun MediaDetailsScreen(viewModel: MovieViewModel = viewModel(), onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
+fun MediaDetailsScreen(
+    viewModel: MovieViewModel = viewModel(),
+    onNavigateToOtherMedia: (String) -> Unit,
+    onNavigateToReview: (String) -> Unit,
+    mediaItemsViewModel: MediaItemsViewModel = viewModel()
+){
     val movie = viewModel.movieState.collectAsState().value
     val similarMedia = viewModel.similarMediaState.collectAsState().value
-    MediaDetailsContent(movie = movie, similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia, onNavigateToReview = onNavigateToReview)
+    val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
+    MediaDetailsContent(
+        movie = movie,
+        similarMedia = similarMedia,
+        mediaItemsUIState = uiState,
+        onNavigateToOtherMedia = onNavigateToOtherMedia,
+        onNavigateToReview = onNavigateToReview)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
+fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, mediaItemsUIState: MediaItemsUIState, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
@@ -125,7 +137,20 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                     colorFilter = ColorFilter.tint(Color.White),
                     contentDescription = "Play circle"
                 )
-                TitleText(movie.name)
+                // Implement viewmodel
+                when (mediaItemsUIState) {
+                    MediaItemsUIState.Empty -> {
+                        Text(
+                            text = "No Media Items",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    is MediaItemsUIState.Data -> {
+                        MovieDetailsAPI(mediaItemsUIState.mediaObjects)
+                    }
+                    else -> {}
+                }
             }
             Image(
                 Icons.Outlined.BookmarkBorder,
@@ -466,23 +491,5 @@ fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
                 center = center
             )
         }
-    )
-}
-@Composable
-fun MovieItem(uri: String?, modifier: Modifier = Modifier) {
-    val title = if (uri!=null) BASE_URL + uri else "Hello World"
-    Text(
-        text = title,
-        style = TextStyle(
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
-            shadow = Shadow(
-                color = Color.Black, blurRadius = 10f
-            ),
-            textAlign = TextAlign.Center,
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(0.dp, 200.dp, 0.dp, 0.dp),
     )
 }
