@@ -31,7 +31,9 @@ class MovieViewModel : ViewModel() {
         MediaItem("Name 2", R.drawable.logo, Color.Red, "", ""),
         MediaItem("Name 3", R.drawable.logo, Color.Green, "", ""),
     )
-
+    init {
+        getMovie()
+    }
     private fun getMovie() = viewModelScope.launch {
         homeRepository.getMultiSearch("The Office") // TODO: Don't hardcore this, get some proper featured films
     }
