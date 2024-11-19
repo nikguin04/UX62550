@@ -2,6 +2,7 @@ package com.niklas.ux62550.ui.feature.mediadetails
 
 import ActorsAndDirectorsPopUp
 import AwardPopUp
+import DrawCircle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,32 +22,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.outlined.StarHalf
 import androidx.compose.material.icons.outlined.BookmarkBorder
-import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
@@ -60,7 +48,6 @@ import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.feature.home.MediaItemsUIState
 import com.niklas.ux62550.ui.feature.home.MediaItemsViewModel
 import com.niklas.ux62550.ui.feature.popup.DetailRatingPopUp
-import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
@@ -197,7 +184,6 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                     fontSize = 18.sp
                 )
             }
-
         }
         Row(
             modifier = Modifier
@@ -244,20 +230,3 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
         HorizontalLazyRowWithSnapEffect(similarMedia, onNavigateToOtherMedia)
     }
 }
-
-@Composable
-fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
-    Box(
-        modifier = modifier.drawBehind {
-            // Set the radius based on the smaller of the box dimensions
-            val radius = size.minDimension / 2
-            drawCircle(
-                color = color,
-                radius = radius,
-                center = center
-            )
-        }
-    )
-}
-
-
