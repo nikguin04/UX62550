@@ -3,6 +3,8 @@ package com.niklas.ux62550.ui.feature.mediadetails
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.outlined.StarHalf
@@ -84,7 +88,9 @@ fun MediaDetailsScreen(viewModel: MovieViewModel = viewModel(), onNavigateToOthe
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
-    Column {
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState())
+    ) {
         Box(modifier = modifier.fillMaxWidth()) {
             Box(modifier = Modifier.alpha(0.5f)) {
                 Box(
@@ -197,14 +203,14 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                 }
                 if (index != movie.genres.lastIndex) {
                     Spacer(modifier = Modifier.width(4.dp))
-                    DrawLittleCircle(Modifier.size(10.dp))
+                    DrawCircle(Modifier.size(10.dp), Color.LightGray)
                     Spacer(modifier = Modifier.width(4.dp))
                 }
             }
             Spacer(modifier = Modifier.weight(0.3f))
             repeat(3) { // Needs to be changed to Where to Watch
                 Spacer(modifier = Modifier.width(4.dp))
-                DrawLittleCircle(Modifier.size(10.dp))
+                DrawCircle(Modifier.size(10.dp), Color.LightGray)
             }
             Spacer(modifier = Modifier.weight(0.05f))
         }
@@ -230,7 +236,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                     },
                     modifier = Modifier.size(12.dp) // Size of the clickable button area
                 ) {
-                    DrawLittleCircle(Modifier.size(10.dp)) // Circle inside the button
+                    DrawCircle(Modifier.size(10.dp), Color.LightGray) // Circle inside the button
                 }
                 if (showBottomSheet) {
                     ModalBottomSheet(
@@ -452,21 +458,6 @@ fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
             val radius = size.minDimension / 2
             drawCircle(
                 color = color,
-                radius = radius,
-                center = center
-            )
-        }
-    )
-}
-
-@Composable
-fun DrawLittleCircle(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.drawBehind {
-            // Set the radius based on the smaller of the box dimensions
-            val radius = size.minDimension / 2
-            drawCircle(
-                color = Color.LightGray,
                 radius = radius,
                 center = center
             )

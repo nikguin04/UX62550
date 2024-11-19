@@ -2,14 +2,19 @@ package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.R
+import com.niklas.ux62550.domain.HomeRepository
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.minutes
 
 class MovieViewModel : ViewModel() {
+    private val homeRepository = HomeRepository()
+
     private val movie = Movie(
         name = "RED: The Movie",
         year = "2022",
@@ -26,6 +31,10 @@ class MovieViewModel : ViewModel() {
         MediaItem("Name 2", R.drawable.logo, Color.Red, "", ""),
         MediaItem("Name 3", R.drawable.logo, Color.Green, "", ""),
     )
+
+    private fun getMovie() = viewModelScope.launch {
+        homeRepository.getMultiSearch("The Office") // TODO: Don't hardcore this, get some proper featured films
+    }
 
     private val mutableMovieState = MutableStateFlow<Movie>(movie)
     val movieState: StateFlow<Movie> = mutableMovieState
