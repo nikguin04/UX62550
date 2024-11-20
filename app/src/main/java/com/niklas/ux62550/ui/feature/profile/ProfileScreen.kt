@@ -1,5 +1,6 @@
 package com.niklas.ux62550.ui.feature.profile
 
+import DrawCircle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,7 +39,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.Profile
 import com.niklas.ux62550.models.figmaPxToDp_w
-import com.niklas.ux62550.ui.feature.mediadetails.DrawCircle
 import com.niklas.ux62550.ui.feature.mediadetails.ProfileViewModel
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.ProfileBtnRed

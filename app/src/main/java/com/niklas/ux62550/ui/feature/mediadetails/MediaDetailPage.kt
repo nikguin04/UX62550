@@ -117,11 +117,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                 // Implement viewmodel
                 when (mediaItemsUIState) {
                     MediaItemsUIState.Empty -> {
-                        Text(
-                            text = "No Media Items",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        TitleText("No movie yet")
                     }
                     is MediaItemsUIState.Data -> {
                         MovieDetailsAPI(mediaItemsUIState.mediaObjects)
@@ -129,6 +125,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                     else -> {}
                 }
             }
+
             Image(
                 Icons.Outlined.BookmarkBorder,
                 modifier = Modifier
