@@ -41,7 +41,7 @@ data class MediaObject(
 	val id: Int,
 
     @SerialName("title")
-	val title: String = "Unknown",
+	val title: String = "",
 
     @SerialName("overview")
 	val overview: String = "",

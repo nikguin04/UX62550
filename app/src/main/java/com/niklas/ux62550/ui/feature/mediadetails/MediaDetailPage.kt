@@ -49,6 +49,7 @@ import com.niklas.ux62550.ui.feature.home.MediaItemsUIState
 import com.niklas.ux62550.ui.feature.home.MediaItemsViewModel
 import com.niklas.ux62550.ui.feature.popup.DetailRatingPopUp
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import kotlin.time.Duration
 
 @Composable
 @Preview(showBackground = true)
@@ -80,7 +81,14 @@ fun MediaDetailsScreen(
 
 
 @Composable
-fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, mediaItemsUIState: MediaItemsUIState, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
+fun MediaDetailsContent(
+    modifier: Modifier = Modifier,
+    movie: Movie,
+    similarMedia: List<MediaItem>,
+    mediaItemsUIState: MediaItemsUIState,
+    onNavigateToOtherMedia: (String) -> Unit,
+    onNavigateToReview: (String) -> Unit
+){
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
@@ -137,85 +145,14 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
 
             Row(
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(4.dp, 0.dp, 8.dp, 0.dp)
-                    .fillMaxWidth(),
+                    .align(Alignment.BottomStart) // Align to bottom start within the Box
+                    .padding(4.dp, 0.dp, 8.dp, 0.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    modifier = Modifier.clickable(onClick = { onNavigateToReview(movie.name) }),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    for (i in 1..5) {
-                        val starIcon = when {
-                            i <= movie.rating -> Icons.Outlined.Star
-                            i <= movie.rating + 0.5 -> Icons.AutoMirrored.Outlined.StarHalf
-                            else -> Icons.Outlined.StarOutline
-                        }
-                        Image(
-                            imageVector = starIcon,
-                            modifier = Modifier.requiredSize(18.dp),
-                            colorFilter = ColorFilter.tint(Color.Yellow),
-                            contentDescription = "Rating star"
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        movie.rating.toString(),
-                        fontSize = 18.sp
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    movie.year,
-                    fontSize = 18.sp
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    movie.duration.toString(),
-                    fontSize = 18.sp
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    movie.pgRating.toString() + "+",
-                    fontSize = 18.sp
-                )
+                facts(modifier, movie.name, movie.rating, movie.year, movie.duration, movie.pgRating, onNavigateToReview)
             }
         }
-        Row(
-            modifier = Modifier
-                .padding(4.dp, 10.dp, 0.dp, 0.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            for ((index, genre) in movie.genres.withIndex()) {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(40.dp))
-                        .background(Color.Gray)
-                        .padding(8.dp, 4.dp)
-                ) {
-                    Text(
-                        text = genre,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-                if (index != movie.genres.lastIndex) {
-                    Spacer(modifier = Modifier.width(4.dp))
-                    DrawCircle(Modifier.size(10.dp), Color.LightGray)
-                    Spacer(modifier = Modifier.width(4.dp))
-                }
-            }
-            Spacer(modifier = Modifier.weight(0.3f))
-            repeat(3) { // Needs to be changed to Where to Watch
-                Spacer(modifier = Modifier.width(4.dp))
-                DrawCircle(Modifier.size(10.dp), Color.LightGray)
-            }
-            Spacer(modifier = Modifier.weight(0.05f))
-        }
+        Genre(movie.genres)
         DescriptionText(movie.description)
         Text("Actors and Directors", modifier.padding(4.dp, 2.dp, 0.dp, 0.dp))
         ActorsAndDirectorsPopUp()
@@ -225,5 +162,94 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
 
         Text("Movies similar to this one", modifier.padding(4.dp, 0.dp, 0.dp, 0.dp))
         HorizontalLazyRowWithSnapEffect(similarMedia, onNavigateToOtherMedia)
+    }
+}
+@Composable
+fun facts(
+    modifier: Modifier,
+    movieName: String,
+    movieRating: Double,
+    MovieYear: String,
+    MovieDuration: Duration,
+    MoviePGRating: Int,
+    onNavigateToReview: (String) -> Unit
+) {
+    Row {
+        Row(
+            modifier = Modifier.clickable(onClick = { onNavigateToReview(movieName) }),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            for (i in 1..5) {
+                val starIcon = when {
+                    i <= movieRating -> Icons.Outlined.Star
+                    i <= movieRating + 0.5 -> Icons.AutoMirrored.Outlined.StarHalf
+                    else -> Icons.Outlined.StarOutline
+                }
+                Image(
+                    imageVector = starIcon,
+                    modifier = Modifier.requiredSize(18.dp),
+                    colorFilter = ColorFilter.tint(Color.Yellow),
+                    contentDescription = "Rating star"
+                )
+            }
+            Spacer(modifier = modifier.width(4.dp))
+            Text(
+                movieRating.toString(),
+                fontSize = 18.sp
+            )
+        }
+        Spacer(modifier = modifier.weight(1f))
+        Text(
+            MovieYear,
+            fontSize = 18.sp
+        )
+        Spacer(modifier = modifier.weight(1f))
+        Text(
+            MovieDuration.toString(),
+            fontSize = 18.sp
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            "$MoviePGRating+",
+            fontSize = 18.sp
+        )
+    }
+}
+
+@Composable
+fun Genre(movieGenre: List<String>){
+    Row(
+        modifier = Modifier
+            .padding(4.dp, 10.dp, 0.dp, 0.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        for ((index, genre) in movieGenre.withIndex()) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(40.dp))
+                    .background(Color.Gray)
+                    .padding(8.dp, 4.dp)
+            ) {
+                Text(
+                    text = genre,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+            if (index != movieGenre.lastIndex) {
+                Spacer(modifier = Modifier.width(4.dp))
+                DrawCircle(Modifier.size(10.dp), Color.LightGray)
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+        }
+        Spacer(modifier = Modifier.weight(0.3f))
+        repeat(3) { // Needs to be changed to Where to Watch
+            Spacer(modifier = Modifier.width(4.dp))
+            DrawCircle(Modifier.size(10.dp), Color.LightGray)
+        }
+        Spacer(modifier = Modifier.weight(0.05f))
     }
 }
