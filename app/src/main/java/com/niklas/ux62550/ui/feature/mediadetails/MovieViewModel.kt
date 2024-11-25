@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.R
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.data.model.SimilarMoviesObject
+import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.domain.HomeRepository
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.models.MediaItem
@@ -20,12 +22,12 @@ import kotlin.time.Duration.Companion.minutes
 class MovieViewModel : ViewModel() {
     private val mediaDetailsRepository = MediaDetailsRepository()
 
-
-
     private fun getDetails() = viewModelScope.launch {
         mediaDetailsRepository.getMoviesDetails(205321) // TODO: Don't hardcore this, get some proper featured films
     }
-
+    private fun getSimilarMovies() = viewModelScope.launch {
+        mediaDetailsRepository.getSimilarsMovies(205321) // TODO: Don't hardcore this, get some proper featured films
+    }
 
     private val similarMedia = listOf(
         MediaItem("Name 1", R.drawable.logo, Color.Blue, "", ""),
@@ -36,8 +38,8 @@ class MovieViewModel : ViewModel() {
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
     val movieState: StateFlow<MovieState> = mutableMovieState
 
-    private val mutableSimilarMediaState = MutableStateFlow<List<MediaItem>>(similarMedia)
-    val similarMediaState: StateFlow<List<MediaItem>> = mutableSimilarMediaState
+    private val mutableSimilarMovieState = MutableStateFlow<SimilarMovieState>(SimilarMovieState.Empty)
+    val similarMediaState: StateFlow<SimilarMovieState> = mutableSimilarMovieState
 
     init {
         viewModelScope.launch {
@@ -52,9 +54,26 @@ class MovieViewModel : ViewModel() {
         }
         getDetails()
     }
+    init {
+        viewModelScope.launch {
+            mutableMovieState.update {
+                mediaDetailsRepository.similarFlow
+                    .collect { similarMoviesObject ->
+                        mutableSimilarMovieState.update {
+                            SimilarMovieState.Data(similarMoviesObject.resultsofSimilar)
+                        }
+                    }
+            }
+        }
+        getSimilarMovies()
+    }
 }
 
 sealed class MovieState {
     data object Empty : MovieState()
     data class Data(val mediaDetailObjects: MovieDetailObject) : MovieState()
+}
+sealed class SimilarMovieState {
+    data object Empty : SimilarMovieState()
+    data class Data(val similarMoviesObject: List<SimilarMoviesPic>) : SimilarMovieState()
 }

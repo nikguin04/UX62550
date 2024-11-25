@@ -16,7 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.outlined.StarHalf
@@ -54,20 +57,15 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
-import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowWithSnapEffect
-import com.niklas.ux62550.ui.feature.home.MediaItem
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import org.checkerframework.checker.units.qual.h
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
@@ -87,13 +85,13 @@ fun MediaDetailsScreen(
     onNavigateToReview: (String) -> Unit)
 {
     val movieState = viewModel.movieState.collectAsState().value
-    val similarMedia = viewModel.similarMediaState.collectAsState().value
+    val similarMediaState = viewModel.similarMediaState.collectAsState().value
     when (movieState) {
         MovieState.Empty -> {
             Text(text="No data yet")// TODO make loading screen
         }
         is MovieState.Data -> {
-            MediaDetailsContent(movieState = movieState, similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia, onNavigateToReview = onNavigateToReview)
+            MediaDetailsContent(movieState = movieState, similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia, onNavigateToReview = onNavigateToReview)
         }
         else -> {}
     }
@@ -101,9 +99,11 @@ fun MediaDetailsScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState.Data, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
-
-    Column {
+fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState.Data, similarMediaState: SimilarMovieState, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+    ) {
         Box(modifier = modifier.fillMaxWidth()) {
             Box(modifier = Modifier.alpha(0.5f)) {
                 MovieImage(
@@ -422,7 +422,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState.Da
         }
 
         Text("Movies similar to this one", modifier.padding(4.dp, 0.dp, 0.dp, 0.dp))
-        HorizontalLazyRowWithSnapEffect(similarMedia, onNavigateToOtherMedia)
+        SimilarMoviesStyling(similarMediaState)
     }
 }
 
@@ -498,4 +498,23 @@ fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
         contentDescription = null, // TODO: include content description
         modifier = modifier
     )
+}
+@Composable
+fun SimilarMoviesStyling(similarMediaState : SimilarMovieState, modifier: Modifier = Modifier){
+    when (similarMediaState) {
+        SimilarMovieState.Empty -> {
+            Text(
+                text = "No Media Items",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        is SimilarMovieState.Data -> {
+            LazyRow(
+                modifier = modifier.fillMaxWidth()
+            ) {
+                similarMediaState.similarMoviesObject
+            }
+        }
+    }
 }
