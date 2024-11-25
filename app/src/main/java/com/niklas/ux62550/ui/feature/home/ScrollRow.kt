@@ -118,7 +118,7 @@ fun HorizontalLazyRowMovies(
     modifier: Modifier = Modifier,
     widthFigmaPx: Float,
     heightFigmaPx: Float,
-    items: List<MediaItem>,
+    items: List<MediaObject>,
     onNavigateToMedia: (String) -> Unit
 ) {
     // LazyRow with snapping effect
@@ -127,13 +127,13 @@ fun HorizontalLazyRowMovies(
     ) {
         items.forEachIndexed { index, mediaItem ->
             item {
-                PromoItem(
+                MediaItem(
                     width = figmaPxToDp_w(widthFigmaPx),
                     height = figmaPxToDp_h(heightFigmaPx),
                     round = figmaPxToDp_w(5f),
-                    color = mediaItem.tempColor,
+                    uri = mediaItem.backdrop_path,
                     modifier = Modifier
-                        .clickable(onClick = { onNavigateToMedia(mediaItem.name) })
+                        .clickable(onClick = { onNavigateToMedia(mediaItem.title) })
                         .padding(
                             figmaPxToDp_w(if (index == 0) 10f else 5f), 0.dp,
                             figmaPxToDp_w(if (index == items.size - 1) 10f else 5f), 0.dp

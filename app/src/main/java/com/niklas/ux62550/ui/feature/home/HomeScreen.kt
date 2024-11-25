@@ -25,14 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.niklas.ux62550.models.figmaPxToDp_h
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
 @Preview(showBackground = true)
 fun HomePreview() {
-    val mvm: MediaItemsViewModel = viewModel()
+    val mvm: HomeViewModel = viewModel()
     mvm.initPreview()
 
     UX62550Theme(darkTheme = true, dynamicColor = false) {
@@ -43,14 +42,15 @@ fun HomePreview() {
 @Composable
 fun HomeScreen(
     onNavigateToMedia: (String) -> Unit,
-    mediaItemsViewModel: MediaItemsViewModel = viewModel()
+    homeViewModel: HomeViewModel = viewModel()
 ) {
-    val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
-    ScreenHome(mediaItemsUIState = uiState, onNavigateToMedia = onNavigateToMedia)
+    val uiState = homeViewModel.mediaItemsState.collectAsState().value
+    val genreUiState = homeViewModel.genreItemsState.collectAsState().value
+    ScreenHome(mediaItemsUIState = uiState, genreItemsUIState = genreUiState, onNavigateToMedia = onNavigateToMedia)
 }
 
 @Composable
-fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, onNavigateToMedia: (String) -> Unit) {
+fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, genreItemsUIState: GenreItemsUIState, onNavigateToMedia: (String) -> Unit) {
     Column(modifier.padding()) {
         Row(
             modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
@@ -91,15 +91,15 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
 
         for (genre in genres) {
             // TODO: PLEASE READ! this is a placeholder for when we get a proper structure for fetching movies
-            /*when (mediaItemsUIState) {
-                MediaItemsUIState.Empty -> {*/
+            when (genreItemsUIState) {
+                GenreItemsUIState.Empty -> {
                     Text(
-                        text = "No Media Items",
+                        text = "No Genre Items",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
-                /*}
-                is MediaItemsUIState.Data -> {
+                }
+                is GenreItemsUIState.Data -> {
                     Row(
                         Modifier.padding(
                             15.dp,
@@ -114,12 +114,12 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                         Modifier.padding(0.dp, 0.dp),
                         155f,
                         87.19f,
-                        mediaItemsUIState.mediaItems,
+                        genreItemsUIState.mediaObjects,
                         onNavigateToMedia
                     )
                 }
                 else -> {}
-            }*/
+            }
         }
     }
 }

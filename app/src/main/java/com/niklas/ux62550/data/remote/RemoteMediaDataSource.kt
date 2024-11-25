@@ -39,7 +39,7 @@ class RemoteMediaDataSource {
     private val mediaApi: TMDBApiService = retrofit.create(TMDBApiService::class.java)
 
     suspend fun getMultiSearch(query: String) = mediaApi.getMultiSearch(query)
-
+    suspend fun getKeywordMovies(keyword_id: String, page: Int) = mediaApi.getKeywordMovies(keyword_id,page)
 }
 
 interface TMDBApiService {
@@ -49,6 +49,9 @@ interface TMDBApiService {
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(@Path("movie_id") movie_id: Int)
+
+    @GET("keyword/{keyword_id}/movies")
+    suspend fun getKeywordMovies(@Path("keyword_id") keyword_id: String, @Query("page") page: Int = 1): SearchDataObject
 }
 
 

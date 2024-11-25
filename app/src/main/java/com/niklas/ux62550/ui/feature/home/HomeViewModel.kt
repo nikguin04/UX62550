@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MediaItemsViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
     /*private val mediaItems: List<MediaItem> = listOf(
         MediaItem("Name 1", R.drawable.logo, Color.Blue),
         MediaItem("Name 2", R.drawable.logo, Color.Red),
@@ -21,21 +21,29 @@ class MediaItemsViewModel : ViewModel() {
     private val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
     val mediaItemsState: StateFlow<MediaItemsUIState> = mutableMediaItemsState
 
+    private val mutableGenreItemsState = MutableStateFlow<GenreItemsUIState>(GenreItemsUIState.Empty)
+    val genreItemsState: StateFlow<GenreItemsUIState> = mutableGenreItemsState
+
     init {
         viewModelScope.launch {
-            mutableMediaItemsState.update {
-                homeRepository.searchFlow
-                    .collect { searchDataObject ->
-                        mutableMediaItemsState.update {
-                            MediaItemsUIState.Data(searchDataObject.results)
-                        }
-                    }
+            homeRepository.searchFlow.collect { searchDataObject ->
+                mutableMediaItemsState.update { MediaItemsUIState.Data(searchDataObject.results) }
+            }
+        }
+        viewModelScope.launch {
+            homeRepository.keywordFlow.collect { searchDataObject ->
+                mutableGenreItemsState.update { GenreItemsUIState.Data(searchDataObject.results) }
             }
         }
         getMedia()
+        getGenre("213429")
     }
     private fun getMedia() = viewModelScope.launch {
         homeRepository.getMultiSearch("The Office") // TODO: Don't hardcore this, get some proper featured films
+    }
+
+    private fun getGenre(keyword_id: String) = viewModelScope.launch {
+        homeRepository.getKeywordSearch(keyword_id, 1) // TODO: Don't hardcore this, get some proper genres
     }
 
     fun initPreview() {
@@ -50,4 +58,9 @@ class MediaItemsViewModel : ViewModel() {
 sealed class MediaItemsUIState {
     data object Empty : MediaItemsUIState()
     data class Data(val mediaObjects: List<MediaObject>) : MediaItemsUIState()
+}
+
+sealed class GenreItemsUIState {
+    data object Empty : GenreItemsUIState()
+    data class Data(val mediaObjects: List<MediaObject>) : GenreItemsUIState()
 }

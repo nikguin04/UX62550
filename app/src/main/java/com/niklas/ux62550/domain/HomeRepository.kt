@@ -12,9 +12,14 @@ class HomeRepository {
 
     private val mutableSearchFlow = MutableSharedFlow<SearchDataObject>()
     val searchFlow = mutableSearchFlow.asSharedFlow()
-
     suspend fun getMultiSearch(query: String)  = mutableSearchFlow.emit(
         homeDataSource.getMultiSearch(query)
+    )
+
+    private val mutableKeywordFlow = MutableSharedFlow<SearchDataObject>()
+    val keywordFlow = mutableKeywordFlow.asSharedFlow()
+    suspend fun getKeywordSearch(keyword_id: String, page: Int)  = mutableKeywordFlow.emit(
+        homeDataSource.getKeywordMovies(keyword_id, page)
     )
 
 }
