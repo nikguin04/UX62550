@@ -1,5 +1,6 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
+import android.text.style.UnderlineSpan
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -54,6 +55,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -256,15 +258,15 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                                     Text(
                                         text = "Some Actor Name",
                                         fontSize = 14.sp,
+                                        textDecoration= TextDecoration.Underline,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
                                     )
-
-                                    HorizontalDivider(
-                                        modifier = Modifier.width(130.dp).padding(0.dp, 0.dp),
-                                        thickness = 0.5.dp,
-                                        color = Color.Gray
-                                    )
+//                                    HorizontalDivider(
+//                                        modifier = Modifier.width(130.dp).padding(0.dp, 0.dp),
+//                                        thickness = 0.5.dp,
+//                                        color = Color.Gray
+//                                    )
                                 }
                             }
 
