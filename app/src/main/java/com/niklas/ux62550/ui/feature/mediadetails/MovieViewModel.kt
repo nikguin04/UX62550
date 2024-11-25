@@ -26,16 +26,6 @@ class MovieViewModel : ViewModel() {
         mediaDetailsRepository.getMoviesDetails(205321) // TODO: Don't hardcore this, get some proper featured films
     }
 
-    private val movie = Movie(
-        name = "RED: The Movie",
-        year = "2022",
-        duration = 131.minutes,
-        rating = 3.5,
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        genres = listOf("Action", "Dinosaur Adventure", "Romance"),
-        pgRating = 18,
-        tempColor = Color.Red
-    )
 
     private val similarMedia = listOf(
         MediaItem("Name 1", R.drawable.logo, Color.Blue, "", ""),
