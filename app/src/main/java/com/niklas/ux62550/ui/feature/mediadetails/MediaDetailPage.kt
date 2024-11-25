@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
-import android.text.style.UnderlineSpan
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -60,7 +59,6 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
@@ -77,15 +75,19 @@ fun MediaDetailPagePreview() {
 }
 
 @Composable
-fun MediaDetailsScreen(viewModel: MovieViewModel = viewModel(), onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
-    val movie = viewModel.movieState.collectAsState().value
+fun MediaDetailsScreen(
+    viewModel: MovieViewModel = viewModel(),
+    onNavigateToOtherMedia: (String) -> Unit,
+    onNavigateToReview: (String) -> Unit)
+{
+    val movieState = viewModel.movieState.collectAsState().value
     val similarMedia = viewModel.similarMediaState.collectAsState().value
-    MediaDetailsContent(movie = movie, similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia, onNavigateToReview = onNavigateToReview)
+    MediaDetailsContent(movieState = movieState, similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia, onNavigateToReview = onNavigateToReview)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
+fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
     Column {
         Box(modifier = modifier.fillMaxWidth()) {
             Box(modifier = Modifier.alpha(0.5f)) {
@@ -104,7 +106,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
             ) {
                 Box(
                     modifier = Modifier
-                        .background(movie.tempColor)
+                        .background(Color.Red)
                         .fillMaxWidth()
                         .aspectRatio(16f / 9f)
                 )
@@ -117,7 +119,16 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                     colorFilter = ColorFilter.tint(Color.White),
                     contentDescription = "Play circle"
                 )
-                TitleText(movie.name)
+                when (movieState) {
+                    MovieState.Empty -> {
+                        TitleText("No Title")
+                    }
+                    is MovieState.Data -> {
+                        TitleText(movieState.mediaDetailObjects.Originaltitle) //TODO MOVIE NAME HERE
+                    }
+                    else -> {}
+                }
+
             }
             Image(
                 Icons.Outlined.BookmarkBorder,
@@ -136,13 +147,13 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
-                    modifier = Modifier.clickable(onClick = { onNavigateToReview(movie.name) }),
+                    modifier = Modifier.clickable(onClick = { onNavigateToReview("Hello World") }), //TODO MOVIE NAME HERE
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     for (i in 1..5) {
                         val starIcon = when {
-                            i <= movie.rating -> Icons.Outlined.Star
-                            i <= movie.rating + 0.5 -> Icons.AutoMirrored.Outlined.StarHalf
+                            i <= 3.5 -> Icons.Outlined.Star //TODO RATIRNG HERE
+                            i <= 3.5 + 0.5 -> Icons.AutoMirrored.Outlined.StarHalf //TODO RATING HERE
                             else -> Icons.Outlined.StarOutline
                         }
                         Image(
@@ -154,23 +165,23 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                     }
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        movie.rating.toString(),
+                        3.5.toString(), //TODO RATING HERE
                         fontSize = 18.sp
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    movie.year,
+                    "2022", //TODO RELASE DATE
                     fontSize = 18.sp
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    movie.duration.toString(),
+                    131.toString(), //TODO DURATION
                     fontSize = 18.sp
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    movie.pgRating.toString() + "+",
+                    18.toString() + "+", //TODO PG RATING
                     fontSize = 18.sp
                 )
             }
@@ -182,7 +193,8 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            for ((index, genre) in movie.genres.withIndex()) {
+            val genre = listOf("Action, Dinosaur Adventure, Romance")
+            for ((index, genre) in genre.withIndex()) { // TODO GENRE
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(40.dp))
@@ -197,7 +209,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-                if (index != movie.genres.lastIndex) {
+                if (index != genre.lastIndex) {
                     Spacer(modifier = Modifier.width(4.dp))
                     DrawLittleCircle(Modifier.size(10.dp))
                     Spacer(modifier = Modifier.width(4.dp))
@@ -210,7 +222,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
             }
             Spacer(modifier = Modifier.weight(0.05f))
         }
-        DescriptionText(movie.description)
+        DescriptionText("FUCKA YOU") //TODO DESCRITPTION
 
         Text("Actors and Directors", modifier.padding(4.dp, 2.dp, 0.dp, 0.dp))
         val sheetState = rememberModalBottomSheetState()

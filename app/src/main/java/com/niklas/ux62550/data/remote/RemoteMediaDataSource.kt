@@ -1,5 +1,6 @@
 package com.niklas.ux62550.data.remote
 
+import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
@@ -40,6 +41,8 @@ class RemoteMediaDataSource {
 
     suspend fun getMultiSearch(query: String) = mediaApi.getMultiSearch(query)
 
+    suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
+
 }
 
 interface TMDBApiService {
@@ -48,7 +51,7 @@ interface TMDBApiService {
     suspend fun getMultiSearch(@Query("query") query: String): SearchDataObject
 
     @GET("movie/{movie_id}")
-    suspend fun getMovieDetails(@Path("movie_id") movie_id: Int)
+    suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): MovieDetailObject
 }
 
 
