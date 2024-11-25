@@ -17,7 +17,6 @@ class RemoteMediaDataSource {
     companion object {
         const val BASE_URL = "https://api.themoviedb.org/3/"
         const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/original/"
-        const val BASE_MOVIE_URL = "https://api.themoviedb.org/3/trending/movie/day?language=en-US"
         private const val CONTENT_TYPE = "application/json; charset=UTF8"
     }
 
@@ -48,6 +47,8 @@ interface TMDBApiService {
     @GET("search/multi?&page=1&language=en-US")
     suspend fun getMultiSearch(@Query("query") query: String): SearchDataObject
 
+    @GET("trending/movie/{time}?language=en-US")
+    suspend fun getTrendingMovies(@Path("time") time: String): SearchDataObject
 }
 
 
