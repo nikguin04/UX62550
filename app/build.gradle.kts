@@ -10,7 +10,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.niklas.ux62550"
+        applicationId = "com.dtu.ux62550"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
