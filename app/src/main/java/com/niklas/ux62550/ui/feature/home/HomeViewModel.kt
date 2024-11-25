@@ -21,8 +21,6 @@ class HomeViewModel : ViewModel() {
     private val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
     val mediaItemsState: StateFlow<MediaItemsUIState> = mutableMediaItemsState
 
-    private val mutableGenreItemsState = MutableStateFlow<GenreItemsUIState>(GenreItemsUIState.Empty)
-    val genreItemsState: StateFlow<GenreItemsUIState> = mutableGenreItemsState
 
     init {
         viewModelScope.launch {
@@ -30,21 +28,12 @@ class HomeViewModel : ViewModel() {
                 mutableMediaItemsState.update { MediaItemsUIState.Data(searchDataObject.results) }
             }
         }
-        viewModelScope.launch {
-            homeRepository.keywordFlow.collect { searchDataObject ->
-                mutableGenreItemsState.update { GenreItemsUIState.Data(searchDataObject.results) }
-            }
-        }
         getMedia()
-        getGenre("213429")
     }
     private fun getMedia() = viewModelScope.launch {
         homeRepository.getMultiSearch("The Office") // TODO: Don't hardcore this, get some proper featured films
     }
 
-    private fun getGenre(keyword_id: String) = viewModelScope.launch {
-        homeRepository.getKeywordSearch(keyword_id, 1) // TODO: Don't hardcore this, get some proper genres
-    }
 
     fun initPreview() {
         mutableMediaItemsState.update {
@@ -60,7 +49,3 @@ sealed class MediaItemsUIState {
     data class Data(val mediaObjects: List<MediaObject>) : MediaItemsUIState()
 }
 
-sealed class GenreItemsUIState {
-    data object Empty : GenreItemsUIState()
-    data class Data(val mediaObjects: List<MediaObject>) : GenreItemsUIState()
-}

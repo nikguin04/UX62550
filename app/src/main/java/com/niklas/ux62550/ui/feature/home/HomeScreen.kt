@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.model.KeywordObject
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
@@ -45,12 +46,11 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel()
 ) {
     val uiState = homeViewModel.mediaItemsState.collectAsState().value
-    val genreUiState = homeViewModel.genreItemsState.collectAsState().value
-    ScreenHome(mediaItemsUIState = uiState, genreItemsUIState = genreUiState, onNavigateToMedia = onNavigateToMedia)
+    ScreenHome(mediaItemsUIState = uiState, onNavigateToMedia = onNavigateToMedia)
 }
 
 @Composable
-fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, genreItemsUIState: GenreItemsUIState, onNavigateToMedia: (String) -> Unit) {
+fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, onNavigateToMedia: (String) -> Unit) {
     Column(modifier.padding()) {
         Row(
             modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
@@ -87,11 +87,18 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
             else -> {}
         }
 
-        val genres = listOf("Romance", "Action", "Comedy", "Drama")
+        //val genres = listOf("Romance", "Action", "Comedy", "Drama")
+        val keywords: List<KeywordObject> = listOf(KeywordObject(9840, "romance"), KeywordObject(316421, "drama"), KeywordObject(213429, "interclass romance"))
 
-        for (genre in genres) {
+        for (keywordObject in keywords) {
+            //val viewModel: MyViewModel = viewModel(factory = factory, key = id)
+            KeywordSlider(
+                keywordViewModel = viewModel(factory = KeywordViewModelFactory(keywordObject), key = keywordObject.id.toString()),
+                keywordObject = keywordObject,
+                onNavigateToMedia = onNavigateToMedia
+            )
             // TODO: PLEASE READ! this is a placeholder for when we get a proper structure for fetching movies
-            when (genreItemsUIState) {
+            /*when (genreItemsUIState) {
                 GenreItemsUIState.Empty -> {
                     Text(
                         text = "No Genre Items",
@@ -119,7 +126,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                     )
                 }
                 else -> {}
-            }
+            }*/
         }
     }
 }
