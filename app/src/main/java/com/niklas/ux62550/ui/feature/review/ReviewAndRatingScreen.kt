@@ -88,7 +88,6 @@ fun ScreenReviewAndRating(movie: Movie) {
         ReviewLayout(movie.name, movie.rating)
         PublishReview()
         MoreDetailedReview()
-        MoreDetailedReview()
     }
 }
 
