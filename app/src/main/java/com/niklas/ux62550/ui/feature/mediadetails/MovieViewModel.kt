@@ -3,6 +3,7 @@ package com.niklas.ux62550.ui.feature.mediadetails
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.niklas.ux62550.R
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,14 +23,14 @@ class MovieViewModel : ViewModel() {
     )
 
     private val similarMedia = listOf(
-        MediaItem("Name 1", R.drawable.logo, Color.Blue, "", ""),
-        MediaItem("Name 2", R.drawable.logo, Color.Red, "", ""),
-        MediaItem("Name 3", R.drawable.logo, Color.Green, "", ""),
+        MediaObject(id=0, popularity = 0f, title="Test1"),
+        MediaObject(id=1, popularity = 0f, title="Test2"),
+        MediaObject(id=2, popularity = 0f, title="Test1")
     )
 
     private val mutableMovieState = MutableStateFlow<Movie>(movie)
     val movieState: StateFlow<Movie> = mutableMovieState
 
-    private val mutableSimilarMediaState = MutableStateFlow<List<MediaItem>>(similarMedia)
-    val similarMediaState: StateFlow<List<MediaItem>> = mutableSimilarMediaState
+    private val mutableSimilarMediaState = MutableStateFlow<List<MediaObject>>(similarMedia)
+    val similarMediaState: StateFlow<List<MediaObject>> = mutableSimilarMediaState
 }

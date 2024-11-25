@@ -59,9 +59,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
-import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowWithSnapEffect
+import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -85,7 +86,7 @@ fun MediaDetailsScreen(viewModel: MovieViewModel = viewModel(), onNavigateToOthe
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
+fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaObject>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
     Column {
         Box(modifier = modifier.fillMaxWidth()) {
             Box(modifier = Modifier.alpha(0.5f)) {
@@ -407,7 +408,8 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedi
         }
 
         Text("Movies similar to this one", modifier.padding(4.dp, 0.dp, 0.dp, 0.dp))
-        HorizontalLazyRowWithSnapEffect(similarMedia, onNavigateToOtherMedia)
+        //HorizontalLazyRowWithSnapEffect(similarMedia, onNavigateToOtherMedia, 350f)
+        HorizontalLazyRowMovies(Modifier,350f, 350f/16*9, similarMedia, onNavigateToOtherMedia)
     }
 }
 

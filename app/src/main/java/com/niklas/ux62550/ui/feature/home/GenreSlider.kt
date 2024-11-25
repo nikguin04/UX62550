@@ -41,7 +41,7 @@ fun KeywordSlider(keywordViewModel: KeywordViewModel, keywordObject: KeywordObje
             HorizontalLazyRowMovies(
                 Modifier.padding(0.dp, 0.dp),
                 155f,
-                87.19f,
+                155f/16*9,
                 keywordUiState.mediaObjects,
                 onNavigateToMedia
             )
