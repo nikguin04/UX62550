@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -28,6 +30,7 @@ import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -51,21 +54,27 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import org.checkerframework.checker.units.qual.h
+import kotlin.math.absoluteValue
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
@@ -422,7 +431,14 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState.Da
         }
 
         Text("Movies similar to this one", modifier.padding(4.dp, 0.dp, 0.dp, 0.dp))
-        SimilarMoviesStyling(similarMediaState)
+        when(similarMediaState){
+            SimilarMovieState.Empty -> {
+                Text("NO PIC")
+            }
+            is SimilarMovieState.Data -> {
+                SimilarMoviesStyling(similarMediaState.similarMoviesObject)
+            }
+        }
     }
 }
 
@@ -490,6 +506,17 @@ fun DrawLittleCircle(modifier: Modifier = Modifier) {
         }
     )
 }
+
+@Composable
+fun SimilarMoviesStyling(similarPicList: List<SimilarMoviesPic>, modifier: Modifier = Modifier) {
+    LazyRow(modifier = modifier) {
+        items(similarPicList.size) { moviePicNumber ->
+            MovieImage(uri = similarPicList.get(moviePicNumber).backDropPath)
+        }
+    }
+}
+
+
 @Composable
 fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
     val imguri = if (uri!=null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
@@ -498,23 +525,4 @@ fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
         contentDescription = null, // TODO: include content description
         modifier = modifier
     )
-}
-@Composable
-fun SimilarMoviesStyling(similarMediaState : SimilarMovieState, modifier: Modifier = Modifier){
-    when (similarMediaState) {
-        SimilarMovieState.Empty -> {
-            Text(
-                text = "No Media Items",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        is SimilarMovieState.Data -> {
-            LazyRow(
-                modifier = modifier.fillMaxWidth()
-            ) {
-                similarMediaState.similarMoviesObject
-            }
-        }
-    }
 }

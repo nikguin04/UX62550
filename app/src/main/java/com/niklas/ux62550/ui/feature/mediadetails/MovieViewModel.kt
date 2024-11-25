@@ -43,28 +43,21 @@ class MovieViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            mutableMovieState.update {
-                mediaDetailsRepository.detailFlow
-                    .collect { movieDetailObject ->
-                        mutableMovieState.update {
-                            MovieState.Data(movieDetailObject)
-                        }
-                    }
+            mediaDetailsRepository.detailFlow.collect { movieDetailObject ->
+                mutableMovieState.update {
+                    MovieState.Data(movieDetailObject)
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            mediaDetailsRepository.similarFlow.collect { similarMoviesObject ->
+                mutableSimilarMovieState.update {
+                    SimilarMovieState.Data(similarMoviesObject.results)
+                }
             }
         }
         getDetails()
-    }
-    init {
-        viewModelScope.launch {
-            mutableMovieState.update {
-                mediaDetailsRepository.similarFlow
-                    .collect { similarMoviesObject ->
-                        mutableSimilarMovieState.update {
-                            SimilarMovieState.Data(similarMoviesObject.resultsofSimilar)
-                        }
-                    }
-            }
-        }
         getSimilarMovies()
     }
 }
@@ -74,6 +67,7 @@ sealed class MovieState {
     data class Data(val mediaDetailObjects: MovieDetailObject) : MovieState()
 }
 sealed class SimilarMovieState {
-    data object Empty : SimilarMovieState()
+    object Empty : SimilarMovieState()
     data class Data(val similarMoviesObject: List<SimilarMoviesPic>) : SimilarMovieState()
 }
+

@@ -7,11 +7,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SimilarMoviesObject(
     @SerialName("results")
-    val resultsofSimilar : List<SimilarMoviesPic>
+    val results : List<SimilarMoviesPic>,
 )
 
 @Serializable
 data class SimilarMoviesPic(
     @SerialName("backdrop_path")
-    val backDropPath : String
+    val backDropPath: String?
 )
+
