@@ -12,8 +12,8 @@ class HomeRepository {
 
     private val mutableSearchFlow = MutableSharedFlow<SearchDataObject>()
     val searchFlow = mutableSearchFlow.asSharedFlow()
-    suspend fun getMultiSearch(query: String)  = mutableSearchFlow.emit(
-        homeDataSource.getMultiSearch(query)
+    suspend fun getSearch(search_mode: String, query: String)  = mutableSearchFlow.emit(
+        homeDataSource.getSearch(search_mode, query)
     )
 
 }

@@ -31,7 +31,7 @@ class HomeViewModel : ViewModel() {
         getMedia()
     }
     private fun getMedia() = viewModelScope.launch {
-        homeRepository.getMultiSearch("The Office") // TODO: Don't hardcore this, get some proper featured films
+        homeRepository.getSearch("movie","pixar cars") // TODO: Don't hardcore this, get some proper featured films
     }
 
 
