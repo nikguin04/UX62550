@@ -12,7 +12,6 @@ class SearchViewModel : ViewModel() {
     private val nonMovies = listOf(
         NonMovieBox("Western", Color.Yellow, "Genre"),
         NonMovieBox("John Doe", Color.Green, "Actor"),
-
     )
 
     private val movies = listOf(

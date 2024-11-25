@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
-import android.text.style.UnderlineSpan
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -88,10 +87,7 @@ fun MediaDetailsScreen(viewModel: MovieViewModel = viewModel(), onNavigateToOthe
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MediaDetailsContent(modifier: Modifier = Modifier, movie: Movie, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-    )  {
+    Column(modifier = Modifier.verticalScroll(rememberScrollState()))  {
         Box(modifier = modifier.fillMaxWidth()) {
             Box(modifier = Modifier.alpha(0.5f)) {
                 Box(
