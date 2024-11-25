@@ -69,7 +69,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true)
 fun MediaDetailPagePreview() {
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface {
             MediaDetailsScreen(onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }

@@ -35,7 +35,7 @@ fun HomePreview() {
     val mvm: MediaItemsViewModel = viewModel()
     mvm.initPreview()
 
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         HomeScreen(onNavigateToMedia = {})
     }
 }

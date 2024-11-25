@@ -45,7 +45,7 @@ import com.niklas.ux62550.ui.theme.starYellow
 @Composable
 @Preview(showBackground = true)
 fun ProfilePreview() {
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface {
             ProfileScreen(onNavigateToLoginRegister = {})
         }

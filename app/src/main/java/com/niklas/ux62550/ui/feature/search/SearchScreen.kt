@@ -37,7 +37,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true)
 fun SearchPreview() {
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
             SearchScreen(onNavigateToMedia = {})
         }
