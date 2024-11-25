@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "874415520914",
+    "project_id": "ux62550mediaapp",
+    "storage_bucket": "ux62550mediaapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874415520914:android:7fb6f6b6b2b29423fc3a4b",
+        "android_client_info": {
+          "package_name": "com.dtu.ux62550"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtjbx-5tUdxEDZ4qTUt02n35uZmupfdpQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
