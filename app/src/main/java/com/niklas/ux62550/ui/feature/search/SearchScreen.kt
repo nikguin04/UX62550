@@ -33,15 +33,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.niklas.ux62550.models.figmaPxToDp_h
-import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
 @Preview(showBackground = true)
 fun SearchPreview() {
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
             SearchScreen(onNavigateToMedia = {})
         }
@@ -68,7 +66,7 @@ fun SearchContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(figmaPxToDp_w(0f), figmaPxToDp_h(40f), 0.dp, figmaPxToDp_h(17.5f)),
+                    .padding(0.dp, 45.dp, 0.dp, 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -76,8 +74,7 @@ fun SearchContent(
                     inputField = {
                         var text = ""
                         var expanded = false
-                        SearchBarDefaults.InputField(
-                            query = text,
+                        SearchBarDefaults.InputField(query = text,
                             onQueryChange = { text = it },
                             onSearch = { expanded = false },
                             expanded = expanded,

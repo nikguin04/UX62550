@@ -22,9 +22,9 @@ class MovieViewModel : ViewModel() {
     )
 
     private val similarMedia = listOf(
-        MediaItem("Name 1", R.drawable.logo, Color.Blue),
-        MediaItem("Name 2", R.drawable.logo, Color.Red),
-        MediaItem("Name 3", R.drawable.logo, Color.Green),
+        MediaItem("Name 1", R.drawable.logo, Color.Blue, "", ""),
+        MediaItem("Name 2", R.drawable.logo, Color.Red, "", ""),
+        MediaItem("Name 3", R.drawable.logo, Color.Green, "", ""),
     )
 
     private val mutableMovieState = MutableStateFlow<Movie>(movie)

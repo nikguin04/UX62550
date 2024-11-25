@@ -47,7 +47,7 @@ fun AwardPopupPreview() {
         pgRating = 13,
         tempColor = Color.Red
     )
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface {
             PopupAward(movie = movie)
         }
