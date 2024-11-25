@@ -6,9 +6,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovieDetailObject(
-    @SerialName("page")
-    val page: Int,
-
     @SerialName("spoken_languages")
     val spokenLanguages: List<SpokenLanguages>,
 
@@ -19,7 +16,7 @@ data class MovieDetailObject(
     val forAdults: Boolean,
 
     @SerialName("backdrop_path")
-    val backDrop : String,
+    val backDropPath : String,
 
     @SerialName("homepage")
     val homePage : String,
@@ -29,6 +26,9 @@ data class MovieDetailObject(
 
     @SerialName("original_title")
     val Originaltitle : String,
+
+    @SerialName("overview")
+    val Description : String,
 
     @SerialName("poster_path")
     val posterPath : String,
@@ -48,6 +48,7 @@ data class MovieDetailObject(
     @SerialName("id")
     val id : Int
 
+    @SerialName("")
 )
 @Serializable
 data class Genre(
@@ -70,3 +71,11 @@ data class SpokenLanguages(
     val spokenName : String
 )
 
+@Serializable
+data class Cast(
+    @SerialName("name")
+    val castName : String,
+
+    @SerialName("name")
+    val castProfilePath: String
+)

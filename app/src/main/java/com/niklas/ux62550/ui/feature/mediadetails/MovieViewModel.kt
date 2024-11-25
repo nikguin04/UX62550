@@ -23,7 +23,7 @@ class MovieViewModel : ViewModel() {
 
 
     private fun getDetails() = viewModelScope.launch {
-        mediaDetailsRepository.getMoviesDetails(483104) // TODO: Don't hardcore this, get some proper featured films
+        mediaDetailsRepository.getMoviesDetails(205321) // TODO: Don't hardcore this, get some proper featured films
     }
 
     private val movie = Movie(

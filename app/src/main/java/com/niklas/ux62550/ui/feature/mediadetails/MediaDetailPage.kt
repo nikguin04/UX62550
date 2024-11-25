@@ -54,15 +54,21 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
+import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowWithSnapEffect
+import com.niklas.ux62550.ui.feature.home.MediaItem
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import org.checkerframework.checker.units.qual.h
+import kotlin.time.Duration.Companion.minutes
 
 @Composable
 @Preview(showBackground = true)
@@ -82,20 +88,27 @@ fun MediaDetailsScreen(
 {
     val movieState = viewModel.movieState.collectAsState().value
     val similarMedia = viewModel.similarMediaState.collectAsState().value
-    MediaDetailsContent(movieState = movieState, similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia, onNavigateToReview = onNavigateToReview)
+    when (movieState) {
+        MovieState.Empty -> {
+            Text(text="No data yet")// TODO make loading screen
+        }
+        is MovieState.Data -> {
+            MediaDetailsContent(movieState = movieState, similarMedia = similarMedia, onNavigateToOtherMedia = onNavigateToOtherMedia, onNavigateToReview = onNavigateToReview)
+        }
+        else -> {}
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
+fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState.Data, similarMedia: List<MediaItem>, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
+
     Column {
         Box(modifier = modifier.fillMaxWidth()) {
             Box(modifier = Modifier.alpha(0.5f)) {
-                Box(
-                    modifier = Modifier
-                        .background(Color.Red)
-                        .fillMaxWidth()
-                        .height(230.dp)
+                MovieImage(
+                    uri = movieState.mediaDetailObjects.backDropPath,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             Box(
@@ -104,9 +117,9 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState, s
                     .padding(30.dp)
                     .absolutePadding(0.dp, 40.dp, 4.dp, 0.dp)
             ) {
-                Box(
+                MovieImage(
+                    uri = movieState.mediaDetailObjects.backDropPath,
                     modifier = Modifier
-                        .background(Color.Red)
                         .fillMaxWidth()
                         .aspectRatio(16f / 9f)
                 )
@@ -119,16 +132,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState, s
                     colorFilter = ColorFilter.tint(Color.White),
                     contentDescription = "Play circle"
                 )
-                when (movieState) {
-                    MovieState.Empty -> {
-                        TitleText("No Title")
-                    }
-                    is MovieState.Data -> {
-                        TitleText(movieState.mediaDetailObjects.Originaltitle) //TODO MOVIE NAME HERE
-                    }
-                    else -> {}
-                }
-
+                TitleText(movieState.mediaDetailObjects.Originaltitle)
             }
             Image(
                 Icons.Outlined.BookmarkBorder,
@@ -147,13 +151,13 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState, s
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
-                    modifier = Modifier.clickable(onClick = { onNavigateToReview("Hello World") }), //TODO MOVIE NAME HERE
+                    modifier = Modifier.clickable(onClick = { onNavigateToReview(movieState.mediaDetailObjects.Originaltitle) }),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     for (i in 1..5) {
                         val starIcon = when {
-                            i <= 3.5 -> Icons.Outlined.Star //TODO RATIRNG HERE
-                            i <= 3.5 + 0.5 -> Icons.AutoMirrored.Outlined.StarHalf //TODO RATING HERE
+                            i <= movieState.mediaDetailObjects.rating -> Icons.Outlined.Star
+                            i <= movieState.mediaDetailObjects.rating + 0.5 -> Icons.AutoMirrored.Outlined.StarHalf
                             else -> Icons.Outlined.StarOutline
                         }
                         Image(
@@ -165,18 +169,18 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState, s
                     }
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        3.5.toString(), //TODO RATING HERE
+                        movieState.mediaDetailObjects.rating.toString(),
                         fontSize = 18.sp
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    "2022", //TODO RELASE DATE
+                    movieState.mediaDetailObjects.relaseDate.substring(0,4),
                     fontSize = 18.sp
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    131.toString(), //TODO DURATION
+                    movieState.mediaDetailObjects.runTime.minutes.toString(),
                     fontSize = 18.sp
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -193,8 +197,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState, s
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val genre = listOf("Action, Dinosaur Adventure, Romance")
-            for ((index, genre) in genre.withIndex()) { // TODO GENRE
+            for ((index, genre) in movieState.mediaDetailObjects.genre.withIndex()) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(40.dp))
@@ -202,14 +205,14 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState, s
                         .padding(8.dp, 4.dp)
                 ) {
                     Text(
-                        text = genre,
+                        text = genre.genreName,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-                if (index != genre.lastIndex) {
+                if (index != movieState.mediaDetailObjects.genre.lastIndex) {
                     Spacer(modifier = Modifier.width(4.dp))
                     DrawLittleCircle(Modifier.size(10.dp))
                     Spacer(modifier = Modifier.width(4.dp))
@@ -222,7 +225,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState, s
             }
             Spacer(modifier = Modifier.weight(0.05f))
         }
-        DescriptionText("FUCKA YOU") //TODO DESCRITPTION
+        DescriptionText(movieState.mediaDetailObjects.Description)
 
         Text("Actors and Directors", modifier.padding(4.dp, 2.dp, 0.dp, 0.dp))
         val sheetState = rememberModalBottomSheetState()
@@ -485,5 +488,14 @@ fun DrawLittleCircle(modifier: Modifier = Modifier) {
                 center = center
             )
         }
+    )
+}
+@Composable
+fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
+    val imguri = if (uri!=null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
+    AsyncImage(
+        model = imguri,
+        contentDescription = null, // TODO: include content description
+        modifier = modifier
     )
 }
