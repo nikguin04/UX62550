@@ -13,6 +13,15 @@ class WatchlistViewModel : ViewModel() {
         Movie("RED: The Movie", "2022", 131.minutes, 3.5, "N/A", listOf("Action", "Dinosaur Adventure", "Romance"), 18, Color.Red),
         Movie("Where's the Blue?", "2014", 96.minutes, 2.0, "N/A", listOf("Documentary", "Comedy"), 13, Color.Blue),
         Movie("Green Man", "1998", 113.minutes, 3.0, "N/A", listOf("Thriller", "Horror"), 15, Color.Green),
+        Movie("Green Man", "1998", 113.minutes, 3.0, "N/A", listOf("Thriller", "Horror"), 15, Color.Green),
+        Movie("Green Man", "1998", 113.minutes, 3.0, "N/A", listOf("Thriller", "Horror"), 15, Color.Green),
+        Movie("Green Man", "1998", 113.minutes, 3.0, "N/A", listOf("Thriller", "Horror"), 15, Color.Green),
+        Movie("Green Man", "1998", 113.minutes, 3.0, "N/A", listOf("Thriller", "Horror"), 15, Color.Green),
+        Movie("Green Man", "1998", 113.minutes, 3.0, "N/A", listOf("Thriller", "Horror"), 15, Color.Green),
+        Movie("Green Man", "1998", 113.minutes, 3.0, "N/A", listOf("Thriller", "Horror"), 15, Color.Green),
+        Movie("Green Man", "1998", 113.minutes, 3.0, "N/A", listOf("Thriller", "Horror"), 15, Color.Green),
+        Movie("Green Man", "1998", 113.minutes, 3.0, "N/A", listOf("Thriller", "Horror"), 15, Color.Green),
+
     )
 
     private val mutableMoviesState = MutableStateFlow<MovieItemsUIState>(MovieItemsUIState.Data(movies))
