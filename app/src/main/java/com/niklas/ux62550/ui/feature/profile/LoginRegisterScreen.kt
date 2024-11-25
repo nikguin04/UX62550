@@ -34,7 +34,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true, device="spec:width=411dp,height=700dp")
 fun LoginRegisterPreview() {
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface {
             LoginRegisterScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
         }
@@ -44,7 +44,7 @@ fun LoginRegisterPreview() {
 @Composable
 @Preview(showBackground = true, device="spec:width=300dp,height=500dp")
 fun LoginRegisterPreviewSmall() {
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface {
             LoginRegisterScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
         }
