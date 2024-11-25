@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -62,8 +64,11 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.niklas.ux62550.data.model.Cast
 import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
+import com.niklas.ux62550.ui.feature.common.CastState
+import com.niklas.ux62550.ui.feature.common.CastViewModel
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -82,17 +87,24 @@ fun MediaDetailPagePreview() {
 @Composable
 fun MediaDetailsScreen(
     viewModel: MovieViewModel = viewModel(),
+    castViewModel : CastViewModel = viewModel(),
     onNavigateToOtherMedia: (String) -> Unit,
     onNavigateToReview: (String) -> Unit)
 {
     val movieState = viewModel.movieState.collectAsState().value
     val similarMediaState = viewModel.similarMediaState.collectAsState().value
+    val castState = castViewModel.castState.collectAsState().value
     when (movieState) {
         MovieState.Empty -> {
             Text(text="No data yet")// TODO make loading screen
         }
         is MovieState.Data -> {
-            MediaDetailsContent(movieState = movieState, similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia, onNavigateToReview = onNavigateToReview)
+            MediaDetailsContent(
+                movieState = movieState,
+                similarMediaState = similarMediaState,
+                castState = castState,
+                onNavigateToOtherMedia = onNavigateToOtherMedia,
+                onNavigateToReview = onNavigateToReview)
         }
         else -> {}
     }
@@ -100,7 +112,14 @@ fun MediaDetailsScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState.Data, similarMediaState: SimilarMovieState, onNavigateToOtherMedia: (String) -> Unit, onNavigateToReview: (String) -> Unit) {
+fun MediaDetailsContent(
+    modifier: Modifier = Modifier,
+    movieState: MovieState.Data,
+    similarMediaState: SimilarMovieState,
+    castState : CastState,
+    onNavigateToOtherMedia: (String) -> Unit,
+    onNavigateToReview: (String) -> Unit)
+{
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -235,9 +254,13 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState.Da
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            repeat(4) {
-                Spacer(modifier = Modifier.width(4.dp))
-                DrawCircle(Modifier.size(64.dp), Color.Red)
+            when(castState){
+                CastState.Empty -> {
+                    Text("NO PIC")
+                }
+                is CastState.Data -> {
+                        CastStyling(castState.castObject) // TODO HERE
+                }
             }
             Spacer(modifier = Modifier.width(2.dp))
             repeat(3) { // Create clickable circles
@@ -293,6 +316,7 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState.Da
                 }
             }
         }
+
 
         Row(
             modifier = Modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
@@ -421,7 +445,6 @@ fun MediaDetailsContent(modifier: Modifier = Modifier, movieState: MovieState.Da
                 }
             }
         }
-
         Text("Movies similar to this one", modifier.padding(4.dp, 0.dp, 0.dp, 0.dp))
         when(similarMediaState){
             SimilarMovieState.Empty -> {
@@ -516,7 +539,23 @@ fun SimilarMoviesStyling(similarPicList: List<SimilarMoviesPic>, modifier: Modif
             }
         }
     }
+}
 
+@Composable
+fun CastStyling(castList: List<Cast>) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        for (i in 0..3) {
+            MovieImage(
+                uri = castList[i].castProfilePath,
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape)
+            )
+        }
+    }
 }
 
 
@@ -529,3 +568,4 @@ fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
         modifier = modifier
     )
 }
+

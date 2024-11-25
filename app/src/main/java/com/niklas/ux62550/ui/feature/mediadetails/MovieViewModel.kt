@@ -29,12 +29,6 @@ class MovieViewModel : ViewModel() {
         mediaDetailsRepository.getSimilarsMovies(205321) // TODO: Don't hardcore this, get some proper featured films
     }
 
-    private val similarMedia = listOf(
-        MediaItem("Name 1", R.drawable.logo, Color.Blue, "", ""),
-        MediaItem("Name 2", R.drawable.logo, Color.Red, "", ""),
-        MediaItem("Name 3", R.drawable.logo, Color.Green, "", ""),
-    )
-
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
     val movieState: StateFlow<MovieState> = mutableMovieState
 

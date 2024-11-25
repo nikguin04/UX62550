@@ -20,5 +20,6 @@ class MediaDetailsRepository {
     val similarFlow = mutableSimilarMoviesFlow.asSharedFlow()
     suspend fun getSimilarsMovies(movie_id: Int)  = mutableSimilarMoviesFlow.emit(
         detailsDataSource.getSimilarMoviesDetail(movie_id)
+
     )
 }
