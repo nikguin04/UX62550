@@ -46,9 +46,8 @@ data class MovieDetailObject(
     val runTime : Int,
 
     @SerialName("id")
-    val id : Int
+    val id : Int,
 
-    @SerialName("")
 )
 @Serializable
 data class Genre(
@@ -76,6 +75,6 @@ data class Cast(
     @SerialName("name")
     val castName : String,
 
-    @SerialName("name")
+    @SerialName("profile_path")
     val castProfilePath: String
 )

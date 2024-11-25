@@ -58,7 +58,7 @@ fun ReviewAndRatingPreview() {
         pgRating = 13,
         tempColor = Color.Red
     )
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
             ScreenReviewAndRating(movie = movie)
         }
