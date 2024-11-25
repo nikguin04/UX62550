@@ -40,6 +40,7 @@ class RemoteMediaDataSource {
 
     suspend fun getMultiSearch(query: String) = mediaApi.getMultiSearch(query)
     suspend fun getKeywordMovies(keyword_id: String, page: Int) = mediaApi.getKeywordMovies(keyword_id,page)
+    suspend fun getDiscoverMovies(genres: String, page: Int) = mediaApi.getDiscoverMovies(genres,page)
 }
 
 interface TMDBApiService {
@@ -52,6 +53,9 @@ interface TMDBApiService {
 
     @GET("keyword/{keyword_id}/movies")
     suspend fun getKeywordMovies(@Path("keyword_id") keyword_id: String, @Query("page") page: Int = 1): SearchDataObject
+
+    @GET("discover/movie")
+    suspend fun getDiscoverMovies(@Query("with_genres") genres: String, @Query("page") page: Int = 1): SearchDataObject
 }
 
 
