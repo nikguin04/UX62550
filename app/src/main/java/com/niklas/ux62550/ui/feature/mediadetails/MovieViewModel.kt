@@ -53,7 +53,7 @@ class MovieViewModel : ViewModel() {
         viewModelScope.launch {
             mediaDetailsRepository.similarFlow.collect { similarMoviesObject ->
                 mutableSimilarMovieState.update {
-                    SimilarMovieState.Data(similarMoviesObject.results)
+                    SimilarMovieState.Data(similarMoviesObject.resultsSimilarMovies)
                 }
             }
         }

@@ -70,11 +70,4 @@ data class SpokenLanguages(
     val spokenName : String
 )
 
-@Serializable
-data class Cast(
-    @SerialName("name")
-    val castName : String,
 
-    @SerialName("profile_path")
-    val castProfilePath: String
-)
