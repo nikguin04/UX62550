@@ -47,6 +47,8 @@ interface TMDBApiService {
     @GET("search/multi?&page=1&language=en-US")
     suspend fun getMultiSearch(@Query("query") query: String): SearchDataObject
 
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetails(@Path("movie_id") movie_id: Int)
 }
 
 
