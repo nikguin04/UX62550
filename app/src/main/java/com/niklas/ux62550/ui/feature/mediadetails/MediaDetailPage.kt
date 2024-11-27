@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -46,9 +45,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
@@ -66,14 +65,12 @@ import coil3.compose.AsyncImage
 import com.niklas.ux62550.data.model.Cast
 import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
-import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.ui.feature.common.CastState
 import com.niklas.ux62550.ui.feature.common.CastViewModel
-import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowWithSnapEffect
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
-import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
@@ -115,7 +112,6 @@ fun MediaDetailsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MediaDetailsContent(
-
     modifier: Modifier = Modifier,
     movieState: MovieState.Data,
     similarMediaState: SimilarMovieState,
@@ -123,12 +119,14 @@ fun MediaDetailsContent(
     onNavigateToOtherMedia: (String) -> Unit,
     onNavigateToReview: (String) -> Unit)
 {
-    Column(modifier = modifier) {
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState()))
+    {
         Header(movieState = movieState)
         InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
         Genres(genres = movieState)
         DescriptionText(description = movieState.mediaDetailObjects.Description)
-        ActorsAndDirectors()
+        ActorsAndDirectors(castState = castState)
         Awards()
         DetailedRating()
         SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
@@ -139,12 +137,13 @@ fun MediaDetailsContent(
 fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data,) {
     Box(modifier = modifier.fillMaxWidth()) {
         // This is the black to the preview.
-        Box( // Background gradient
-            modifier = Modifier
-                .background(Brush.verticalGradient(colorStops = RedColorGradient))
-                .fillMaxWidth()
-                .height(230.dp)
-        )
+        // Background gradient
+        Box(modifier = Modifier.alpha(0.5f)) {
+            MovieImage(
+                uri = movieState.mediaDetailObjects.backDropPath,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
 
         // this is the preview and the play button in one box
         Column(
@@ -173,8 +172,6 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data,) {
                 )
             }
             Spacer(modifier = Modifier.height(12.dp))
-
-            // Moive Title
             TitleText(movieState.mediaDetailObjects.Originaltitle)
         }
         // Bookmark button
@@ -224,7 +221,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
         }
         //Spacer(modifier = Modifier.weight(1f))
         Text(
-            movieState.mediaDetailObjects.relaseDate,
+            movieState.mediaDetailObjects.relaseDate.substring(0,4),
             fontSize = 18.sp
         )
         //Spacer(modifier = Modifier.weight(1f))
@@ -280,7 +277,7 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ActorsAndDirectors(modifier: Modifier = Modifier) {
+fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState) {
     Text("Actors and Directors", Modifier.padding(4.dp, 2.dp, 0.dp, 0.dp))
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -288,9 +285,13 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        repeat(4) {
-            Spacer(modifier = Modifier.width(4.dp))
-            DrawCircle(Modifier.size(64.dp), Color.Red)
+        when(castState){
+            CastState.Empty -> {
+                Text("NO PIC")
+            }
+            is CastState.Data -> {
+                CastStyling(castState.castObject) // TODO HERE
+            }
         }
         Spacer(modifier = Modifier.width(2.dp))
         repeat(3) { // Create clickable circles
