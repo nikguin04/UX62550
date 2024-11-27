@@ -2,6 +2,7 @@ package com.niklas.ux62550.ui.feature.review
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -165,18 +166,15 @@ fun PublishReview() {
 
 @Composable
 fun MoreDetailedReview() {
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "More detailed review",
-            color = ReviewColor,
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(40.dp, 10.dp)
-        )
-    }
+    Text(
+        text = "More detailed review",
+        color = ReviewColor,
+        fontSize = 30.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth().padding(40.dp, 10.dp)
+    )
+
     Row(
         modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
         verticalAlignment = Alignment.CenterVertically,
