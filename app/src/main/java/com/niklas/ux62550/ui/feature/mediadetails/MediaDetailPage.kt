@@ -98,12 +98,20 @@ fun MediaDetailsScreen(
             Text(text="No data yet")// TODO make loading screen
         }
         is MovieState.Data -> {
-            MediaDetailsContent(
-                movieState = movieState,
-                similarMediaState = similarMediaState,
-                castState = castState,
-                onNavigateToOtherMedia = onNavigateToOtherMedia,
-                onNavigateToReview = onNavigateToReview)
+            when(castState){
+                CastState.Empty -> {
+                    Text("NO PIC")
+                }
+                is CastState.Data -> {
+                    MediaDetailsContent(
+                        movieState = movieState,
+                        similarMediaState = similarMediaState,
+                        castState = castState,
+                        onNavigateToOtherMedia = onNavigateToOtherMedia,
+                        onNavigateToReview = onNavigateToReview)
+                }
+            }
+
         }
         else -> {}
     }
@@ -115,7 +123,7 @@ fun MediaDetailsContent(
     modifier: Modifier = Modifier,
     movieState: MovieState.Data,
     similarMediaState: SimilarMovieState,
-    castState : CastState,
+    castState : CastState.Data,
     onNavigateToOtherMedia: (String) -> Unit,
     onNavigateToReview: (String) -> Unit)
 {
@@ -277,7 +285,7 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState) {
+fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data) {
     Text("Actors and Directors", Modifier.padding(4.dp, 2.dp, 0.dp, 0.dp))
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -285,16 +293,8 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState) {
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        when(castState){
-            CastState.Empty -> {
-                Text("NO PIC")
-            }
-            is CastState.Data -> {
-                CastStyling(castState.castObject) // TODO HERE
-            }
-        }
-        Spacer(modifier = Modifier.width(2.dp))
-        repeat(3) { // Create clickable circles
+        CastStyling(castState.castObject) // TODO HERE
+        for(i in 0..2) { // Create clickable circles
             Spacer(modifier = Modifier.width(2.dp))
             IconButton(
                 onClick = {
@@ -317,7 +317,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState) {
                             modifier = Modifier.padding(50.dp, 0.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            DrawCircle(Modifier.size(65.dp), color = Color.Red)
+                            CastStyling(castState.castObject) // TODO HERE
                             Spacer(modifier = Modifier.width(12.dp))
                             Column {
                                 Text(
@@ -566,7 +566,6 @@ fun SimilarMoviesStyling(similarPicList: List<SimilarMoviesPic>, modifier: Modif
 @Composable
 fun CastStyling(castList: List<Cast>) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         for (i in 0..3) {
