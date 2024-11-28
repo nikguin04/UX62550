@@ -62,7 +62,6 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
-import com.niklas.ux62550.data.model.Cast
 import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
@@ -70,7 +69,6 @@ import com.niklas.ux62550.ui.feature.common.CastViewModel
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
@@ -293,7 +291,10 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        CastStyling(castState.castObject) // TODO HERE
+        for(i in 0..3){
+            CastStyling(castState.castObject[i].castProfilePath)
+        }
+
         for(i in 0..2) { // Create clickable circles
             Spacer(modifier = Modifier.width(2.dp))
             IconButton(
@@ -312,33 +313,39 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                     },
                     sheetState = sheetState
                 ) {
-                    for (i in 1..4) {
-                        Row(
-                            modifier = Modifier.padding(50.dp, 0.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            CastStyling(castState.castObject) // TODO HERE
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Column {
-                                Text(
-                                    text = "Actor $i",
-                                    fontSize = 14.sp,
-                                    textDecoration = TextDecoration.Underline,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White
-                                )
+                    Column(
+                        modifier = Modifier.verticalScroll(rememberScrollState())
+                    ) {
+                    for ((index, cast) in castState.castObject.withIndex()) {
+
+                            Row(
+                                modifier = Modifier.padding(50.dp, 0.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                CastStyling(castState.castObject[index].castProfilePath)
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column {
+                                    Text(
+                                        text = castState.castObject[index].castName,
+                                        fontSize = 14.sp,
+                                        textDecoration = TextDecoration.Underline,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White
+                                    )
+                                }
                             }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+                            HorizontalDivider(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(110.dp, 0.dp),
+                                thickness = 0.5.dp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
                         }
 
-                        Spacer(modifier = Modifier.height(12.dp))
-                        HorizontalDivider(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(110.dp, 0.dp),
-                            thickness = 0.5.dp,
-                            color = Color.Gray
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
                     }
                 }
             }
@@ -564,18 +571,17 @@ fun SimilarMoviesStyling(similarPicList: List<SimilarMoviesPic>, modifier: Modif
 }
 
 @Composable
-fun CastStyling(castList: List<Cast>) {
+fun CastStyling(uri: String?) {
+    val imguri = if (uri!=null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        for (i in 0..3) {
-            MovieImage(
-                uri = castList[i].castProfilePath,
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-            )
-        }
+        MovieImage(
+            uri = imguri,
+            modifier = Modifier
+                .size(64.dp)
+                .clip(CircleShape)
+        )
     }
 }
 
