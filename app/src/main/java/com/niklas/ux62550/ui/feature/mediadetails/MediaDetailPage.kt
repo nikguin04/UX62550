@@ -559,17 +559,17 @@ fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
 @Composable
 fun SimilarMoviesStyling(similarPicList: List<SimilarMoviesPic>, modifier: Modifier = Modifier) {
     LazyRow(modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        //verticalAlignment = Alignment.Top
     ) {
         for ((index, movieNumber) in similarPicList.withIndex()) {
             items(similarPicList.size) { movieNumber ->
                 MovieImage(
                     uri = similarPicList[movieNumber].backDropPath,
                     modifier = Modifier
-                        .size(300.dp)
+                        .size(300.dp,200.dp)
                         .aspectRatio(16f / 9f)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.padding(8.dp,0.dp,0.dp,0.dp))
             }
         }
     }
