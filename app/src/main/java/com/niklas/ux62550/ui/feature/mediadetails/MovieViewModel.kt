@@ -35,6 +35,15 @@ class MovieViewModel : ViewModel() {
     private val mutableSimilarMovieState = MutableStateFlow<SimilarMovieState>(SimilarMovieState.Empty)
     val similarMediaState: StateFlow<SimilarMovieState> = mutableSimilarMovieState
 
+    /* HERE PROVIDER
+        private fun getProviderforMovies() = viewModelScope.launch {
+        mediaDetailsRepository.getSimilarsMovies(205321) // TODO: Don't hardcore this, get some proper featured films
+    }
+
+    private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
+    val movieState: StateFlow<MovieState> = mutableMovieState
+     */
+
     init {
         viewModelScope.launch {
             mediaDetailsRepository.detailFlow.collect { movieDetailObject ->
@@ -51,8 +60,18 @@ class MovieViewModel : ViewModel() {
                 }
             }
         }
+/* WATCH PROVIDER
+        viewModelScope.launch {
+            mediaDetailsRepository.similarFlow.collect { similarMoviesObject ->
+                mutableSimilarMovieState.update {
+                    SimilarMovieState.Data(similarMoviesObject.resultsSimilarMovies)
+                }
+            }
+        }
+        */
         getDetails()
         getSimilarMovies()
+        getProviderforMovies()
     }
 }
 
@@ -65,3 +84,9 @@ sealed class SimilarMovieState {
     data class Data(val similarMoviesObject: List<SimilarMoviesPic>) : SimilarMovieState()
 }
 
+/* HERE PROVIDER
+sealed class SimilarMovieState {
+    object Empty : SimilarMovieState()
+    data class Data(val similarMoviesObject: List<SimilarMoviesPic>) : SimilarMovieState()
+}
+*/

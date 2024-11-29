@@ -2,6 +2,7 @@ package com.niklas.ux62550.data.remote
 
 import com.niklas.ux62550.data.model.CastObject
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.data.model.SimilarMoviesObject
 import kotlinx.serialization.json.Json
@@ -49,6 +50,7 @@ class RemoteMediaDataSource {
 
     suspend fun getCastDetails(movie_id: Int) = mediaApi.getCast(movie_id)
 
+    suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
 }
 
 interface TMDBApiService {
@@ -64,6 +66,9 @@ interface TMDBApiService {
 
     @GET("movie/{movie_id}/credits")
     suspend fun getCast(@Path("movie_id") movie_id: Int): CastObject
+
+    @GET("movie/{movie_id}/watch/providers")
+    suspend fun getProvider(@Path("movie_id") movie_id: Int): ProviderDataObject
 }
 
 
