@@ -5,20 +5,34 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProviderDataObject(
-    @SerialName("DK")
-    val denmarkProvider: List<DenmarkProvider>,
+    @SerialName("id")
+    val id: Int,
 
+    @SerialName("results")
+    val result: Map<String,Result>
     )
 @Serializable
+data class Result(
+    @SerialName("link")
+    val link: String,
+
+    @SerialName("rent")
+    val rent: List<RentProvider> = emptyList(),
+
+    @SerialName("flatrate")
+    val flatrate: List<FlatrateProvider> = emptyList(),
+
+    @SerialName("buy")
+    val buy: List<BuyProvider> = emptyList()
+)
+
+@Serializable
 data class DenmarkProvider(
+    @SerialName("link")
+    val link: String,
+
     @SerialName("rent")
     val rentProvider : List<RentProvider>,
-
-    @SerialName("iso_639_1")
-    val isoNumber: String,
-
-    @SerialName("name")
-    val spokenName : String,
 
     @SerialName("flatrate")
     val flatrateProvider : List<FlatrateProvider>,

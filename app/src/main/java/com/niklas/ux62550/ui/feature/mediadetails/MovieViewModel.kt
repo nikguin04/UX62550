@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.DenmarkProvider
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.SimilarMoviesPic
+import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -52,7 +53,7 @@ class MovieViewModel : ViewModel() {
         viewModelScope.launch {
             mediaDetailsRepository.providerFlow.collect { ProviderDataObject ->
                 mutableProviderState.update {
-                    ProviderState.Data(ProviderDataObject.denmarkProvider)
+                    ProviderState.Data(ProviderDataObject.result)
                 }
             }
         }
@@ -74,5 +75,5 @@ sealed class SimilarMovieState {
 
 sealed class ProviderState {
     object Empty : ProviderState()
-    data class Data(val providerDataObject: List<DenmarkProvider>) : ProviderState()
+    data class Data(val providerDataObject: Map<String,Result>) : ProviderState()
 }
