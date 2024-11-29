@@ -1,7 +1,9 @@
 package com.niklas.ux62550.ui.feature.review
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -23,6 +26,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,9 +35,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.models.Movie
+import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -92,40 +99,53 @@ fun ScreenReviewAndRating(movie: Movie) {
 
 @Composable
 fun ReviewLayout(movieTitle: String, movieRating: Double) {
-    Box {
+    Column {
         Box(
             modifier = Modifier
-                .alpha(0.3f)
-                .background(Color.Red)
-                .fillMaxWidth()
-                .height(230.dp)
-        )
-        ReviewText()
-        TitleText(movieTitle)
-        Row(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(0.dp, 186.dp, 0.dp, 0.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            for (i in 0..4) {
-                Icon(
-                    imageVector = Icons.Outlined.StarOutline,
-                    contentDescription = "Star icon",
-                    tint = ReviewColor,
-                    modifier = Modifier.requiredSize(54.dp)
+                .size(
+                    LocalConfiguration.current.screenWidthDp.dp,
+                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
                 )
+                .background(Brush.verticalGradient(colorStops = RedColorGradient))
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                ReviewText()
+                TitleText(movieTitle)
+                Row(
+                    //modifier = Modifier
+                    //.align(Alignment.BottomCenter),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+
+                    for (i in 0..4) {
+                        Icon(
+                            imageVector = Icons.Outlined.StarOutline,
+                            contentDescription = "Star icon",
+                            tint = ReviewColor,
+                            modifier = Modifier.requiredSize(54.dp)
+                        )
+                    }
+                    Text(
+                        text = "$movieRating/5",
+                        style = TextStyle(
+                            fontSize = 34.sp,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = Color.White,
+                        modifier = Modifier.padding(4.dp, 0.dp, 4.dp, 0.dp)
+                    )
+                }
             }
-            Text(
-                text = "$movieRating/5",
-                style = TextStyle(
-                    fontSize = 34.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-                color = Color.White,
-                modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
-            )
+
         }
+
+
+        
+
     }
 }
 
@@ -136,19 +156,21 @@ fun PublishReview() {
     TextField(
         value = text,
         onValueChange = { text = it },
-        shape = RoundedCornerShape(30.dp),
+        shape = RoundedCornerShape(15),
         modifier = Modifier
             .requiredSize(400.dp, 200.dp)
             .padding(20.dp, 10.dp),
-        colors = OutlinedTextFieldDefaults.colors(
+
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = TextFieldColor,
             unfocusedContainerColor = TextFieldColor,
-            focusedContainerColor = TextFieldColor
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            unfocusedLabelColor = Color.Black,
+            focusedTextColor =  Color.Black
+
         ),
         label = { Text("Write a review with accordance to the rating") },
-        textStyle = TextStyle(
-            fontSize = 12.sp,
-            color = Color.Black
-        )
     )
     Box(
         modifier = Modifier.fillMaxWidth().padding(0.dp, 10.dp),
@@ -172,7 +194,7 @@ fun MoreDetailedReview() {
         fontSize = 30.sp,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth().padding(40.dp, 10.dp)
+        modifier = Modifier.fillMaxWidth().padding(0.dp, 10.dp)
     )
 
     Row(
@@ -280,7 +302,6 @@ fun ReviewText() {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 90.dp, 0.dp, 0.dp),
     )
 }
 
@@ -298,6 +319,6 @@ fun TitleText(movieTitle: String) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 130.dp, 0.dp, 0.dp),
+            .padding(0.dp, 0.dp, 0.dp, 0.dp),
     )
 }

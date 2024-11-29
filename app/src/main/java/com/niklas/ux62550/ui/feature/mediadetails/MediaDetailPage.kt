@@ -247,7 +247,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
 fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data) {
     Row(
         modifier = modifier
-            .padding(4.dp, 10.dp, 0.dp, 0.dp)
+            .padding(4.dp, 10.dp, 0.dp, 10.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -272,12 +272,12 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data) {
                 Spacer(modifier = Modifier.width(4.dp))
             }
         }
-        Spacer(modifier = Modifier.weight(0.3f))
+        //Spacer(modifier = Modifier.weight(0.3f))
         repeat(3) { // Needs to be changed to Where to Watch
             Spacer(modifier = Modifier.width(4.dp))
             DrawCircle(Modifier.size(10.dp), Color.LightGray)
         }
-        Spacer(modifier = Modifier.weight(0.05f))
+        //Spacer(modifier = Modifier.weight(0.05f))
     }
 }
 
@@ -421,7 +421,7 @@ fun Awards(modifier: Modifier = Modifier) {
 @Composable
 fun DetailedRating(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
+        modifier = modifier.padding(4.dp, 0.dp, 0.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Needs to be made to a button later on
