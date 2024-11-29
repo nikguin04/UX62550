@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ProviderDataObject(
     @SerialName("DK")
-    val denmarkProvider: DenmarkProvider,
+    val denmarkProvider: List<DenmarkProvider>,
 
     )
 @Serializable
@@ -18,7 +18,13 @@ data class DenmarkProvider(
     val isoNumber: String,
 
     @SerialName("name")
-    val spokenName : String
+    val spokenName : String,
+
+    @SerialName("flatrate")
+    val flatrateProvider : List<FlatrateProvider>,
+
+    @SerialName("buy")
+    val buyProvider : List<BuyProvider>,
 
 
 )
@@ -36,5 +42,35 @@ data class RentProvider(
 
     @SerialName("display_priority")
     val rentProviderDisplay : Int,
+
+    )
+@Serializable
+data class FlatrateProvider(
+    @SerialName("logo_path")
+    val flatrateProviderImage : String,
+
+    @SerialName("provider_id")
+    val flatrateProviderId : Int,
+
+    @SerialName("provider_name")
+    val flatrateProviderName : String,
+
+    @SerialName("display_priority")
+    val flatrateProviderDisplay : Int,
+
+    )
+@Serializable
+data class BuyProvider(
+    @SerialName("logo_path")
+    val buyProviderImage : String,
+
+    @SerialName("provider_id")
+    val buyProviderId : Int,
+
+    @SerialName("provider_name")
+    val buyProviderName : String,
+
+    @SerialName("display_priority")
+    val buyProviderDisplay : Int,
 
     )

@@ -91,6 +91,7 @@ fun MediaDetailsScreen(
     val movieState = viewModel.movieState.collectAsState().value
     val similarMediaState = viewModel.similarMediaState.collectAsState().value
     val castState = castViewModel.castState.collectAsState().value
+    val providerState = viewModel.providerState.collectAsState().value
     when (movieState) {
         MovieState.Empty -> {
             Text(text="No data yet")// TODO make loading screen
@@ -105,6 +106,7 @@ fun MediaDetailsScreen(
                         movieState = movieState,
                         similarMediaState = similarMediaState,
                         castState = castState,
+                        providerState = providerState,
                         onNavigateToOtherMedia = onNavigateToOtherMedia,
                         onNavigateToReview = onNavigateToReview)
                 }
@@ -122,6 +124,7 @@ fun MediaDetailsContent(
     movieState: MovieState.Data,
     similarMediaState: SimilarMovieState,
     castState : CastState.Data,
+    providerState: ProviderState,
     onNavigateToOtherMedia: (String) -> Unit,
     onNavigateToReview: (String) -> Unit)
 {
@@ -136,6 +139,7 @@ fun MediaDetailsContent(
         Awards()
         DetailedRating()
         SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
+
     }
 }
 
@@ -272,10 +276,11 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data) {
                 Spacer(modifier = Modifier.width(4.dp))
             }
         }
+
         //Spacer(modifier = Modifier.weight(0.3f))
         repeat(3) { // Needs to be changed to Where to Watch
             Spacer(modifier = Modifier.width(4.dp))
-            DrawCircle(Modifier.size(10.dp), Color.LightGray)
+            DrawCircle(Modifier.size(10.dp), Color.Gray)
         }
         //Spacer(modifier = Modifier.weight(0.05f))
     }

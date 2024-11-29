@@ -1,23 +1,15 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.niklas.ux62550.R
-import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.model.DenmarkProvider
 import com.niklas.ux62550.data.model.MovieDetailObject
-import com.niklas.ux62550.data.model.SimilarMoviesObject
 import com.niklas.ux62550.data.model.SimilarMoviesPic
-import com.niklas.ux62550.domain.HomeRepository
 import com.niklas.ux62550.domain.MediaDetailsRepository
-import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.models.Movie
-import com.niklas.ux62550.ui.feature.home.MediaItemsUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.minutes
 
 class MovieViewModel : ViewModel() {
     private val mediaDetailsRepository = MediaDetailsRepository()
@@ -28,6 +20,9 @@ class MovieViewModel : ViewModel() {
     private fun getSimilarMovies() = viewModelScope.launch {
         mediaDetailsRepository.getSimilarsMovies(205321) // TODO: Don't hardcore this, get some proper featured films
     }
+    private fun getProviderForMovies() = viewModelScope.launch {
+        mediaDetailsRepository.getProvider(205321) // TODO: Don't hardcore this, get some proper featured films
+    }
 
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
     val movieState: StateFlow<MovieState> = mutableMovieState
@@ -35,14 +30,9 @@ class MovieViewModel : ViewModel() {
     private val mutableSimilarMovieState = MutableStateFlow<SimilarMovieState>(SimilarMovieState.Empty)
     val similarMediaState: StateFlow<SimilarMovieState> = mutableSimilarMovieState
 
-    /* HERE PROVIDER
-        private fun getProviderforMovies() = viewModelScope.launch {
-        mediaDetailsRepository.getSimilarsMovies(205321) // TODO: Don't hardcore this, get some proper featured films
-    }
+    private val mutableProviderState = MutableStateFlow<ProviderState>(ProviderState.Empty)
+    val providerState: StateFlow<ProviderState> = mutableProviderState
 
-    private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
-    val movieState: StateFlow<MovieState> = mutableMovieState
-     */
 
     init {
         viewModelScope.launch {
@@ -52,26 +42,24 @@ class MovieViewModel : ViewModel() {
                 }
             }
         }
+        viewModelScope.launch {
+            mediaDetailsRepository.similarFlow.collect { similarMoviesObject ->
+                mutableSimilarMovieState.update {
+                    SimilarMovieState.Data(similarMoviesObject.resultsSimilarMovies)
+                }
+            }
+        }
+        viewModelScope.launch {
+            mediaDetailsRepository.providerFlow.collect { ProviderDataObject ->
+                mutableProviderState.update {
+                    ProviderState.Data(ProviderDataObject.denmarkProvider)
+                }
+            }
+        }
 
-        viewModelScope.launch {
-            mediaDetailsRepository.similarFlow.collect { similarMoviesObject ->
-                mutableSimilarMovieState.update {
-                    SimilarMovieState.Data(similarMoviesObject.resultsSimilarMovies)
-                }
-            }
-        }
-/* WATCH PROVIDER
-        viewModelScope.launch {
-            mediaDetailsRepository.similarFlow.collect { similarMoviesObject ->
-                mutableSimilarMovieState.update {
-                    SimilarMovieState.Data(similarMoviesObject.resultsSimilarMovies)
-                }
-            }
-        }
-        */
         getDetails()
         getSimilarMovies()
-        getProviderforMovies()
+        getProviderForMovies()
     }
 }
 
@@ -84,9 +72,7 @@ sealed class SimilarMovieState {
     data class Data(val similarMoviesObject: List<SimilarMoviesPic>) : SimilarMovieState()
 }
 
-/* HERE PROVIDER
-sealed class SimilarMovieState {
-    object Empty : SimilarMovieState()
-    data class Data(val similarMoviesObject: List<SimilarMoviesPic>) : SimilarMovieState()
+sealed class ProviderState {
+    object Empty : ProviderState()
+    data class Data(val providerDataObject: List<DenmarkProvider>) : ProviderState()
 }
-*/

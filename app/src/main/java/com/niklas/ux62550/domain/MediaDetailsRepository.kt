@@ -1,6 +1,7 @@
 package com.niklas.ux62550.domain
 
 import com.niklas.ux62550.data.model.MovieDetailObject;
+import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SimilarMoviesObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource;
 import kotlinx.coroutines.flow.MutableSharedFlow;
@@ -23,11 +24,10 @@ class MediaDetailsRepository {
 
     )
 
-    /* HERE
-    private val mutableSimilarMoviesFlow = MutableSharedFlow<SimilarMoviesObject>()
-    val similarFlow = mutableSimilarMoviesFlow.asSharedFlow()
-    suspend fun getSimilarsMovies(movie_id: Int)  = mutableSimilarMoviesFlow.emit(
-        detailsDataSource.getSimilarMoviesDetail(movie_id)
+    private val mutableProviderFlow = MutableSharedFlow<ProviderDataObject>()
+    val providerFlow = mutableProviderFlow.asSharedFlow()
+    suspend fun getProvider(movie_id: Int)  = mutableProviderFlow.emit(
+        detailsDataSource.getProviders(movie_id)
 
-    )*/
+    )
 }
