@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.AddCircleOutline
@@ -37,9 +39,9 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.ui.feature.mediadetails.DrawCircle
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.ProfileBtnRed
+import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import com.niklas.ux62550.ui.theme.placeholderIconColor
-import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.starYellow
 
 @Composable
@@ -60,7 +62,7 @@ fun ProfileScreen(
     var emailValueTemp = remember { mutableStateOf("*****@gmail.com") }
     var passwordValueTemp = remember { mutableStateOf("**********") }
 
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Surface(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box {
             Box(
                 modifier = Modifier

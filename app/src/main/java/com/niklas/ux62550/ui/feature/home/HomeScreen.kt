@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material3.Icon
@@ -51,7 +53,7 @@ fun HomeScreen(
 
 @Composable
 fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, onNavigateToMedia: (String) -> Unit) {
-    Column(modifier.padding()) {
+    Column(modifier.padding().verticalScroll(rememberScrollState())) {
         Row(
             modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
             verticalAlignment = Alignment.CenterVertically,
