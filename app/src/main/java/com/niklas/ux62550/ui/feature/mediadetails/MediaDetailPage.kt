@@ -74,7 +74,7 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 @Preview(showBackground = true)
 fun MediaDetailPagePreview() {
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface {
             MediaDetailsScreen(onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
