@@ -84,20 +84,20 @@ fun MediaDetailPagePreview() {
 @Composable
 fun MediaDetailsScreen(
     viewModel: MovieViewModel = viewModel(),
-    castViewModel : CastViewModel = viewModel(),
+    castViewModel: CastViewModel = viewModel(),
     onNavigateToOtherMedia: (String) -> Unit,
-    onNavigateToReview: (String) -> Unit)
-{
+    onNavigateToReview: (String) -> Unit
+) {
     val movieState = viewModel.movieState.collectAsState().value
     val similarMediaState = viewModel.similarMediaState.collectAsState().value
     val castState = castViewModel.castState.collectAsState().value
     val providerState = viewModel.providerState.collectAsState().value
     when (movieState) {
         MovieState.Empty -> {
-            Text(text="No data yet")// TODO make loading screen
+            Text(text = "No data yet")// TODO make loading screen
         }
         is MovieState.Data -> {
-            when(castState){
+            when (castState) {
                 CastState.Empty -> {
                     Text("NO PIC")
                 }
@@ -108,7 +108,8 @@ fun MediaDetailsScreen(
                         castState = castState,
                         providerState = providerState,
                         onNavigateToOtherMedia = onNavigateToOtherMedia,
-                        onNavigateToReview = onNavigateToReview)
+                        onNavigateToReview = onNavigateToReview
+                    )
                 }
             }
 
@@ -123,13 +124,15 @@ fun MediaDetailsContent(
     modifier: Modifier = Modifier,
     movieState: MovieState.Data,
     similarMediaState: SimilarMovieState,
-    castState : CastState.Data,
+    castState: CastState.Data,
     providerState: ProviderState,
     onNavigateToOtherMedia: (String) -> Unit,
-    onNavigateToReview: (String) -> Unit)
-{
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState()))
+    onNavigateToReview: (String) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+    )
     {
         Header(movieState = movieState)
         InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
@@ -144,7 +147,7 @@ fun MediaDetailsContent(
 }
 
 @Composable
-fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data,) {
+fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data) {
     Box(modifier = modifier.fillMaxWidth()) {
         // This is the black to the preview.
         // Background gradient
@@ -231,7 +234,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
         }
         //Spacer(modifier = Modifier.weight(1f))
         Text(
-            movieState.mediaDetailObjects.relaseDate.substring(0,4),
+            movieState.mediaDetailObjects.relaseDate.substring(0, 4),
             fontSize = 18.sp
         )
         //Spacer(modifier = Modifier.weight(1f))
@@ -278,7 +281,7 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
         }
 
         Spacer(modifier = Modifier.weight(0.5f))
-        when(providerState){
+        when (providerState) {
             ProviderState.Empty -> {
                 Text("NO PIC")
             }
@@ -286,20 +289,21 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                 val country = providerState.providerDataObject["DK"]
                 val StreamRentAndBuyProviderMap =
                     (country?.flatrate?.map { it.logoPath } ?: emptyList()) +
-                        (country?.rent?.map { it.logoPath } ?: emptyList())+
-                    (country?.buy?.map { it.logoPath } ?: emptyList())
+                        (country?.rent?.map { it.logoPath } ?: emptyList()) +
+                        (country?.buy?.map { it.logoPath } ?: emptyList())
 
                 if (country != null) {
-                    for (i in 0 until minOf(3, StreamRentAndBuyProviderMap.size)){
+                    for (i in 0 until minOf(3, StreamRentAndBuyProviderMap.size)) {
                         Spacer(modifier = Modifier.width(4.dp))
-                        ProviderStyle(StreamRentAndBuyProviderMap[i])
-
+                        MovieImage(StreamRentAndBuyProviderMap[i],
+                            modifier
+                                .clip(CircleShape)
+                                .size(32.dp))
                     }
                 }
-
             }
         }
-        //Spacer(modifier = Modifier.weight(0.05f))
+        Spacer(modifier = Modifier.width(4.dp))
     }
 }
 
@@ -313,11 +317,14 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        for(i in 0..3){
-            CastStyling(castState.castObject[i].castProfilePath)
+        for (i in 0 until minOf(4, castState.castObject.size)) {
+            MovieImage(castState.castObject[i].castProfilePath,
+                modifier
+                    .clip(CircleShape)
+                    .size(64.dp))
         }
 
-        for(i in 0..2) { // Create clickable circles
+        for (i in 0..2) { // Create clickable circles
             Spacer(modifier = Modifier.width(2.dp))
             IconButton(
                 onClick = {
@@ -338,13 +345,16 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                     Column(
                         modifier = Modifier.verticalScroll(rememberScrollState())
                     ) {
-                    for ((index, cast) in castState.castObject.withIndex()) {
+                        for ((index, cast) in castState.castObject.withIndex()) {
 
                             Row(
                                 modifier = Modifier.padding(50.dp, 0.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                CastStyling(castState.castObject[index].castProfilePath)
+                                MovieImage(castState.castObject[index].castProfilePath,
+                                    modifier
+                                        .clip(CircleShape)
+                                        .size(64.dp))
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column {
                                     Text(
@@ -499,25 +509,25 @@ fun DetailedRating(modifier: Modifier = Modifier) {
                         }
                     }
 
-                        Spacer(modifier = Modifier.height(12.dp))
-                        HorizontalDivider(
-                            modifier = Modifier
+                    Spacer(modifier = Modifier.height(12.dp))
+                    HorizontalDivider(
+                        modifier = Modifier
                             .fillMaxWidth()
                             .padding(30.dp, 5.dp),
-                            color = Color.Gray
-                        )
-                    }
+                        color = Color.Gray
+                    )
                 }
             }
         }
-
     }
+
+}
 
 
 @Composable
 fun SimilarMedia(modifier: Modifier = Modifier, similarMediaState: SimilarMovieState, onNavigateToOtherMedia: (String) -> Unit) {
     Text("Movies similar to this one", modifier.padding(4.dp, 0.dp, 0.dp, 0.dp))
-    when(similarMediaState){
+    when (similarMediaState) {
         SimilarMovieState.Empty -> {
             Text("NO PIC")
         }
@@ -574,57 +584,30 @@ fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
         }
     )
 }
+
 @Composable
 fun SimilarMoviesStyling(similarPicList: List<SimilarMoviesPic>, modifier: Modifier = Modifier) {
-    LazyRow(modifier = modifier.fillMaxWidth(),
+    LazyRow(
+        modifier = modifier.fillMaxWidth(),
         //verticalAlignment = Alignment.Top
     ) {
-        for ((index, movieNumber) in similarPicList.withIndex()) {
+        for (movieNumber in similarPicList) {
             items(similarPicList.size) { movieNumber ->
                 MovieImage(
                     uri = similarPicList[movieNumber].backDropPath,
                     modifier = Modifier
-                        .size(300.dp,200.dp)
+                        .size(300.dp, 200.dp)
                         .aspectRatio(16f / 9f)
                 )
-                Spacer(modifier = Modifier.padding(8.dp,0.dp,0.dp,0.dp))
+                Spacer(modifier = Modifier.padding(8.dp, 0.dp, 0.dp, 0.dp))
             }
         }
     }
 }
 
 @Composable
-fun CastStyling(uri: String?) {
-    val imguri = if (uri!=null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        MovieImage(
-            uri = imguri,
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape)
-        )
-    }
-}
-@Composable
-fun ProviderStyle(uri: String?) {
-    val imguri = if (uri != null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        MovieImage(
-            uri = imguri,
-            modifier = Modifier
-                .size(32.dp)
-                .clip(CircleShape)
-        )
-    }
-}
-
-@Composable
 fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
-    val imguri = if (uri!=null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
+    val imguri = if (uri != null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
     AsyncImage(
         model = imguri,
         contentDescription = null, // TODO: include content description
