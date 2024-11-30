@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
@@ -34,7 +36,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true, device="spec:width=411dp,height=700dp")
 fun LoginRegisterPreview() {
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface {
             LoginRegisterScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
         }
@@ -44,7 +46,7 @@ fun LoginRegisterPreview() {
 @Composable
 @Preview(showBackground = true, device="spec:width=300dp,height=500dp")
 fun LoginRegisterPreviewSmall() {
-    UX62550Theme(darkTheme = true, dynamicColor = false) {
+    UX62550Theme(darkTheme = true) {
         Surface {
             LoginRegisterScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
         }
@@ -56,7 +58,7 @@ fun LoginRegisterScreen(
     onNavigateToLoginScreen: (String) -> Unit,
     onNavigateToRegisterScreen: (String) -> Unit,
 ) {
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Surface(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box {
             Box(
                 modifier = Modifier

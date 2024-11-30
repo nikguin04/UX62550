@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            UX62550Theme(darkTheme = true, dynamicColor = false) {
+            UX62550Theme(darkTheme = true) {
                 val navController = rememberNavController()
                 var canNavigateBack by remember { mutableStateOf(false) }
                 var currentScreenTitle by remember { mutableStateOf("") }
