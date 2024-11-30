@@ -17,74 +17,26 @@ data class Result(
     val link: String,
 
     @SerialName("rent")
-    val rent: List<RentProvider> = emptyList(),
+    val rent: List<Provider> = emptyList(),
 
     @SerialName("flatrate")
-    val flatrate: List<FlatrateProvider> = emptyList(),
+    val flatrate: List<Provider> = emptyList(),
 
     @SerialName("buy")
-    val buy: List<BuyProvider> = emptyList()
+    val buy: List<Provider> = emptyList()
 )
 
 @Serializable
-data class DenmarkProvider(
-    @SerialName("link")
-    val link: String,
+data class Provider(
+    @SerialName("logo_path")
+    val logoPath: String, // Path to the provider's logo
 
-    @SerialName("rent")
-    val rentProvider : List<RentProvider>,
+    @SerialName("provider_id")
+    val providerId: Int, // Provider's ID
 
-    @SerialName("flatrate")
-    val flatrateProvider : List<FlatrateProvider>,
+    @SerialName("provider_name")
+    val providerName: String, // Provider's name
 
-    @SerialName("buy")
-    val buyProvider : List<BuyProvider>,
-
-
+    @SerialName("display_priority")
+    val displayPriority: Int = 0 // Priority of display
 )
-
-@Serializable
-data class RentProvider(
-    @SerialName("logo_path")
-    val rentProviderImage : String,
-
-    @SerialName("provider_id")
-    val rentProviderId : Int,
-
-    @SerialName("provider_name")
-    val rentProviderName : String,
-
-    @SerialName("display_priority")
-    val rentProviderDisplay : Int,
-
-    )
-@Serializable
-data class FlatrateProvider(
-    @SerialName("logo_path")
-    val flatrateProviderImage : String,
-
-    @SerialName("provider_id")
-    val flatrateProviderId : Int,
-
-    @SerialName("provider_name")
-    val flatrateProviderName : String,
-
-    @SerialName("display_priority")
-    val flatrateProviderDisplay : Int,
-
-    )
-@Serializable
-data class BuyProvider(
-    @SerialName("logo_path")
-    val buyProviderImage : String,
-
-    @SerialName("provider_id")
-    val buyProviderId : Int,
-
-    @SerialName("provider_name")
-    val buyProviderName : String,
-
-    @SerialName("display_priority")
-    val buyProviderDisplay : Int,
-
-    )

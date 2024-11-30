@@ -2,7 +2,6 @@ package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.niklas.ux62550.data.model.DenmarkProvider
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.model.Result

@@ -133,7 +133,7 @@ fun MediaDetailsContent(
     {
         Header(movieState = movieState)
         InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
-        Genres(genres = movieState)
+        Genres(genres = movieState, providerState = providerState)
         DescriptionText(description = movieState.mediaDetailObjects.Description)
         ActorsAndDirectors(castState = castState)
         Awards()
@@ -248,14 +248,14 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
 }
 
 @Composable
-fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data) {
+fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState: ProviderState) {
     Row(
         modifier = modifier
             .padding(4.dp, 10.dp, 0.dp, 10.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        for ((index, genre) in genres.mediaDetailObjects.genre.withIndex()) {
+        for ((index, genre) in genres.mediaDetailObjects.genre.withIndex().takeWhile { it.index <= 2 }) {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(40.dp))
@@ -270,17 +270,34 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data) {
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
-            if (index != genres.mediaDetailObjects.genre.lastIndex) {
+            if ((index != 2) && (index != genres.mediaDetailObjects.genre.lastIndex)) {
                 Spacer(modifier = Modifier.width(4.dp))
                 DrawCircle(Modifier.size(10.dp), Color.LightGray)
                 Spacer(modifier = Modifier.width(4.dp))
             }
         }
 
-        //Spacer(modifier = Modifier.weight(0.3f))
-        repeat(3) { // Needs to be changed to Where to Watch
-            Spacer(modifier = Modifier.width(4.dp))
-            DrawCircle(Modifier.size(10.dp), Color.Gray)
+        Spacer(modifier = Modifier.weight(0.5f))
+        when(providerState){
+            ProviderState.Empty -> {
+                Text("NO PIC")
+            }
+            is ProviderState.Data -> {
+                val country = providerState.providerDataObject["DK"]
+                val StreamRentAndBuyProviderMap =
+                    (country?.flatrate?.map { it.logoPath } ?: emptyList()) +
+                        (country?.rent?.map { it.logoPath } ?: emptyList())+
+                    (country?.buy?.map { it.logoPath } ?: emptyList())
+
+                if (country != null) {
+                    for (i in 0 until minOf(3, StreamRentAndBuyProviderMap.size)){
+                        Spacer(modifier = Modifier.width(4.dp))
+                        ProviderStyle(StreamRentAndBuyProviderMap[i])
+
+                    }
+                }
+
+            }
         }
         //Spacer(modifier = Modifier.weight(0.05f))
     }
@@ -509,6 +526,7 @@ fun SimilarMedia(modifier: Modifier = Modifier, similarMediaState: SimilarMovieS
         }
     }
 }
+
 @Composable
 fun TitleText(title: String) {
     Text(
@@ -589,7 +607,20 @@ fun CastStyling(uri: String?) {
         )
     }
 }
-
+@Composable
+fun ProviderStyle(uri: String?) {
+    val imguri = if (uri != null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        MovieImage(
+            uri = imguri,
+            modifier = Modifier
+                .size(32.dp)
+                .clip(CircleShape)
+        )
+    }
+}
 
 @Composable
 fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
