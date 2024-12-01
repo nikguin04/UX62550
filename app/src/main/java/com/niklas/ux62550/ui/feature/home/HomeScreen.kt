@@ -27,14 +27,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.niklas.ux62550.models.figmaPxToDp_h
+import com.niklas.ux62550.data.model.GenreObject
+import com.niklas.ux62550.data.model.KeywordObject
+import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
+import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
 @Preview(showBackground = true)
 fun HomePreview() {
-    val mvm: MediaItemsViewModel = viewModel()
+    val mvm: HomeViewModel = viewModel()
     mvm.initPreview()
 
     UX62550Theme(darkTheme = true) {
@@ -45,9 +48,9 @@ fun HomePreview() {
 @Composable
 fun HomeScreen(
     onNavigateToMedia: (String) -> Unit,
-    mediaItemsViewModel: MediaItemsViewModel = viewModel()
+    homeViewModel: HomeViewModel = viewModel()
 ) {
-    val uiState = mediaItemsViewModel.mediaItemsState.collectAsState().value
+    val uiState = homeViewModel.mediaItemsState.collectAsState().value
     ScreenHome(mediaItemsUIState = uiState, onNavigateToMedia = onNavigateToMedia)
 }
 
@@ -89,39 +92,15 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
             else -> {}
         }
 
-        val genres = listOf("Romance", "Action", "Comedy", "Drama")
+        //val genres = listOf("Romance", "Action", "Comedy", "Drama")
+        val genres: List<GenreObject> = listOf(GenreObject(28, "Action"), GenreObject(12, "Adventure"), GenreObject(16, "Animation"))
 
-        for (genre in genres) {
-            // TODO: PLEASE READ! this is a placeholder for when we get a proper structure for fetching movies
-            /*when (mediaItemsUIState) {
-                MediaItemsUIState.Empty -> {*/
-                    Text(
-                        text = "No Media Items",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                /*}
-                is MediaItemsUIState.Data -> {
-                    Row(
-                        Modifier.padding(
-                            15.dp,
-                            12.dp,
-                            0.dp,
-                            2.dp
-                        )
-                    ) {
-                        Text(text = genre)
-                    }
-                    HorizontalLazyRowMovies(
-                        Modifier.padding(0.dp, 0.dp),
-                        155f,
-                        87.19f,
-                        mediaItemsUIState.mediaItems,
-                        onNavigateToMedia
-                    )
-                }
-                else -> {}
-            }*/
+        for (genreObject in genres) {
+            DiscoverSlider (
+                discoverViewModel = viewModel(factory = DiscoverViewModelFactory(genreObject), key = genreObject.id.toString()),
+                headerTitle = genreObject.name,
+                onNavigateToMedia = onNavigateToMedia
+            )
         }
     }
 }

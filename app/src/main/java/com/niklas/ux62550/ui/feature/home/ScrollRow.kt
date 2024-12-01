@@ -29,44 +29,10 @@ import coil3.compose.AsyncImage
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.models.figmaPxToDp_h
-import com.niklas.ux62550.models.figmaPxToDp_w
 import com.niklas.ux62550.ui.dpToPx
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-@Composable
-fun HorizontalLazyRowWithSnapEffect(items: List<MediaItem>, onNavigateToMedia: (String) -> Unit) {
-    val itemWidth = figmaPxToDp_w(300f) + figmaPxToDp_w(10f) * 2 // width + padding*"
-    val halfScreenWidth = LocalConfiguration.current.screenWidthDp.dp / 2
-    val halfItemWidth = itemWidth / 2
-    val offsetToCenter = halfScreenWidth - halfItemWidth
-    val pixelOffset: Int = offsetToCenter.dpToPx().roundToInt()
-    val listState = rememberLazyListState(1, -pixelOffset) // To manage the scroll state
-
-    // LazyRow with snapping effect
-    LazyRow(
-        state = listState,
-        flingBehavior = rememberSnapFlingBehavior(listState), // Snap to item effect
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(0.dp, 0.dp, 0.dp, 0.dp)
-    ) {
-        items.forEachIndexed { index, mediaItem ->
-            item {
-                PromoItem(
-                    width = figmaPxToDp_w(300f),
-                    height = figmaPxToDp_h(200f),
-                    round = figmaPxToDp_w(20f),
-                    color = mediaItem.tempColor,
-                    modifier = Modifier
-                        .padding(figmaPxToDp_w(10f))
-                        .clickable(onClick = { onNavigateToMedia(mediaItem.name) })
-                )
-            }
-        }
-    }
-}
 
 @Composable
 fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia: (String) -> Unit) {
@@ -116,9 +82,9 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
 @Composable
 fun HorizontalLazyRowMovies(
     modifier: Modifier = Modifier,
-    widthFigmaPx: Float,
-    heightFigmaPx: Float,
-    items: List<MediaItem>,
+    width: Float,
+    height: Float,
+    items: List<MediaObject>,
     onNavigateToMedia: (String) -> Unit
 ) {
     // LazyRow with snapping effect
@@ -127,16 +93,16 @@ fun HorizontalLazyRowMovies(
     ) {
         items.forEachIndexed { index, mediaItem ->
             item {
-                PromoItem(
-                    width = figmaPxToDp_w(widthFigmaPx),
-                    height = figmaPxToDp_h(heightFigmaPx),
-                    round = figmaPxToDp_w(5f),
-                    color = mediaItem.tempColor,
+                MediaItem(
+                    width = width.dp,
+                    height = height.dp,
+                    round = 6.dp,
+                    uri = mediaItem.backdrop_path,
                     modifier = Modifier
-                        .clickable(onClick = { onNavigateToMedia(mediaItem.name) })
+                        .clickable(onClick = { onNavigateToMedia(mediaItem.title) })
                         .padding(
-                            figmaPxToDp_w(if (index == 0) 10f else 5f), 0.dp,
-                            figmaPxToDp_w(if (index == items.size - 1) 10f else 5f), 0.dp
+                            (if (index == 0) 12f.dp else 6f.dp), 0.dp,
+                            (if (index == items.size - 1) 12f.dp else 6f.dp), 0.dp
                         )
                 )
             }

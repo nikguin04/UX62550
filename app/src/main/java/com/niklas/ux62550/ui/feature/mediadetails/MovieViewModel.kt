@@ -6,6 +6,10 @@ import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.domain.MediaDetailsRepository
+import com.niklas.ux62550.R
+import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.models.MediaItem
+import com.niklas.ux62550.models.Movie
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

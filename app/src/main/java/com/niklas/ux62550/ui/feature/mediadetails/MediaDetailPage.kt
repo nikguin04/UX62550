@@ -66,6 +66,10 @@ import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
 import com.niklas.ux62550.ui.feature.common.CastViewModel
+import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.models.MediaItem
+import com.niklas.ux62550.models.Movie
+import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme

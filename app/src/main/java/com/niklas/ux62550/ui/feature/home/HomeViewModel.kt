@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MediaItemsViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
     /*private val mediaItems: List<MediaItem> = listOf(
         MediaItem("Name 1", R.drawable.logo, Color.Blue),
         MediaItem("Name 2", R.drawable.logo, Color.Red),
@@ -21,22 +21,19 @@ class MediaItemsViewModel : ViewModel() {
     private val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
     val mediaItemsState: StateFlow<MediaItemsUIState> = mutableMediaItemsState
 
+
     init {
         viewModelScope.launch {
-            mutableMediaItemsState.update {
-                homeRepository.searchFlow
-                    .collect { searchDataObject ->
-                        mutableMediaItemsState.update {
-                            MediaItemsUIState.Data(searchDataObject.results)
-                        }
-                    }
+            homeRepository.searchFlow.collect { searchDataObject ->
+                mutableMediaItemsState.update { MediaItemsUIState.Data(searchDataObject.results) }
             }
         }
         getMedia()
     }
     private fun getMedia() = viewModelScope.launch {
-        homeRepository.getMultiSearch("The Office") // TODO: Don't hardcore this, get some proper featured films
+        homeRepository.getSearch("movie","pixar cars") // TODO: Don't hardcore this, get some proper featured films
     }
+
 
     fun initPreview() {
         mutableMediaItemsState.update {
@@ -51,3 +48,4 @@ sealed class MediaItemsUIState {
     data object Empty : MediaItemsUIState()
     data class Data(val mediaObjects: List<MediaObject>) : MediaItemsUIState()
 }
+

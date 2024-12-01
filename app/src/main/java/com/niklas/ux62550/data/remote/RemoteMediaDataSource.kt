@@ -42,21 +42,25 @@ class RemoteMediaDataSource {
 
     private val mediaApi: TMDBApiService = retrofit.create(TMDBApiService::class.java)
 
-    suspend fun getMultiSearch(query: String) = mediaApi.getMultiSearch(query)
-
-    suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
-
+    suspend fun getSearch(search_mode: String, query: String) = mediaApi.getSearch(search_mode, query)
+    suspend fun getKeywordMovies(keyword_id: String, page: Int) = mediaApi.getKeywordMovies(keyword_id,page)
+    suspend fun getDiscoverMovies(genres: String, page: Int) = mediaApi.getDiscoverMovies(genres,page)
+	suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
     suspend fun getSimilarMoviesDetail(movie_id: Int) = mediaApi.getSimilarMovies(movie_id)
-
     suspend fun getCastDetails(movie_id: Int) = mediaApi.getCast(movie_id)
-
     suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
 }
 
 interface TMDBApiService {
 
-    @GET("search/multi?&page=1&language=en-US")
-    suspend fun getMultiSearch(@Query("query") query: String): SearchDataObject
+    @GET("search/{search_mode}?&page=1&language=en-US")
+    suspend fun getSearch(@Path("search_mode") search_mode: String, @Query("query") query: String): SearchDataObject
+
+	@GET("keyword/{keyword_id}/movies")
+    suspend fun getKeywordMovies(@Path("keyword_id") keyword_id: String, @Query("page") page: Int = 1): SearchDataObject
+
+    @GET("discover/movie")
+    suspend fun getDiscoverMovies(@Query("with_genres") genres: String, @Query("page") page: Int = 1): SearchDataObject
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): MovieDetailObject
