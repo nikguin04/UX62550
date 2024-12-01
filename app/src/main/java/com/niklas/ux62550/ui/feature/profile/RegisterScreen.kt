@@ -45,13 +45,13 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun RegisterPreview() {
     UX62550Theme(darkTheme = true) {
         Surface {
-            RegisterScreen()
+            RegisterScreen({})
         }
     }
 }
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(onNavigateToProfile: (String) -> Unit) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
@@ -76,13 +76,13 @@ fun RegisterScreen() {
             ) {
                 LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
             }
-            RegisterInputHolder(usernameValue, emailValue, passValue)
+            RegisterInputHolder(usernameValue, emailValue, passValue, onNavigateToProfile)
         }
     }
 }
 
 @Composable
-fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: MutableState<String>, passValue: MutableState<String>) {
+fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: MutableState<String>, passValue: MutableState<String>, onNavigateToProfile: (String) -> Unit) {
     Column {
         TextField(
             modifier = Modifier
@@ -134,7 +134,7 @@ fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: Mutable
         )
 
         Button(
-            onClick = {},
+            onClick = { onNavigateToProfile("Register") },
             colors = ButtonDefaults.buttonColors(
                 containerColor = RegisterButtonBlue
             ),
