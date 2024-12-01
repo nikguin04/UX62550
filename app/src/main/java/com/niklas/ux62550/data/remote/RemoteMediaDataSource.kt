@@ -1,6 +1,10 @@
 package com.niklas.ux62550.data.remote
 
+import com.niklas.ux62550.data.model.CastObject
+import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
+import com.niklas.ux62550.data.model.SimilarMoviesObject
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -40,6 +44,13 @@ class RemoteMediaDataSource {
 
     suspend fun getMultiSearch(query: String) = mediaApi.getMultiSearch(query)
 
+    suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
+
+    suspend fun getSimilarMoviesDetail(movie_id: Int) = mediaApi.getSimilarMovies(movie_id)
+
+    suspend fun getCastDetails(movie_id: Int) = mediaApi.getCast(movie_id)
+
+    suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
 }
 
 interface TMDBApiService {
@@ -47,6 +58,17 @@ interface TMDBApiService {
     @GET("search/multi?&page=1&language=en-US")
     suspend fun getMultiSearch(@Query("query") query: String): SearchDataObject
 
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): MovieDetailObject
+
+    @GET("movie/{movie_id}/similar")
+    suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SimilarMoviesObject
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getCast(@Path("movie_id") movie_id: Int): CastObject
+
+    @GET("movie/{movie_id}/watch/providers")
+    suspend fun getProvider(@Path("movie_id") movie_id: Int): ProviderDataObject
 }
 
 
