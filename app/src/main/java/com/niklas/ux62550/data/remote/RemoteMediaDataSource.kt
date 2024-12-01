@@ -56,7 +56,7 @@ interface TMDBApiService {
     @GET("search/{search_mode}?&page=1&language=en-US")
     suspend fun getSearch(@Path("search_mode") search_mode: String, @Query("query") query: String): SearchDataObject
 
-	GET("keyword/{keyword_id}/movies")
+	@GET("keyword/{keyword_id}/movies")
     suspend fun getKeywordMovies(@Path("keyword_id") keyword_id: String, @Query("page") page: Int = 1): SearchDataObject
 
     @GET("discover/movie")
