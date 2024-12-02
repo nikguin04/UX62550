@@ -93,7 +93,15 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
         }
 
         //val genres = listOf("Romance", "Action", "Comedy", "Drama")
-        val genres: List<GenreObject> = listOf(GenreObject(28, "Action"), GenreObject(12, "Adventure"), GenreObject(16, "Animation"))
+        val genres: List<GenreObject> = listOf(
+            GenreObject(28, "Action"),
+            GenreObject(12, "Adventure"),
+            GenreObject(16, "Animation"),
+            GenreObject(35, "Comedy"),
+            GenreObject(80, "Crime"),
+            GenreObject(99, "Documentary"),
+            GenreObject(18, "Drama")
+        )
 
         for (genreObject in genres) {
             DiscoverSlider (
@@ -102,6 +110,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                 onNavigateToMedia = onNavigateToMedia
             )
         }
+        Box(Modifier.size(0.dp, 20.dp))
     }
 }
 
