@@ -18,14 +18,14 @@ import kotlinx.coroutines.launch
 class MovieViewModel : ViewModel() {
     private val mediaDetailsRepository = MediaDetailsRepository()
 
-    private fun getDetails() = viewModelScope.launch {
-        mediaDetailsRepository.getMoviesDetails(205321) // TODO: Don't hardcore this, get some proper featured films
+    private fun getDetails(MovieID : Int) = viewModelScope.launch {
+        mediaDetailsRepository.getMoviesDetails(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
-    private fun getSimilarMovies() = viewModelScope.launch {
-        mediaDetailsRepository.getSimilarsMovies(205321) // TODO: Don't hardcore this, get some proper featured films
+    private fun getSimilarMovies(MovieID : Int) = viewModelScope.launch {
+        mediaDetailsRepository.getSimilarsMovies(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
-    private fun getProviderForMovies() = viewModelScope.launch {
-        mediaDetailsRepository.getProvider(205321) // TODO: Don't hardcore this, get some proper featured films
+    private fun getProviderForMovies(MovieID : Int) = viewModelScope.launch {
+        mediaDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
 
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
@@ -61,9 +61,9 @@ class MovieViewModel : ViewModel() {
             }
         }
 
-        getDetails()
-        getSimilarMovies()
-        getProviderForMovies()
+        getDetails(MovieID = 205321)
+        getSimilarMovies(MovieID = 205321)
+        getProviderForMovies(MovieID = 205321)
     }
 }
 

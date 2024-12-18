@@ -71,7 +71,7 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
                 width = Dp(w),
                 height = Dp(h),
                 modifier = Modifier
-                    .clickable(onClick = { onNavigateToMedia(items[page].title) })
+                    .clickable(onClick = { onNavigateToMedia(items[page].title)})
                     .align(Alignment.CenterHorizontally)
             )
         }

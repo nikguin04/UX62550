@@ -31,7 +31,7 @@ fun MainNavHost(
         composable<Route.HomeScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
             HomeScreen(
-                onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
+                onNavigateToMedia = { id -> navController.navigate(Route.MediaDetailsScreen(id)) }
             )
         }
 
