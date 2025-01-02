@@ -143,7 +143,7 @@ fun MediaDetailsContent(
         Genres(genres = movieState, providerState = providerState)
         DescriptionText(description = movieState.mediaDetailObjects.Description)
         ActorsAndDirectors(castState = castState)
-        Awards()
+        //Awards()
         DetailedRating()
         SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
 
@@ -258,7 +258,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
 fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState: ProviderState) {
     Row(
         modifier = modifier
-            .padding(4.dp, 10.dp, 0.dp, 10.dp)
+            .padding(8.dp, 10.dp, 0.dp, 10.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -314,7 +314,7 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data) {
-    Text("Actors and Directors", Modifier.padding(4.dp, 2.dp, 0.dp, 0.dp))
+    Text("Actors and Directors", Modifier.padding(8.dp, 12.dp, 0.dp, 0.dp))
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     Row(
@@ -389,75 +389,75 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Awards(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            imageVector = Icons.Outlined.EmojiEvents,
-            modifier = Modifier.size(18.dp),
-            colorFilter = ColorFilter.tint(Color.Yellow),
-            contentDescription = "Star icon"
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Text("Awards...", color = AwardAndDetailRating)
-        val sheetState = rememberModalBottomSheetState()
-        var showBottomSheet by remember { mutableStateOf(false) }
-
-        // IconButton to trigger the Bottom Sheet
-        IconButton(
-            onClick = { showBottomSheet = true },
-            modifier = Modifier.size(40.dp) // Set size directly on the IconButton if needed
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
-                contentDescription = "Show bottom sheet",
-                tint = Color.White // Adjust color if necessary
-            )
-        }
-
-        // Show the bottom sheet
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = { showBottomSheet = false },
-                sheetState = sheetState
-            ) {
-                for (i in 0..2) {
-                    Row(
-                        modifier = Modifier.padding(50.dp, 0.dp),
-                        verticalAlignment = Alignment.CenterVertically
-
-                    ) {
-                        Text(
-                            text = "Emmy ${2020 + i}",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    HorizontalDivider(
-                        modifier = Modifier
-                            .width(300.dp)
-                            .padding(50.dp, 0.dp),
-                        thickness = 0.5.dp,
-                        color = Color.Gray
-                    )
-                }
-            }
-        }
-    }
-}
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun Awards(modifier: Modifier = Modifier) {
+//    Row(
+//        modifier = modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
+//        verticalAlignment = Alignment.CenterVertically
+//    ) {
+//        Image(
+//            imageVector = Icons.Outlined.EmojiEvents,
+//            modifier = Modifier.size(18.dp),
+//            colorFilter = ColorFilter.tint(Color.Yellow),
+//            contentDescription = "Star icon"
+//        )
+//        Spacer(modifier = Modifier.width(8.dp))
+//
+//        Text("Awards...", color = AwardAndDetailRating)
+//        val sheetState = rememberModalBottomSheetState()
+//        var showBottomSheet by remember { mutableStateOf(false) }
+//
+//        // IconButton to trigger the Bottom Sheet
+//        IconButton(
+//            onClick = { showBottomSheet = true },
+//            modifier = Modifier.size(40.dp) // Set size directly on the IconButton if needed
+//        ) {
+//            Icon(
+//                imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
+//                contentDescription = "Show bottom sheet",
+//                tint = Color.White // Adjust color if necessary
+//            )
+//        }
+//
+//        // Show the bottom sheet
+//        if (showBottomSheet) {
+//            ModalBottomSheet(
+//                onDismissRequest = { showBottomSheet = false },
+//                sheetState = sheetState
+//            ) {
+//                for (i in 0..2) {
+//                    Row(
+//                        modifier = Modifier.padding(50.dp, 0.dp),
+//                        verticalAlignment = Alignment.CenterVertically
+//
+//                    ) {
+//                        Text(
+//                            text = "Emmy ${2020 + i}",
+//                            fontSize = 14.sp,
+//                            fontWeight = FontWeight.Bold,
+//                            color = Color.White
+//                        )
+//                    }
+//                    Spacer(modifier = Modifier.height(4.dp))
+//                    HorizontalDivider(
+//                        modifier = Modifier
+//                            .width(300.dp)
+//                            .padding(50.dp, 0.dp),
+//                        thickness = 0.5.dp,
+//                        color = Color.Gray
+//                    )
+//                }
+//            }
+//        }
+//    }
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailedRating(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.padding(4.dp, 0.dp, 0.dp, 0.dp),
+        modifier = modifier.padding(8.dp, 12.dp, 0.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Needs to be made to a button later on
@@ -530,7 +530,7 @@ fun DetailedRating(modifier: Modifier = Modifier) {
 
 @Composable
 fun SimilarMedia(modifier: Modifier = Modifier, similarMediaState: SimilarMovieState, onNavigateToOtherMedia: (String) -> Unit) {
-    Text("Movies similar to this one", modifier.padding(4.dp, 0.dp, 0.dp, 0.dp))
+    Text("Movies similar to this one", modifier.padding(8.dp, 0.dp, 0.dp, 0.dp))
     when (similarMediaState) {
         SimilarMovieState.Empty -> {
             Text("NO PIC")
@@ -570,7 +570,7 @@ fun DescriptionText(description: String) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp, 0.dp, 0.dp, 0.dp),
+            .padding(8.dp, 6.dp, 0.dp, 0.dp),
     )
 }
 
