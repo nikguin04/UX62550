@@ -232,7 +232,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
             }
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                movieState.mediaDetailObjects.rating.toString(),
+                movieState.mediaDetailObjects.rating.toString().substring(0,3),
                 fontSize = 18.sp
             )
         }
