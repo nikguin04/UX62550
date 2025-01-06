@@ -2,12 +2,14 @@ package com.niklas.ux62550.ui.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.domain.HomeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.SerialName
 
 class HomeViewModel : ViewModel() {
     /*private val mediaItems: List<MediaItem> = listOf(
@@ -38,7 +40,9 @@ class HomeViewModel : ViewModel() {
     fun initPreview() {
         mutableMediaItemsState.update {
             MediaItemsUIState.Data(
-                mediaObjects = listOf() // TODO: Fill this for preview
+                mediaObjects = listOf(
+                    SearchDataExamples.MediaObjectExample
+                ) // TODO: Fill this for preview
             )
         }
     }
