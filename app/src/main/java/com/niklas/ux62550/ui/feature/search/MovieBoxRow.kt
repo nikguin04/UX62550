@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.models.Movie
+import com.niklas.ux62550.ui.feature.mediadetails.MovieImage
 
 @Composable
 fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
@@ -45,12 +46,9 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        MovieBoxMoviePicture(
-            width = 90.dp,
-            height = 50.62.dp,
-            round = 12.dp,
-            color = Color.Green,
-            modifier = Modifier.padding(end = 8.dp)
+        MovieImage(
+                uri = movie.backdrop_path,
+                modifier = Modifier.fillMaxWidth()
         )
         Column(
             modifier = Modifier
@@ -87,7 +85,7 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = movie.release_date.toString().format("yyyy"),
+                    text = movie.release_date.toString().substring(0, 4),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
