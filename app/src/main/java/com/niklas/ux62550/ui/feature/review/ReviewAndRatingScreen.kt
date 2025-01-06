@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,7 +50,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.Movie
+import com.niklas.ux62550.ui.feature.common.CastState
+import com.niklas.ux62550.ui.feature.common.CastViewModel
+import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsContent
+import com.niklas.ux62550.ui.feature.mediadetails.MovieImage
+import com.niklas.ux62550.ui.feature.mediadetails.MovieState
+import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
+import com.niklas.ux62550.ui.feature.mediadetails.ProviderState
+import com.niklas.ux62550.ui.feature.mediadetails.SimilarMovieState
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
@@ -58,65 +69,92 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 @Preview(showBackground = true)
 fun ReviewAndRatingPreview() {
-    val movie = Movie(
-        name = "RED: The Movie",
-        year = "2090",
-        duration = 3000.minutes,
-        rating = 3.5,
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
-        genres = listOf("Action", "Dinosaur Adventure", "Hentai"),
-        pgRating = 13,
-        tempColor = Color.Red
-    )
+
     UX62550Theme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(movie = movie)
+            ReviewScreen()
         }
     }
 }
 
 @Composable
-fun ReviewScreen() {
-    val movie = Movie(
-        name = "RED: The Movie",
-        year = "2090",
-        duration = 3000.minutes,
-        rating = 3.5,
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat ",
-        genres = listOf("Action", "Dinosaur Adventure", "Hentai"),
-        pgRating = 13,
-        tempColor = Color.Red
-    )
-    ScreenReviewAndRating(movie = movie)
+fun ReviewScreen(
+    viewModel: MovieViewModel = viewModel(),
+    castViewModel: CastViewModel = viewModel()
+    ) {
+    val movieState = viewModel.movieState.collectAsState().value
+    val castState = castViewModel.castState.collectAsState().value
+    when (movieState) {
+        MovieState.Empty -> {
+            Text(text = "No data yet")// TODO make loading screen
+        }
+        is MovieState.Data -> {
+            when (castState) {
+                CastState.Empty -> {
+                    Text("NO PIC")
+                }
+                is CastState.Data -> {
+                    ScreenReviewAndRating(
+                        movieState = movieState,
+                        castState = castState,
+
+                    )
+                }
+            }
+
+        }
+        else -> {}
+    }
+
 }
 
 @Composable
-fun ScreenReviewAndRating(movie: Movie) {
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-        ReviewLayout(movie.name, movie.rating)
+fun ScreenReviewAndRating(
+    modifier: Modifier = Modifier,
+    movieState: MovieState.Data,
+    castState: CastState.Data)
+    {
+
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())
+    ) {
+        ReviewLayout(movieState = movieState, movieRating = 3.5)
         PublishReview()
         MoreDetailedReview()
     }
 }
 
 @Composable
-fun ReviewLayout(movieTitle: String, movieRating: Double) {
+fun ReviewLayout(
+    modifier: Modifier = Modifier,
+    movieState: MovieState.Data,
+    movieRating: Double
+
+) {
     Column {
-        Box(
+        Box{
+        MovieImage(
+            uri = movieState.mediaDetailObjects.backDropPath,
             modifier = Modifier
-                .size(
-                    LocalConfiguration.current.screenWidthDp.dp,
-                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                )
-                .background(Brush.verticalGradient(colorStops = RedColorGradient))
-        ) {
+                .fillMaxWidth()
+        )
+            ReviewText()
+            TitleText(movieState.mediaDetailObjects.Originaltitle)
+
+        }
+//        Box(
+//            modifier = Modifier
+//                .size(
+//                    LocalConfiguration.current.screenWidthDp.dp,
+//                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
+//                )
+//
+//        ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
-                ReviewText()
-                TitleText(movieTitle)
+
                 Row(
                     //modifier = Modifier
                     //.align(Alignment.BottomCenter),
@@ -144,12 +182,7 @@ fun ReviewLayout(movieTitle: String, movieRating: Double) {
             }
 
         }
-
-
-        
-
     }
-}
 
 @Composable
 fun PublishReview() {
@@ -304,6 +337,7 @@ fun ReviewText() {
         ),
         modifier = Modifier
             .fillMaxWidth()
+            .padding(0.dp, 90.dp)
     )
 }
 
@@ -321,6 +355,6 @@ fun TitleText(movieTitle: String) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 0.dp, 0.dp, 0.dp),
+            .padding(0.dp, 120.dp),
     )
 }
