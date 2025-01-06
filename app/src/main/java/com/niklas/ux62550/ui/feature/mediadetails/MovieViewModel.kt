@@ -63,8 +63,8 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         }
 
         getDetails(MovieID = media.id)
-        getSimilarMovies(MovieID = 205321)
-        getProviderForMovies(MovieID = 205321)
+        getSimilarMovies(MovieID = media.id)
+        getProviderForMovies(MovieID = media.id)
     }
 }
 

@@ -1,5 +1,6 @@
 package com.niklas.ux62550.navigation
 
+import com.niklas.ux62550.data.model.MediaObject
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -14,7 +15,7 @@ sealed class Route(val title: String) {
     data object WatchScreen : Route("Watch")
 
     @Serializable
-    data class MediaDetailsScreen(val name: String) : Route("Media Details Screen")
+    data class MediaDetailsScreen(val media: MediaObject) : Route("Media Details Screen")
 
     @Serializable
     data class ReviewScreen(val name: String) : Route("Review Screen")

@@ -62,6 +62,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
@@ -80,7 +81,7 @@ import kotlin.time.Duration.Companion.minutes
 fun MediaDetailPagePreview() {
     UX62550Theme(darkTheme = true) {
         Surface {
-            MediaDetailsScreen(MediaObject.example, onNavigateToOtherMedia = {}, onNavigateToReview = {})
+            MediaDetailsScreen(SearchDataExamples.MediaObjectExample, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
     }
 }
