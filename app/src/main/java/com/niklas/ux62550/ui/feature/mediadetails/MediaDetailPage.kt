@@ -80,18 +80,19 @@ import kotlin.time.Duration.Companion.minutes
 fun MediaDetailPagePreview() {
     UX62550Theme(darkTheme = true) {
         Surface {
-            MediaDetailsScreen(onNavigateToOtherMedia = {}, onNavigateToReview = {})
+            MediaDetailsScreen(MediaObject.example, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
     }
 }
 
 @Composable
 fun MediaDetailsScreen(
-    viewModel: MovieViewModel = viewModel(),
+    media: MediaObject,
     castViewModel: CastViewModel = viewModel(),
     onNavigateToOtherMedia: (String) -> Unit,
     onNavigateToReview: (String) -> Unit
 ) {
+    val viewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
     val movieState = viewModel.movieState.collectAsState().value
     val similarMediaState = viewModel.similarMediaState.collectAsState().value
     val castState = castViewModel.castState.collectAsState().value
