@@ -76,7 +76,7 @@ interface TMDBApiService {
     @GET("movie/{movie_id}/watch/providers")
     suspend fun getProvider(@Path("movie_id") movie_id: Int): ProviderDataObject
 
-    @GET("/movie/{movie_id}/videos")
+    @GET("movie/{movie_id}/videos")
     suspend fun getTrailer(@Path("movie_id") movie_id: Int): TrailerObject
 }
 

@@ -76,6 +76,7 @@ import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
 import android.net.Uri
+import android.util.Log
 import androidx.compose.ui.platform.LocalContext
 import com.niklas.ux62550.data.model.TrailerLinks
 import com.niklas.ux62550.data.model.TrailerObject
@@ -169,9 +170,11 @@ fun MediaDetailsContent(
 fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState.Data) {
     val context = LocalContext.current
 
-    // Find the first trailer of type "Trailer" and create the YouTube URL
-    val youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
+    var youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
         "https://www.youtube.com/watch?v=${it.key}"
+    }
+    if(youtubeUrl == null){
+        youtubeUrl = "https://www.youtube.com/watch?v=${trailerState.trailerObject.resultsTrailerLinks[0].key}"
     }
 
     Box(modifier = modifier.fillMaxWidth()) {
@@ -192,6 +195,20 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                 modifier = Modifier
                     .aspectRatio(16f / 9f)
                     .fillMaxWidth()
+                    .clickable {
+                        youtubeUrl?.let {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it)).apply {
+                                setPackage("com.google.android.youtube")
+                            }
+                            if (intent.resolveActivity(context.packageManager) != null) {
+                                context.startActivity(intent)
+                            } else {
+                                // Fallback to a web browser
+                                val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                                context.startActivity(webIntent)
+                            }
+                        }
+                    }
             ) {
                 MovieImage(
                     uri = movieState.mediaDetailObjects.backDropPath,
@@ -203,20 +220,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                     Icons.Outlined.PlayCircleOutline,
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .requiredSize(72.dp)
-                        .clickable {
-                            if (youtubeUrl != null) {
-                                // Launch YouTube URL using an Intent
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
-                                if (intent.resolveActivity(context.packageManager) != null) {
-                                    context.startActivity(intent)
-                                } else {
-                                    println("No app available to open the link.")
-                                }
-                            } else {
-                                println("YouTube URL not available.")
-                            }
-                        },
+                        .requiredSize(72.dp),
                     colorFilter = ColorFilter.tint(Color.White),
                     contentDescription = "Play circle"
                 )
@@ -642,7 +646,10 @@ fun SimilarMoviesStyling(similarPicList: List<SimilarMoviesPic>, modifier: Modif
         }
     }
 }
+@Composable
+fun youtubeLink(){
 
+}
 @Composable
 fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
     val imguri = if (uri != null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
