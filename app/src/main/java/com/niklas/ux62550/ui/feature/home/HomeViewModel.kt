@@ -2,6 +2,7 @@ package com.niklas.ux62550.ui.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.domain.HomeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,15 +41,7 @@ class HomeViewModel : ViewModel() {
         mutableMediaItemsState.update {
             MediaItemsUIState.Data(
                 mediaObjects = listOf(
-                    MediaObject(
-                        backdrop_path = "/6oaL4DP75yABrd5EbC4H2zq5ghc.jpg",
-                        id = 129,
-                        title = "Spirited Away",
-                        overview = "A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.",
-                        poster_path = "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
-                        genre_ids = listOf(),
-                        popularity = 0f,
-                    )
+                    SearchDataExamples.MediaObjectExample
                 ) // TODO: Fill this for preview
             )
         }

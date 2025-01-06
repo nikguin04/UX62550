@@ -66,5 +66,5 @@ data class MediaObject(
 
     @SerialName("vote_count")
 	val vote_count: Int? = null,
-
     )
+
