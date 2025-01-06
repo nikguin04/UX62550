@@ -8,6 +8,8 @@ import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.R
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.model.TrailerLinks
+import com.niklas.ux62550.data.model.TrailerObject
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +29,9 @@ class MovieViewModel : ViewModel() {
     private fun getProviderForMovies(MovieID : Int) = viewModelScope.launch {
         mediaDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
+    private fun getTrailerForMovies(MovieID : Int) = viewModelScope.launch {
+        mediaDetailsRepository.getTrailer(MovieID) // TODO: Don't hardcore this, get some proper featured films
+    }
 
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
     val movieState: StateFlow<MovieState> = mutableMovieState
@@ -36,6 +41,9 @@ class MovieViewModel : ViewModel() {
 
     private val mutableProviderState = MutableStateFlow<ProviderState>(ProviderState.Empty)
     val providerState: StateFlow<ProviderState> = mutableProviderState
+
+    private val mutableTrailerState = MutableStateFlow<TrailerState>(TrailerState.Empty)
+    val trailerState: StateFlow<TrailerState> = mutableTrailerState
 
 
     init {
@@ -60,10 +68,18 @@ class MovieViewModel : ViewModel() {
                 }
             }
         }
+        viewModelScope.launch {
+            mediaDetailsRepository.trailerFlow.collect { TrailerObject ->
+                mutableTrailerState.update {
+                    TrailerState.Data(TrailerObject)
+                }
+            }
+        }
 
         getDetails(MovieID = 205321)
         getSimilarMovies(MovieID = 205321)
         getProviderForMovies(MovieID = 205321)
+        getTrailerForMovies(MovieID = 205321)
     }
 }
 
@@ -79,4 +95,8 @@ sealed class SimilarMovieState {
 sealed class ProviderState {
     object Empty : ProviderState()
     data class Data(val providerDataObject: Map<String,Result>) : ProviderState()
+}
+sealed class TrailerState {
+    object Empty : TrailerState()
+    data class Data(val trailerObject: TrailerObject) : TrailerState()
 }

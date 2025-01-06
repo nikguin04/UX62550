@@ -1,5 +1,6 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -74,6 +75,10 @@ import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
+import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
+import com.niklas.ux62550.data.model.TrailerLinks
+import com.niklas.ux62550.data.model.TrailerObject
 
 @Composable
 @Preview(showBackground = true)
@@ -94,6 +99,7 @@ fun MediaDetailsScreen(
 ) {
     val movieState = viewModel.movieState.collectAsState().value
     val similarMediaState = viewModel.similarMediaState.collectAsState().value
+    val trailerState = viewModel.trailerState.collectAsState().value
     val castState = castViewModel.castState.collectAsState().value
     val providerState = viewModel.providerState.collectAsState().value
     when (movieState) {
@@ -106,14 +112,22 @@ fun MediaDetailsScreen(
                     Text("NO PIC")
                 }
                 is CastState.Data -> {
-                    MediaDetailsContent(
-                        movieState = movieState,
-                        similarMediaState = similarMediaState,
-                        castState = castState,
-                        providerState = providerState,
-                        onNavigateToOtherMedia = onNavigateToOtherMedia,
-                        onNavigateToReview = onNavigateToReview
-                    )
+                    when(trailerState){
+                        TrailerState.Empty ->{
+                            Text("NO TRAILER")
+                        }
+                        is TrailerState.Data ->{
+                            MediaDetailsContent(
+                                movieState = movieState,
+                                similarMediaState = similarMediaState,
+                                trailerState = trailerState,
+                                castState = castState,
+                                providerState = providerState,
+                                onNavigateToOtherMedia = onNavigateToOtherMedia,
+                                onNavigateToReview = onNavigateToReview
+                            )
+                        }
+                    }
                 }
             }
 
@@ -128,6 +142,7 @@ fun MediaDetailsContent(
     modifier: Modifier = Modifier,
     movieState: MovieState.Data,
     similarMediaState: SimilarMovieState,
+    trailerState: TrailerState.Data,
     castState: CastState.Data,
     providerState: ProviderState,
     onNavigateToOtherMedia: (String) -> Unit,
@@ -138,7 +153,7 @@ fun MediaDetailsContent(
             .verticalScroll(rememberScrollState())
     )
     {
-        Header(movieState = movieState)
+        Header(movieState = movieState, trailerState = trailerState)
         InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
         Genres(genres = movieState, providerState = providerState)
         DescriptionText(description = movieState.mediaDetailObjects.Description)
@@ -151,10 +166,16 @@ fun MediaDetailsContent(
 }
 
 @Composable
-fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data) {
+fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState.Data) {
+    val context = LocalContext.current
+
+    // Find the first trailer of type "Trailer" and create the YouTube URL
+    val youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
+        "https://www.youtube.com/watch?v=${it.key}"
+    }
+
     Box(modifier = modifier.fillMaxWidth()) {
-        // This is the black to the preview.
-        // Background gradient
+        // Background Image with Transparency
         Box(modifier = Modifier.alpha(0.5f)) {
             MovieImage(
                 uri = movieState.mediaDetailObjects.backDropPath,
@@ -162,13 +183,12 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data) {
             )
         }
 
-        // this is the preview and the play button in one box
         Column(
             modifier = Modifier
                 .padding(30.dp, 70.dp, 30.dp, 8.dp)
                 .fillMaxWidth()
         ) {
-            Box( // Trailer
+            Box( // Playable Trailer Box
                 modifier = Modifier
                     .aspectRatio(16f / 9f)
                     .fillMaxWidth()
@@ -183,7 +203,20 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data) {
                     Icons.Outlined.PlayCircleOutline,
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .requiredSize(72.dp),
+                        .requiredSize(72.dp)
+                        .clickable {
+                            if (youtubeUrl != null) {
+                                // Launch YouTube URL using an Intent
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
+                                if (intent.resolveActivity(context.packageManager) != null) {
+                                    context.startActivity(intent)
+                                } else {
+                                    println("No app available to open the link.")
+                                }
+                            } else {
+                                println("YouTube URL not available.")
+                            }
+                        },
                     colorFilter = ColorFilter.tint(Color.White),
                     contentDescription = "Play circle"
                 )
@@ -191,7 +224,8 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data) {
             Spacer(modifier = Modifier.height(12.dp))
             TitleText(movieState.mediaDetailObjects.Originaltitle)
         }
-        // Bookmark button
+
+        // Bookmark Button
         Image(
             Icons.Outlined.BookmarkBorder,
             modifier = Modifier

@@ -5,6 +5,7 @@ import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.data.model.SimilarMoviesObject
+import com.niklas.ux62550.data.model.TrailerObject
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -49,6 +50,7 @@ class RemoteMediaDataSource {
     suspend fun getSimilarMoviesDetail(movie_id: Int) = mediaApi.getSimilarMovies(movie_id)
     suspend fun getCastDetails(movie_id: Int) = mediaApi.getCast(movie_id)
     suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
+    suspend fun getTrailer(movie_id: Int) = mediaApi.getTrailer(movie_id)
 }
 
 interface TMDBApiService {
@@ -73,6 +75,9 @@ interface TMDBApiService {
 
     @GET("movie/{movie_id}/watch/providers")
     suspend fun getProvider(@Path("movie_id") movie_id: Int): ProviderDataObject
+
+    @GET("/movie/{movie_id}/videos")
+    suspend fun getTrailer(@Path("movie_id") movie_id: Int): TrailerObject
 }
 
 
