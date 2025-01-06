@@ -340,10 +340,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
             }
             if (showBottomSheet) {
                 ModalBottomSheet(
-                    scrimColor = Color.Transparent,
-                    onDismissRequest = {
-                        showBottomSheet = false
-                    },
+                    onDismissRequest = { showBottomSheet = false },
                     sheetState = sheetState
                 ) {
                     Column(
