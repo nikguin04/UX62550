@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.KeywordObject
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 import com.niklas.ux62550.ui.feature.common.LogoBox
@@ -47,7 +48,7 @@ fun HomePreview() {
 
 @Composable
 fun HomeScreen(
-    onNavigateToMedia: (String) -> Unit,
+    onNavigateToMedia: (MediaObject) -> Unit,
     homeViewModel: HomeViewModel = viewModel()
 ) {
     val uiState = homeViewModel.mediaItemsState.collectAsState().value
@@ -55,7 +56,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, onNavigateToMedia: (String) -> Unit) {
+fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, onNavigateToMedia: (MediaObject) -> Unit) {
     Column(modifier.padding().verticalScroll(rememberScrollState())) {
         Row(
             modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
