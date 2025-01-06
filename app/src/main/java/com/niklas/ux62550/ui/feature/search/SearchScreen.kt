@@ -22,6 +22,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,19 +64,19 @@ fun SearchContent(
     nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
     onNavigateToMedia: (String) -> Unit
 ) {
+    var text by rememberSaveable { mutableStateOf("") }
+    var expanded by rememberSaveable { mutableStateOf(false) }
     LazyColumn(modifier = modifier.padding()) {
         item {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, 45.dp, 0.dp, 20.dp),
+
+                    .padding(20.dp, 45.dp, 20.dp, 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 SearchBar(
                     inputField = {
-                        var text = ""
-                        var expanded = false
                         SearchBarDefaults.InputField(query = text,
                             onQueryChange = { text = it },
                             onSearch = { expanded = false },
@@ -90,14 +94,14 @@ fun SearchContent(
                                     imageVector = Icons.Filled.Search,
                                     modifier = Modifier.requiredSize(24.dp),
                                     colorFilter = ColorFilter.tint(Color.Black),
-                                    contentDescription = "Star icon"
+                                    contentDescription = "Search icon"
                                 )
                             }
                         )
                     },
                     colors = SearchBarDefaults.colors(containerColor = Color(0xFFACACAC)),
                     expanded = false,
-                    onExpandedChange = {},
+                    onExpandedChange = { expanded = it },
                     content = {},
                     modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp)
                 )
