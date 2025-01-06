@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.SerialName
 
 class HomeViewModel : ViewModel() {
     /*private val mediaItems: List<MediaItem> = listOf(
@@ -38,7 +39,17 @@ class HomeViewModel : ViewModel() {
     fun initPreview() {
         mutableMediaItemsState.update {
             MediaItemsUIState.Data(
-                mediaObjects = listOf() // TODO: Fill this for preview
+                mediaObjects = listOf(
+                    MediaObject(
+                        backdrop_path = "/6oaL4DP75yABrd5EbC4H2zq5ghc.jpg",
+                        id = 129,
+                        title = "Spirited Away",
+                        overview = "A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.",
+                        poster_path = "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+                        genre_ids = listOf(),
+                        popularity = 0f,
+                    )
+                ) // TODO: Fill this for preview
             )
         }
     }

@@ -41,7 +41,7 @@ fun HomePreview() {
     mvm.initPreview()
 
     UX62550Theme(darkTheme = true) {
-        HomeScreen(onNavigateToMedia = {})
+        HomeScreen(onNavigateToMedia = {}, homeViewModel = mvm)
     }
 }
 
@@ -86,7 +86,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
             }
             is MediaItemsUIState.Data -> {
                 HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaObjects, onNavigateToMedia)
-
+                Box(Modifier.size(4.dp))
                 HorizontalDotIndexer(Modifier.size(LocalConfiguration.current.screenWidthDp.dp, 12.dp))
             }
             else -> {}
