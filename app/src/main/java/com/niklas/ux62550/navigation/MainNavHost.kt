@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.home.HomeScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsScreen
@@ -32,7 +33,11 @@ fun MainNavHost(
         composable<Route.HomeScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
             HomeScreen(
-                onNavigateToMedia = { media -> navController.navigate(Route.MediaDetailsScreen(media)) }
+
+                onNavigateToMedia = { media ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
+                    navController.navigate(Route.MediaDetailsScreen)
+                }
             )
         }
 
@@ -44,11 +49,12 @@ fun MainNavHost(
         }
 
         composable<Route.MediaDetailsScreen> { backStackEntry ->
-            val mediaRoute: Route.MediaDetailsScreen = backStackEntry.toRoute()
-            val media = mediaRoute.media
-            LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>()) }
+            //val mediaRoute: Route.MediaDetailsScreen = backStackEntry.toRoute()
+            //val media = mediaRoute.media
+            val media = navController.previousBackStackEntry?.savedStateHandle?.get<MediaObject>("media")
+            LaunchedEffect(Unit) { /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/ }
             MediaDetailsScreen(
-                media,
+                media?: SearchDataExamples.MediaObjectExample,
                 onNavigateToOtherMedia = { /*name -> navController.navigate(Route.MediaDetailsScreen(name))*/ },
                 onNavigateToReview = { name -> navController.navigate(Route.ReviewScreen(name)) }
             )

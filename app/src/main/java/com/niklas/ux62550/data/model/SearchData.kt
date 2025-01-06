@@ -1,5 +1,7 @@
 package com.niklas.ux62550.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -29,6 +31,7 @@ $1
 And just write the type (this could be made so you don't even need to type @SerialName but i cant be arsed)
  */
 
+@Parcelize
 @Serializable
 data class MediaObject(
     @SerialName("adult")
@@ -66,5 +69,5 @@ data class MediaObject(
 
     @SerialName("vote_count")
 	val vote_count: Int? = null,
-    )
+    ): Parcelable
 

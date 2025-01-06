@@ -15,7 +15,7 @@ sealed class Route(val title: String) {
     data object WatchScreen : Route("Watch")
 
     @Serializable
-    data class MediaDetailsScreen(val media: MediaObject) : Route("Media Details Screen")
+    data object MediaDetailsScreen : Route("Media Details Screen")
 
     @Serializable
     data class ReviewScreen(val name: String) : Route("Review Screen")
