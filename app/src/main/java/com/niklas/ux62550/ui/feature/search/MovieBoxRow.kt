@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.models.Movie
 
 @Composable
@@ -38,7 +39,7 @@ fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifie
 }
 
 @Composable
-fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
+fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -48,7 +49,7 @@ fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
             width = 90.dp,
             height = 50.62.dp,
             round = 12.dp,
-            color = movie.tempColor,
+            color = Color.Green,
             modifier = Modifier.padding(end = 8.dp)
         )
         Column(
@@ -59,7 +60,7 @@ fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
             Row {
                 Column {
                     Text(
-                        text = movie.name,
+                        text = movie.title,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -74,7 +75,7 @@ fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
                             contentDescription = "Star icon"
                         )
                         Text(
-                            text = movie.rating.toString() + "/5",
+                            text = movie.vote_average.toString() + "/5",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -86,7 +87,7 @@ fun MovieBoxRow(movie: Movie, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = movie.year,
+                    text = movie.release_date.toString().format("yyyy"),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )

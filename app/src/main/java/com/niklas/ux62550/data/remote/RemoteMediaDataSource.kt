@@ -49,12 +49,18 @@ class RemoteMediaDataSource {
     suspend fun getSimilarMoviesDetail(movie_id: Int) = mediaApi.getSimilarMovies(movie_id)
     suspend fun getCastDetails(movie_id: Int) = mediaApi.getCast(movie_id)
     suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
+    suspend fun getUserSearch(search_query: String) = mediaApi.getUserSearch(search_query)
 }
 
 interface TMDBApiService {
 
     @GET("search/{search_mode}?&page=1&language=en-US")
     suspend fun getSearch(@Path("search_mode") search_mode: String, @Query("query") query: String): SearchDataObject
+
+
+    @GET("search/movie")
+    suspend fun getUserSearch(@Query("query") query: String): SearchDataObject
+
 
 	@GET("keyword/{keyword_id}/movies")
     suspend fun getKeywordMovies(@Path("keyword_id") keyword_id: String, @Query("page") page: Int = 1): SearchDataObject

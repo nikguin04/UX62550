@@ -52,7 +52,7 @@ fun SearchPreview() {
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
     val nonMoviesState = viewModel.nonMoviesState.collectAsState().value
-    val moviesState = viewModel.moviesState.collectAsState().value
+    val moviesState = viewModel.movieItemsUIState.collectAsState().value
     SearchContent(movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
 }
 
@@ -159,7 +159,7 @@ fun SearchContent(
                 }
             }
             is MovieItemsUIState.Data -> {
-                itemsIndexed(movieItemsUIState.movies) { index, movieBoxItem ->
+                itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
                     if (index > 0) {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
@@ -177,7 +177,7 @@ fun SearchContent(
                     MovieBoxRow(
                         movie = movieBoxItem,
                         modifier = Modifier.clickable(
-                            onClick = { onNavigateToMedia(movieBoxItem.name) }
+                            onClick = { onNavigateToMedia(movieBoxItem.title) }
                         )
                     )
                 }
