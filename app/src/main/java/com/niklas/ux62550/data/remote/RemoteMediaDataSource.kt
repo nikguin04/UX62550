@@ -81,7 +81,7 @@ interface TMDBApiService {
     suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): MovieDetailObject
 
     @GET("movie/{movie_id}/similar")
-    suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SimilarMoviesObject
+    suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SearchDataObject
 
     @GET("movie/{movie_id}/credits")
     suspend fun getCast(@Path("movie_id") movie_id: Int): CastObject

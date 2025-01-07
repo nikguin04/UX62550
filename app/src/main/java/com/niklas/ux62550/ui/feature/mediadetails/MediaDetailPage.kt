@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -71,6 +72,7 @@ import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
 import com.niklas.ux62550.ui.feature.common.CastViewModel
+import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -90,7 +92,7 @@ fun MediaDetailPagePreview() {
 fun MediaDetailsScreen(
     media: MediaObject,
     castViewModel: CastViewModel = viewModel(),
-    onNavigateToOtherMedia: (String) -> Unit,
+    onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (String) -> Unit
 ) {
     val viewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
@@ -142,7 +144,7 @@ fun MediaDetailsContent(
     trailerState: TrailerState.Data,
     castState: CastState.Data,
     providerState: ProviderState,
-    onNavigateToOtherMedia: (String) -> Unit,
+    onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (String) -> Unit
 ) {
     Column(
@@ -623,14 +625,14 @@ fun DetailedRating(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun SimilarMedia(modifier: Modifier = Modifier, similarMediaState: SimilarMovieState, onNavigateToOtherMedia: (String) -> Unit) {
+fun SimilarMedia(modifier: Modifier = Modifier, similarMediaState: SimilarMovieState, onNavigateToOtherMedia: (MediaObject) -> Unit) {
     Text("Movies similar to this one", modifier.padding(8.dp, 0.dp, 0.dp, 0.dp))
     when (similarMediaState) {
         SimilarMovieState.Empty -> {
             Text("NO PIC")
         }
         is SimilarMovieState.Data -> {
-            SimilarMoviesStyling(similarMediaState.similarMoviesObject)
+            HorizontalLazyRowMovies(modifier.fillMaxWidth(), 100.dp, 100.dp, similarMediaState.similarMoviesObject, onNavigateToOtherMedia)
         }
     }
 }

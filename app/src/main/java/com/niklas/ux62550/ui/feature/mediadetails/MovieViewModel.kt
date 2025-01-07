@@ -9,6 +9,7 @@ import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.R
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.model.SimilarMoviesObject
 import com.niklas.ux62550.data.model.TrailerLinks
 import com.niklas.ux62550.data.model.TrailerObject
 import com.niklas.ux62550.models.MediaItem
@@ -56,9 +57,9 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
             }
         }
         viewModelScope.launch {
-            mediaDetailsRepository.similarFlow.collect { similarMoviesObject ->
+            mediaDetailsRepository.similarFlow.collect { searchDataObject ->
                 mutableSimilarMovieState.update {
-                    SimilarMovieState.Data(similarMoviesObject.resultsSimilarMovies)
+                    SimilarMovieState.Data(searchDataObject.results)
                 }
             }
         }
@@ -94,7 +95,7 @@ sealed class MovieState {
 }
 sealed class SimilarMovieState {
     object Empty : SimilarMovieState()
-    data class Data(val similarMoviesObject: List<SimilarMoviesPic>) : SimilarMovieState()
+    data class Data(val similarMoviesObject: List<MediaObject>) : SimilarMovieState()
 }
 
 sealed class ProviderState {
