@@ -45,17 +45,9 @@ fun HomePreview() {
     }
 }
 
-@Composable
-fun HomeScreen(
-    onNavigateToMedia: (String) -> Unit,
-    homeViewModel: HomeViewModel = viewModel()
-) {
-    val uiState = homeViewModel.mediaItemsState.collectAsState().value
-    ScreenHome(mediaItemsUIState = uiState, onNavigateToMedia = onNavigateToMedia)
-}
 
 @Composable
-fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUIState, onNavigateToMedia: (String) -> Unit) {
+fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
     Column(modifier.padding().verticalScroll(rememberScrollState())) {
         Row(
             modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
@@ -75,7 +67,8 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
             }
         }
 
-        // Implement viewmodel
+        // Featured items
+        val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
         when (mediaItemsUIState) {
             MediaItemsUIState.Empty -> {
                 Text(
@@ -84,6 +77,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                     fontWeight = FontWeight.Bold
                 )
             }
+
             is MediaItemsUIState.Data -> {
                 HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaObjects, onNavigateToMedia)
                 Box(Modifier.size(4.dp))
@@ -92,25 +86,25 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
             else -> {}
         }
 
-        //val genres = listOf("Romance", "Action", "Comedy", "Drama")
-        val genres: List<GenreObject> = listOf(
-            GenreObject(28, "Action"),
-            GenreObject(12, "Adventure"),
-            GenreObject(16, "Animation"),
-            GenreObject(35, "Comedy"),
-            GenreObject(80, "Crime"),
-            GenreObject(99, "Documentary"),
-            GenreObject(18, "Drama")
-        )
+        // Genre items
+        val movieGenresDataState: GenresDataState = homeViewModel.movieGenresState.collectAsState().value
+        when (movieGenresDataState) {
+            GenresDataState.Empty -> {
+                // No placeholder here since it is managed by the individual genre viewmodels
+                // TODO: We should make a loading screen for all the genres, so that they are only displayed when ALL genre fetching is done. Async image loading may be neglected from said fetching
+            }
 
-        for (genreObject in genres) {
-            DiscoverSlider (
-                discoverViewModel = viewModel(factory = DiscoverViewModelFactory(genreObject), key = genreObject.id.toString()),
-                headerTitle = genreObject.name,
-                onNavigateToMedia = onNavigateToMedia
-            )
+            is GenresDataState.Data -> {
+                for (genreObject in movieGenresDataState.genres) {
+                    DiscoverSlider (
+                        discoverViewModel = viewModel(factory = DiscoverViewModelFactory(genreObject), key = genreObject.id.toString()),
+                        headerTitle = genreObject.name,
+                        onNavigateToMedia = onNavigateToMedia
+                    )
+                }
+                Box(Modifier.size(0.dp, 20.dp))
+            }
         }
-        Box(Modifier.size(0.dp, 20.dp))
     }
 }
 

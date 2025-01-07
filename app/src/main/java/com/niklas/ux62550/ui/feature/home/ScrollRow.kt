@@ -82,8 +82,8 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
 @Composable
 fun HorizontalLazyRowMovies(
     modifier: Modifier = Modifier,
-    width: Float,
-    height: Float,
+    width: Dp,
+    height: Dp,
     items: List<MediaObject>,
     onNavigateToMedia: (String) -> Unit
 ) {
@@ -94,8 +94,8 @@ fun HorizontalLazyRowMovies(
         items.forEachIndexed { index, mediaItem ->
             item {
                 MediaItem(
-                    width = width.dp,
-                    height = height.dp,
+                    width = width,
+                    height = height,
                     round = 6.dp,
                     uri = mediaItem.backdrop_path,
                     modifier = Modifier
