@@ -1,9 +1,7 @@
 package com.niklas.ux62550.ui.feature.loadingscreen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,18 +18,33 @@ import com.niklas.ux62550.R
 @Composable
 @Preview(showBackground = true)
 fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(modifier = Modifier) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize() // Ensures the Box takes up the full screen
+            .padding(16.dp), // Optional: padding for the entire layout
+        contentAlignment = Alignment.Center // Centers the content in the Box
+    ) {
+        Column(modifier = Modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
-            modifier = Modifier,
+            modifier = Modifier.size(200.dp), // Adjust size as needed
             contentScale = ContentScale.Fit
         )
-    }
-    Text("LOADING",
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Bold,
-        color = Color.White,
-        modifier = Modifier.padding(5.dp,120.dp))
 
+
+        Text(
+            text = "LOADING",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier.padding(top = 8.dp)
+
+        )
+
+        }
+    }
 }

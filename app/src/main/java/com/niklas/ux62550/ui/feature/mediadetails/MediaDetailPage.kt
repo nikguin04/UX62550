@@ -66,10 +66,7 @@ import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
 import com.niklas.ux62550.ui.feature.common.CastViewModel
-import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.models.Movie
-import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
+import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -98,12 +95,12 @@ fun MediaDetailsScreen(
     val providerState = viewModel.providerState.collectAsState().value
     when (movieState) {
         MovieState.Empty -> {
-            Text(text = "No data yet")// TODO make loading screen
+            LoadingScreen()
         }
         is MovieState.Data -> {
             when (castState) {
                 CastState.Empty -> {
-                    Text("NO PIC")
+
                 }
                 is CastState.Data -> {
                     MediaDetailsContent(
@@ -287,7 +284,6 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
         Spacer(modifier = Modifier.weight(0.5f))
         when (providerState) {
             ProviderState.Empty -> {
-                Text("NO PIC")
             }
             is ProviderState.Data -> {
                 val country = providerState.providerDataObject["DK"]
@@ -530,7 +526,7 @@ fun SimilarMedia(modifier: Modifier = Modifier, similarMediaState: SimilarMovieS
     Text("Movies similar to this one", modifier.padding(4.dp, 0.dp, 0.dp, 0.dp))
     when (similarMediaState) {
         SimilarMovieState.Empty -> {
-            Text("NO PIC")
+            LoadingScreen()
         }
         is SimilarMovieState.Data -> {
             SimilarMoviesStyling(similarMediaState.similarMoviesObject)
@@ -595,10 +591,13 @@ fun SimilarMoviesStyling(similarPicList: List<SimilarMoviesPic>, modifier: Modif
         for (movieNumber in similarPicList) {
             items(similarPicList.size) { movieNumber ->
                 MovieImage(
+
                     uri = similarPicList[movieNumber].backDropPath,
+
                     modifier = Modifier
                         .size(300.dp, 200.dp)
                         .aspectRatio(16f / 9f)
+
                 )
                 Spacer(modifier = Modifier.padding(8.dp, 0.dp, 0.dp, 0.dp))
             }
@@ -613,5 +612,6 @@ fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
         model = imguri,
         contentDescription = null, // TODO: include content description
         modifier = modifier
+
     )
 }

@@ -28,10 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.GenreObject
-import com.niklas.ux62550.data.model.KeywordObject
-import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
@@ -70,6 +69,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
                     style = TextStyle(
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Normal
+
                     )
                 )
             }
@@ -78,11 +78,7 @@ fun ScreenHome(modifier: Modifier = Modifier, mediaItemsUIState: MediaItemsUISta
         // Implement viewmodel
         when (mediaItemsUIState) {
             MediaItemsUIState.Empty -> {
-                Text(
-                    text = "No Media Items",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                LoadingScreen()
             }
             is MediaItemsUIState.Data -> {
                 HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaObjects, onNavigateToMedia)
