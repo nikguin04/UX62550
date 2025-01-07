@@ -2,12 +2,16 @@ package com.niklas.ux62550.ui.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.niklas.ux62550.data.examples.SearchDataExamples
+import com.niklas.ux62550.data.model.GenreObject
+import com.niklas.ux62550.data.model.GenreType
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.domain.HomeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.SerialName
 
 class HomeViewModel : ViewModel() {
     /*private val mediaItems: List<MediaItem> = listOf(
@@ -21,24 +25,53 @@ class HomeViewModel : ViewModel() {
     private val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
     val mediaItemsState: StateFlow<MediaItemsUIState> = mutableMediaItemsState
 
+    private val mutableMovieGenresState = MutableStateFlow<GenresDataState>(GenresDataState.Empty)
+    val movieGenresState: StateFlow<GenresDataState> = mutableMovieGenresState
+
 
     init {
         viewModelScope.launch {
-            homeRepository.searchFlow.collect { searchDataObject ->
+            homeRepository.featuredMediaFlow.collect { searchDataObject ->
                 mutableMediaItemsState.update { MediaItemsUIState.Data(searchDataObject.results) }
             }
         }
-        getMedia()
+        viewModelScope.launch {
+            homeRepository.genreFetchFlow.collect { genreDataObject ->
+                mutableMovieGenresState.update { GenresDataState.Data(genreDataObject.genres) }
+            }
+        }
+        getFeaturedMedia()
+        getMovieGenres()
     }
-    private fun getMedia() = viewModelScope.launch {
-        homeRepository.getSearch("movie","pixar cars") // TODO: Don't hardcore this, get some proper featured films
+    private fun getFeaturedMedia() = viewModelScope.launch {
+        homeRepository.getTrending("all", "day")
+    }
+    private fun getMovieGenres() = viewModelScope.launch {
+        homeRepository.getGenres(GenreType.MOVIE)
     }
 
 
     fun initPreview() {
         mutableMediaItemsState.update {
             MediaItemsUIState.Data(
-                mediaObjects = listOf() // TODO: Fill this for preview
+                mediaObjects = listOf(
+                    SearchDataExamples.MediaObjectExample,
+                    SearchDataExamples.MediaObjectExample,
+                    SearchDataExamples.MediaObjectExample
+                ) // TODO: Fill this for preview
+            )
+        }
+        mutableMovieGenresState.update {
+            GenresDataState.Data(
+                genres = listOf(
+                    GenreObject(28, "Action"),
+                    GenreObject(12, "Adventure"),
+                    GenreObject(16, "Animation"),
+                    GenreObject(35, "Comedy"),
+                    GenreObject(80, "Crime"),
+                    GenreObject(99, "Documentary"),
+                    GenreObject(18, "Drama")
+                )
             )
         }
     }
@@ -46,6 +79,15 @@ class HomeViewModel : ViewModel() {
 
 sealed class MediaItemsUIState {
     data object Empty : MediaItemsUIState()
-    data class Data(val mediaObjects: List<MediaObject>) : MediaItemsUIState()
+    data class Data(
+        val mediaObjects: List<MediaObject>
+    ) : MediaItemsUIState()
+}
+
+sealed class GenresDataState {
+    data object Empty : GenresDataState()
+    data class Data(
+        val genres: List<GenreObject>
+    ) : GenresDataState()
 }
 

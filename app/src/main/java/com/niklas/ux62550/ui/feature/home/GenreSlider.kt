@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.model.GenreObject
@@ -22,11 +23,12 @@ fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, on
 
     when (discoverUiState) {
         DiscoverItemsUIState.Empty -> {
-            Text(
+            /*Text(
                 text = "No Discover Items",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
-            )
+            )*/
+            // TODO: CWL will make a proper loading page so this is disregarded for now
         }
         is DiscoverItemsUIState.Data -> {
             Row(
@@ -41,8 +43,8 @@ fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, on
             }
             HorizontalLazyRowMovies(
                 Modifier.padding(0.dp, 0.dp),
-                155f,
-                155f/16*9,
+                Dp(155f),
+                Dp(155f/16*9),
                 discoverUiState.mediaObjects,
                 onNavigateToMedia
             )
