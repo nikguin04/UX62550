@@ -33,12 +33,7 @@ fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, on
         }
         is DiscoverItemsUIState.Data -> {
             Row(
-                Modifier.padding(
-                    15.dp,
-                    12.dp,
-                    0.dp,
-                    2.dp
-                )
+                Modifier.padding(15.dp,  12.dp,  0.dp,  2.dp)
             ) {
                 Text(text = headerTitle)
             }
@@ -47,7 +42,8 @@ fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, on
                 Dp(155f),
                 Dp(155f/16*9),
                 discoverUiState.mediaObjects,
-                onNavigateToMedia
+                onNavigateToMedia,
+                fetchEnBackdrop = true
             )
         }
         else -> {}
