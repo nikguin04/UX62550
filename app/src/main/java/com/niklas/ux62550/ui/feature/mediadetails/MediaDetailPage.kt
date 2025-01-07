@@ -1,6 +1,7 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.outlined.StarHalf
 import androidx.compose.material.icons.outlined.BookmarkBorder
-import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
@@ -52,6 +52,8 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
@@ -67,21 +69,10 @@ import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
 import com.niklas.ux62550.ui.feature.common.CastViewModel
-import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.models.Movie
-import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
-import android.net.Uri
-import android.util.Log
-import androidx.compose.ui.geometry.RoundRect
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import com.niklas.ux62550.data.model.TrailerLinks
-import com.niklas.ux62550.data.model.TrailerObject
 
 @Composable
 @Preview(showBackground = true)
@@ -366,7 +357,8 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                 castState.castObject[i].castProfilePath,
                 modifier
                     .clip(CircleShape)
-                    .size(64.dp))
+                    .size(48.dp))
+            Spacer(modifier = Modifier.width((6.dp)))
         }
 
         for (i in 0..2) { // Create clickable circles
@@ -402,13 +394,24 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                                         .size(64.dp))
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column {
-                                    Text(
-                                        text = castState.castObject[index].castName,
-                                        fontSize = 14.sp,
-                                        textDecoration = TextDecoration.Underline,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color.White
-                                    )
+                                    Row {
+                                        Text(
+                                            text = castState.castObject[index].castName,
+                                            fontSize = 14.sp,
+                                            textDecoration = TextDecoration.Underline,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.White
+                                        )
+                                        DrawCircle(Modifier.size(10.dp), Color.LightGray)
+                                        Text(
+                                            text = castState.castObject[index].character,
+                                            fontSize = 14.sp,
+                                            textDecoration = TextDecoration.Underline,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.White
+                                        )
+                                    }
+
                                 }
                             }
 
