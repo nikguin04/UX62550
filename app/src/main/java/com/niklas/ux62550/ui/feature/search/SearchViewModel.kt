@@ -3,11 +3,13 @@ package com.niklas.ux62550.ui.feature.search
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.domain.SearchRepository
 import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.models.NonMovieBox
+import com.niklas.ux62550.ui.feature.home.MediaItemsUIState
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 import com.niklas.ux62550.ui.feature.mediadetails.ProviderState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,11 +24,7 @@ class SearchViewModel : ViewModel() {
         NonMovieBox("John Doe", Color.Green, "Actor"),
     )
 
-    //private val movies = listOf(
-    //    Movie("RED: The Movie", "2022", 131.minutes, 3.5, "N/A", listOf("Action", "Dinosaur Adventure", "Romance"), 18, Color.Red),
-    //    Movie("Where's the Blue?", "2014", 96.minutes, 2.0, "N/A", listOf("Documentary", "Comedy"), 13, Color.Blue),
-    //    Movie("Green Man", "1998", 113.minutes, 3.0, "N/A", listOf("Thriller", "Horror"), 15, Color.Green),
-    //)
+
 
     private val searchRepository = SearchRepository()
 
@@ -63,7 +61,18 @@ class SearchViewModel : ViewModel() {
     }
 
 
-
+    fun initPreview() {
+         val movies = listOf(
+             MediaObject(title="RED: The Movie", release_date="2022", vote_average=3.5f, id=1, popularity=1f, backdrop_path = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
+             MediaObject(title="Where's the Blue?", release_date="2014", vote_average=3.5f, id=1, popularity=1f/*, backdrop_path = "/8UOAYjhwSF3aPZhm6wgLuyHRyrR.jpg"*/),
+             MediaObject(title="Green Man", release_date="1998", vote_average=3.5f, id=1, popularity=1f, backdrop_path = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
+        )
+        mutableMovieItemsUIState.update {
+            MovieItemsUIState.Data(
+                movies = SearchDataObject(total_results = 1, page = 1, total_pages = 1, results = movies)
+            )
+        }
+    }
 
 }
 

@@ -43,8 +43,14 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Preview(showBackground = true)
 fun SearchPreview() {
     UX62550Theme(darkTheme = true) {
+
+        val viewModel: SearchViewModel = viewModel()
+        viewModel.initPreview()
+
+
+
         Surface(modifier = Modifier.fillMaxSize()) {
-            SearchScreen(onNavigateToMedia = {})
+            SearchScreen(viewModel = viewModel, onNavigateToMedia = {})
         }
     }
 }
