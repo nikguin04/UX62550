@@ -95,7 +95,7 @@ fun MediaDetailsScreen(
     val providerState = viewModel.providerState.collectAsState().value
     when (movieState) {
         MovieState.Empty -> {
-            LoadingScreen()
+           LoadingScreen()
         }
         is MovieState.Data -> {
             when (castState) {
