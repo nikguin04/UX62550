@@ -394,7 +394,9 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                                         .size(64.dp))
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column {
-                                    Row {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
                                         Text(
                                             text = castState.castObject.cast[index].castName,
                                             fontSize = 14.sp,
@@ -402,7 +404,9 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                                             fontWeight = FontWeight.Bold,
                                             color = Color.White
                                         )
-                                        DrawCircle(Modifier.size(10.dp), Color.LightGray)
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        DrawCircle(Modifier.size(6.dp), Color.LightGray)
+                                        Spacer(modifier = Modifier.width(4.dp))
                                         Text(
                                             text = castState.castObject.cast[index].character,
                                             fontSize = 14.sp,
@@ -426,7 +430,6 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                             Spacer(modifier = Modifier.height(12.dp))
                         }
                         for ((index, crew) in castState.castObject.crew.withIndex()) {
-
                             Row(
                                 modifier = Modifier.padding(50.dp, 0.dp),
                                 verticalAlignment = Alignment.CenterVertically
@@ -437,7 +440,9 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                                         .size(64.dp))
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column {
-                                    Row {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
                                         Text(
                                             text = castState.castObject.crew[index].castName,
                                             fontSize = 14.sp,
@@ -445,9 +450,11 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                                             fontWeight = FontWeight.Bold,
                                             color = Color.White
                                         )
-                                        DrawCircle(Modifier.size(10.dp), Color.LightGray)
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        DrawCircle(Modifier.size(6.dp), Color.LightGray)
+                                        Spacer(modifier = Modifier.width(4.dp))
                                         Text(
-                                            text = castState.castObject.crew[index].character,
+                                            text = castState.castObject.crew[index].job,
                                             fontSize = 14.sp,
                                             textDecoration = TextDecoration.Underline,
                                             fontWeight = FontWeight.Bold,

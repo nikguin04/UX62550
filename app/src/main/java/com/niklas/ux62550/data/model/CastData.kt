@@ -30,7 +30,7 @@ data class Crew(
     @SerialName("profile_path")
     val castProfilePath: String?,
 
-    @SerialName("character")
-    val character: String
+    @SerialName("job")
+    val job: String
 )
 
