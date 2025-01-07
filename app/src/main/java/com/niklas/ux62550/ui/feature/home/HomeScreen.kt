@@ -49,7 +49,7 @@ fun HomePreview() {
 
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
+fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
     Column(modifier.padding().verticalScroll(rememberScrollState())) {
         Row(
             modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
