@@ -3,6 +3,8 @@ package com.niklas.ux62550.ui.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.examples.SearchDataExamples
+import com.niklas.ux62550.data.model.GenreObject
+import com.niklas.ux62550.data.model.GenreType
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.domain.HomeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +25,9 @@ class HomeViewModel : ViewModel() {
     private val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
     val mediaItemsState: StateFlow<MediaItemsUIState> = mutableMediaItemsState
 
+    private val mutableMovieGenresState = MutableStateFlow<GenresDataState>(GenresDataState.Empty)
+    val movieGenresState: StateFlow<GenresDataState> = mutableMovieGenresState
+
 
     init {
         viewModelScope.launch {
@@ -30,10 +35,19 @@ class HomeViewModel : ViewModel() {
                 mutableMediaItemsState.update { MediaItemsUIState.Data(searchDataObject.results) }
             }
         }
+        viewModelScope.launch {
+            homeRepository.genreFetchFlow.collect { genreDataObject ->
+                mutableMovieGenresState.update { GenresDataState.Data(genreDataObject.genres) }
+            }
+        }
         getMedia()
+        getMovieGenres()
     }
     private fun getMedia() = viewModelScope.launch {
         homeRepository.getSearch("movie","pixar cars") // TODO: Don't hardcore this, get some proper featured films
+    }
+    private fun getMovieGenres() = viewModelScope.launch {
+        homeRepository.getGenres(GenreType.MOVIE)
     }
 
 
@@ -50,6 +64,15 @@ class HomeViewModel : ViewModel() {
 
 sealed class MediaItemsUIState {
     data object Empty : MediaItemsUIState()
-    data class Data(val mediaObjects: List<MediaObject>) : MediaItemsUIState()
+    data class Data(
+        val mediaObjects: List<MediaObject>
+    ) : MediaItemsUIState()
+}
+
+sealed class GenresDataState {
+    data object Empty : GenresDataState()
+    data class Data(
+        val genres: List<GenreObject>
+    ) : GenresDataState()
 }
 
