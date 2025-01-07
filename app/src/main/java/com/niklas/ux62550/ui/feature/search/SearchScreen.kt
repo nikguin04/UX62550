@@ -77,8 +77,9 @@ fun SearchContent(
             ) {
                 SearchBar(
                     inputField = {
-                        SearchBarDefaults.InputField(query = text,
-                            onQueryChange = { text = it },
+                        SearchBarDefaults.InputField(
+                            query = text,
+                            onQueryChange = { text = it},
                             onSearch = { expanded = false },
                             expanded = expanded,
                             onExpandedChange = { expanded = it },
@@ -107,6 +108,7 @@ fun SearchContent(
                 )
             }
         }
+
         item {
             SectionHeader(title = "Actors and Genres")
         }
