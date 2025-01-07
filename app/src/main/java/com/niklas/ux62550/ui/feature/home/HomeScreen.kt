@@ -42,6 +42,7 @@ fun HomePreview() {
 
     UX62550Theme(darkTheme = true) {
         HomeScreen(onNavigateToMedia = {}, homeViewModel = mvm)
+        // TODO: perhaps split up the feature items and genre items into composables so we can preview them individually
     }
 }
 
@@ -71,11 +72,12 @@ fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = vie
         val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
         when (mediaItemsUIState) {
             MediaItemsUIState.Empty -> {
-                Text(
+                /*Text(
                     text = "No Media Items",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
-                )
+                )*/
+                // TODO: CWL will make a proper loading page so this is disregarded for now
             }
 
             is MediaItemsUIState.Data -> {

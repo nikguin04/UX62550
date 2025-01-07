@@ -6,15 +6,17 @@ import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 class HomeRepository {
 
     private val homeDataSource = RemoteMediaDataSource()
 
-    private val mutableSearchFlow = MutableSharedFlow<SearchDataObject>()
-    val searchFlow = mutableSearchFlow.asSharedFlow()
-    suspend fun getSearch(search_mode: String, query: String) = mutableSearchFlow.emit(
-        homeDataSource.getSearch(search_mode, query)
+    private val mutableFeaturedMediaFlow = MutableSharedFlow<SearchDataObject>()
+    val featuredMediaFlow = mutableFeaturedMediaFlow.asSharedFlow()
+    suspend fun getTrending(search_mode: String = "all", time_window: String = "day") = mutableFeaturedMediaFlow.emit(
+        homeDataSource.getTrending(search_mode, time_window)
     )
 
     private val mutableGenreFetchFlow = MutableSharedFlow<GenreDataObject>()

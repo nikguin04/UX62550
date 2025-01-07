@@ -31,7 +31,7 @@ class HomeViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            homeRepository.searchFlow.collect { searchDataObject ->
+            homeRepository.featuredMediaFlow.collect { searchDataObject ->
                 mutableMediaItemsState.update { MediaItemsUIState.Data(searchDataObject.results) }
             }
         }
@@ -40,11 +40,11 @@ class HomeViewModel : ViewModel() {
                 mutableMovieGenresState.update { GenresDataState.Data(genreDataObject.genres) }
             }
         }
-        getMedia()
+        getFeaturedMedia()
         getMovieGenres()
     }
-    private fun getMedia() = viewModelScope.launch {
-        homeRepository.getSearch("movie","pixar cars") // TODO: Don't hardcore this, get some proper featured films
+    private fun getFeaturedMedia() = viewModelScope.launch {
+        homeRepository.getTrending("all", "day")
     }
     private fun getMovieGenres() = viewModelScope.launch {
         homeRepository.getGenres(GenreType.MOVIE)
@@ -57,6 +57,19 @@ class HomeViewModel : ViewModel() {
                 mediaObjects = listOf(
                     SearchDataExamples.MediaObjectExample
                 ) // TODO: Fill this for preview
+            )
+        }
+        mutableMovieGenresState.update {
+            GenresDataState.Data(
+                genres = listOf(
+                    GenreObject(28, "Action"),
+                    GenreObject(12, "Adventure"),
+                    GenreObject(16, "Animation"),
+                    GenreObject(35, "Comedy"),
+                    GenreObject(80, "Crime"),
+                    GenreObject(99, "Documentary"),
+                    GenreObject(18, "Drama")
+                )
             )
         }
     }
