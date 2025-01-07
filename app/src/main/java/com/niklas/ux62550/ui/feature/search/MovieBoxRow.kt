@@ -32,14 +32,22 @@ import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.ui.feature.mediadetails.MovieImage
 
 @Composable
-fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
+fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, text: String, textColor: Color, modifier: Modifier = Modifier) {
     Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
             .clip(RoundedCornerShape(round))
             .background(color)
             .size(width, height)
             .padding()
-    )
+    ) {
+        Text(
+            text = text,
+            color = textColor,
+            modifier = Modifier.align(Alignment.Center)
+                .padding(7.5.dp, 0.dp)
+        )
+    }
 }
 
 @Composable
@@ -50,7 +58,7 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
             .padding(16.dp)
     ) {
         if (movie.backdrop_path == null) {
-            MovieBoxMoviePicture(90.dp, 50.62.dp, 0.dp, Color.Black)
+            MovieBoxMoviePicture(90.dp, 50.62.dp, 0.dp, Color.Black, "No image available", Color.White)
         }
         else {
         MovieImage(
