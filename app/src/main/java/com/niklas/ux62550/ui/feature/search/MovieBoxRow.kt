@@ -49,10 +49,15 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
+        if (movie.backdrop_path == null) {
+            MovieBoxMoviePicture(90.dp, 50.62.dp, 0.dp, Color.Black)
+        }
+        else {
         MovieImage(
             uri = movie.backdrop_path,
             modifier = Modifier.width(90.dp).height(50.62.dp)
         )
+        }
         Column(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
