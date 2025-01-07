@@ -552,7 +552,6 @@ fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
 @Composable
 fun CastRow(modifier: Modifier, cast: Cast){
     Row(
-        modifier = Modifier.padding(50.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         MovieImage(cast.castProfilePath,
@@ -577,7 +576,6 @@ fun CastRow(modifier: Modifier, cast: Cast){
                 Text(
                     text = cast.character,
                     fontSize = 14.sp,
-                    textDecoration = TextDecoration.Underline,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -589,7 +587,6 @@ fun CastRow(modifier: Modifier, cast: Cast){
 @Composable
 fun CrewRow(modifier: Modifier, crew: Crew){
     Row(
-        modifier = Modifier.padding(50.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         MovieImage(crew.castProfilePath,
@@ -614,7 +611,6 @@ fun CrewRow(modifier: Modifier, crew: Crew){
                 Text(
                     text = crew.job,
                     fontSize = 14.sp,
-                    textDecoration = TextDecoration.Underline,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
