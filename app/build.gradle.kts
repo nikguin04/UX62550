@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    id("kotlin-parcelize")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
 
@@ -72,6 +73,7 @@ dependencies {
 
     implementation(libs.coil)
     implementation(libs.coil.httpok)
+    implementation(libs.logging.interceptor)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

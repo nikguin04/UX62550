@@ -65,6 +65,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
@@ -79,18 +80,19 @@ import kotlin.time.Duration.Companion.minutes
 fun MediaDetailPagePreview() {
     UX62550Theme(darkTheme = true) {
         Surface {
-            MediaDetailsScreen(onNavigateToOtherMedia = {}, onNavigateToReview = {})
+            MediaDetailsScreen(SearchDataExamples.MediaObjectExample, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
     }
 }
 
 @Composable
 fun MediaDetailsScreen(
-    viewModel: MovieViewModel = viewModel(),
+    media: MediaObject,
     castViewModel: CastViewModel = viewModel(),
     onNavigateToOtherMedia: (String) -> Unit,
     onNavigateToReview: (String) -> Unit
 ) {
+    val viewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
     val movieState = viewModel.movieState.collectAsState().value
     val similarMediaState = viewModel.similarMediaState.collectAsState().value
     val trailerState = viewModel.trailerState.collectAsState().value
@@ -373,10 +375,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
             }
             if (showBottomSheet) {
                 ModalBottomSheet(
-                    scrimColor = Color.Transparent,
-                    onDismissRequest = {
-                        showBottomSheet = false
-                    },
+                    onDismissRequest = { showBottomSheet = false },
                     sheetState = sheetState
                 ) {
                     Column(

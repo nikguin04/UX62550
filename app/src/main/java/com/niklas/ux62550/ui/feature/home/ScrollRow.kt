@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -35,14 +36,18 @@ import kotlin.math.roundToInt
 
 
 @Composable
-fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia: (String) -> Unit) {
+fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia: (MediaObject) -> Unit) {
     val pagerState = rememberPagerState(pageCount = { items.size }, initialPage = items.size/2)
     val w = 350f
     val h = w/16*9
+    val gap = 10f
     HorizontalPager(state = pagerState,
         contentPadding = PaddingValues(start = Dp((LocalConfiguration.current.screenWidthDp - w) / 2)),
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically)
+        verticalAlignment = Alignment.CenterVertically,
+        pageSize = PageSize.Fixed(Dp(w)),
+        pageSpacing = Dp(gap)
+    )
     { page ->
         Card(
             Modifier
@@ -71,7 +76,7 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
                 width = Dp(w),
                 height = Dp(h),
                 modifier = Modifier
-                    .clickable(onClick = { onNavigateToMedia(items[page].title)})
+                    .clickable(onClick = { onNavigateToMedia(items[page])})
                     .align(Alignment.CenterHorizontally)
             )
         }
@@ -82,10 +87,10 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
 @Composable
 fun HorizontalLazyRowMovies(
     modifier: Modifier = Modifier,
-    width: Float,
-    height: Float,
+    width: Dp,
+    height: Dp,
     items: List<MediaObject>,
-    onNavigateToMedia: (String) -> Unit
+    onNavigateToMedia: (MediaObject) -> Unit
 ) {
     // LazyRow with snapping effect
     LazyRow(
@@ -94,12 +99,12 @@ fun HorizontalLazyRowMovies(
         items.forEachIndexed { index, mediaItem ->
             item {
                 MediaItem(
-                    width = width.dp,
-                    height = height.dp,
+                    width = width,
+                    height = height,
                     round = 6.dp,
                     uri = mediaItem.backdrop_path,
                     modifier = Modifier
-                        .clickable(onClick = { onNavigateToMedia(mediaItem.title) })
+                        .clickable(onClick = { onNavigateToMedia(mediaItem) })
                         .padding(
                             (if (index == 0) 12f.dp else 6f.dp), 0.dp,
                             (if (index == items.size - 1) 12f.dp else 6f.dp), 0.dp

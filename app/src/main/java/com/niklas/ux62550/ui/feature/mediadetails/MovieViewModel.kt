@@ -1,6 +1,7 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.SimilarMoviesPic
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MovieViewModel : ViewModel() {
+class MovieViewModel(media: MediaObject) : ViewModel() {
     private val mediaDetailsRepository = MediaDetailsRepository()
 
     private fun getDetails(MovieID : Int) = viewModelScope.launch {
@@ -76,11 +77,15 @@ class MovieViewModel : ViewModel() {
             }
         }
 
-        getDetails(MovieID = 205321)
-        getSimilarMovies(MovieID = 205321)
-        getProviderForMovies(MovieID = 205321)
-        getTrailerForMovies(MovieID = 205321)
+        getDetails(MovieID = media.id)
+        getSimilarMovies(MovieID = media.id)
+        getProviderForMovies(MovieID = media.id)
+        getTrailerForMovies(MovieID = media.id)
     }
+}
+
+class MovieViewModelFactory(private val media: MediaObject) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T { return MovieViewModel(media) as T }
 }
 
 sealed class MovieState {
