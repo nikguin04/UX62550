@@ -77,6 +77,8 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
 import android.net.Uri
 import android.util.Log
+import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import com.niklas.ux62550.data.model.TrailerLinks
 import com.niklas.ux62550.data.model.TrailerObject
@@ -360,7 +362,8 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in 0 until minOf(4, castState.castObject.size)) {
-            MovieImage(castState.castObject[i].castProfilePath,
+            MovieImage(
+                castState.castObject[i].castProfilePath,
                 modifier
                     .clip(CircleShape)
                     .size(64.dp))
@@ -647,15 +650,12 @@ fun SimilarMoviesStyling(similarPicList: List<SimilarMoviesPic>, modifier: Modif
     }
 }
 @Composable
-fun youtubeLink(){
-
-}
-@Composable
 fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
     val imguri = if (uri != null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
     AsyncImage(
         model = imguri,
         contentDescription = null, // TODO: include content description
-        modifier = modifier
+        modifier = modifier,
+        contentScale = ContentScale.Crop
     )
 }
