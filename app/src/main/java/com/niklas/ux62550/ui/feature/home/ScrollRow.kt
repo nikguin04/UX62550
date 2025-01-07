@@ -36,7 +36,7 @@ import kotlin.math.roundToInt
 
 
 @Composable
-fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia: (String) -> Unit) {
+fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia: (MediaObject) -> Unit) {
     val pagerState = rememberPagerState(pageCount = { items.size }, initialPage = items.size/2)
     val w = 350f
     val h = w/16*9
@@ -76,7 +76,7 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
                 width = Dp(w),
                 height = Dp(h),
                 modifier = Modifier
-                    .clickable(onClick = { onNavigateToMedia(items[page].title) })
+                    .clickable(onClick = { onNavigateToMedia(items[page])})
                     .align(Alignment.CenterHorizontally)
             )
         }
@@ -90,7 +90,7 @@ fun HorizontalLazyRowMovies(
     width: Dp,
     height: Dp,
     items: List<MediaObject>,
-    onNavigateToMedia: (String) -> Unit
+    onNavigateToMedia: (MediaObject) -> Unit
 ) {
     // LazyRow with snapping effect
     LazyRow(
@@ -104,7 +104,7 @@ fun HorizontalLazyRowMovies(
                     round = 6.dp,
                     uri = mediaItem.backdrop_path,
                     modifier = Modifier
-                        .clickable(onClick = { onNavigateToMedia(mediaItem.title) })
+                        .clickable(onClick = { onNavigateToMedia(mediaItem) })
                         .padding(
                             (if (index == 0) 12f.dp else 6f.dp), 0.dp,
                             (if (index == items.size - 1) 12f.dp else 6f.dp), 0.dp

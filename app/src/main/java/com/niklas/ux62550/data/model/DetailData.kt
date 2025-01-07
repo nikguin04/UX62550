@@ -16,7 +16,7 @@ data class MovieDetailObject(
     val forAdults: Boolean,
 
     @SerialName("backdrop_path")
-    val backDropPath : String,
+    val backDropPath : String?,
 
     @SerialName("homepage")
     val homePage : String,

@@ -7,6 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.niklas.ux62550.data.examples.SearchDataExamples
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.home.HomeScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsScreen
 import com.niklas.ux62550.ui.feature.profile.LoginRegisterScreen
@@ -31,21 +33,29 @@ fun MainNavHost(
         composable<Route.HomeScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
             HomeScreen(
-                onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
+
+                onNavigateToMedia = { media ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
+                    navController.navigate(Route.MediaDetailsScreen)
+                }
             )
         }
 
         composable<Route.SearchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
-            SearchScreen(
+            /*SearchScreen(
                 onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
-            )
+            )*/
         }
 
         composable<Route.MediaDetailsScreen> { backStackEntry ->
-            LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>()) }
+            //val mediaRoute: Route.MediaDetailsScreen = backStackEntry.toRoute()
+            //val media = mediaRoute.media
+            val media = navController.previousBackStackEntry?.savedStateHandle?.get<MediaObject>("media")
+            LaunchedEffect(Unit) { /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/ }
             MediaDetailsScreen(
-                onNavigateToOtherMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) },
+                media?: SearchDataExamples.MediaObjectExample,
+                onNavigateToOtherMedia = { /*name -> navController.navigate(Route.MediaDetailsScreen(name))*/ },
                 onNavigateToReview = { name -> navController.navigate(Route.ReviewScreen(name)) }
             )
         }
@@ -80,7 +90,7 @@ fun MainNavHost(
 
         composable<Route.WatchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.WatchScreen>()) }
-            WatchlistScreen(onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) })
+            //WatchlistScreen(onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) })
         }
     }
 }
