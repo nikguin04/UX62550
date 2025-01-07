@@ -352,9 +352,9 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        for (i in 0 until minOf(4, castState.castObject.size)) {
+        for (i in 0 until minOf(4, castState.castObject.cast.size)) {
             MovieImage(
-                castState.castObject[i].castProfilePath,
+                castState.castObject.cast[i].castProfilePath,
                 modifier
                     .clip(CircleShape)
                     .size(48.dp))
@@ -382,13 +382,13 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                     Column(
                         modifier = Modifier.verticalScroll(rememberScrollState())
                     ) {
-                        for ((index, cast) in castState.castObject.withIndex()) {
+                        for ((index, cast) in castState.castObject.cast.withIndex()) {
 
                             Row(
                                 modifier = Modifier.padding(50.dp, 0.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                MovieImage(castState.castObject[index].castProfilePath,
+                                MovieImage(castState.castObject.cast[index].castProfilePath,
                                     modifier
                                         .clip(CircleShape)
                                         .size(64.dp))
@@ -396,7 +396,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                                 Column {
                                     Row {
                                         Text(
-                                            text = castState.castObject[index].castName,
+                                            text = castState.castObject.cast[index].castName,
                                             fontSize = 14.sp,
                                             textDecoration = TextDecoration.Underline,
                                             fontWeight = FontWeight.Bold,
@@ -404,7 +404,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                                         )
                                         DrawCircle(Modifier.size(10.dp), Color.LightGray)
                                         Text(
-                                            text = castState.castObject[index].character,
+                                            text = castState.castObject.cast[index].character,
                                             fontSize = 14.sp,
                                             textDecoration = TextDecoration.Underline,
                                             fontWeight = FontWeight.Bold,
@@ -425,7 +425,49 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                         }
+                        for ((index, crew) in castState.castObject.crew.withIndex()) {
 
+                            Row(
+                                modifier = Modifier.padding(50.dp, 0.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                MovieImage(castState.castObject.crew[index].castProfilePath,
+                                    modifier
+                                        .clip(CircleShape)
+                                        .size(64.dp))
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column {
+                                    Row {
+                                        Text(
+                                            text = castState.castObject.crew[index].castName,
+                                            fontSize = 14.sp,
+                                            textDecoration = TextDecoration.Underline,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.White
+                                        )
+                                        DrawCircle(Modifier.size(10.dp), Color.LightGray)
+                                        Text(
+                                            text = castState.castObject.crew[index].character,
+                                            fontSize = 14.sp,
+                                            textDecoration = TextDecoration.Underline,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.White
+                                        )
+                                    }
+
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+                            HorizontalDivider(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(110.dp, 0.dp),
+                                thickness = 0.5.dp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
                     }
                 }
             }
