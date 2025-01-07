@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -21,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,8 +50,8 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
             .padding(16.dp)
     ) {
         MovieImage(
-                uri = movie.backdrop_path,
-                modifier = Modifier.fillMaxWidth()
+            uri = movie.backdrop_path,
+            modifier = Modifier.width(90.dp).height(50.62.dp)
         )
         Column(
             modifier = Modifier
@@ -57,11 +60,16 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
         ) {
             Row {
                 Column {
+
                     Text(
                         text = movie.title,
+                        modifier = Modifier.width(150.dp),
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
@@ -73,7 +81,7 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
                             contentDescription = "Star icon"
                         )
                         Text(
-                            text = movie.vote_average.toString() + "/5",
+                            text = movie.vote_average?.div(2).toString() + "/5", // Conveting the 10/10 to an 5/5 rating system
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
