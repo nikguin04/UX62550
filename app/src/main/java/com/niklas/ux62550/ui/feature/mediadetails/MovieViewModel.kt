@@ -8,7 +8,9 @@ import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.R
+import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.model.Provider
 import com.niklas.ux62550.models.MediaItem
 import com.niklas.ux62550.models.Movie
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,13 +21,15 @@ import kotlinx.coroutines.launch
 class MovieViewModel(media: MediaObject) : ViewModel() {
     private val mediaDetailsRepository = MediaDetailsRepository()
 
-    private fun getDetails(MovieID : Int) = viewModelScope.launch {
+    private fun getDetails(MovieID: Int) = viewModelScope.launch {
         mediaDetailsRepository.getMoviesDetails(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
-    private fun getSimilarMovies(MovieID : Int) = viewModelScope.launch {
+
+    private fun getSimilarMovies(MovieID: Int) = viewModelScope.launch {
         mediaDetailsRepository.getSimilarsMovies(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
-    private fun getProviderForMovies(MovieID : Int) = viewModelScope.launch {
+
+    private fun getProviderForMovies(MovieID: Int) = viewModelScope.launch {
         mediaDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
 
@@ -66,7 +70,43 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         getSimilarMovies(MovieID = media.id)
         getProviderForMovies(MovieID = media.id)
     }
+
+    fun mediaPreview() {
+        mutableMovieState.update {
+            MovieState.Data(mediaDetailObjects = MediaDetailExample.MediaDetailObjectExample) // TODO: Fill this for preview
+
+        }
+        mutableSimilarMovieState.update {
+            SimilarMovieState.Data(
+                similarMoviesObject = listOf(
+                    SimilarMoviesPic("866398", "The Beekeeper"),
+                    SimilarMoviesPic("866398", "The Beekeeper"),
+                    SimilarMoviesPic("866398", "The Beekeeper"),
+                    SimilarMoviesPic("866398", "The Beekeeper"),
+                    SimilarMoviesPic("866398", "The Beekeeper"),
+                    SimilarMoviesPic("866398", "The Beekeeper")
+
+                )
+            )
+        }
+        mutableProviderState.value = ProviderState.Data(
+            providerDataObject = mapOf(
+                "US" to Result(
+                    link = "https://example.com",
+                    flatrate = listOf(
+                        Provider(
+                            logoPath = "/logo1.png",
+                            providerId = 1,
+                            providerName = "Netflix"
+                        )
+                    )
+                )
+            )
+        )
+    }
 }
+
+
 
 class MovieViewModelFactory(private val media: MediaObject) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T { return MovieViewModel(media) as T }

@@ -24,7 +24,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.outlined.StarHalf
 import androidx.compose.material.icons.outlined.BookmarkBorder
-import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
@@ -77,6 +76,7 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 @Preview(showBackground = true)
 fun MediaDetailPagePreview() {
+
     UX62550Theme(darkTheme = true) {
         Surface {
             MediaDetailsScreen(SearchDataExamples.MediaObjectExample, onNavigateToOtherMedia = {}, onNavigateToReview = {})
@@ -91,6 +91,7 @@ fun MediaDetailsScreen(
     onNavigateToOtherMedia: (String) -> Unit,
     onNavigateToReview: (String) -> Unit
 ) {
+
     val viewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
     val movieState = viewModel.movieState.collectAsState().value
     val similarMediaState = viewModel.similarMediaState.collectAsState().value
