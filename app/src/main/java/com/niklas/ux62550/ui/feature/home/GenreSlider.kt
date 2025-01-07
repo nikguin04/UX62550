@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.model.GenreObject
+import com.niklas.ux62550.data.model.MediaObject
 
 import com.niklas.ux62550.ui.feature.common.DiscoverItemsUIState
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
@@ -18,7 +19,7 @@ import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
 
 // TODO: Make this usable with a proper interface maybe
 @Composable
-fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, onNavigateToMedia: (String) -> Unit) {
+fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, onNavigateToMedia: (MediaObject) -> Unit) {
     val discoverUiState = discoverViewModel.discoverItemsState.collectAsState().value
 
     when (discoverUiState) {

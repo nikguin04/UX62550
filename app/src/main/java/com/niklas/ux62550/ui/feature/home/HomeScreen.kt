@@ -28,9 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.GenreObject
+import com.niklas.ux62550.data.model.KeywordObject
+import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 import com.niklas.ux62550.ui.feature.common.LogoBox
-import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
@@ -47,7 +49,7 @@ fun HomePreview() {
 
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
+fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
     Column(modifier.padding().verticalScroll(rememberScrollState())) {
         Row(
             modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
@@ -62,7 +64,6 @@ fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = vie
                     style = TextStyle(
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Normal
-
                     )
                 )
             }
@@ -72,7 +73,12 @@ fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = vie
         val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
         when (mediaItemsUIState) {
             MediaItemsUIState.Empty -> {
-                LoadingScreen()
+                /*Text(
+                    text = "No Media Items",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )*/
+                // TODO: CWL will make a proper loading page so this is disregarded for now
             }
 
             is MediaItemsUIState.Data -> {

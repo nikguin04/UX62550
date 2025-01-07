@@ -1,6 +1,7 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.SimilarMoviesPic
@@ -15,17 +16,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MovieViewModel : ViewModel() {
+class MovieViewModel(media: MediaObject) : ViewModel() {
     private val mediaDetailsRepository = MediaDetailsRepository()
 
-    private fun getDetails() = viewModelScope.launch {
-        mediaDetailsRepository.getMoviesDetails(205321) // TODO: Don't hardcore this, get some proper featured films
+    private fun getDetails(MovieID : Int) = viewModelScope.launch {
+        mediaDetailsRepository.getMoviesDetails(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
-    private fun getSimilarMovies() = viewModelScope.launch {
-        mediaDetailsRepository.getSimilarsMovies(205321) // TODO: Don't hardcore this, get some proper featured films
+    private fun getSimilarMovies(MovieID : Int) = viewModelScope.launch {
+        mediaDetailsRepository.getSimilarsMovies(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
-    private fun getProviderForMovies() = viewModelScope.launch {
-        mediaDetailsRepository.getProvider(205321) // TODO: Don't hardcore this, get some proper featured films
+    private fun getProviderForMovies(MovieID : Int) = viewModelScope.launch {
+        mediaDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
 
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
@@ -61,10 +62,14 @@ class MovieViewModel : ViewModel() {
             }
         }
 
-        getDetails()
-        getSimilarMovies()
-        getProviderForMovies()
+        getDetails(MovieID = media.id)
+        getSimilarMovies(MovieID = media.id)
+        getProviderForMovies(MovieID = media.id)
     }
+}
+
+class MovieViewModelFactory(private val media: MediaObject) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T { return MovieViewModel(media) as T }
 }
 
 sealed class MovieState {
