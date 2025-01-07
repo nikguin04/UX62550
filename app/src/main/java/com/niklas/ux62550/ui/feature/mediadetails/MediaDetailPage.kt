@@ -11,14 +11,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -68,7 +66,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
 import com.niklas.ux62550.ui.feature.common.CastViewModel
@@ -685,25 +682,6 @@ fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
     )
 }
 
-@Composable
-fun SimilarMoviesStyling(similarPicList: List<SimilarMoviesPic>, modifier: Modifier = Modifier) {
-    LazyRow(
-        modifier = modifier.fillMaxWidth(),
-        //verticalAlignment = Alignment.Top
-    ) {
-        for (movieNumber in similarPicList) {
-            items(similarPicList.size) { movieNumber ->
-                MovieImage(
-                    uri = similarPicList[movieNumber].backDropPath,
-                    modifier = Modifier
-                        .size(300.dp, 200.dp)
-                        .aspectRatio(16f / 9f)
-                )
-                Spacer(modifier = Modifier.padding(8.dp, 0.dp, 0.dp, 0.dp))
-            }
-        }
-    }
-}
 @Composable
 fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
     val imguri = if (uri != null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"

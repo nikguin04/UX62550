@@ -1,12 +1,11 @@
 package com.niklas.ux62550.domain
 
-import com.niklas.ux62550.data.model.MovieDetailObject;
+import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
-import com.niklas.ux62550.data.model.SimilarMoviesObject
 import com.niklas.ux62550.data.model.TrailerObject
-import com.niklas.ux62550.data.remote.RemoteMediaDataSource;
-import kotlinx.coroutines.flow.MutableSharedFlow;
+import com.niklas.ux62550.data.remote.RemoteMediaDataSource
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class MediaDetailsRepository {
