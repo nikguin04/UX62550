@@ -60,7 +60,7 @@ class RemoteMediaDataSource {
     suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
     suspend fun getMovieGenres() = mediaApi.getMovieGenres()
     suspend fun getTvGenres() = mediaApi.getTvGenres()
-    suspend fun getTrailer() = mediaApi.getTrailer()
+    suspend fun getTrailer(movie_id: Int) = mediaApi.getTrailer(movie_id)
 }
 
 interface TMDBApiService {
