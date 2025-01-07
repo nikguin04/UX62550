@@ -55,6 +55,8 @@ class HomeViewModel : ViewModel() {
         mutableMediaItemsState.update {
             MediaItemsUIState.Data(
                 mediaObjects = listOf(
+                    SearchDataExamples.MediaObjectExample,
+                    SearchDataExamples.MediaObjectExample,
                     SearchDataExamples.MediaObjectExample
                 ) // TODO: Fill this for preview
             )
