@@ -73,6 +73,7 @@ dependencies {
 
     implementation(libs.coil)
     implementation(libs.coil.httpok)
+    implementation(libs.logging.interceptor)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
