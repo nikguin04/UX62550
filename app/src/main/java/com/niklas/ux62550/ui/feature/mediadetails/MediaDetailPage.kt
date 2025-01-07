@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -65,6 +68,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.niklas.ux62550.data.examples.SearchDataExamples
+import com.niklas.ux62550.data.model.Cast
+import com.niklas.ux62550.data.model.Crew
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
@@ -379,101 +384,16 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                     onDismissRequest = { showBottomSheet = false },
                     sheetState = sheetState
                 ) {
-                    Column(
-                        modifier = Modifier.verticalScroll(rememberScrollState())
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        for ((index, cast) in castState.castObject.cast.withIndex()) {
-
-                            Row(
-                                modifier = Modifier.padding(50.dp, 0.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                MovieImage(castState.castObject.cast[index].castProfilePath,
-                                    modifier
-                                        .clip(CircleShape)
-                                        .size(64.dp))
-                                Spacer(modifier = Modifier.width(12.dp))
-                                Column {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text(
-                                            text = castState.castObject.cast[index].castName,
-                                            fontSize = 14.sp,
-                                            textDecoration = TextDecoration.Underline,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color.White
-                                        )
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        DrawCircle(Modifier.size(6.dp), Color.LightGray)
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        Text(
-                                            text = castState.castObject.cast[index].character,
-                                            fontSize = 14.sp,
-                                            textDecoration = TextDecoration.Underline,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color.White
-                                        )
-                                    }
-
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(12.dp))
-                            HorizontalDivider(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(110.dp, 0.dp),
-                                thickness = 0.5.dp,
-                                color = Color.Gray
-                            )
-                            Spacer(modifier = Modifier.height(12.dp))
+                        items(castState.castObject.cast) { cast ->
+                            CastRow(modifier, cast)
                         }
-                        for ((index, crew) in castState.castObject.crew.withIndex()) {
-                            Row(
-                                modifier = Modifier.padding(50.dp, 0.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                MovieImage(castState.castObject.crew[index].castProfilePath,
-                                    modifier
-                                        .clip(CircleShape)
-                                        .size(64.dp))
-                                Spacer(modifier = Modifier.width(12.dp))
-                                Column {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text(
-                                            text = castState.castObject.crew[index].castName,
-                                            fontSize = 14.sp,
-                                            textDecoration = TextDecoration.Underline,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color.White
-                                        )
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        DrawCircle(Modifier.size(6.dp), Color.LightGray)
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        Text(
-                                            text = castState.castObject.crew[index].job,
-                                            fontSize = 14.sp,
-                                            textDecoration = TextDecoration.Underline,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color.White
-                                        )
-                                    }
-
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(12.dp))
-                            HorizontalDivider(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(110.dp, 0.dp),
-                                thickness = 0.5.dp,
-                                color = Color.Gray
-                            )
-                            Spacer(modifier = Modifier.height(12.dp))
+                        items(castState.castObject.crew) { crew ->
+                            CrewRow(modifier, crew)
                         }
                     }
                 }
@@ -627,4 +547,79 @@ fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
         modifier = modifier,
         contentScale = ContentScale.Crop
     )
+}
+
+@Composable
+fun CastRow(modifier: Modifier, cast: Cast){
+    Row(
+        modifier = Modifier.padding(50.dp, 0.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        MovieImage(cast.castProfilePath,
+            modifier
+                .clip(CircleShape)
+                .size(64.dp))
+        Spacer(modifier = Modifier.width(12.dp))
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = cast.castName,
+                    fontSize = 14.sp,
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                DrawCircle(Modifier.size(6.dp), Color.LightGray)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = cast.character,
+                    fontSize = 14.sp,
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+
+        }
+    }
+}
+@Composable
+fun CrewRow(modifier: Modifier, crew: Crew){
+    Row(
+        modifier = Modifier.padding(50.dp, 0.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        MovieImage(crew.castProfilePath,
+            modifier
+                .clip(CircleShape)
+                .size(64.dp))
+        Spacer(modifier = Modifier.width(12.dp))
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = crew.castName,
+                    fontSize = 14.sp,
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                DrawCircle(Modifier.size(6.dp), Color.LightGray)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = crew.job,
+                    fontSize = 14.sp,
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+
+        }
+    }
 }
