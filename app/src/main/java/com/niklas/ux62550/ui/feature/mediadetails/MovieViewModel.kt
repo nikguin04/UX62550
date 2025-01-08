@@ -8,6 +8,7 @@ import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.data.model.TrailerObject
 import com.niklas.ux62550.domain.MediaDetailsRepository
+import com.niklas.ux62550.ui.feature.common.DiscoverItemsUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -20,7 +21,7 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         mediaDetailsRepository.getMoviesDetails(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
     private fun getSimilarMovies(MovieID : Int) = viewModelScope.launch {
-        mediaDetailsRepository.getSimilarsMovies(MovieID) // TODO: Don't hardcore this, get some proper featured films
+        mediaDetailsRepository.getSimilarsMovies(MovieID)
     }
     private fun getProviderForMovies(MovieID : Int) = viewModelScope.launch {
         mediaDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
@@ -53,7 +54,11 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         viewModelScope.launch {
             mediaDetailsRepository.similarFlow.collect { searchDataObject ->
                 mutableSimilarMovieState.update {
-                    SimilarMovieState.Data(searchDataObject.results)
+                    run { // Append media_type before updating data
+                        searchDataObject.results.forEach { res -> res.media_type = "movie" } // TODO: Movies are hardcoded in discover, make this change smoothly when fetching TV
+                        SimilarMovieState.Data(searchDataObject.results)
+                    }
+
                 }
             }
         }

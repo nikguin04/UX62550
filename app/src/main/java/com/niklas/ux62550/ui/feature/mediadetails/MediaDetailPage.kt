@@ -62,6 +62,7 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -457,7 +458,14 @@ fun SimilarMedia(modifier: Modifier = Modifier, similarMediaState: SimilarMovieS
             Text("NO PIC")
         }
         is SimilarMovieState.Data -> {
-            HorizontalLazyRowMovies(modifier.fillMaxWidth(), 300.dp, 200.dp, similarMediaState.similarMoviesObject, onNavigateToOtherMedia)
+            HorizontalLazyRowMovies(
+                Modifier.padding(0.dp, 0.dp),
+                Dp(255f),
+                Dp(255f/16*9),
+                similarMediaState.similarMoviesObject,
+                onNavigateToOtherMedia,
+                fetchEnBackdrop = true
+            )
         }
     }
 }

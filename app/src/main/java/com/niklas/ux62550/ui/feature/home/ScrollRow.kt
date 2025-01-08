@@ -2,7 +2,6 @@ package com.niklas.ux62550.ui.feature.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
@@ -26,20 +24,15 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
-import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.ui.dpToPx
-import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImageViewModel
 import com.niklas.ux62550.ui.feature.common.ImageViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImagesDataUIState
 import kotlin.math.absoluteValue
-import kotlin.math.roundToInt
 
 
 @Composable
@@ -129,6 +122,7 @@ fun MediaItemBackdropIntercept(
     mediaItem: MediaObject
 ) {
     if (fetchEnBackdrop) {
+        //if (mediaItem.media_type == null) {throw Exception("Media type unknown, cant fetch english backdrop")}
         val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + mediaItem.id)
         val imagesDataUIState: ImagesDataUIState = imageViewModel.imagesDataState.collectAsState().value
         when (imagesDataUIState) {
