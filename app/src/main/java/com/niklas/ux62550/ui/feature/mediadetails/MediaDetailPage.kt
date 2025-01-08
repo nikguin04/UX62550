@@ -55,7 +55,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -73,8 +72,8 @@ import com.niklas.ux62550.data.model.Cast
 import com.niklas.ux62550.data.model.Crew
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
-import com.niklas.ux62550.ui.feature.common.CastState
-import com.niklas.ux62550.ui.feature.common.CastViewModel
+import com.niklas.ux62550.ui.feature.common.CreditState
+import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
@@ -99,12 +98,12 @@ fun MediaDetailsScreen(
     onNavigateToReview: (String) -> Unit
 ) {
     val viewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
-    val creditsViewModel: CastViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
+    val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
 
     val movieState = viewModel.movieState.collectAsState().value
     val similarMediaState = viewModel.similarMediaState.collectAsState().value
     val trailerState = viewModel.trailerState.collectAsState().value
-    val castState = creditsViewModel.castState.collectAsState().value
+    val creditState = creditsViewModel.creditState.collectAsState().value
     val providerState = viewModel.providerState.collectAsState().value
 
     Column(
@@ -125,12 +124,12 @@ fun MediaDetailsScreen(
             else -> {}
         }
 
-        when (castState) {
-            CastState.Empty -> {
+        when (creditState) {
+            CreditState.Empty -> {
                 Text("No credits data yet")
             }
-            is CastState.Data -> {
-                ActorsAndDirectors(castState = castState)
+            is CreditState.Data -> {
+                ActorsAndDirectors(creditState = creditState)
             }
         }
         DetailedRating()
@@ -324,7 +323,7 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data) {
+fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.Data) {
     Text("Actors and Directors", Modifier.padding(8.dp, 12.dp, 0.dp, 0.dp))
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -333,9 +332,9 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
             .padding(8.dp, 0.dp, 0.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        for (i in 0 until minOf(4, castState.castObject.cast.size)) {
+        for (i in 0 until minOf(4, creditState.creditObject.cast.size)) {
             MovieImage(
-                castState.castObject.cast[i].castProfilePath,
+                creditState.creditObject.cast[i].castProfilePath,
                 modifier
                     .clip(RoundedCornerShape(25))
                     .size(width = 60.dp, height = 90.dp))
@@ -362,10 +361,10 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
                         contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(castState.castObject.cast) { cast ->
+                        items(creditState.creditObject.cast) { cast ->
                             CastRow(modifier, cast)
                         }
-                        items(castState.castObject.crew) { crew ->
+                        items(creditState.creditObject.crew) { crew ->
                             CrewRow(modifier, crew)
                         }
                     }

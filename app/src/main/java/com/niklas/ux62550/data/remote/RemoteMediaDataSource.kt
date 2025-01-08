@@ -1,6 +1,6 @@
 package com.niklas.ux62550.data.remote
 
-import com.niklas.ux62550.data.model.CastObject
+import com.niklas.ux62550.data.model.CreditObject
 import com.niklas.ux62550.data.model.GenreDataObject
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
@@ -55,7 +55,7 @@ class RemoteMediaDataSource {
     suspend fun getDiscoverMovies(genres: String, page: Int) = mediaApi.getDiscoverMovies(genres,page)
 	suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
     suspend fun getSimilarMoviesDetail(movie_id: Int) = mediaApi.getSimilarMovies(movie_id)
-    suspend fun getCastDetails(movie_id: Int) = mediaApi.getCast(movie_id)
+    suspend fun getCreditDetails(movie_id: Int) = mediaApi.getCredit(movie_id)
     suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
     suspend fun getMovieGenres() = mediaApi.getMovieGenres()
     suspend fun getTvGenres() = mediaApi.getTvGenres()
@@ -83,7 +83,7 @@ interface TMDBApiService {
     suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SearchDataObject
 
     @GET("movie/{movie_id}/credits")
-    suspend fun getCast(@Path("movie_id") movie_id: Int): CastObject
+    suspend fun getCredit(@Path("movie_id") movie_id: Int): CreditObject
 
     @GET("movie/{movie_id}/watch/providers")
     suspend fun getProvider(@Path("movie_id") movie_id: Int): ProviderDataObject

@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CastObject(
+data class CreditObject(
     @SerialName("cast")
     val cast : List<Cast>,
 
