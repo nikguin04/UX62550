@@ -105,11 +105,13 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Text(
-                    text = movie.release_date.toString().substring(0, 4),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                if(movie.release_date.toString().count() >= 5){
+                    Text(
+                        text = movie.release_date.toString().substring(0, 4),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
