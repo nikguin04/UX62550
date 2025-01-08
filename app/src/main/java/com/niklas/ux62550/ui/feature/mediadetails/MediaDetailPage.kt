@@ -357,16 +357,17 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, castState: CastState.Data)
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth()
+            .padding(8.dp, 0.dp, 0.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in 0 until minOf(4, castState.castObject.cast.size)) {
             MovieImage(
                 castState.castObject.cast[i].castProfilePath,
                 modifier
-                    .clip(CircleShape)
-                    .size(48.dp))
-            Spacer(modifier = Modifier.width((6.dp)))
+                    .clip(RoundedCornerShape(25))
+                    .size(width = 60.dp, height = 90.dp))
+            Spacer(modifier = Modifier.width((12.dp)))
         }
 
         for (i in 0..2) { // Create clickable circles
@@ -545,7 +546,7 @@ fun MovieImage(uri: String?, modifier: Modifier = Modifier) {
         model = imguri,
         contentDescription = null, // TODO: include content description
         modifier = modifier,
-        contentScale = ContentScale.Crop
+        //contentScale = ContentScale.Crop
     )
 }
 
