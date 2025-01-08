@@ -1,12 +1,12 @@
 package com.niklas.ux62550.data.remote
 
-import com.niklas.ux62550.data.model.CastObject
+import com.niklas.ux62550.data.model.CreditObject
 import com.niklas.ux62550.data.model.GenreDataObject
 import com.niklas.ux62550.data.model.ImagesDataObject
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
-import com.niklas.ux62550.data.model.SimilarMoviesObject
+import com.niklas.ux62550.data.model.TrailerObject
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -56,10 +56,11 @@ class RemoteMediaDataSource {
     suspend fun getDiscoverMovies(genres: String, page: Int) = mediaApi.getDiscoverMovies(genres,page)
 	suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
     suspend fun getSimilarMoviesDetail(movie_id: Int) = mediaApi.getSimilarMovies(movie_id)
-    suspend fun getCastDetails(movie_id: Int) = mediaApi.getCast(movie_id)
+    suspend fun getCreditDetails(movie_id: Int) = mediaApi.getCredit(movie_id)
     suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
     suspend fun getMovieGenres() = mediaApi.getMovieGenres()
     suspend fun getTvGenres() = mediaApi.getTvGenres()
+    suspend fun getTrailer(movie_id: Int) = mediaApi.getTrailer(movie_id)
     suspend fun getImages(media_type: String, media_id: Int,  include_image_language: String = "en") = mediaApi.getImages(media_type, media_id, include_image_language)
 }
 
@@ -81,10 +82,10 @@ interface TMDBApiService {
     suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): MovieDetailObject
 
     @GET("movie/{movie_id}/similar")
-    suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SimilarMoviesObject
+    suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SearchDataObject
 
     @GET("movie/{movie_id}/credits")
-    suspend fun getCast(@Path("movie_id") movie_id: Int): CastObject
+    suspend fun getCredit(@Path("movie_id") movie_id: Int): CreditObject
 
     @GET("movie/{movie_id}/watch/providers")
     suspend fun getProvider(@Path("movie_id") movie_id: Int): ProviderDataObject
@@ -96,6 +97,9 @@ interface TMDBApiService {
     suspend fun getMovieGenres(): GenreDataObject
     @GET("genre/tv/list")
     suspend fun getTvGenres(): GenreDataObject
+
+    @GET("movie/{movie_id}/videos")
+    suspend fun getTrailer(@Path("movie_id") movie_id: Int): TrailerObject
 }
 
 
