@@ -7,8 +7,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.home.HomeScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsScreen
 import com.niklas.ux62550.ui.feature.profile.LoginRegisterScreen
@@ -56,13 +58,16 @@ fun MainNavHost(
             MediaDetailsScreen(
                 media?: SearchDataExamples.MediaObjectExample,
                 onNavigateToOtherMedia = { /*name -> navController.navigate(Route.MediaDetailsScreen(name))*/ },
-                onNavigateToReview = { name -> navController.navigate(Route.ReviewScreen(name)) }
+                onNavigateToReview = { mediaDetails ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
+                    navController.navigate(Route.ReviewScreen) }
             )
         }
 
         composable<Route.ReviewScreen> { backStackEntry ->
+            val media = navController.previousBackStackEntry?.savedStateHandle?.get<MovieDetailObject>("reviewMedia")
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
-            ReviewScreen()
+            ReviewScreen(media = media?: MediaDetailExample.MediaDetailObjectExample)
         }
 
         composable<Route.LoginRegisterScreen> {

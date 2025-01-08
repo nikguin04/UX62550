@@ -41,12 +41,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.examples.MediaDetailExample
+import com.niklas.ux62550.data.examples.SearchDataExamples
+import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.CastState
 import com.niklas.ux62550.ui.feature.common.CastViewModel
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MovieImage
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
+import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModelFactory
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -57,52 +62,42 @@ fun ReviewAndRatingPreview() {
 
     UX62550Theme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ReviewScreen()
+            ReviewScreen(media = MediaDetailExample.MediaDetailObjectExample)
         }
     }
 }
 
 @Composable
 fun ReviewScreen(
-    viewModel: MovieViewModel = viewModel(),
+    media: MovieDetailObject,
     castViewModel: CastViewModel = viewModel()
     ) {
-    val movieState = viewModel.movieState.collectAsState().value
     val castState = castViewModel.castState.collectAsState().value
-    when (movieState) {
-        MovieState.Empty -> {
-
+        when (castState) {
+            CastState.Empty -> {
+                Text("NO PIC")
             }
-        is MovieState.Data -> {
-            when (castState) {
-                CastState.Empty -> {
-                    Text("NO PIC")
-                }
-                is CastState.Data -> {
-                    ScreenReviewAndRating(
-                        movieState = movieState,
-                        castState = castState,
+            is CastState.Data -> {
+                ScreenReviewAndRating(
+                    media = media
 
-                    )
-                }
+                )
             }
-
         }
-        else -> {}
+
     }
 
-}
+
 
 @Composable
 fun ScreenReviewAndRating(
     modifier: Modifier = Modifier,
-    movieState: MovieState.Data,
-    castState: CastState.Data)
+    media: MovieDetailObject)
     {
 
     Column(modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-        ReviewLayout(movieState = movieState, movieRating = 3.5)
+        ReviewLayout(media = media, movieRating = 3.5)
         PublishReview()
         MoreDetailedReview()
     }
@@ -111,19 +106,19 @@ fun ScreenReviewAndRating(
 @Composable
 fun ReviewLayout(
     modifier: Modifier = Modifier,
-    movieState: MovieState.Data,
+    media: MovieDetailObject,
     movieRating: Double
 
 ) {
     Column {
         Box{
         MovieImage(
-            uri = movieState.mediaDetailObjects.backDropPath,
+            uri = media.backDropPath,
             modifier = Modifier
                 .fillMaxWidth()
         )
             ReviewText()
-            TitleText(movieState.mediaDetailObjects.Originaltitle)
+            TitleText(media.Originaltitle)
 
         }
 //        Box(

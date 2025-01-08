@@ -63,6 +63,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.SimilarMoviesPic
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
@@ -89,7 +90,7 @@ fun MediaDetailsScreen(
     media: MediaObject,
     castViewModel: CastViewModel = viewModel(),
     onNavigateToOtherMedia: (String) -> Unit,
-    onNavigateToReview: (String) -> Unit
+    onNavigateToReview: (MovieDetailObject) -> Unit
 ) {
 
     val viewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
@@ -132,7 +133,7 @@ fun MediaDetailsContent(
     castState: CastState.Data,
     providerState: ProviderState,
     onNavigateToOtherMedia: (String) -> Unit,
-    onNavigateToReview: (String) -> Unit
+    onNavigateToReview: (MovieDetailObject) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -205,7 +206,10 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data) {
 }
 
 @Composable
-fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNavigateToReview: (String) -> Unit) {
+fun InfoRow(
+    modifier: Modifier = Modifier,
+    movieState: MovieState.Data,
+    onNavigateToReview: (MovieDetailObject) -> Unit) {
     Row(
         modifier = modifier
             //.padding(4.dp, 0.dp, 4.dp, 0.dp)
@@ -215,7 +219,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
     ) {
         // Row for the stars so that we can use spaced evenly.
         Row(
-            modifier = Modifier.clickable(onClick = { onNavigateToReview(movieState.mediaDetailObjects.Originaltitle) }),
+            modifier = Modifier.clickable(onClick = { onNavigateToReview(movieState.mediaDetailObjects) }),
             verticalAlignment = Alignment.CenterVertically
         ) {
             for (i in 1..5) {
