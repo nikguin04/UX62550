@@ -71,7 +71,7 @@ fun ReviewScreen(
     val castState = castViewModel.castState.collectAsState().value
     when (movieState) {
         MovieState.Empty -> {
-            LoadingScreen()
+
             }
         is MovieState.Data -> {
             when (castState) {

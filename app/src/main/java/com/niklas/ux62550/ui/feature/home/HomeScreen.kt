@@ -33,6 +33,7 @@ import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
@@ -50,65 +51,72 @@ fun HomePreview() {
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
-    Column(modifier.padding().verticalScroll(rememberScrollState())) {
-        Row(
-            modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            LogoBox(size = 55.dp)
 
-            Box(modifier = Modifier.padding(20.dp, 0.dp, 0.dp, 0.dp)) {
-                Text(
-                    text = "Welcome, User1",
-                    style = TextStyle(
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Normal
-                    )
-                )
-            }
-        }
 
-        // Featured items
-        val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
-        when (mediaItemsUIState) {
-            MediaItemsUIState.Empty -> {
-                /*Text(
+    // Featured items
+    val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
+    when (mediaItemsUIState) {
+        MediaItemsUIState.Empty -> {
+            LoadingScreen()
+            /*Text(
                     text = "No Media Items",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )*/
-                // TODO: CWL will make a proper loading page so this is disregarded for now
-            }
+            // TODO: CWL will make a proper loading page so this is disregarded for now
+        }
 
-            is MediaItemsUIState.Data -> {
+        is MediaItemsUIState.Data -> {
+            Column(modifier.padding().verticalScroll(rememberScrollState())) {
+                Row(
+                    modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    LogoBox(size = 55.dp)
+
+                    Box(modifier = Modifier.padding(20.dp, 0.dp, 0.dp, 0.dp)) {
+                        Text(
+                            text = "Welcome, User1",
+                            style = TextStyle(
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+                    }
+                }
                 HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaObjects, onNavigateToMedia)
                 Box(Modifier.size(4.dp))
                 HorizontalDotIndexer(Modifier.size(LocalConfiguration.current.screenWidthDp.dp, 12.dp))
-            }
-            else -> {}
-        }
 
-        // Genre items
-        val movieGenresDataState: GenresDataState = homeViewModel.movieGenresState.collectAsState().value
-        when (movieGenresDataState) {
-            GenresDataState.Empty -> {
-                // No placeholder here since it is managed by the individual genre viewmodels
-                // TODO: We should make a loading screen for all the genres, so that they are only displayed when ALL genre fetching is done. Async image loading may be neglected from said fetching
-            }
 
-            is GenresDataState.Data -> {
-                for (genreObject in movieGenresDataState.genres) {
-                    DiscoverSlider (
-                        discoverViewModel = viewModel(factory = DiscoverViewModelFactory(genreObject), key = genreObject.id.toString()),
-                        headerTitle = genreObject.name,
-                        onNavigateToMedia = onNavigateToMedia
-                    )
+                // Genre items
+                val movieGenresDataState: GenresDataState = homeViewModel.movieGenresState.collectAsState().value
+                when (movieGenresDataState) {
+                    GenresDataState.Empty -> {
+                        // No placeholder here since it is managed by the individual genre viewmodels
+                        // TODO: We should make a loading screen for all the genres, so that they are only displayed when ALL genre fetching is done. Async image loading may be neglected from said fetching
+                    }
+
+                    is GenresDataState.Data -> {
+                        for (genreObject in movieGenresDataState.genres) {
+                            DiscoverSlider(
+                                discoverViewModel = viewModel(factory = DiscoverViewModelFactory(genreObject), key = genreObject.id.toString()),
+                                headerTitle = genreObject.name,
+                                onNavigateToMedia = onNavigateToMedia
+                            )
+                        }
+                        Box(Modifier.size(0.dp, 20.dp))
+                    }
+
                 }
-                Box(Modifier.size(0.dp, 20.dp))
+
             }
+
         }
+        else -> {}
     }
+
 }
 
 @Composable
