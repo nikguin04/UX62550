@@ -57,11 +57,13 @@ fun MainNavHost(
             LaunchedEffect(Unit) { /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/ }
             MediaDetailsScreen(
                 media?: SearchDataExamples.MediaObjectExample,
-                onNavigateToOtherMedia = { /*name -> navController.navigate(Route.MediaDetailsScreen(name))*/ },
                 onNavigateToReview = { mediaDetails ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
-                    navController.navigate(Route.ReviewScreen) }
-            )
+                    navController.navigate(Route.ReviewScreen) },
+                onNavigateToOtherMedia = { newmedia ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", newmedia)
+                    navController.navigate(Route.MediaDetailsScreen) }
+                )
         }
 
         composable<Route.ReviewScreen> { backStackEntry ->

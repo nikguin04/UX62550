@@ -133,13 +133,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItem
 
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
-                Text(
-                    text = "No movies to be found",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = SearchColorForText
-                )
-            }
+                            }
 
             is MovieItemsUIState.Data -> {
                 // Display list of movie items in LazyColumn

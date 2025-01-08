@@ -45,8 +45,6 @@ import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
-import com.niklas.ux62550.ui.feature.common.CastState
-import com.niklas.ux62550.ui.feature.common.CastViewModel
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MovieImage
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
@@ -70,22 +68,15 @@ fun ReviewAndRatingPreview() {
 @Composable
 fun ReviewScreen(
     media: MovieDetailObject,
-    castViewModel: CastViewModel = viewModel()
     ) {
-    val castState = castViewModel.castState.collectAsState().value
-        when (castState) {
-            CastState.Empty -> {
-                Text("NO PIC")
-            }
-            is CastState.Data -> {
-                ScreenReviewAndRating(
-                    media = media
+    ScreenReviewAndRating(
+            media = media
 
-                )
-            }
-        }
-
+        )
     }
+
+
+
 
 
 

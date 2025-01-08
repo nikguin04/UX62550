@@ -1,11 +1,12 @@
 package com.niklas.ux62550.data.remote
 
-import com.niklas.ux62550.data.model.CastObject
+import com.niklas.ux62550.data.model.CreditObject
 import com.niklas.ux62550.data.model.GenreDataObject
+import com.niklas.ux62550.data.model.ImagesDataObject
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
-import com.niklas.ux62550.data.model.SimilarMoviesObject
+import com.niklas.ux62550.data.model.TrailerObject
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -50,15 +51,17 @@ class RemoteMediaDataSource {
     private val mediaApi: TMDBApiService = retrofit.create(TMDBApiService::class.java)
 
     suspend fun getSearch(search_mode: String, query: String) = mediaApi.getSearch(search_mode, query)
-    suspend fun getTrending(search_mode: String, time_window: String) = mediaApi.getTrending(search_mode, time_window)
+    suspend fun getTrending(search_mode: String = "all", time_window: String = "day") = mediaApi.getTrending(search_mode, time_window)
     suspend fun getKeywordMovies(keyword_id: String, page: Int) = mediaApi.getKeywordMovies(keyword_id,page)
     suspend fun getDiscoverMovies(genres: String, page: Int) = mediaApi.getDiscoverMovies(genres,page)
 	suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
     suspend fun getSimilarMoviesDetail(movie_id: Int) = mediaApi.getSimilarMovies(movie_id)
-    suspend fun getCastDetails(movie_id: Int) = mediaApi.getCast(movie_id)
+    suspend fun getCreditDetails(movie_id: Int) = mediaApi.getCredit(movie_id)
     suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
     suspend fun getMovieGenres() = mediaApi.getMovieGenres()
     suspend fun getTvGenres() = mediaApi.getTvGenres()
+    suspend fun getTrailer(movie_id: Int) = mediaApi.getTrailer(movie_id)
+    suspend fun getImages(media_type: String, media_id: Int,  include_image_language: String = "en") = mediaApi.getImages(media_type, media_id, include_image_language)
 }
 
 interface TMDBApiService {
@@ -67,7 +70,7 @@ interface TMDBApiService {
     suspend fun getSearch(@Path("search_mode") search_mode: String, @Query("query") query: String): SearchDataObject
 
     @GET("trending/{search_mode}/{time_window}") // Note: Does not support "people" as search mode
-    suspend fun getTrending(@Path("search_mode") search_mode: String = "all", @Path("time_window") time_window: String = "day"): SearchDataObject
+    suspend fun getTrending(@Path("search_mode") search_mode: String, @Path("time_window") time_window: String): SearchDataObject
 
 	@GET("keyword/{keyword_id}/movies")
     suspend fun getKeywordMovies(@Path("keyword_id") keyword_id: String, @Query("page") page: Int = 1): SearchDataObject
@@ -79,18 +82,24 @@ interface TMDBApiService {
     suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): MovieDetailObject
 
     @GET("movie/{movie_id}/similar")
-    suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SimilarMoviesObject
+    suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SearchDataObject
 
     @GET("movie/{movie_id}/credits")
-    suspend fun getCast(@Path("movie_id") movie_id: Int): CastObject
+    suspend fun getCredit(@Path("movie_id") movie_id: Int): CreditObject
 
     @GET("movie/{movie_id}/watch/providers")
     suspend fun getProvider(@Path("movie_id") movie_id: Int): ProviderDataObject
+
+    @GET("{media_type}/{media_id}/images")
+    suspend fun getImages(@Path("media_type") media_type: String, @Path("media_id") media_id: Int, @Query("include_image_language") include_image_language: String): ImagesDataObject
 
     @GET("genre/movie/list")
     suspend fun getMovieGenres(): GenreDataObject
     @GET("genre/tv/list")
     suspend fun getTvGenres(): GenreDataObject
+
+    @GET("movie/{movie_id}/videos")
+    suspend fun getTrailer(@Path("movie_id") movie_id: Int): TrailerObject
 }
 
 
