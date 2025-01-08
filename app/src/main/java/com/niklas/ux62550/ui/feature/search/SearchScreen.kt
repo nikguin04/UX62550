@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
@@ -56,7 +57,7 @@ fun SearchPreview() {
 }
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
+fun SearchScreen(viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
     val nonMoviesState = viewModel.nonMoviesState.collectAsState().value
     val moviesState = viewModel.movieItemsUIState.collectAsState().value
     SearchContent(movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
@@ -68,7 +69,7 @@ fun SearchContent(
     modifier: Modifier = Modifier,
     movieItemsUIState: MovieItemsUIState,
     nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
-    onNavigateToMedia: (String) -> Unit
+    onNavigateToMedia: (MediaObject) -> Unit
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -195,7 +196,7 @@ fun SearchContent(
                     MovieBoxRow(
                         movie = movieBoxItem,
                         modifier = Modifier.clickable(
-                            onClick = { onNavigateToMedia(movieBoxItem.title) }
+                            onClick = { onNavigateToMedia(movieBoxItem) }
                         )
                     )
                 }
