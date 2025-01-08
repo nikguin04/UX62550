@@ -78,12 +78,13 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
 
         )  {
             // Card content
-            MediaItem(
-                uri = items[page].backdrop_path,
+            MediaItemBackdropIntercept(
                 modifier = Modifier
                     .clickable(onClick = { onNavigateToMedia(items[page])})
                     .align(Alignment.CenterHorizontally)
-                    .size(Dp(w),Dp(h))
+                    .size(Dp(w),Dp(h)),
+                mediaItem = items[page],
+                fetchEnBackdrop = true
             )
         }
     }
