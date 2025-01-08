@@ -58,7 +58,9 @@ fun MainNavHost(
             LaunchedEffect(Unit) { /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/ }
             MediaDetailsScreen(
                 media?: SearchDataExamples.MediaObjectExample,
-                onNavigateToOtherMedia = { /*name -> navController.navigate(Route.MediaDetailsScreen(name))*/ },
+                onNavigateToOtherMedia = { media ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
+                    navController.navigate(Route.MediaDetailsScreen) },
                 onNavigateToReview = { name -> navController.navigate(Route.ReviewScreen(name)) }
             )
         }

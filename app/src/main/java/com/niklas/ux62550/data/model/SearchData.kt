@@ -53,7 +53,7 @@ data class MediaObject(
 	val poster_path: String? = null,
 
     @SerialName("media_type")
-	val media_type: String? = null,
+	var media_type: String? = null,
 
     @SerialName("genre_ids")
 	val genre_ids: List<Int> = listOf(),
