@@ -1,5 +1,6 @@
 package com.niklas.ux62550.ui.feature.home
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -22,11 +23,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.niklas.ux62550.R
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.ImageViewModel
@@ -170,13 +174,21 @@ fun MediaItemBackdropIntercept(
 
 
 
-@Composable
+@Composable // TODO: These two composables should be moved to common features
 fun MediaItem(uri: String?, round: Dp = 0.dp, modifier: Modifier = Modifier) {
     val imguri = if (uri!=null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
     AsyncImage(
         model = imguri,
         contentDescription = null, // TODO: include content description
+        error = debugPlaceholder(R.drawable.howlsmovingcastle_en),
         modifier = modifier
             .clip(RoundedCornerShape(round))
     )
+}
+@Composable
+fun debugPlaceholder(@DrawableRes debugPreview: Int) =
+    if (LocalInspectionMode.current) {
+        painterResource(id = debugPreview) // Source for preview
+    } else {
+        null // Source for build application
 }

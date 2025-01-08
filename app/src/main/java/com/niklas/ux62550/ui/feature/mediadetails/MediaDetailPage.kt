@@ -57,27 +57,32 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 @Preview(showBackground = true)
 fun MediaDetailPagePreview() {
+    val media = SearchDataExamples.MediaObjectExample
+    val movieViewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
+    movieViewModel.initPreview()
+
+    val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
+
     UX62550Theme(darkTheme = true) {
         Surface {
-            MediaDetailsScreen(SearchDataExamples.MediaObjectExample, onNavigateToOtherMedia = {}, onNavigateToReview = {})
+            MediaDetailsScreen(movieViewModel, creditsViewModel, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
     }
 }
 
 @Composable
 fun MediaDetailsScreen(
-    media: MediaObject,
+    movieViewModel: MovieViewModel,
+    creditsViewModel: CreditViewModel,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (String) -> Unit
 ) {
-    val viewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
-    val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
 
-    val movieState = viewModel.movieState.collectAsState().value
-    val similarMediaState = viewModel.similarMediaState.collectAsState().value
-    val trailerState = viewModel.trailerState.collectAsState().value
+    val movieState = movieViewModel.movieState.collectAsState().value
+    val similarMediaState = movieViewModel.similarMediaState.collectAsState().value
+    val trailerState = movieViewModel.trailerState.collectAsState().value
     val creditState = creditsViewModel.creditState.collectAsState().value
-    val providerState = viewModel.providerState.collectAsState().value
+    val providerState = movieViewModel.providerState.collectAsState().value
 
     Column(
         modifier = Modifier

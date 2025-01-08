@@ -3,14 +3,18 @@ package com.niklas.ux62550.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.ui.feature.common.CreditViewModel
+import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.home.HomeScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsScreen
+import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModelFactory
 import com.niklas.ux62550.ui.feature.profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.feature.profile.LoginScreen
 import com.niklas.ux62550.ui.feature.profile.ProfileScreen
@@ -51,12 +55,13 @@ fun MainNavHost(
         composable<Route.MediaDetailsScreen> { backStackEntry ->
             //val mediaRoute: Route.MediaDetailsScreen = backStackEntry.toRoute()
             //val media = mediaRoute.media
-            val media = navController.previousBackStackEntry?.savedStateHandle?.get<MediaObject>("media")
+            val media = navController.previousBackStackEntry?.savedStateHandle?.get<MediaObject>("media")?: SearchDataExamples.MediaObjectExample // Default to media object example if no media as placeholder
             LaunchedEffect(Unit) { /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/ }
             MediaDetailsScreen(
-                media?: SearchDataExamples.MediaObjectExample,
-                onNavigateToOtherMedia = { media ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
+                movieViewModel = viewModel(factory = MovieViewModelFactory(media = media)),
+                creditsViewModel = viewModel(factory = CreditsViewModelFactory(media = media)),
+                onNavigateToOtherMedia = { navMedia ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", navMedia)
                     navController.navigate(Route.MediaDetailsScreen) },
                 onNavigateToReview = { name -> navController.navigate(Route.ReviewScreen(name)) }
             )
