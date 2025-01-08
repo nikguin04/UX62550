@@ -97,7 +97,7 @@ fun ScreenReviewAndRating(
 
     Column(modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-        ReviewLayout(media = media, movieRating = 3.5)
+        ReviewLayout(media = media, movieRating = media.rating)
         PublishReview()
         MoreDetailedReview()
     }
