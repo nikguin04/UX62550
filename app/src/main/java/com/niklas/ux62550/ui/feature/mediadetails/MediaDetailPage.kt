@@ -53,6 +53,7 @@ import com.niklas.ux62550.ui.feature.common.CreditState
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.home.MediaItem
+import com.niklas.ux62550.ui.feature.home.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
@@ -186,11 +187,13 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                             }
                         }
                 ) {
-                    MediaItem(
-                        uri = movieState.mediaDetailObjects.backDropPath,
+                    MediaItemBackdropIntercept(
+                        //uri = movieState.mediaDetailObjects.backDropPath,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(16f / 9f)
+                            .aspectRatio(16f / 9f),
+                        fetchEnBackdrop = true,
+                        mediaItem = movieState.mediaDetailObjects.toMediaObject()
                     )
                     Image(
                         Icons.Outlined.PlayCircleOutline,

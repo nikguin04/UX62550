@@ -8,7 +8,7 @@ public class MediaDetailExample {
     companion object {
         val MediaDetailObjectExample: MovieDetailObject =
             MovieDetailObject(
-                forAdults = false,
+                adult = false,
                 spokenLanguages = listOf(),
                 genre = listOf(),
                 backDropPath = "/vZG7PrX9HmdgL5qfZRjhJsFYEIA.jpg",
