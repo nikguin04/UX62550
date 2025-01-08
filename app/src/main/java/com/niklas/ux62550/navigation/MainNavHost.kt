@@ -43,9 +43,12 @@ fun MainNavHost(
 
         composable<Route.SearchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
-            /*SearchScreen(
-                onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
-            )*/
+            SearchScreen(
+                onNavigateToMedia = { media ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
+                    navController.navigate(Route.MediaDetailsScreen)
+                }
+            )
         }
 
         composable<Route.MediaDetailsScreen> { backStackEntry ->

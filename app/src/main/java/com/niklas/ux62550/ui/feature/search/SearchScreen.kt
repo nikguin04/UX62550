@@ -168,6 +168,16 @@ fun SearchContent(
             }
             is MovieItemsUIState.Data -> {
                 itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
+//                    when (movieBoxItem.media_type) {
+//                        "tv_show" -> {
+//
+//                        }
+//                        "person" -> {
+//
+//                        }
+//                    }
+
+
                     if (index > 0) {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
