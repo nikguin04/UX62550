@@ -1,6 +1,7 @@
 package com.niklas.ux62550.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.filled.AccountCircle
@@ -9,17 +10,23 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
+import com.niklas.ux62550.ui.feature.common.ShadowIcon
 
 data class NavItem(
     val name: String,
@@ -57,4 +64,23 @@ fun GeneralNavBar(navController: NavHostController) {
             )
         }
     }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun GeneralTopBar(navController: NavHostController, showBackButton: Boolean) {
+    TopAppBar(
+        title = {},
+        navigationIcon = {
+            if (showBackButton) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    ShadowIcon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+    )
 }

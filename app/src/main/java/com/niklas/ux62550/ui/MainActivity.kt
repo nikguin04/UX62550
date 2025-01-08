@@ -5,19 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,12 +25,11 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.niklas.ux62550.navigation.GeneralNavBar
+import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.navigation.MainNavHost
-import com.niklas.ux62550.ui.feature.common.ShadowIcon
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // Enable fullscreen and edge-to-edge
@@ -57,46 +47,21 @@ class MainActivity : ComponentActivity() {
             UX62550Theme(darkTheme = true) {
                 val navController = rememberNavController()
                 var canNavigateBack by remember { mutableStateOf(false) }
-                var currentScreenTitle by remember { mutableStateOf("") }
                 LaunchedEffect(navController.currentBackStackEntryAsState().value) {
                     canNavigateBack = navController.previousBackStackEntry != null
                 }
 
-                Scaffold(modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        // Moved down to content for padding reasons?
-                        // TODO: This seems really scuffed and *NOT* like the way to do things
-                    },
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = { GeneralTopBar(navController, canNavigateBack) },
                     bottomBar = { GeneralNavBar(navController) },
-                    contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp)
-                ) {
-                    Box {
-                        MainNavHost(
-                            navController = navController,
-                            onRouteChanged = { route -> currentScreenTitle = route.title },
-                            modifier = Modifier.padding(it)
-                        )
-                        TopAppBar(
-                            title = {},
-                            navigationIcon = {
-                                if (canNavigateBack) {
-                                    IconButton(onClick = { navController.popBackStack() }) {
-                                        ShadowIcon(
-                                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                            contentDescription = "Back"
-                                        )
-                                    }
-                                }
-                            },
-                            colors = TopAppBarColors(
-                                containerColor = Color(0x00000000),
-                                scrolledContainerColor = TopAppBarDefaults.topAppBarColors().scrolledContainerColor,
-                                navigationIconContentColor = TopAppBarDefaults.topAppBarColors().navigationIconContentColor,
-                                titleContentColor = TopAppBarDefaults.topAppBarColors().titleContentColor,
-                                actionIconContentColor = TopAppBarDefaults.topAppBarColors().actionIconContentColor
-                            )
-                        )
-                    }
+                    contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp)
+                ) { innerPadding ->
+                    MainNavHost(
+                        navController = navController,
+                        onRouteChanged = {},
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
         }
