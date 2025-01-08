@@ -99,8 +99,8 @@ fun CastRow(modifier: Modifier, cast: Cast){
         MediaItem(cast.castProfilePath,
             0.dp,
             modifier
-                .clip(CircleShape)
-                .size(64.dp))
+                .clip(RoundedCornerShape(25))
+                .size(width = 60.dp, height = 90.dp))
         Spacer(modifier = Modifier.width(12.dp))
         Column {
             Row(
@@ -135,8 +135,8 @@ fun CrewRow(modifier: Modifier, crew: Crew){
         MediaItem(crew.castProfilePath,
             0.dp,
             modifier
-                .clip(CircleShape)
-                .size(64.dp))
+                .clip(RoundedCornerShape(25))
+                .size(width = 60.dp, height = 90.dp))
         Spacer(modifier = Modifier.width(12.dp))
         Column {
             Row(
