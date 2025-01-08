@@ -112,7 +112,7 @@ fun MediaDetailsScreen(
 
 @Composable
 fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState) {
-    val context = LocalContext.current
+
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
         Box(modifier = Modifier.alpha(0.5f)) {
@@ -121,62 +121,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                 modifier = Modifier.fillMaxWidth()
             )
         }
-    when (trailerState) {
-        TrailerState.Empty -> {
-
-        }
-        is TrailerState.Data -> {
-            var youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
-                "https://www.youtube.com/watch?v=${it.key}"
-            }
-            if(youtubeUrl == null){
-                youtubeUrl = "https://www.youtube.com/watch?v=${trailerState.trailerObject.resultsTrailerLinks[0].key}"
-            }
-            Column(
-                modifier = Modifier
-                    .padding(30.dp, 70.dp, 30.dp, 8.dp)
-                    .fillMaxWidth()
-            ) {
-                Box( // Playable Trailer Box
-                    modifier = Modifier
-                        .aspectRatio(16f / 9f)
-                        .fillMaxWidth()
-                        .clickable {
-                            youtubeUrl?.let {
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it)).apply {
-                                    setPackage("com.google.android.youtube")
-                                }
-                                if (intent.resolveActivity(context.packageManager) != null) {
-                                    context.startActivity(intent)
-                                } else {
-                                    // Fallback to a web browser
-                                    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-                                    context.startActivity(webIntent)
-                                }
-                            }
-                        }
-                ) {
-                    MediaItem(
-                        uri = movieState.mediaDetailObjects.backDropPath,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(16f / 9f)
-                    )
-                    Image(
-                        Icons.Outlined.PlayCircleOutline,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .requiredSize(72.dp),
-                        colorFilter = ColorFilter.tint(Color.White),
-                        contentDescription = "Play circle"
-                    )
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-                TitleText(movieState.mediaDetailObjects.Originaltitle)
-            }
-        }
-         else -> {}
-    }
+        MediaTrailer(modifier, trailerState, movieState)
 
         // Bookmark Button
         Image(
