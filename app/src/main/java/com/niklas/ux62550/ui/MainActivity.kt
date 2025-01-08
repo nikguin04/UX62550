@@ -8,13 +8,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
@@ -37,6 +35,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.niklas.ux62550.navigation.GeneralNavBar
 import com.niklas.ux62550.navigation.MainNavHost
+import com.niklas.ux62550.ui.feature.common.ShadowIcon
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 class MainActivity : ComponentActivity() {
@@ -82,16 +81,7 @@ class MainActivity : ComponentActivity() {
                             navigationIcon = {
                                 if (canNavigateBack) {
                                     IconButton(onClick = { navController.popBackStack() }) {
-                                        // Shadow icon (weird workaround) TODO: Should make a composable for this stupid shit so we can actually use m3 icons like in figma
-                                        Icon(
-                                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .offset(x = 0.dp, y = 2.dp), // Offset to create shadow appearance
-                                            tint = Color.Black.copy(alpha = 0.3f) // Shadow color and transparency
-                                        )
-                                        // Actual icon :))))
-                                        Icon(
+                                        ShadowIcon(
                                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                             contentDescription = "Back"
                                         )
