@@ -1,3 +1,4 @@
+
 package com.niklas.ux62550.ui.feature.mediadetails
 
 import android.content.Intent
@@ -74,6 +75,7 @@ import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CastState
 import com.niklas.ux62550.ui.feature.common.CastViewModel
+import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
@@ -93,90 +95,52 @@ fun MediaDetailPagePreview() {
 @Composable
 fun MediaDetailsScreen(
     media: MediaObject,
-    castViewModel: CastViewModel = viewModel(),
     onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (String) -> Unit
 ) {
     val viewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
+    val creditsViewModel: CastViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
+
     val movieState = viewModel.movieState.collectAsState().value
     val similarMediaState = viewModel.similarMediaState.collectAsState().value
     val trailerState = viewModel.trailerState.collectAsState().value
-    val castState = castViewModel.castState.collectAsState().value
+    val castState = creditsViewModel.castState.collectAsState().value
     val providerState = viewModel.providerState.collectAsState().value
-    when (movieState) {
-        MovieState.Empty -> {
-            Text(text = "No data yet")// TODO make loading screen
-        }
-        is MovieState.Data -> {
-            when (castState) {
-                CastState.Empty -> {
-                    Text("NO PIC")
-                }
-                is CastState.Data -> {
-                    when(trailerState){
-                        TrailerState.Empty ->{
-                            Text("NO TRAILER")
-                        }
-                        is TrailerState.Data ->{
-                            MediaDetailsContent(
-                                movieState = movieState,
-                                similarMediaState = similarMediaState,
-                                trailerState = trailerState,
-                                castState = castState,
-                                providerState = providerState,
-                                onNavigateToOtherMedia = onNavigateToOtherMedia,
-                                onNavigateToReview = onNavigateToReview
-                            )
-                        }
-                    }
-                }
-            }
 
-        }
-        else -> {}
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MediaDetailsContent(
-    modifier: Modifier = Modifier,
-    movieState: MovieState.Data,
-    similarMediaState: SimilarMovieState,
-    trailerState: TrailerState.Data,
-    castState: CastState.Data,
-    providerState: ProviderState,
-    onNavigateToOtherMedia: (MediaObject) -> Unit,
-    onNavigateToReview: (String) -> Unit
-) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
     )
     {
-        Header(movieState = movieState, trailerState = trailerState)
-        InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
-        Genres(genres = movieState, providerState = providerState)
-        DescriptionText(description = movieState.mediaDetailObjects.Description)
-        ActorsAndDirectors(castState = castState)
-        //Awards()
+        when (movieState) {
+            MovieState.Empty -> {
+                Text(text = "No data yet")// TODO make loading screen
+            }
+            is MovieState.Data -> {
+                Header(movieState = movieState, trailerState = trailerState)
+                InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
+                Genres(genres = movieState, providerState = providerState)
+                DescriptionText(description = movieState.mediaDetailObjects.Description)
+            }
+            else -> {}
+        }
+
+        when (castState) {
+            CastState.Empty -> {
+                Text("No credits data yet")
+            }
+            is CastState.Data -> {
+                ActorsAndDirectors(castState = castState)
+            }
+        }
         DetailedRating()
         SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
-
     }
 }
 
 @Composable
-fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState.Data) {
+fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState) {
     val context = LocalContext.current
-
-    var youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
-        "https://www.youtube.com/watch?v=${it.key}"
-    }
-    if(youtubeUrl == null){
-        youtubeUrl = "https://www.youtube.com/watch?v=${trailerState.trailerObject.resultsTrailerLinks[0].key}"
-    }
-
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
         Box(modifier = Modifier.alpha(0.5f)) {
@@ -185,49 +149,62 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                 modifier = Modifier.fillMaxWidth()
             )
         }
+    when (trailerState) {
+        TrailerState.Empty -> {
 
-        Column(
-            modifier = Modifier
-                .padding(30.dp, 70.dp, 30.dp, 8.dp)
-                .fillMaxWidth()
-        ) {
-            Box( // Playable Trailer Box
+        }
+        is TrailerState.Data -> {
+            var youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
+                "https://www.youtube.com/watch?v=${it.key}"
+            }
+            if(youtubeUrl == null){
+                youtubeUrl = "https://www.youtube.com/watch?v=${trailerState.trailerObject.resultsTrailerLinks[0].key}"
+            }
+            Column(
                 modifier = Modifier
-                    .aspectRatio(16f / 9f)
+                    .padding(30.dp, 70.dp, 30.dp, 8.dp)
                     .fillMaxWidth()
-                    .clickable {
-                        youtubeUrl?.let {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it)).apply {
-                                setPackage("com.google.android.youtube")
-                            }
-                            if (intent.resolveActivity(context.packageManager) != null) {
-                                context.startActivity(intent)
-                            } else {
-                                // Fallback to a web browser
-                                val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-                                context.startActivity(webIntent)
+            ) {
+                Box( // Playable Trailer Box
+                    modifier = Modifier
+                        .aspectRatio(16f / 9f)
+                        .fillMaxWidth()
+                        .clickable {
+                            youtubeUrl?.let {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it)).apply {
+                                    setPackage("com.google.android.youtube")
+                                }
+                                if (intent.resolveActivity(context.packageManager) != null) {
+                                    context.startActivity(intent)
+                                } else {
+                                    // Fallback to a web browser
+                                    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                                    context.startActivity(webIntent)
+                                }
                             }
                         }
-                    }
-            ) {
-                MovieImage(
-                    uri = movieState.mediaDetailObjects.backDropPath,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(16f / 9f)
-                )
-                Image(
-                    Icons.Outlined.PlayCircleOutline,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .requiredSize(72.dp),
-                    colorFilter = ColorFilter.tint(Color.White),
-                    contentDescription = "Play circle"
-                )
+                ) {
+                    MovieImage(
+                        uri = movieState.mediaDetailObjects.backDropPath,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(16f / 9f)
+                    )
+                    Image(
+                        Icons.Outlined.PlayCircleOutline,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .requiredSize(72.dp),
+                        colorFilter = ColorFilter.tint(Color.White),
+                        contentDescription = "Play circle"
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                TitleText(movieState.mediaDetailObjects.Originaltitle)
             }
-            Spacer(modifier = Modifier.height(12.dp))
-            TitleText(movieState.mediaDetailObjects.Originaltitle)
         }
+         else -> {}
+    }
 
         // Bookmark Button
         Image(
@@ -283,11 +260,6 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
         //Spacer(modifier = Modifier.weight(1f))
         Text(
             movieState.mediaDetailObjects.runTime.minutes.toString(),
-            fontSize = 18.sp
-        )
-        //Spacer(modifier = Modifier.weight(1f))
-        Text(
-            18.toString() + "+", //TODO PG RATING
             fontSize = 18.sp
         )
     }
@@ -480,7 +452,7 @@ fun DetailedRating(modifier: Modifier = Modifier) {
 
 @Composable
 fun SimilarMedia(modifier: Modifier = Modifier, similarMediaState: SimilarMovieState, onNavigateToOtherMedia: (MediaObject) -> Unit) {
-    Text("Movies similar to this one")
+    Text("Movies similar to this one", modifier = modifier.padding(8.dp,0.dp,0.dp,0.dp))
     when (similarMediaState) {
         SimilarMovieState.Empty -> {
             Text("NO PIC")
