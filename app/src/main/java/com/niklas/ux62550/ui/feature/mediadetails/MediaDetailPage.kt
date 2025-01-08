@@ -31,9 +31,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -123,7 +126,29 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
         Box(modifier = Modifier.alpha(0.5f)) {
             MediaItem(
                 uri = movieState.mediaDetailObjects.backDropPath,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                .fillMaxWidth()
+                .graphicsLayer(alpha = 1f)
+                .drawWithContent {
+                    drawContent() // Draw the actual image
+
+                    // Draw the fade
+                    drawRect(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Black,
+                                Color.Black,
+                                Color.Black.copy(alpha = 0.5f),
+                                Color.Transparent,
+                            ),
+                            startY = 0f,
+                            endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
+                        ),
+                        blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
+                    )
+                }
+
+
             )
         }
     when (trailerState) {
