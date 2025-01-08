@@ -60,12 +60,13 @@ fun SearchPreview() {
 fun SearchScreen(viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
     val nonMoviesState = viewModel.nonMoviesState.collectAsState().value
     val moviesState = viewModel.movieItemsUIState.collectAsState().value
-    SearchContent(movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
+    SearchContent(viewModel = viewModel, movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchContent(
+    viewModel: SearchViewModel,
     modifier: Modifier = Modifier,
     movieItemsUIState: MovieItemsUIState,
     nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
@@ -86,7 +87,7 @@ fun SearchContent(
                     inputField = {
                         SearchBarDefaults.InputField(
                             query = text,
-                            onQueryChange = { text = it},
+                            onQueryChange = { text = it; viewModel.getDetails(it) },
                             onSearch = { expanded = false },
                             expanded = expanded,
                             onExpandedChange = { expanded = it },

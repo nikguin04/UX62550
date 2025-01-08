@@ -29,8 +29,8 @@ class SearchViewModel : ViewModel() {
     private val searchRepository = SearchRepository()
 
 
-    private fun getDetails() = viewModelScope.launch {
-        searchRepository.getUserSearch("ant") // TODO: Don't hardcore this, get some proper featured films
+    public fun getDetails(query: String) = viewModelScope.launch {
+        searchRepository.getUserSearch(query) // TODO: Don't hardcore this, get some proper featured films
     }
 
 
@@ -57,7 +57,7 @@ class SearchViewModel : ViewModel() {
                 }
             }
         }
-        getDetails()
+        //getDetails()
     }
 
 
