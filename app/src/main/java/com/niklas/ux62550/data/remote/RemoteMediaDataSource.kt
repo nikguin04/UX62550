@@ -58,7 +58,7 @@ interface TMDBApiService {
     suspend fun getSearch(@Path("search_mode") search_mode: String, @Query("query") query: String): SearchDataObject
 
 
-    @GET("search/movie")
+    @GET("search/multi")
     suspend fun getUserSearch(@Query("query") query: String): SearchDataObject
 
 
