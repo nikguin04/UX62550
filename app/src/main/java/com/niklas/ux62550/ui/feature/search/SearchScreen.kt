@@ -117,45 +117,11 @@ fun SearchContent(
         }
 
         item {
-            SectionHeader(title = "Actors and Genres")
-        }
-
-        when (nonMovieBoxItemsUIState) {
-            NonMovieBoxItemsUIState.Empty -> {
-                item {
-                    Text(
-                        text = "No movies to be found",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = SearchColorForText
-                    )
-                }
-            }
-            is NonMovieBoxItemsUIState.Data -> {
-                var putDivider = false;
-                itemsIndexed(nonMovieBoxItemsUIState.nonMovieBoxes) { index, nonMovieBoxItem ->
-                    if (index > 0) {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                            ) {
-                            HorizontalDivider(
-                                color = SearchColorForText,
-                                thickness = 1.dp,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp)
-                                    .fillMaxWidth(0.7f)
-                            )
-                        }
-                    }
-                    NonMovieBoxRow(nonMovieBox = nonMovieBoxItem)
-                }
-            }
-        }
-        item {
             SectionHeader(title = "Movies and Series")
         }
 
+        var firstTimePerson = false
+        var firstTimeMovie = false
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
                 item {
@@ -169,36 +135,82 @@ fun SearchContent(
             }
             is MovieItemsUIState.Data -> {
                 itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
-//                    when (movieBoxItem.media_type) {
-//                        "tv_show" -> {
-//
-//                        }
-//                        "person" -> {
-//
-//                        }
-//                    }
+                    when (movieBoxItem.media_type) {
+                        "tv" -> {
+                        }
+                        "person" -> {
+                        }
+                        "movie" -> {
+                            if(firstTimeMovie == true){
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    HorizontalDivider(
+                                        color = SearchColorForText,
+                                        thickness = 1.dp,
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp)
+                                            .fillMaxWidth(0.7f)
+                                    )
+                                }
 
-
-                    if (index > 0) {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            HorizontalDivider(
-                                color = SearchColorForText,
-                                thickness = 1.dp,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp)
-                                    .fillMaxWidth(0.7f)
+                            }
+                            firstTimeMovie = true
+                            MovieBoxRow(
+                                movie = movieBoxItem,
+                                modifier = Modifier.clickable(
+                                    onClick = { onNavigateToMedia(movieBoxItem) }
+                                )
                             )
                         }
                     }
-                    MovieBoxRow(
-                        movie = movieBoxItem,
-                        modifier = Modifier.clickable(
-                            onClick = { onNavigateToMedia(movieBoxItem) }
-                        )
+                }
+            }
+        }
+
+        item {
+            SectionHeader(title = "Actors and Genres")
+        }
+
+        when (movieItemsUIState) {
+            MovieItemsUIState.Empty -> {
+                item {
+                    Text(
+                        text = "No person found",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = SearchColorForText
                     )
+                }
+            }
+            is MovieItemsUIState.Data -> {
+                itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
+                    when (movieBoxItem.media_type) {
+                        "tv" -> {
+                        }
+                        "person" -> {
+                            if(firstTimePerson == true){
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        HorizontalDivider(
+                                            color = SearchColorForText,
+                                            thickness = 1.dp,
+                                            modifier = Modifier
+                                                .padding(horizontal = 16.dp)
+                                                .fillMaxWidth(0.7f)
+                                        )
+
+                                    }
+                            }
+                            firstTimePerson = true
+                            NonMovieBoxRow(person = movieBoxItem)
+                        }
+                        "movie" -> {
+                        }
+                    }
                 }
             }
         }

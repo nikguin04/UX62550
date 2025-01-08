@@ -30,7 +30,7 @@ class SearchViewModel : ViewModel() {
 
 
     private fun getDetails() = viewModelScope.launch {
-        searchRepository.getUserSearch("antman") // TODO: Don't hardcore this, get some proper featured films
+        searchRepository.getUserSearch("ant") // TODO: Don't hardcore this, get some proper featured films
     }
 
 
