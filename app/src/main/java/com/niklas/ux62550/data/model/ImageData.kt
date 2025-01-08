@@ -15,6 +15,7 @@ data class ImageDataObject(
     val height : Int,
 
     @SerialName("iso_639_1")
+    // Internationally accepted 2 letter country codes - https://en.wikipedia.org/wiki/ISO_639-1
     val iso_639_1 : String,
 
     @SerialName("file_path")
