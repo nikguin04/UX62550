@@ -112,6 +112,13 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
                         fontWeight = FontWeight.Bold
                     )
                 }
+                else {
+                    Text(
+                        text = "unknown",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
