@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -247,7 +248,11 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
                 }
                 Image(
                     imageVector = starIcon,
-                    modifier = Modifier.requiredSize(18.dp),
+                    modifier = Modifier.requiredSize(18.dp)
+                        .shadow(
+                            elevation = 15.dp,
+                            ambientColor = Color.Black.copy(alpha = 255f), // Slightly less opaque for a softer effect
+                            ),
                     colorFilter = ColorFilter.tint(Color.Yellow),
                     contentDescription = "Rating star"
                 )
@@ -261,12 +266,22 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
         //Spacer(modifier = Modifier.weight(1f))
         Text(
             movieState.mediaDetailObjects.relaseDate.substring(0, 4),
-            fontSize = 18.sp
+            style = TextStyle(
+                fontSize = 18.sp,
+                color = Color.White,
+                shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+
+            )
         )
         //Spacer(modifier = Modifier.weight(1f))
         Text(
             movieState.mediaDetailObjects.runTime.minutes.toString(),
-            fontSize = 18.sp
+            style = TextStyle(
+                fontSize = 18.sp,
+                color = Color.White,
+                shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+
+            )
         )
     }
 }
@@ -297,11 +312,15 @@ fun DescriptionText(description: String) {
             lineBreak = LineBreak.Paragraph,
             fontSize = 18.sp,
             textAlign = TextAlign.Justify,
-            color = DescriptionColor
+            color = DescriptionColor,
+            shadow = Shadow(color = Color.Black, blurRadius = 7.5f)
+
+
         ),
         modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp, 10.dp, 20.dp, 0.dp),
+
     )
 }
 

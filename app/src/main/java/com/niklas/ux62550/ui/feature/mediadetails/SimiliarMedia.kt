@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -20,7 +21,8 @@ fun SimilarMedia(
 
     Text("Movies similar to this one", style = TextStyle(
         fontSize = 18.sp,
-        color = Color.White
+        color = Color.White,
+        shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
     ),
         modifier = modifier.padding(20.dp, 0.dp, 20.dp, 0.dp))
     when (similarMediaState) {

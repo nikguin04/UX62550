@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -46,8 +47,10 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
         .padding(20.dp, 15.dp, 20.dp, 0.dp),
         style = TextStyle(
             fontSize = 18.sp,
-            color = Color.White
-    )
+            color = Color.White,
+            shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+
+        )
     )
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }

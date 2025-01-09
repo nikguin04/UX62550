@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,8 +47,10 @@ fun DetailedRating(modifier: Modifier = Modifier) {
         Text("Detailed Rating",
             style = TextStyle(
             fontSize = 18.sp,
-            color = Color.White
-        )
+            color = Color.White,
+            shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+
+            )
         )
         val sheetState = rememberModalBottomSheetState()
         var showBottomSheet by remember { mutableStateOf(false) }

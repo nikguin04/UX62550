@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,18 +38,25 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                     .clip(RoundedCornerShape(40.dp))
                     .background(Color.Gray)
                     .padding(8.dp, 4.dp)
+                    .shadow(
+                        elevation = 15.dp,
+                        shape = RoundedCornerShape(40.dp),
+                        ambientColor = Color.Black.copy(alpha = 255f), // Slightly less opaque for a softer effect
+                        spotColor = Color.Black.copy(alpha = 255f)
+                    )
             ) {
                 Text(
                     text = genre.genreName,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center)                    ,
+
                 )
             }
             if ((index != 2) && (index != genres.mediaDetailObjects.genre.lastIndex)) {
                 Spacer(modifier = Modifier.width(4.dp))
-                DrawCircle(Modifier.size(10.dp), Color.LightGray)
+                DrawCircle(Modifier.size(10.dp).shadow(10.dp, RoundedCornerShape(40.dp), false,Color.Black), Color.LightGray, )
                 Spacer(modifier = Modifier.width(4.dp))
             }
         }
