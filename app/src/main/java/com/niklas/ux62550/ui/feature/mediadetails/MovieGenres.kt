@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niklas.ux62550.ui.feature.home.ImageSize
 import com.niklas.ux62550.ui.feature.home.MediaItem
 
 @Composable
@@ -72,7 +73,9 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                             0.dp,
                             modifier
                                 .clip(CircleShape)
-                                .size(32.dp))
+                                .size(32.dp),
+                            size = ImageSize.LOGO
+                        )
                     }
                 }
             }

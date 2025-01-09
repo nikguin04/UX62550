@@ -182,7 +182,8 @@ fun MediaItemBackdropIntercept(
                     MediaItem(
                         round = 6.dp,
                         uri = it.file_path,
-                        modifier = modifier
+                        modifier = modifier,
+                        size = ImageSize.BACKDROP
                     )
                 } ?: // ELSE
                 Box(modifier = modifier) // Red color is to indicate that the media has no english backdrop, this box is TEMPORARY! and for later debugging purposes when making title over media with no english backdrop
@@ -190,7 +191,8 @@ fun MediaItemBackdropIntercept(
                     MediaItem(
                         round = 6.dp,
                         uri = mediaItem.backdrop_path, // TODO: catch null case here
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        size = ImageSize.BACKDROP
                     )
                     Box(modifier = Modifier.size(8.dp).background(Color.Red))
                 }
@@ -202,7 +204,8 @@ fun MediaItemBackdropIntercept(
         MediaItem(
             round = 6.dp,
             uri = mediaItem.backdrop_path,
-            modifier = modifier
+            modifier = modifier,
+            size = ImageSize.BACKDROP
         )
     }
 
@@ -210,10 +213,20 @@ fun MediaItemBackdropIntercept(
 }
 
 
+enum class ImageSize {
+    BACKDROP, LOGO, POSTER, PROFILE, STILL
+}
 
 @Composable // TODO: These two composables should be moved to common features
-fun MediaItem(uri: String?, round: Dp = 0.dp, modifier: Modifier = Modifier) {
-    val imguri = if (uri!=null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
+fun MediaItem(uri: String?, round: Dp = 0.dp, modifier: Modifier = Modifier, size: ImageSize) {
+    val sizeStr = when (size) {
+        com.niklas.ux62550.ui.feature.home.ImageSize.BACKDROP -> "w1280"
+        com.niklas.ux62550.ui.feature.home.ImageSize.LOGO -> "w500"
+        com.niklas.ux62550.ui.feature.home.ImageSize.POSTER -> "w780"
+        com.niklas.ux62550.ui.feature.home.ImageSize.PROFILE -> "w185"
+        com.niklas.ux62550.ui.feature.home.ImageSize.STILL -> "w300"
+    }
+    val imguri = if (uri!=null) "$BASE_IMAGE_URL$sizeStr/$uri" else "https://cataas.com/cat"
     AsyncImage(
         model = imguri,
         contentDescription = null, // TODO: include content description

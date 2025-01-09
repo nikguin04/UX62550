@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.model.Cast
 import com.niklas.ux62550.data.model.Crew
 import com.niklas.ux62550.ui.feature.common.CreditState
+import com.niklas.ux62550.ui.feature.home.ImageSize
 import com.niklas.ux62550.ui.feature.home.MediaItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +55,8 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
                 0.dp,
                 modifier
                     .clip(RoundedCornerShape(25))
-                    .size(width = 60.dp, height = 90.dp))
+                    .size(width = 60.dp, height = 90.dp),
+                size = ImageSize.PROFILE)
             Spacer(modifier = Modifier.width((12.dp)))
         }
 
@@ -100,7 +102,8 @@ fun CastRow(modifier: Modifier, cast: Cast){
             0.dp,
             modifier
                 .clip(RoundedCornerShape(25))
-                .size(width = 60.dp, height = 90.dp))
+                .size(width = 60.dp, height = 90.dp),
+            size = ImageSize.PROFILE)
         Spacer(modifier = Modifier.width(12.dp))
         Column {
             Row(
@@ -136,7 +139,9 @@ fun CrewRow(modifier: Modifier, crew: Crew){
             0.dp,
             modifier
                 .clip(RoundedCornerShape(25))
-                .size(width = 60.dp, height = 90.dp))
+                .size(width = 60.dp, height = 90.dp),
+            size = ImageSize.PROFILE
+        )
         Spacer(modifier = Modifier.width(12.dp))
         Column {
             Row(

@@ -20,6 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,9 +33,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.ui.feature.home.ImageSize
 import com.niklas.ux62550.ui.feature.home.MediaItem
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
@@ -79,10 +85,31 @@ fun ReviewLayout(
 ) {
     Column {
         Box{
+            val backColor = MaterialTheme.colorScheme.background
             MediaItem(
                 uri = media.backDropPath,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .graphicsLayer(alpha = 1f)
+                    .drawWithContent {
+                        drawContent() // Draw the actual image
+
+                        // Draw the fade
+                        drawRect(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    backColor,
+                                    backColor,
+                                    backColor.copy(alpha = 0.5f),
+                                    Color.Transparent,
+                                ),
+                                startY = 0f,
+                                endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
+                            ),
+                            blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
+                        )
+                    },
+                    size = ImageSize.BACKDROP
             )
             ReviewText()
             TitleText(media.Originaltitle)

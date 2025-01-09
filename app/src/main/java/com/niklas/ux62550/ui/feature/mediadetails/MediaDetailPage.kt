@@ -24,6 +24,7 @@ import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,11 +54,13 @@ import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.CreditState
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
+import com.niklas.ux62550.ui.feature.home.ImageSize
 import com.niklas.ux62550.ui.feature.home.MediaItem
 import com.niklas.ux62550.ui.feature.home.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
@@ -122,6 +125,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
         Box(modifier = Modifier.alpha(0.5f)) {
+            val backColor = MaterialTheme.colorScheme.background
             MediaItem(
                 uri = movieState.mediaDetailObjects.backDropPath,
                 modifier = Modifier
@@ -134,9 +138,8 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                     drawRect(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color.Black,
-                                Color.Black,
-                                Color.Black.copy(alpha = 0.5f),
+                                backColor,
+                                backColor.copy(alpha = 0.5f),
                                 Color.Transparent,
                             ),
                             startY = 0f,
@@ -144,7 +147,8 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                         ),
                         blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
                     )
-                }
+                },
+                size = ImageSize.BACKDROP
 
 
             )
