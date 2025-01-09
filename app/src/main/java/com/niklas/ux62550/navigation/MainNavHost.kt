@@ -18,6 +18,7 @@ import com.niklas.ux62550.ui.feature.profile.LoginScreen
 import com.niklas.ux62550.ui.feature.profile.ProfileScreen
 import com.niklas.ux62550.ui.feature.profile.RegisterScreen
 import com.niklas.ux62550.ui.feature.review.ScreenReviewAndRating
+import com.niklas.ux62550.ui.feature.search.SearchScreen
 
 @Composable
 fun MainNavHost(
