@@ -1,9 +1,12 @@
 package com.niklas.ux62550.ui.feature.home
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,27 +14,39 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.niklas.ux62550.R
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
+import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.ImageViewModel
 import com.niklas.ux62550.ui.feature.common.ImageViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImagesDataUIState
+import com.niklas.ux62550.ui.feature.common.MediaItem
 import kotlin.math.absoluteValue
 
 
@@ -81,7 +96,40 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
             )
         }
     }
+    Box(Modifier.size(4.dp))
+    HorizontalDotIndexer(
+        Modifier.size(LocalConfiguration.current.screenWidthDp.dp, 12.dp),
+        items,
+        pagerState
+    )
 
+}
+
+@Composable
+fun HorizontalDotIndexer(modifier: Modifier, items: List<MediaObject>, pagerState: PagerState) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        items.forEachIndexed{ index, media ->
+            Icon(
+                Icons.Filled.Circle,
+                contentDescription = "Index Point",
+                modifier = Modifier
+                    .padding(1.5.dp, 0.dp, 1.5.dp, 0.dp)
+                    .size(12.dp)
+                    .shadow(
+                        elevation = 4.dp,
+                        shape = CircleShape,
+                        ambientColor = Color.Black.copy(alpha = 255f), // Slightly less opaque for a softer effect
+                        spotColor = Color.Black.copy(alpha = 255f)
+                    ),
+                tint = if (index==pagerState.currentPage) LocalContentColor.current else LocalContentColor.current.copy(alpha = 0.5f)
+
+            )
+     }
+    }
 }
 
 @Composable
@@ -132,7 +180,8 @@ fun MediaItemBackdropIntercept(
                 MediaItem(
                     round = 6.dp,
                     uri = mediaItem.backdrop_path,
-                    modifier = modifier
+                    modifier = modifier,
+                    size = ImageSize.BACKDROP
                 )
             }
 
@@ -142,15 +191,17 @@ fun MediaItemBackdropIntercept(
                     MediaItem(
                         round = 6.dp,
                         uri = it.file_path,
-                        modifier = modifier
+                        modifier = modifier,
+                        size = ImageSize.BACKDROP
                     )
                 } ?: // ELSE
                 Box(modifier = modifier) // Red color is to indicate that the media has no english backdrop, this box is TEMPORARY! and for later debugging purposes when making title over media with no english backdrop
                 {
                     MediaItem(
                         round = 6.dp,
-                        uri = mediaItem.backdrop_path,
-                        modifier = Modifier.fillMaxSize()
+                        uri = mediaItem.backdrop_path, // TODO: catch null case here
+                        modifier = Modifier.fillMaxSize(),
+                        size = ImageSize.BACKDROP
                     )
                     Box(modifier = Modifier.size(8.dp).background(Color.Red))
                 }
@@ -162,7 +213,8 @@ fun MediaItemBackdropIntercept(
         MediaItem(
             round = 6.dp,
             uri = mediaItem.backdrop_path,
-            modifier = modifier
+            modifier = modifier,
+            size = ImageSize.BACKDROP
         )
     }
 
@@ -171,13 +223,4 @@ fun MediaItemBackdropIntercept(
 
 
 
-@Composable
-fun MediaItem(uri: String?, round: Dp = 0.dp, modifier: Modifier = Modifier) {
-    val imguri = if (uri!=null) BASE_IMAGE_URL + uri else "https://cataas.com/cat"
-    AsyncImage(
-        model = imguri,
-        contentDescription = null, // TODO: include content description
-        modifier = modifier
-            .clip(RoundedCornerShape(round))
-    )
-}
+

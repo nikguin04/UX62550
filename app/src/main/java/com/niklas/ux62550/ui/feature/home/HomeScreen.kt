@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -101,10 +102,8 @@ fun FeaturedMediaScroller(homeViewModel: HomeViewModel, onNavigateToMedia: (Medi
         }
 
         is MediaItemsUIState.Data -> {
-            HomeWelcomeTopBar()
-            HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaObjects, onNavigateToMedia)
-            Box(Modifier.size(4.dp))
-            HorizontalDotIndexer(Modifier.size(LocalConfiguration.current.screenWidthDp.dp, 12.dp))
+        	HomeWelcomeTopBar()
+            HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaObjects.subList(0,7), onNavigateToMedia)
         }
         else -> {}
     }
@@ -133,27 +132,4 @@ fun GenreMediaStack(homeViewModel: HomeViewModel, onNavigateToMedia: (MediaObjec
     }
 }
 
-@Composable
-fun HorizontalDotIndexer(modifier: Modifier) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        for (i in 0..4) {
-            Icon(
-                Icons.Filled.Circle,
-                contentDescription = "test123",
-                modifier = Modifier
-                    .padding(1.5.dp, 0.dp, 1.5.dp, 0.dp)
-                    .size(12.dp)
-                    .shadow(
-                        elevation = 4.dp,
-                        shape = CircleShape,
-                        ambientColor = Color.Black.copy(alpha = 255f), // Slightly less opaque for a softer effect
-                        spotColor = Color.Black.copy(alpha = 255f)
-                    )
-            )
-        }
-    }
-}
+
