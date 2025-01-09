@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
-import com.niklas.ux62550.ui.feature.mediadetails.MovieImage
+import com.niklas.ux62550.ui.feature.home.MediaItem
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -81,7 +81,7 @@ fun ReviewLayout(
 ) {
     Column {
         Box{
-            MovieImage(
+            MediaItem(
                 uri = media.backDropPath,
                 modifier = Modifier
                     .fillMaxWidth()
