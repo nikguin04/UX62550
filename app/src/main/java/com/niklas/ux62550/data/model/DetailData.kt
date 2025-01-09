@@ -13,37 +13,37 @@ data class MovieDetailObject(
     val genre: List<Genre>,
 
     @SerialName("adult")
-    val adult: Boolean,
+    val adult: Boolean = true,
 
     @SerialName("backdrop_path")
-    val backDropPath : String?,
+    val backDropPath : String? = null,
 
     @SerialName("homepage")
-    val homePage : String,
+    val homePage : String? = null,
 
     @SerialName("imdb_id")
-    val imbdID : String,
+    val imbdID : String? = null,
 
     @SerialName("original_title")
-    val Originaltitle : String,
+    val Originaltitle : String = "",
 
     @SerialName("overview")
-    val Description : String,
+    val Description : String = "",
 
     @SerialName("poster_path")
-    val posterPath : String,
+    val posterPath : String?,
 
     @SerialName("release_date")
     val relaseDate : String,
 
     @SerialName("title")
-    val title: String,
+    val title: String = "",
 
     @SerialName("vote_average")
     val rating : Double,
 
     @SerialName("runtime")
-    val runTime : Int,
+    val runTime : Int = 0,
 
     @SerialName("id")
     val id : Int,
@@ -66,22 +66,22 @@ data class MovieDetailObject(
 @Serializable
 data class Genre(
     @SerialName("id")
-    val genreID: Int,
+    val genreID: Int = 0,
 
     @SerialName("name")
-    val genreName: String
+    val genreName: String = ""
 )
 
 @Serializable
 data class SpokenLanguages(
     @SerialName("english_name")
-    val languageName : String,
+    val languageName : String = "",
 
     @SerialName("iso_639_1")
-    val isoNumber: String,
+    val isoNumber: String = "",
 
     @SerialName("name")
-    val spokenName : String
+    val spokenName : String = ""
 )
 
 
