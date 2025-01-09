@@ -163,7 +163,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
             var youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
                 "https://www.youtube.com/watch?v=${it.key}"
             }
-            if(youtubeUrl == null){
+            if(youtubeUrl == null && trailerState.trailerObject.resultsTrailerLinks.isNotEmpty()){
                 youtubeUrl = "https://www.youtube.com/watch?v=${trailerState.trailerObject.resultsTrailerLinks[0].key}"
             }
             Column(
