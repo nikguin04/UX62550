@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.models.NonMovieBox
 
 @Composable
@@ -31,39 +32,43 @@ fun NonMovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modi
 }
 
 @Composable
-fun NonMovieBoxRow(nonMovieBox: NonMovieBox, modifier: Modifier = Modifier) {
+fun NonMovieBoxRow(person: MediaObject, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        NonMovieBoxMoviePicture(
-            width = 40.dp,
-            height = 40.dp,
-            round = 12.dp,
-            color = nonMovieBox.tempColor,
-            modifier = Modifier.padding(end = 8.dp)
-        )
+//        NonMovieBoxMoviePicture(
+//            width = 40.dp,
+//            height = 40.dp,
+//            round = 12.dp,
+//
+//            modifier = Modifier.padding(end = 8.dp)
+//        )
         Row(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(start = 16.dp)
         ) {
-            Text(
-                text = nonMovieBox.name,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
+            person.name?.let {
+                Text(
+                    text = it,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
             Text(
                 text = " · ",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
-            Text(
-                text = nonMovieBox.genre,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
+            person.media_type?.let {
+                Text(
+                    text = it,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }

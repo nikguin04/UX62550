@@ -58,8 +58,8 @@ fun WatchlistPreview() {
 
 @Composable
 fun WatchlistScreen(viewModel: WatchlistViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
-    val movies = viewModel.moviesState.collectAsState().value
-    WatchlistContent(movieItemsUIState = movies, onNavigateToMedia = onNavigateToMedia)
+//    val movies = viewModel.moviesState.collectAsState().value
+//    WatchlistContent(movieItemsUIState = movies, onNavigateToMedia = onNavigateToMedia)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -143,7 +143,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItem
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(movieItemsUIState.movies) { movieItem ->
+                    items(movieItemsUIState.movies.results) { movieItem ->
                         HorizontalDivider(
                             color = SearchColorForText,
                             thickness = 1.dp,
@@ -154,7 +154,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItem
                         MovieBoxRow(
                             movie = movieItem,
                             modifier = Modifier.clickable(
-                                onClick = { onNavigateToMedia(movieItem.name) }
+                                onClick = { onNavigateToMedia(movieItem.title) }
                             )
                         )
                     }
