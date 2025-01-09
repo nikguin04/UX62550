@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.httpok)
     implementation(libs.logging.interceptor)
+    implementation(libs.coil.compose)
     implementation(libs.androidx.media3.common.ktx)
 
     testImplementation(libs.junit)

@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.models.Movie
+import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
-import com.niklas.ux62550.ui.feature.mediadetails.MovieImage
 
 @Composable
 fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, text: String, textColor: Color, modifier: Modifier = Modifier) {
@@ -65,7 +65,8 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
             MediaItem(
                 uri = movie.backdrop_path,
                 round = 0.dp,
-                modifier = Modifier.width(90.dp).height(50.62.dp)
+                modifier = Modifier.width(90.dp).height(50.62.dp),
+                size = ImageSize.BACKDROP
             )
         }
         Column(

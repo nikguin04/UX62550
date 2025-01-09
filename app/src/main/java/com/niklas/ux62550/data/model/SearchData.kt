@@ -59,7 +59,7 @@ data class MediaObject(
 	val genre_ids: List<Int> = listOf(),
 
     @SerialName("popularity")
-	val popularity: Float,
+	val popularity: Float? = null,
 
     @SerialName("release_date")
 	val release_date: String? = null,
