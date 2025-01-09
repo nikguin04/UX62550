@@ -6,13 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
-
 import com.niklas.ux62550.ui.feature.common.DiscoverItemsUIState
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
 
@@ -24,12 +20,7 @@ fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, on
 
     when (discoverUiState) {
         DiscoverItemsUIState.Empty -> {
-            /*Text(
-                text = "No Discover Items",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )*/
-            // TODO: CWL will make a proper loading page so this is disregarded for now
+
         }
         is DiscoverItemsUIState.Data -> {
             Row(

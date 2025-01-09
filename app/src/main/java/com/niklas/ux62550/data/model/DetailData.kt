@@ -1,9 +1,12 @@
 package com.niklas.ux62550.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
+@Parcelize
 @Serializable
 data class MovieDetailObject(
     @SerialName("spoken_languages")
@@ -48,7 +51,7 @@ data class MovieDetailObject(
     @SerialName("id")
     val id : Int,
 
-) {
+): Parcelable {
     fun toMediaObject(): MediaObject {
         return MediaObject(
             adult = this.adult,
@@ -62,7 +65,7 @@ data class MovieDetailObject(
         )
     }
 }
-
+@Parcelize
 @Serializable
 data class Genre(
     @SerialName("id")
@@ -70,8 +73,9 @@ data class Genre(
 
     @SerialName("name")
     val genreName: String
-)
+): Parcelable
 
+@Parcelize
 @Serializable
 data class SpokenLanguages(
     @SerialName("english_name")
@@ -82,6 +86,6 @@ data class SpokenLanguages(
 
     @SerialName("name")
     val spokenName : String
-)
+): Parcelable
 
 

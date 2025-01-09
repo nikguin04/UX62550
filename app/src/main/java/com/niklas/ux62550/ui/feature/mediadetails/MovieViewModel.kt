@@ -23,13 +23,15 @@ import kotlinx.coroutines.launch
 class MovieViewModel(media: MediaObject) : ViewModel() {
     private val mediaDetailsRepository = MediaDetailsRepository()
 
-    private fun getDetails(MovieID : Int) = viewModelScope.launch {
+    private fun getDetails(MovieID: Int) = viewModelScope.launch {
         mediaDetailsRepository.getMoviesDetails(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
+
     private fun getSimilarMovies(MovieID : Int) = viewModelScope.launch {
         mediaDetailsRepository.getSimilarsMovies(MovieID)
     }
-    private fun getProviderForMovies(MovieID : Int) = viewModelScope.launch {
+
+    private fun getProviderForMovies(MovieID: Int) = viewModelScope.launch {
         mediaDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
     private fun getTrailerForMovies(MovieID : Int) = viewModelScope.launch {

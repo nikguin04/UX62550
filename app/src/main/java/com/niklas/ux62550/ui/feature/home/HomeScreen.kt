@@ -28,12 +28,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImagePainter
 import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.KeywordObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
@@ -50,16 +52,28 @@ fun HomePreview() {
 
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
-    Column(modifier.padding().verticalScroll(rememberScrollState())) {
-        HomeWelcomeTopbar(modifier)
-        FeaturedMediaScroller(homeViewModel, onNavigateToMedia)
-        GenreMediaStack(homeViewModel, onNavigateToMedia)
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel = viewModel(),
+    onNavigateToMedia: (MediaObject) -> Unit) {
+    val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
+    when (mediaItemsUIState) {
+        MediaItemsUIState.Empty -> {
+            LoadingScreen()
+        }
+
+        is MediaItemsUIState.Data -> {
+
+            Column(modifier.padding().verticalScroll(rememberScrollState())) {
+                FeaturedMediaScroller(homeViewModel, onNavigateToMedia)
+                GenreMediaStack(homeViewModel, onNavigateToMedia)
+            }
+        }
     }
 }
 
 @Composable
-fun HomeWelcomeTopbar(modifier: Modifier = Modifier) {
+fun HomeWelcomeTopBar(modifier: Modifier = Modifier) {
     Row(
         modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -69,7 +83,7 @@ fun HomeWelcomeTopbar(modifier: Modifier = Modifier) {
 
         Box(modifier = Modifier.padding(20.dp, 0.dp, 0.dp, 0.dp)) {
             Text(
-                text = "Welcome, User1",
+                text = "Welcome, User",
                 style = TextStyle(
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Normal
@@ -84,15 +98,11 @@ fun FeaturedMediaScroller(homeViewModel: HomeViewModel, onNavigateToMedia: (Medi
     val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
     when (mediaItemsUIState) {
         MediaItemsUIState.Empty -> {
-            /*Text(
-                text = "No Media Items",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )*/
-            // TODO: CWL will make a proper loading page so this is disregarded for now
+            LoadingScreen()
         }
 
         is MediaItemsUIState.Data -> {
+        	HomeWelcomeTopBar()
             HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaObjects.subList(0,7), onNavigateToMedia)
         }
         else -> {}
@@ -104,6 +114,7 @@ fun GenreMediaStack(homeViewModel: HomeViewModel, onNavigateToMedia: (MediaObjec
     val movieGenresDataState: GenresDataState = homeViewModel.movieGenresState.collectAsState().value
     when (movieGenresDataState) {
         GenresDataState.Empty -> {
+
             // No placeholder here since it is managed by the individual genre viewmodels
             // TODO: We should make a loading screen for all the genres, so that they are only displayed when ALL genre fetching is done. Async image loading may be neglected from said fetching
         }
