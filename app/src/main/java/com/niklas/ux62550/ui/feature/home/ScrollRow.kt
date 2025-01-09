@@ -42,6 +42,7 @@ import coil3.compose.AsyncImage
 import com.niklas.ux62550.R
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
+import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.ImageViewModel
 import com.niklas.ux62550.ui.feature.common.ImageViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImagesDataUIState
@@ -179,7 +180,8 @@ fun MediaItemBackdropIntercept(
                 MediaItem(
                     round = 6.dp,
                     uri = mediaItem.backdrop_path,
-                    modifier = modifier
+                    modifier = modifier,
+                    size = ImageSize.BACKDROP
                 )
             }
 

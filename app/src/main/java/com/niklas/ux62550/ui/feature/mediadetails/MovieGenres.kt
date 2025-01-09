@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.niklas.ux62550.ui.feature.home.ImageSize
-import com.niklas.ux62550.ui.feature.home.MediaItem
+import com.niklas.ux62550.ui.feature.common.ImageSize
+import com.niklas.ux62550.ui.feature.common.MediaItem
 
 @Composable
 fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState: ProviderState) {
