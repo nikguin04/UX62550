@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -82,10 +83,10 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
 
                     Text(
                         text = movie.title,
-                        modifier = Modifier.width(150.dp),
+                        modifier = Modifier.width(210.dp),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        maxLines = 1,
+                        maxLines = 8,
                         overflow = TextOverflow.Ellipsis
                     )
 
@@ -105,11 +106,7 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
                             fontWeight = FontWeight.Bold
                         )
 
-                        Text(
-                        text = " · ",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                        )
+                        Spacer(modifier = Modifier.width(74.dp))
 
                         if(movie.release_date.toString().count() >= 5){
                             Text(
