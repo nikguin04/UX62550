@@ -34,13 +34,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.feature.search.MovieBoxRow
 import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
 import com.niklas.ux62550.ui.theme.SearchColorForText
@@ -58,8 +58,8 @@ fun WatchlistPreview() {
 
 @Composable
 fun WatchlistScreen(viewModel: WatchlistViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
-    val movies = viewModel.moviesState.collectAsState().value
-    WatchlistContent(movieItemsUIState = movies, onNavigateToMedia = onNavigateToMedia)
+//    val movies = viewModel.moviesState.collectAsState().value
+//    WatchlistContent(movieItemsUIState = movies, onNavigateToMedia = onNavigateToMedia)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -133,13 +133,9 @@ fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItem
 
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
-                Text(
-                    text = "No movies to be found",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = SearchColorForText
-                )
-            }
+                Text("No movies to be found")
+                LoadingScreen()
+                            }
 
             is MovieItemsUIState.Data -> {
                 // Display list of movie items in LazyColumn
@@ -147,7 +143,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItem
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(movieItemsUIState.movies) { movieItem ->
+                    items(movieItemsUIState.movies.results) { movieItem ->
                         HorizontalDivider(
                             color = SearchColorForText,
                             thickness = 1.dp,
@@ -158,7 +154,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItem
                         MovieBoxRow(
                             movie = movieItem,
                             modifier = Modifier.clickable(
-                                onClick = { onNavigateToMedia(movieItem.name) }
+                                onClick = { onNavigateToMedia(movieItem.title) }
                             )
                         )
                     }

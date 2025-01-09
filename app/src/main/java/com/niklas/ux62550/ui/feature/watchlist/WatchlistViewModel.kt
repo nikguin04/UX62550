@@ -7,6 +7,7 @@ import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.data.remote.getWatchList
 import com.niklas.ux62550.domain.MediaDetailsRepository
+import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 import com.niklas.ux62550.ui.feature.search.MovieItemsUIState

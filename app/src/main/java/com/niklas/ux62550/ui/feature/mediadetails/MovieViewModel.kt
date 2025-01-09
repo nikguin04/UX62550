@@ -8,7 +8,6 @@ import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.data.model.TrailerObject
 import com.niklas.ux62550.domain.MediaDetailsRepository
-import com.niklas.ux62550.ui.feature.common.DiscoverItemsUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -17,13 +16,15 @@ import kotlinx.coroutines.launch
 class MovieViewModel(media: MediaObject) : ViewModel() {
     private val mediaDetailsRepository = MediaDetailsRepository()
 
-    private fun getDetails(MovieID : Int) = viewModelScope.launch {
+    private fun getDetails(MovieID: Int) = viewModelScope.launch {
         mediaDetailsRepository.getMoviesDetails(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
+
     private fun getSimilarMovies(MovieID : Int) = viewModelScope.launch {
         mediaDetailsRepository.getSimilarsMovies(MovieID)
     }
-    private fun getProviderForMovies(MovieID : Int) = viewModelScope.launch {
+
+    private fun getProviderForMovies(MovieID: Int) = viewModelScope.launch {
         mediaDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
     private fun getTrailerForMovies(MovieID : Int) = viewModelScope.launch {

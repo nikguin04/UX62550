@@ -7,17 +7,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.home.HomeScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsScreen
 import com.niklas.ux62550.ui.feature.profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.feature.profile.LoginScreen
 import com.niklas.ux62550.ui.feature.profile.ProfileScreen
 import com.niklas.ux62550.ui.feature.profile.RegisterScreen
-import com.niklas.ux62550.ui.feature.review.ReviewScreen
+import com.niklas.ux62550.ui.feature.review.ScreenReviewAndRating
 import com.niklas.ux62550.ui.feature.search.SearchScreen
-import com.niklas.ux62550.ui.feature.watchlist.WatchlistScreen
 
 @Composable
 fun MainNavHost(
@@ -43,9 +44,12 @@ fun MainNavHost(
 
         composable<Route.SearchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
-            /*SearchScreen(
-                onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
-            )*/
+            SearchScreen(
+                onNavigateToMedia = { media ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
+                    navController.navigate(Route.MediaDetailsScreen)
+                }
+            )
         }
 
         composable<Route.MediaDetailsScreen> { backStackEntry ->
@@ -55,16 +59,19 @@ fun MainNavHost(
             LaunchedEffect(Unit) { /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/ }
             MediaDetailsScreen(
                 media?: SearchDataExamples.MediaObjectExample,
-                onNavigateToOtherMedia = { media ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
-                    navController.navigate(Route.MediaDetailsScreen) },
-                onNavigateToReview = { name -> navController.navigate(Route.ReviewScreen(name)) }
-            )
+                onNavigateToReview = { mediaDetails ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
+                    navController.navigate(Route.ReviewScreen) },
+                onNavigateToOtherMedia = { newmedia ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", newmedia)
+                    navController.navigate(Route.MediaDetailsScreen) }
+                )
         }
 
         composable<Route.ReviewScreen> { backStackEntry ->
+            val media = navController.previousBackStackEntry?.savedStateHandle?.get<MovieDetailObject>("reviewMedia")
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
-            ReviewScreen()
+            ScreenReviewAndRating(media = media?: MediaDetailExample.MediaDetailObjectExample)
         }
 
         composable<Route.LoginRegisterScreen> {
