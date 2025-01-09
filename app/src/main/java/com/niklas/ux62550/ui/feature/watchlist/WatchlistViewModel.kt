@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.data.remote.RemoteFirebase
+import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.remote.getWatchList
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.data.model.SearchDataObject
@@ -48,7 +48,21 @@ class WatchlistViewModel(media: MediaObject) : ViewModel() {
         getDetails(MovieID = media.id)
     }
 
-    // having the data from the firebase seach with the api to get the movies
-    private val mutableMoviesState = MutableStateFlow<MovieItemsUIState>(MovieItemsUIState.Data(movies.))
-    val moviesState: StateFlow<MovieItemsUIState> = mutableMoviesState
+    fun initPreview() {
+        val movies = listOf(
+            MediaObject(title="RED: The Movie", release_date="2022", vote_average=3.5f, id=1, popularity=1f, backdrop_path = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
+            MediaObject(title="Where's the Blue?", release_date="2014", vote_average=3.5f, id=1, popularity=1f/*, backdrop_path = "/8UOAYjhwSF3aPZhm6wgLuyHRyrR.jpg"*/),
+            MediaObject(title="Green Man", release_date="1998", vote_average=3.5f, id=1, popularity=1f, backdrop_path = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
+        )
+        mutableMovieState.update {
+            MovieState.Data(
+                mediaDetailObjects = MovieDetailObject()
+            )
+        }
+    }
+}
+
+sealed class MovieFromIdFromDB {
+    data object Empty : MovieFromIdFromDB()
+    data class Data(val movies: SearchDataObject) : MovieFromIdFromDB()
 }
