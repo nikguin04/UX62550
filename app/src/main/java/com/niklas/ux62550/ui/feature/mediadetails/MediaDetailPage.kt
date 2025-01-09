@@ -110,15 +110,15 @@ fun MediaDetailsScreen(
     val providerState = viewModel.providerState.collectAsState().value
 
 
-    when (movieState) {
-        MovieState.Empty -> {
+    when  {
+       movieState is MovieState.Empty || creditState is CreditState.Empty -> {
             LoadingScreen()
         }
-        is MovieState.Data -> {
+
+       movieState is MovieState.Data && creditState is CreditState.Data-> {
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
-
             )
             {
                 Header(movieState = movieState, trailerState = trailerState)
@@ -126,24 +126,13 @@ fun MediaDetailsScreen(
                 Genres(genres = movieState, providerState = providerState)
                 DescriptionText(description = movieState.mediaDetailObjects.Description)
 
+                ActorsAndDirectors(creditState = creditState)
+                DetailedRating()
+                SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
 
-
-                when (creditState) {
-                    CreditState.Empty -> {
-
-                    }
-                    is CreditState.Data -> {
-                        ActorsAndDirectors(creditState = creditState)
-                        DetailedRating()
-                        SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
-
-                    }
-
-                }
 
             }
         }
-
     }
 }
 @Composable
@@ -240,7 +229,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
             modifier = Modifier.clickable(onClick = { onNavigateToReview(movieState.mediaDetailObjects) }),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val rating = movieState.mediaDetailObjects.rating / 2
+            val rating = String.format("%.1f", movieState.mediaDetailObjects.rating/2).toDouble()
             for (i in 1..5) {
                 val starIcon = when {
                     i <= rating -> Icons.Outlined.Star

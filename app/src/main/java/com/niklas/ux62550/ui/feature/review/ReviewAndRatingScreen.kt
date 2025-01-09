@@ -1,6 +1,8 @@
 package com.niklas.ux62550.ui.feature.review
 
+
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,13 +20,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,16 +40,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.examples.MediaDetailExample
-import com.niklas.ux62550.data.examples.SearchDataExamples
-import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
-import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MovieImage
-import com.niklas.ux62550.ui.feature.mediadetails.MovieState
-import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
-import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModelFactory
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -60,25 +53,10 @@ fun ReviewAndRatingPreview() {
 
     UX62550Theme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ReviewScreen(media = MediaDetailExample.MediaDetailObjectExample)
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample)
         }
     }
 }
-
-@Composable
-fun ReviewScreen(
-    media: MovieDetailObject,
-    ) {
-    ScreenReviewAndRating(
-            media = media
-
-        )
-    }
-
-
-
-
-
 
 @Composable
 fun ScreenReviewAndRating(
@@ -88,7 +66,7 @@ fun ScreenReviewAndRating(
 
     Column(modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-        ReviewLayout(media = media, movieRating = media.rating/2)
+        ReviewLayout(media = media)
         PublishReview()
         MoreDetailedReview()
     }
@@ -97,9 +75,7 @@ fun ScreenReviewAndRating(
 @Composable
 fun ReviewLayout(
     modifier: Modifier = Modifier,
-    media: MovieDetailObject,
-    movieRating: Double
-
+    media: MovieDetailObject
 ) {
     Column {
         Box{
@@ -131,17 +107,23 @@ fun ReviewLayout(
                     //.align(Alignment.BottomCenter),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-
+                    var rating by remember { mutableStateOf(0) }
                     for (i in 0..4) {
-                        Icon(
+                        val isFilled = i <= rating
+                        Image(
+                            // Needs to be made button
                             imageVector = Icons.Outlined.StarOutline,
-                            contentDescription = "Star icon",
-                            tint = ReviewColor,
                             modifier = Modifier.requiredSize(54.dp)
-                        )
+                                .clickable {
+                                    rating = i
+                                },
+                            colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray),
+                            contentDescription = "Star icon",
+
+                            )
                     }
                     Text(
-                        text = "$movieRating/5",
+                        text = "${rating+1}/5",
                         style = TextStyle(
                             fontSize = 34.sp,
                             fontWeight = FontWeight.Bold
@@ -214,13 +196,19 @@ fun MoreDetailedReview() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
+        var rating by remember { mutableStateOf(0) }
         for (i in 0..4) {
+            val isFilled = i <= rating
             Image(
                 // Needs to be made button
                 imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(34.dp),
-                colorFilter = ColorFilter.tint(Color.Yellow),
+                modifier = Modifier.requiredSize(34.dp)
+                    .clickable {
+                        rating = i
+                    },
+                colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray),
                 contentDescription = "Star icon",
+
             )
             Spacer(modifier = Modifier.width(4.dp))
         }
@@ -236,14 +224,21 @@ fun MoreDetailedReview() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
+        var rating by remember { mutableStateOf(0) }
+
         for (i in 0..4) {
+            val isFilled = i <= rating
             Image(
                 // Needs to be made button
                 imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(34.dp),
-                colorFilter = ColorFilter.tint(Color.Yellow),
+                modifier = Modifier.requiredSize(34.dp)
+                    .clickable {
+                        rating = i
+                    },
+                colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray),
                 contentDescription = "Star icon",
-            )
+
+                )
             Spacer(modifier = Modifier.width(4.dp))
         }
     }
@@ -258,14 +253,20 @@ fun MoreDetailedReview() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
+        var rating by remember { mutableStateOf(0) }
+
         for (i in 0..4) {
+            val isFilled = i <= rating
             Image(
                 // Needs to be made button
                 imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(34.dp),
-                colorFilter = ColorFilter.tint(Color.Yellow),
+                modifier = Modifier.requiredSize(34.dp)
+                    .clickable {
+                        rating = i
+                    },
+                colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray),
                 contentDescription = "Star icon",
-            )
+                )
             Spacer(modifier = Modifier.width(4.dp))
         }
     }
@@ -280,14 +281,21 @@ fun MoreDetailedReview() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
+        var rating by remember { mutableStateOf(0) }
+
         for (i in 0..4) {
+            val isFilled = i <= rating
             Image(
                 // Needs to be made button
                 imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(34.dp),
-                colorFilter = ColorFilter.tint(Color.Yellow),
+                modifier = Modifier.requiredSize(34.dp)
+                    .clickable {
+                        rating = i
+                    },
+                colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray),
                 contentDescription = "Star icon",
-            )
+
+                )
             Spacer(modifier = Modifier.width(4.dp))
         }
     }

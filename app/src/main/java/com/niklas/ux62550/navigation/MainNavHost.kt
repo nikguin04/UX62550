@@ -17,9 +17,7 @@ import com.niklas.ux62550.ui.feature.profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.feature.profile.LoginScreen
 import com.niklas.ux62550.ui.feature.profile.ProfileScreen
 import com.niklas.ux62550.ui.feature.profile.RegisterScreen
-import com.niklas.ux62550.ui.feature.review.ReviewScreen
-import com.niklas.ux62550.ui.feature.search.SearchScreen
-import com.niklas.ux62550.ui.feature.watchlist.WatchlistScreen
+import com.niklas.ux62550.ui.feature.review.ScreenReviewAndRating
 
 @Composable
 fun MainNavHost(
@@ -69,7 +67,7 @@ fun MainNavHost(
         composable<Route.ReviewScreen> { backStackEntry ->
             val media = navController.previousBackStackEntry?.savedStateHandle?.get<MovieDetailObject>("reviewMedia")
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
-            ReviewScreen(media = media?: MediaDetailExample.MediaDetailObjectExample)
+            ScreenReviewAndRating(media = media?: MediaDetailExample.MediaDetailObjectExample)
         }
 
         composable<Route.LoginRegisterScreen> {
