@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -53,15 +52,16 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    topBar = { GeneralTopBar(navController, canNavigateBack) },
                     bottomBar = { GeneralNavBar(navController) },
-                    contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp)
                 ) { innerPadding ->
-                    MainNavHost(
-                        navController = navController,
-                        onRouteChanged = {},
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    Box {
+                        MainNavHost(
+                            navController = navController,
+                            onRouteChanged = {},
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                        GeneralTopBar(navController, canNavigateBack)
+                    }
                 }
             }
         }
