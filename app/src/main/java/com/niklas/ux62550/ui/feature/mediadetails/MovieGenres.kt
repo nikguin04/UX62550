@@ -27,7 +27,7 @@ import com.niklas.ux62550.ui.feature.common.MediaItem
 fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState: ProviderState) {
     Row(
         modifier = modifier
-            .padding(8.dp, 10.dp, 0.dp, 10.dp)
+            .padding(20.dp, 10.dp, 20.dp, 8.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {

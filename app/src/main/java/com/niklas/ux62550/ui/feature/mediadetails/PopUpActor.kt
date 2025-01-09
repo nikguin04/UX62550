@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -28,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -41,12 +41,19 @@ import com.niklas.ux62550.ui.feature.common.MediaItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.Data) {
-    Text("Actors and Directors", Modifier.padding(8.dp, 12.dp, 0.dp, 0.dp))
+    Text("Actors and Directors",
+        Modifier
+        .padding(20.dp, 15.dp, 20.dp, 0.dp),
+        style = TextStyle(
+            fontSize = 18.sp,
+            color = Color.White
+    )
+    )
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     Row(
         modifier = modifier.fillMaxWidth()
-            .padding(8.dp, 0.dp, 0.dp, 0.dp),
+            .padding(20.dp, 10.dp, 20.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in 0 until minOf(4, creditState.creditObject.cast.size)) {

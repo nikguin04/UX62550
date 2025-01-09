@@ -58,8 +58,6 @@ import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.home.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
-import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
-import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import java.util.Locale
@@ -297,13 +295,13 @@ fun DescriptionText(description: String) {
         style = TextStyle(
             lineHeight = 1.25.em,
             lineBreak = LineBreak.Paragraph,
-            fontSize = 14.sp,
-            textAlign = TextAlign.Start,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Justify,
             color = DescriptionColor
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp, 6.dp, 0.dp, 0.dp),
+            .padding(20.dp, 10.dp, 20.dp, 0.dp),
     )
 }
 
