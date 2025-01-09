@@ -60,6 +60,7 @@ class RemoteMediaDataSource {
     suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
     suspend fun getMovieGenres() = mediaApi.getMovieGenres()
     suspend fun getTvGenres() = mediaApi.getTvGenres()
+    suspend fun getUserSearch(search_query: String) = mediaApi.getUserSearch(search_query)
     suspend fun getTrailer(movie_id: Int) = mediaApi.getTrailer(movie_id)
     suspend fun getImages(media_type: String, media_id: Int,  include_image_language: String = "en") = mediaApi.getImages(media_type, media_id, include_image_language)
 }
@@ -71,6 +72,11 @@ interface TMDBApiService {
 
     @GET("trending/{search_mode}/{time_window}") // Note: Does not support "people" as search mode
     suspend fun getTrending(@Path("search_mode") search_mode: String, @Path("time_window") time_window: String): SearchDataObject
+
+
+    @GET("search/multi")
+    suspend fun getUserSearch(@Query("query") query: String): SearchDataObject
+
 
 	@GET("keyword/{keyword_id}/movies")
     suspend fun getKeywordMovies(@Path("keyword_id") keyword_id: String, @Query("page") page: Int = 1): SearchDataObject

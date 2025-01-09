@@ -22,6 +22,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
@@ -39,42 +44,50 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Preview(showBackground = true)
 fun SearchPreview() {
     UX62550Theme(darkTheme = true) {
+
+        val viewModel: SearchViewModel = viewModel()
+        viewModel.initPreview()
+
+
+
         Surface(modifier = Modifier.fillMaxSize()) {
-            SearchScreen(onNavigateToMedia = {})
+            SearchScreen(viewModel = viewModel, onNavigateToMedia = {})
         }
     }
 }
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
+fun SearchScreen(viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
     val nonMoviesState = viewModel.nonMoviesState.collectAsState().value
-    val moviesState = viewModel.moviesState.collectAsState().value
-    SearchContent(movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
+    val moviesState = viewModel.movieItemsUIState.collectAsState().value
+    SearchContent(viewModel = viewModel, movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchContent(
+    viewModel: SearchViewModel,
     modifier: Modifier = Modifier,
     movieItemsUIState: MovieItemsUIState,
     nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
-    onNavigateToMedia: (String) -> Unit
+    onNavigateToMedia: (MediaObject) -> Unit
 ) {
+    var text by rememberSaveable { mutableStateOf("") }
+    var expanded by rememberSaveable { mutableStateOf(false) }
     LazyColumn(modifier = modifier.padding()) {
         item {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, 45.dp, 0.dp, 20.dp),
+
+                    .padding(20.dp, 45.dp, 20.dp, 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 SearchBar(
                     inputField = {
-                        var text = ""
-                        var expanded = false
-                        SearchBarDefaults.InputField(query = text,
-                            onQueryChange = { text = it },
+                        SearchBarDefaults.InputField(
+                            query = text,
+                            onQueryChange = { text = it; viewModel.getDetails(it) },
                             onSearch = { expanded = false },
                             expanded = expanded,
                             onExpandedChange = { expanded = it },
@@ -90,59 +103,26 @@ fun SearchContent(
                                     imageVector = Icons.Filled.Search,
                                     modifier = Modifier.requiredSize(24.dp),
                                     colorFilter = ColorFilter.tint(Color.Black),
-                                    contentDescription = "Star icon"
+                                    contentDescription = "Search icon"
                                 )
                             }
                         )
                     },
                     colors = SearchBarDefaults.colors(containerColor = Color(0xFFACACAC)),
                     expanded = false,
-                    onExpandedChange = {},
+                    onExpandedChange = { expanded = it },
                     content = {},
                     modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp)
                 )
             }
         }
-        item {
-            SectionHeader(title = "Actors and Genres")
-        }
 
-        when (nonMovieBoxItemsUIState) {
-            NonMovieBoxItemsUIState.Empty -> {
-                item {
-                    Text(
-                        text = "No movies to be found",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = SearchColorForText
-                    )
-                }
-            }
-            is NonMovieBoxItemsUIState.Data -> {
-                var putDivider = false;
-                itemsIndexed(nonMovieBoxItemsUIState.nonMovieBoxes) { index, nonMovieBoxItem ->
-                    if (index > 0) {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                            ) {
-                            HorizontalDivider(
-                                color = SearchColorForText,
-                                thickness = 1.dp,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp)
-                                    .fillMaxWidth(0.7f)
-                            )
-                        }
-                    }
-                    NonMovieBoxRow(nonMovieBox = nonMovieBoxItem)
-                }
-            }
-        }
         item {
             SectionHeader(title = "Movies and Series")
         }
 
+        var firstTimePerson = false
+        var firstTimeMovie = false
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
                 item {
@@ -155,27 +135,83 @@ fun SearchContent(
                 }
             }
             is MovieItemsUIState.Data -> {
-                itemsIndexed(movieItemsUIState.movies) { index, movieBoxItem ->
-                    if (index > 0) {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            HorizontalDivider(
-                                color = SearchColorForText,
-                                thickness = 1.dp,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp)
-                                    .fillMaxWidth(0.7f)
+                itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
+                    when (movieBoxItem.media_type) {
+                        "tv" -> {
+                        }
+                        "person" -> {
+                        }
+                        "movie" -> {
+                            if(firstTimeMovie == true){
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    HorizontalDivider(
+                                        color = SearchColorForText,
+                                        thickness = 1.dp,
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp)
+                                            .fillMaxWidth(0.7f)
+                                    )
+                                }
+
+                            }
+                            firstTimeMovie = true
+                            MovieBoxRow(
+                                movie = movieBoxItem,
+                                modifier = Modifier.clickable(
+                                    onClick = { onNavigateToMedia(movieBoxItem) }
+                                )
                             )
                         }
                     }
-                    MovieBoxRow(
-                        movie = movieBoxItem,
-                        modifier = Modifier.clickable(
-                            onClick = { onNavigateToMedia(movieBoxItem.name) }
-                        )
+                }
+            }
+        }
+
+        item {
+            SectionHeader(title = "Actors and Genres")
+        }
+
+        when (movieItemsUIState) {
+            MovieItemsUIState.Empty -> {
+                item {
+                    Text(
+                        text = "No person found",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = SearchColorForText
                     )
+                }
+            }
+            is MovieItemsUIState.Data -> {
+                itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
+                    when (movieBoxItem.media_type) {
+                        "tv" -> {
+                        }
+                        "person" -> {
+                            if(firstTimePerson == true){
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        HorizontalDivider(
+                                            color = SearchColorForText,
+                                            thickness = 1.dp,
+                                            modifier = Modifier
+                                                .padding(horizontal = 16.dp)
+                                                .fillMaxWidth(0.7f)
+                                        )
+
+                                    }
+                            }
+                            firstTimePerson = true
+                            NonMovieBoxRow(person = movieBoxItem)
+                        }
+                        "movie" -> {
+                        }
+                    }
                 }
             }
         }
