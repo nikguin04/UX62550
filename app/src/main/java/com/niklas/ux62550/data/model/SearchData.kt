@@ -67,6 +67,9 @@ data class MediaObject(
     @SerialName("vote_average")
 	val vote_average: Float? = null,
 
+    @SerialName("name")
+    val name: String? = null,
+
     @SerialName("vote_count")
 	val vote_count: Int? = null,
     ): Parcelable

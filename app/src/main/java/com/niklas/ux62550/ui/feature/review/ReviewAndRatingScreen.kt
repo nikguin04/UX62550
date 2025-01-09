@@ -13,10 +13,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.StarHalf
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,6 +31,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,6 +43,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -123,34 +130,41 @@ fun ReviewLayout(
 //                )
 //
 //        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
 
-                Row(
-                    //modifier = Modifier
-                    //.align(Alignment.BottomCenter),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    var rating by remember { mutableStateOf(0) }
+            Row(
+                //modifier = Modifier
+                //.align(Alignment.BottomCenter),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                var rating by remember { mutableFloatStateOf(0f) }
+
+                Row(modifier = Modifier.wrapContentWidth()) {
                     for (i in 0..4) {
-                        val isFilled = i <= rating
+                        val isFilled = i < rating.toInt()
+                        val isHalfFilled = (rating - i) in 0.5..0.99
                         Image(
-                            // Needs to be made button
-                            imageVector = Icons.Outlined.StarOutline,
-                            modifier = Modifier.requiredSize(54.dp)
+                            imageVector = when {
+                                isFilled -> Icons.Filled.Star
+                                isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
+                                else -> Icons.Outlined.StarOutline
+                            },
+                            modifier = Modifier
+                                .requiredSize(38.dp)
                                 .clickable {
-                                    rating = i
+                                    val clickedPosition = i + 1
+                                    rating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
                                 },
-                            colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray),
+                            colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
                             contentDescription = "Star icon",
-
-                            )
+                        )
                     }
                     Text(
-                        text = "${rating+1}/5",
+                        text = "${rating}/5.0",
                         style = TextStyle(
                             fontSize = 34.sp,
                             fontWeight = FontWeight.Bold
@@ -160,7 +174,6 @@ fun ReviewLayout(
                     )
                 }
             }
-
         }
     }
 
@@ -223,22 +236,7 @@ fun MoreDetailedReview() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
-        var rating by remember { mutableStateOf(0) }
-        for (i in 0..4) {
-            val isFilled = i <= rating
-            Image(
-                // Needs to be made button
-                imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(34.dp)
-                    .clickable {
-                        rating = i
-                    },
-                colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray),
-                contentDescription = "Star icon",
-
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-        }
+        RatingStars()
     }
     Row(
         modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
@@ -251,23 +249,7 @@ fun MoreDetailedReview() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
-        var rating by remember { mutableStateOf(0) }
-
-        for (i in 0..4) {
-            val isFilled = i <= rating
-            Image(
-                // Needs to be made button
-                imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(34.dp)
-                    .clickable {
-                        rating = i
-                    },
-                colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray),
-                contentDescription = "Star icon",
-
-                )
-            Spacer(modifier = Modifier.width(4.dp))
-        }
+        RatingStars()
     }
     Row(
         modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
@@ -280,22 +262,7 @@ fun MoreDetailedReview() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
-        var rating by remember { mutableStateOf(0) }
-
-        for (i in 0..4) {
-            val isFilled = i <= rating
-            Image(
-                // Needs to be made button
-                imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(34.dp)
-                    .clickable {
-                        rating = i
-                    },
-                colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray),
-                contentDescription = "Star icon",
-                )
-            Spacer(modifier = Modifier.width(4.dp))
-        }
+        RatingStars()
     }
     Row(
         modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
@@ -308,23 +275,7 @@ fun MoreDetailedReview() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
-        var rating by remember { mutableStateOf(0) }
-
-        for (i in 0..4) {
-            val isFilled = i <= rating
-            Image(
-                // Needs to be made button
-                imageVector = Icons.Outlined.StarOutline,
-                modifier = Modifier.requiredSize(34.dp)
-                    .clickable {
-                        rating = i
-                    },
-                colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray),
-                contentDescription = "Star icon",
-
-                )
-            Spacer(modifier = Modifier.width(4.dp))
-        }
+        RatingStars()
     }
 }
 
@@ -363,4 +314,34 @@ fun TitleText(movieTitle: String) {
             .fillMaxWidth()
             .padding(0.dp, 120.dp),
     )
+}
+
+
+@Composable
+fun RatingStars() {
+    var rating by remember { mutableFloatStateOf(0f) }
+
+    Row(modifier = Modifier.wrapContentWidth()) {
+        for (i in 0..4) {
+            val isFilled = i < rating.toInt()
+            val isHalfFilled = (rating - i) in 0.5..0.99
+
+            Image(
+                imageVector = when {
+                    isFilled -> Icons.Filled.Star
+                    isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
+                    else -> Icons.Outlined.StarOutline
+                },
+                modifier = Modifier
+                    .requiredSize(34.dp)
+                    .clickable {
+                        val clickedPosition = i + 1
+                        rating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
+                    },
+                colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
+                contentDescription = "Star icon",
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+        }
+    }
 }

@@ -22,6 +22,7 @@ import com.niklas.ux62550.ui.feature.profile.LoginScreen
 import com.niklas.ux62550.ui.feature.profile.ProfileScreen
 import com.niklas.ux62550.ui.feature.profile.RegisterScreen
 import com.niklas.ux62550.ui.feature.review.ScreenReviewAndRating
+import com.niklas.ux62550.ui.feature.search.SearchScreen
 
 @Composable
 fun MainNavHost(
@@ -47,9 +48,12 @@ fun MainNavHost(
 
         composable<Route.SearchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
-            /*SearchScreen(
-                onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) }
-            )*/
+            SearchScreen(
+                onNavigateToMedia = { media ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
+                    navController.navigate(Route.MediaDetailsScreen)
+                }
+            )
         }
 
         composable<Route.MediaDetailsScreen> { backStackEntry ->

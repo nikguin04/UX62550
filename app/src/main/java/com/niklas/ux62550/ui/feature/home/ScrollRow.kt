@@ -45,6 +45,7 @@ import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE
 import com.niklas.ux62550.ui.feature.common.ImageViewModel
 import com.niklas.ux62550.ui.feature.common.ImageViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImagesDataUIState
+import com.niklas.ux62550.ui.feature.common.MediaItem
 import kotlin.math.absoluteValue
 
 
@@ -174,6 +175,12 @@ fun MediaItemBackdropIntercept(
         when (imagesDataUIState) {
             ImagesDataUIState.Empty -> {
                 // TODO: CWL loading page?
+
+                MediaItem(
+                    round = 6.dp,
+                    uri = mediaItem.backdrop_path,
+                    modifier = modifier
+                )
             }
 
             is ImagesDataUIState.Data -> {
@@ -213,33 +220,5 @@ fun MediaItemBackdropIntercept(
 }
 
 
-enum class ImageSize {
-    BACKDROP, LOGO, POSTER, PROFILE, STILL
-}
 
-@Composable // TODO: These two composables should be moved to common features
-fun MediaItem(uri: String?, round: Dp = 0.dp, modifier: Modifier = Modifier, size: ImageSize) {
-    val sizeStr = when (size) {
-        com.niklas.ux62550.ui.feature.home.ImageSize.BACKDROP -> "w1280"
-        com.niklas.ux62550.ui.feature.home.ImageSize.LOGO -> "w500"
-        com.niklas.ux62550.ui.feature.home.ImageSize.POSTER -> "w780"
-        com.niklas.ux62550.ui.feature.home.ImageSize.PROFILE -> "w185"
-        com.niklas.ux62550.ui.feature.home.ImageSize.STILL -> "w300"
-    }
-    val imguri = if (uri!=null) "$BASE_IMAGE_URL$sizeStr/$uri" else "https://cataas.com/cat"
-    AsyncImage(
-        model = imguri,
-        contentDescription = null, // TODO: include content description
-        error = debugPlaceholder(R.drawable.howlsmovingcastle_en),
-        modifier = modifier
-            .clip(RoundedCornerShape(round))
-    )
-}
-@Composable
-fun debugPlaceholder(@DrawableRes debugPreview: Int) =
-    if (LocalInspectionMode.current) {
-        painterResource(id = debugPreview) // Source for preview
-    } else {
-        painterResource(id = R.drawable.networkerror)
-        //null // Source for build application
-}
+
