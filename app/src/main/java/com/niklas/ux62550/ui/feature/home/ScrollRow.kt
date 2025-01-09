@@ -128,6 +128,7 @@ fun MediaItemBackdropIntercept(
         when (imagesDataUIState) {
             ImagesDataUIState.Empty -> {
                 // TODO: CWL loading page?
+
                 MediaItem(
                     round = 6.dp,
                     uri = mediaItem.backdrop_path,
