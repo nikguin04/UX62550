@@ -174,11 +174,6 @@ fun MediaItemBackdropIntercept(
         when (imagesDataUIState) {
             ImagesDataUIState.Empty -> {
                 // TODO: CWL loading page?
-                /*MediaItem(
-                    round = 6.dp,
-                    uri = mediaItem.backdrop_path,
-                    modifier = modifier
-                )*/
             }
 
             is ImagesDataUIState.Data -> {
@@ -194,7 +189,7 @@ fun MediaItemBackdropIntercept(
                 {
                     MediaItem(
                         round = 6.dp,
-                        uri = mediaItem.backdrop_path,
+                        uri = mediaItem.backdrop_path, // TODO: catch null case here
                         modifier = Modifier.fillMaxSize()
                     )
                     Box(modifier = Modifier.size(8.dp).background(Color.Red))
@@ -232,5 +227,6 @@ fun debugPlaceholder(@DrawableRes debugPreview: Int) =
     if (LocalInspectionMode.current) {
         painterResource(id = debugPreview) // Source for preview
     } else {
-        null // Source for build application
+        painterResource(id = R.drawable.networkerror)
+        //null // Source for build application
 }
