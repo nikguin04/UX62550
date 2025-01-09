@@ -234,7 +234,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
             modifier = Modifier.clickable(onClick = { onNavigateToReview(movieState.mediaDetailObjects) }),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val rating = String.format("%.1f", movieState.mediaDetailObjects.rating/2).toDouble()
+            val rating = movieState.mediaDetailObjects.rating/2
             for (i in 1..5) {
                 val starIcon = when {
                     i <= rating -> Icons.Outlined.Star
@@ -250,7 +250,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
             }
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                rating.toString().substring(0,3),
+                String.format(Locale.ENGLISH, "%.1f", movieState.mediaDetailObjects.rating/2),
                 fontSize = 18.sp
             )
         }
