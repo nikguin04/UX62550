@@ -103,7 +103,6 @@ fun MediaDetailsScreen(
                 Genres(genres = movieState, providerState = providerState)
                 DescriptionText(description = movieState.mediaDetailObjects.Description)
             }
-            else -> {}
         }
 
         when (creditState) {
@@ -208,9 +207,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                 TitleText(movieState.mediaDetailObjects.Originaltitle)
             }
         }
-         else -> {}
     }
-
         // Bookmark Button
         Image(
             Icons.Outlined.BookmarkBorder,
