@@ -15,6 +15,7 @@ datastore = "1.1.1"
 graphicsShapesAndroid = "1.0.1"
 kotlinxSerializationJson = "1.7.3"
 loggingInterceptor = "5.0.0-alpha.14"
+coilComposeVersion = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +45,7 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 kotlin-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilComposeVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

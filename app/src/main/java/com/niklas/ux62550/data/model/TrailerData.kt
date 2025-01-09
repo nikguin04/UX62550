@@ -9,11 +9,11 @@ data class TrailerObject(
         val movieTrailerID : Int,
 
     @SerialName("results")
-    val resultsTrailerLinks : List<TrailerLinks>,
+    val resultsTrailerLinks : List<TrailerLink>,
 )
 
 @Serializable
-data class TrailerLinks(
+data class TrailerLink(
     @SerialName("type")
     val type: String? = null,
 

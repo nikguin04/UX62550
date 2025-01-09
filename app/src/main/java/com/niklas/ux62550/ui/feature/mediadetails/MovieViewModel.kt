@@ -3,12 +3,18 @@ package com.niklas.ux62550.ui.feature.mediadetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.niklas.ux62550.data.examples.MediaDetailExample
+import com.niklas.ux62550.data.examples.SearchDataExamples
+import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.data.model.Provider
 import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.data.model.TrailerObject
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.ui.feature.common.DiscoverItemsUIState
+import com.niklas.ux62550.ui.feature.home.GenresDataState
+import com.niklas.ux62550.ui.feature.home.MediaItemsUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -81,6 +87,34 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         getSimilarMovies(MovieID = media.id)
         getProviderForMovies(MovieID = media.id)
         getTrailerForMovies(MovieID = media.id)
+    }
+
+    fun initPreview() {
+        mutableMovieState.update {
+            MovieState.Data(
+                mediaDetailObjects = MediaDetailExample.MediaDetailObjectExample
+            )
+        }
+        mutableSimilarMovieState.update {
+            SimilarMovieState.Data(
+                similarMoviesObject = listOf(SearchDataExamples.MediaObjectExample, SearchDataExamples.MediaObjectExample, SearchDataExamples.MediaObjectExample)
+            )
+        }
+
+        mutableProviderState.update {
+            ProviderState.Data(
+                providerDataObject = mapOf<String,Result>(
+                    "DK" to com.niklas.ux62550.data.model.Result(link = "", flatrate = listOf(Provider(logoPath = "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg", providerId=0, providerName = "Netflix")) )
+                )
+            )
+        }
+
+        mutableTrailerState.update {
+            TrailerState.Data(
+                trailerObject = MediaDetailExample.TrailerObjectExample
+            )
+        }
+
     }
 }
 

@@ -31,9 +31,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -50,6 +53,7 @@ import com.niklas.ux62550.ui.feature.common.CreditState
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.home.MediaItem
+import com.niklas.ux62550.ui.feature.home.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.time.Duration.Companion.minutes
@@ -57,27 +61,32 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 @Preview(showBackground = true)
 fun MediaDetailPagePreview() {
+    val media = SearchDataExamples.MediaObjectExample
+    val movieViewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
+    movieViewModel.initPreview()
+
+    val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
+
     UX62550Theme(darkTheme = true) {
         Surface {
-            MediaDetailsScreen(SearchDataExamples.MediaObjectExample, onNavigateToOtherMedia = {}, onNavigateToReview = {})
+            MediaDetailsScreen(movieViewModel, creditsViewModel, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
     }
 }
 
 @Composable
 fun MediaDetailsScreen(
-    media: MediaObject,
+    movieViewModel: MovieViewModel,
+    creditsViewModel: CreditViewModel,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (String) -> Unit
 ) {
-    val viewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
-    val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
 
-    val movieState = viewModel.movieState.collectAsState().value
-    val similarMediaState = viewModel.similarMediaState.collectAsState().value
-    val trailerState = viewModel.trailerState.collectAsState().value
+    val movieState = movieViewModel.movieState.collectAsState().value
+    val similarMediaState = movieViewModel.similarMediaState.collectAsState().value
+    val trailerState = movieViewModel.trailerState.collectAsState().value
     val creditState = creditsViewModel.creditState.collectAsState().value
-    val providerState = viewModel.providerState.collectAsState().value
+    val providerState = movieViewModel.providerState.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -94,7 +103,6 @@ fun MediaDetailsScreen(
                 Genres(genres = movieState, providerState = providerState)
                 DescriptionText(description = movieState.mediaDetailObjects.Description)
             }
-            else -> {}
         }
 
         when (creditState) {
@@ -118,7 +126,29 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
         Box(modifier = Modifier.alpha(0.5f)) {
             MediaItem(
                 uri = movieState.mediaDetailObjects.backDropPath,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                .fillMaxWidth()
+                .graphicsLayer(alpha = 1f)
+                .drawWithContent {
+                    drawContent() // Draw the actual image
+
+                    // Draw the fade
+                    drawRect(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Black,
+                                Color.Black,
+                                Color.Black.copy(alpha = 0.5f),
+                                Color.Transparent,
+                            ),
+                            startY = 0f,
+                            endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
+                        ),
+                        blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
+                    )
+                }
+
+
             )
         }
         MediaTrailer(modifier, trailerState, movieState)
