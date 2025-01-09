@@ -1,5 +1,6 @@
 package com.niklas.ux62550.ui.feature.search
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +32,7 @@ import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
+import kotlin.math.round
 
 @Composable
 fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, text: String, textColor: Color, modifier: Modifier = Modifier) {
@@ -51,6 +53,7 @@ fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, text: S
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
     Row(
@@ -97,30 +100,33 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
                             contentDescription = "Star icon"
                         )
                         Text(
-                            text = movie.vote_average?.div(2).toString() + "/5", // Conveting the 10/10 to an 5/5 rating system
+                            text = String.format("%.1f", movie.vote_average?.div(2)) + "/5", // Converting the 10/10 to an 5/5 rating system
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
+
+                        Text(
+                        text = " · ",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                        )
+
+                        if(movie.release_date.toString().count() >= 5){
+                            Text(
+                                text = movie.release_date.toString().substring(0, 4),
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        else {
+                            Text(
+                                text = "unknown",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
                     }
-                }
-                Text(
-                    text = " · ",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                if(movie.release_date.toString().count() >= 5){
-                    Text(
-                        text = movie.release_date.toString().substring(0, 4),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                else {
-                    Text(
-                        text = "unknown",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
                 }
             }
         }
