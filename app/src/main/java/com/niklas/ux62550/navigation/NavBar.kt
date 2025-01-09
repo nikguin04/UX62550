@@ -1,5 +1,6 @@
 package com.niklas.ux62550.navigation
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
@@ -68,7 +69,7 @@ fun GeneralNavBar(navController: NavHostController) {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun GeneralTopBar(navController: NavHostController, showBackButton: Boolean) {
+fun GeneralTopBar(navController: NavHostController, showBackButton: Boolean, actions: @Composable RowScope.() -> Unit = {}) {
     TopAppBar(
         title = {},
         navigationIcon = {
@@ -81,6 +82,7 @@ fun GeneralTopBar(navController: NavHostController, showBackButton: Boolean) {
                 }
             }
         },
+        actions = actions,
         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
     )
 }
