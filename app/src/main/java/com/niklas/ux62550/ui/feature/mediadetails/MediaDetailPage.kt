@@ -72,11 +72,13 @@ import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.Cast
 import com.niklas.ux62550.data.model.Crew
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
 import com.niklas.ux62550.ui.feature.common.CreditState
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
+import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -96,7 +98,7 @@ fun MediaDetailPagePreview() {
 fun MediaDetailsScreen(
     media: MediaObject,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
-    onNavigateToReview: (String) -> Unit
+    onNavigateToReview: (MovieDetailObject) -> Unit
 ) {
     val viewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
     val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
@@ -107,37 +109,32 @@ fun MediaDetailsScreen(
     val creditState = creditsViewModel.creditState.collectAsState().value
     val providerState = viewModel.providerState.collectAsState().value
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-    )
-    {
-        when (movieState) {
-            MovieState.Empty -> {
-                Text(text = "No data yet")// TODO make loading screen
-            }
-            is MovieState.Data -> {
+
+    when  {
+       movieState is MovieState.Empty || creditState is CreditState.Empty -> {
+            LoadingScreen()
+        }
+
+       movieState is MovieState.Data && creditState is CreditState.Data-> {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+            )
+            {
                 Header(movieState = movieState, trailerState = trailerState)
                 InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
                 Genres(genres = movieState, providerState = providerState)
                 DescriptionText(description = movieState.mediaDetailObjects.Description)
-            }
-            else -> {}
-        }
 
-        when (creditState) {
-            CreditState.Empty -> {
-                Text("No credits data yet")
-            }
-            is CreditState.Data -> {
                 ActorsAndDirectors(creditState = creditState)
+                DetailedRating()
+                SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
+
+
             }
         }
-        DetailedRating()
-        SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
     }
 }
-
 @Composable
 fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState) {
     val context = LocalContext.current
@@ -219,7 +216,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
 }
 
 @Composable
-fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNavigateToReview: (String) -> Unit) {
+fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNavigateToReview: (MovieDetailObject) -> Unit) {
     Row(
         modifier = modifier
             //.padding(4.dp, 0.dp, 4.dp, 0.dp)
@@ -229,10 +226,10 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
     ) {
         // Row for the stars so that we can use spaced evenly.
         Row(
-            modifier = Modifier.clickable(onClick = { onNavigateToReview(movieState.mediaDetailObjects.Originaltitle) }),
+            modifier = Modifier.clickable(onClick = { onNavigateToReview(movieState.mediaDetailObjects) }),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val rating = movieState.mediaDetailObjects.rating / 2
+            val rating = String.format("%.1f", movieState.mediaDetailObjects.rating/2).toDouble()
             for (i in 1..5) {
                 val starIcon = when {
                     i <= rating -> Icons.Outlined.Star
@@ -298,7 +295,7 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
         Spacer(modifier = Modifier.weight(0.5f))
         when (providerState) {
             ProviderState.Empty -> {
-                Text("NO PIC")
+
             }
             is ProviderState.Data -> {
                 val country = providerState.providerDataObject["DK"]
@@ -455,7 +452,7 @@ fun SimilarMedia(modifier: Modifier = Modifier, similarMediaState: SimilarMovieS
     Text("Movies similar to this one", modifier = modifier.padding(8.dp,0.dp,0.dp,0.dp))
     when (similarMediaState) {
         SimilarMovieState.Empty -> {
-            Text("NO PIC")
+
         }
         is SimilarMovieState.Data -> {
             HorizontalLazyRowMovies(
