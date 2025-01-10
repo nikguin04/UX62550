@@ -121,8 +121,7 @@ fun SearchContent(
             SectionHeader(title = "Movies")
         }
 
-        var firstTimePerson = false
-        var firstTimeMovie = false
+
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
                 item {
@@ -135,6 +134,7 @@ fun SearchContent(
                 }
             }
             is MovieItemsUIState.Data -> {
+                var firstTimeMovie = false
                 itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
                     when (movieBoxItem.media_type) {
                         "tv" -> {
@@ -142,7 +142,7 @@ fun SearchContent(
                         "person" -> {
                         }
                         "movie" -> {
-                            if(firstTimeMovie == true){
+                            if(firstTimeMovie){
                                 Box(
                                     modifier = Modifier.fillMaxWidth(),
                                     contentAlignment = Alignment.Center
@@ -186,12 +186,13 @@ fun SearchContent(
                 }
             }
             is MovieItemsUIState.Data -> {
+                var firstTimePerson = false
                 itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
                     when (movieBoxItem.media_type) {
                         "tv" -> {
                         }
                         "person" -> {
-                            if(firstTimePerson == true){
+                            if(firstTimePerson){
                                     Box(
                                         modifier = Modifier.fillMaxWidth(),
                                         contentAlignment = Alignment.Center
