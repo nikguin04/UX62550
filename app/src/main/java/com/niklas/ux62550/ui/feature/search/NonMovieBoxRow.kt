@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -45,9 +46,10 @@ fun NonMovieBoxRow(person: MediaObject, modifier: Modifier = Modifier) {
         MediaItem(
             uri = person.profile_path,
             round = 0.dp,
-            modifier = Modifier.width(90.dp).height(50.62.dp),
-            size = ImageSize.BACKDROP
-        )
+            modifier
+                .clip(RoundedCornerShape(25))
+                .size(width = 50.dp, height = 80.dp),
+            size = ImageSize.BACKDROP)
         Row(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
@@ -60,20 +62,6 @@ fun NonMovieBoxRow(person: MediaObject, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Bold
                 )
             }
-            Text(
-                text = " · ",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            person.media_type?.let {
-                Text(
-                    text = it,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-
         }
     }
 }

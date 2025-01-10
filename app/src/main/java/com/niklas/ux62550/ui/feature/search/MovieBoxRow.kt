@@ -63,13 +63,13 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
             .padding(16.dp)
     ) {
         if (movie.backdrop_path == null) {
-            MovieBoxMoviePicture(90.dp, 50.62.dp, 0.dp, Color.Black, "No image available", Color.White)
+            MovieBoxMoviePicture(110.dp, 70.62.dp, 0.dp, Color.Black, "No image available", Color.White)
         }
         else {
             MediaItem(
                 uri = movie.backdrop_path,
                 round = 0.dp,
-                modifier = Modifier.width(90.dp).height(50.62.dp),
+                modifier = Modifier.width(110.dp).height(70.62.dp),
                 size = ImageSize.BACKDROP
             )
         }
