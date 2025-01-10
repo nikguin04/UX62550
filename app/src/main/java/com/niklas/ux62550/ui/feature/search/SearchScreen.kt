@@ -118,7 +118,7 @@ fun SearchContent(
         }
 
         item {
-            SectionHeader(title = "Movies and Series")
+            SectionHeader(title = "Movies")
         }
 
         var firstTimePerson = false
@@ -127,7 +127,7 @@ fun SearchContent(
             MovieItemsUIState.Empty -> {
                 item {
                     Text(
-                        text = "No movies to be found",
+                        text = "No movies found",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = SearchColorForText
@@ -178,7 +178,7 @@ fun SearchContent(
             MovieItemsUIState.Empty -> {
                 item {
                     Text(
-                        text = "No person found",
+                        text = "No actors or genres found",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = SearchColorForText
