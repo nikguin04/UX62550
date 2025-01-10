@@ -4,6 +4,7 @@ package com.niklas.ux62550.ui.feature.mediadetails
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.StarHalf
@@ -32,6 +34,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
@@ -59,7 +62,6 @@ import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.home.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
-import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
@@ -305,22 +307,29 @@ fun TitleText(title: String) {
 
 @Composable
 fun DescriptionText(description: String) {
-    Text(
-        text = description,
-        style = TextStyle(
-            lineHeight = 1.25.em,
-            lineBreak = LineBreak.Paragraph,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Justify,
-            color = DescriptionColor,
-            shadow = Shadow(color = Color.Black, blurRadius = 7.5f)
+    Box(modifier = Modifier
+        .padding(20.dp, 10.dp, 20.dp, 10.dp)
+        .clip(RoundedCornerShape(25.dp))
+        .background(color = Color(0xFF353433 ))) {
+        Text(
+            text = description,
+            style = TextStyle(
+                lineHeight = 1.25.em,
+                lineBreak = LineBreak.Paragraph,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Justify,
+                color = Color.White,
+                shadow = Shadow(color = Color.Black, blurRadius = 7.5f)
 
 
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp, 10.dp, 20.dp, 0.dp),
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp, 5.dp, 10.dp, 5.dp)
 
-    )
+            ,
+
+            )
+    }
 }
 
