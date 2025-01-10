@@ -129,6 +129,7 @@ fun MediaItem(uri: String?, round: Dp = 0.dp, modifier: Modifier = Modifier, siz
         contentDescription = null, // TODO: include content description
         error = debugPlaceholder(R.drawable.howlsmovingcastle_en),
         onSuccess = {isLoading = false},
+        onError = {isLoading = false},
         modifier = modifier.clip(RoundedCornerShape(round)),
     )
     if (isLoading) {
@@ -164,9 +165,8 @@ fun AnimatedImagePlaceholder(modifier: Modifier = Modifier, animationProgress: S
         drawRect(color = Color.Gray.copy(alpha = 0.3f))
 
         // Horizontal gradient animation
-        //val horizontalOffset = size.width * animationProgress.value
-        val horizontalOffset = size.width * (animationProgress.value - 0.5f) * 2
-        val verticalOffset = size.height * (animationProgress.value - 0.5f) * 2
+        val horizontalOffset = size.width * (animationProgress.value) * 2
+
         drawRect(
             brush = Brush.horizontalGradient(
                 colors = listOf(
@@ -181,7 +181,7 @@ fun AnimatedImagePlaceholder(modifier: Modifier = Modifier, animationProgress: S
         )
 
         // Vertical gradient animation
-        //val verticalOffset = size.height * animationProgress.value
+        val verticalOffset = size.height * (animationProgress.value) * 2
         drawRect(
             brush = Brush.verticalGradient(
                 colors = listOf(
