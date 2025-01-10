@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,19 +28,24 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.niklas.ux62550.R
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
+import kotlinx.coroutines.delay
 
 enum class ImageSize {
     BACKDROP, LOGO, POSTER, PROFILE, STILL
 }
+val CrossfadeDuration: Int = 200;
 
 @Composable
 fun MediaItemBackdropIntercept(
@@ -123,18 +129,29 @@ fun MediaItem(uri: String?, round: Dp = 0.dp, modifier: Modifier = Modifier, siz
     val imguri = if (uri!=null) "$BASE_IMAGE_URL$sizeStr/$uri" else "https://cataas.com/cat"
 
     var isLoading by remember { mutableStateOf(true) }
+    var hasCrossFaded by remember { mutableStateOf(false) }
 
-    AsyncImage(
-        model = imguri,
-        contentDescription = null, // TODO: include content description
-        error = debugPlaceholder(R.drawable.howlsmovingcastle_en),
-        onSuccess = {isLoading = false},
-        onError = {isLoading = false},
-        modifier = modifier.clip(RoundedCornerShape(round)),
-    )
-    if (isLoading) {
-        // Circular progress indicator for loading animation
-        AnimatedImagePlaceholder(modifier.clip(RoundedCornerShape(round)), animationProgress)
+    Box { // Box so that async image and the placeholder overlaps
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current).data(imguri).crossfade(CrossfadeDuration).build(),
+            contentDescription = null, // TODO: include content description
+            error = debugPlaceholder(R.drawable.howlsmovingcastle_en),
+            onSuccess = { isLoading = false },
+            onError = { isLoading = false },
+            modifier = modifier.clip(RoundedCornerShape(round)),
+        )
+
+        LaunchedEffect(isLoading) {
+            if (!isLoading) {
+                delay(CrossfadeDuration.toLong()) // Wait for crossfade to complete
+                hasCrossFaded = true // Remove the loader
+            }
+        }
+
+        if (!hasCrossFaded) {
+            // Circular progress indicator for loading animation
+            AnimatedImagePlaceholder(modifier.clip(RoundedCornerShape(round)), animationProgress)
+        }
     }
 }
 @Composable
