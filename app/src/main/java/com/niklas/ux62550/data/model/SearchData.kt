@@ -43,6 +43,9 @@ data class MediaObject(
     @SerialName("id")
 	val id: Int,
 
+    @SerialName("profile_path")
+    val profile_path: String? = null,
+
     @SerialName("title")
 	val title: String = "",
 

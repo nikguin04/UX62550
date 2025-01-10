@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.models.NonMovieBox
+import com.niklas.ux62550.ui.feature.common.ImageSize
+import com.niklas.ux62550.ui.feature.common.MediaItem
 
 @Composable
 fun NonMovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, modifier: Modifier = Modifier) {
@@ -38,13 +42,12 @@ fun NonMovieBoxRow(person: MediaObject, modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-//        NonMovieBoxMoviePicture(
-//            width = 40.dp,
-//            height = 40.dp,
-//            round = 12.dp,
-//
-//            modifier = Modifier.padding(end = 8.dp)
-//        )
+        MediaItem(
+            uri = person.profile_path,
+            round = 0.dp,
+            modifier = Modifier.width(90.dp).height(50.62.dp),
+            size = ImageSize.BACKDROP
+        )
         Row(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
@@ -69,6 +72,8 @@ fun NonMovieBoxRow(person: MediaObject, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Bold
                 )
             }
+
+
         }
     }
 }
