@@ -23,6 +23,8 @@ import com.niklas.ux62550.ui.feature.profile.ProfileScreen
 import com.niklas.ux62550.ui.feature.profile.RegisterScreen
 import com.niklas.ux62550.ui.feature.review.ScreenReviewAndRating
 import com.niklas.ux62550.ui.feature.search.SearchScreen
+import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
+
 
 @Composable
 fun MainNavHost(
@@ -104,7 +106,10 @@ fun MainNavHost(
 
         composable<Route.WatchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.WatchScreen>()) }
-            //WatchlistScreen(onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) })
+            WatchlistContent( onNavigateToMedia = { media ->
+                navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
+                navController.navigate(Route.MediaDetailsScreen)
+            })
         }
     }
 }

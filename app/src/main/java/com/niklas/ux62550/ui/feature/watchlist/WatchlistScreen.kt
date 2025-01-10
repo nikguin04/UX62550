@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.feature.search.MovieBoxRow
@@ -51,20 +52,17 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun WatchlistPreview() {
     UX62550Theme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            WatchlistScreen(onNavigateToMedia = {})
+//            WatchlistScreen(onNavigateToMedia = {})
         }
     }
 }
 
-@Composable
-fun WatchlistScreen(viewModel: WatchlistViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
-//    val movies = viewModel.moviesState.collectAsState().value
-//    WatchlistContent(movieItemsUIState = movies, onNavigateToMedia = onNavigateToMedia)
-}
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItemsUIState, onNavigateToMedia: (String) -> Unit) {
+fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObject) -> Unit, watchlistViewModel: WatchlistViewModel = viewModel()) {
     Column(modifier.padding()) {
         Column(
             modifier = modifier
@@ -73,6 +71,24 @@ fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItem
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            val watchListState = watchlistViewModel.watchListState.collectAsState().value
+            when (watchListState) {
+                MovieIds.Empty -> {
+                    Text("No data yet")
+
+                }
+
+                is MovieIds.Data -> {
+                    // Display list of movie items in LazyColumn
+                    watchListState.movies?.forEach{id -> Text(id.toString()) }
+
+                }
+            }
+
+
+
+
             SearchBar(
                 inputField = {
                     var text = ""
@@ -131,35 +147,35 @@ fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItem
             }
         }
 
-        when (movieItemsUIState) {
-            MovieItemsUIState.Empty -> {
-                Text("No movies to be found")
-                LoadingScreen()
-                            }
-
-            is MovieItemsUIState.Data -> {
-                // Display list of movie items in LazyColumn
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    items(movieItemsUIState.movies.results) { movieItem ->
-                        HorizontalDivider(
-                            color = SearchColorForText,
-                            thickness = 1.dp,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .fillMaxWidth(0.7f)
-                        )
-                        MovieBoxRow(
-                            movie = movieItem,
-                            modifier = Modifier.clickable(
-                                onClick = { onNavigateToMedia(movieItem.title) }
-                            )
-                        )
-                    }
-                }
-            }
-        }
+//        when (movieItemsUIState) {
+//            MovieItemsUIState.Empty -> {
+//                Text("No movies to be found")
+//                LoadingScreen()
+//                            }
+//
+//            is MovieItemsUIState.Data -> {
+//                // Display list of movie items in LazyColumn
+//                LazyColumn(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    items(movieItemsUIState.movies.results) { movieItem ->
+//                        HorizontalDivider(
+//                            color = SearchColorForText,
+//                            thickness = 1.dp,
+//                            modifier = Modifier
+//                                .padding(horizontal = 16.dp)
+//                                .fillMaxWidth(0.7f)
+//                        )
+//                        MovieBoxRow(
+//                            movie = movieItem,
+//                            modifier = Modifier.clickable(
+//                                onClick = { onNavigateToMedia(movieItem) }
+//                            )
+//                        )
+//                    }
+//                }
+//            }
+//        }
     }
 }
