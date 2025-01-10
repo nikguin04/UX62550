@@ -48,8 +48,8 @@ fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, text: S
         Text(
             text = text,
             color = textColor,
-            modifier = Modifier.align(Alignment.Center)
-                .padding(7.5.dp, 0.dp)
+            modifier = Modifier
+                .padding(18.dp, 0.dp)
         )
     }
 }
@@ -106,7 +106,7 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
                             fontWeight = FontWeight.Bold
                         )
 
-                        Spacer(modifier = Modifier.width(74.dp))
+                        Spacer(modifier = Modifier.width(62.dp))
 
                         if(movie.release_date.toString().count() >= 5){
                             Text(
