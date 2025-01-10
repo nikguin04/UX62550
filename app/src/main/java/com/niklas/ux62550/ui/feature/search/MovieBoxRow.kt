@@ -117,7 +117,7 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
                         }
                         else {
                             Text(
-                                text = "unknown",
+                                text = "N/A",
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold
                             )
