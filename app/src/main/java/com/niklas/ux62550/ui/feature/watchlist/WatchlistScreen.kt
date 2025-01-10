@@ -73,6 +73,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
         ) {
 
             val watchListState = watchlistViewModel.watchListState.collectAsState().value
+            val watchListRowState = watchlistViewModel.watchListRowState.collectAsState().value
             when (watchListState) {
                 MovieIds.Empty -> {
                     Text("No data yet")
@@ -82,6 +83,20 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                 is MovieIds.Data -> {
                     // Display list of movie items in LazyColumn
                     watchListState.movies?.forEach{id -> Text(id.toString()) }
+
+                }
+            }
+
+
+            when (watchListRowState) {
+                MovieIdsRow.Empty -> {
+                    Text("No data yet")
+
+                }
+
+                is MovieIdsRow.Data -> {
+                    // Display list of movie items in LazyColumn
+                    Text(watchListRowState.movies.relaseDate)
 
                 }
             }
