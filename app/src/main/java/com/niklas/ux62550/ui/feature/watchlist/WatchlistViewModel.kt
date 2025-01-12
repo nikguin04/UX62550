@@ -52,12 +52,12 @@ class WatchlistViewModel() : ViewModel() {
             }
         }
 // TODO make work
-        when(getWatchList()){
-            MovieIds.Data -> Id{
-                getWatchListRow(MovieId = watchListState.value )
-            }
+        getWatchList()
 
-        }
+        getWatchListRow(MovieId =  205321)
+
+
+
 
 
 

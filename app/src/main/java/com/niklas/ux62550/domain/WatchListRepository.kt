@@ -34,6 +34,7 @@ class WatchListRepository {
     private val MovieDataSource = RemoteMediaDataSource()
 
     private val mutableWatchListRowFlow = MutableSharedFlow<WatchListDataObject>()
+
     val watchListRowFlow = mutableWatchListRowFlow.asSharedFlow()
     suspend fun getMovieForRow(MovieId: Int)  = mutableWatchListRowFlow.emit(
         MovieDataSource.getMovieForRow(MovieId)
