@@ -64,7 +64,8 @@ fun HomeScreen(
 @Composable
 fun HomeWelcomeTopBar(modifier: Modifier = Modifier) {
     Row(
-        modifier.fillMaxWidth().padding(30.dp),
+        // TODO: nicer padding values? what about 30 all-around?
+        modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
