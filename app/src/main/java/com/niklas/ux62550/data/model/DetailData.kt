@@ -66,22 +66,22 @@ data class MovieDetailObject(
 @Serializable
 data class Genre(
     @SerialName("id")
-    val genreID: Int = 0,
+    val genreID: Int,
 
     @SerialName("name")
-    val genreName: String = ""
+    val genreName: String
 )
 
 @Serializable
 data class SpokenLanguages(
     @SerialName("english_name")
-    val languageName : String = "",
+    val languageName : String,
 
     @SerialName("iso_639_1")
-    val isoNumber: String = "",
+    val isoNumber: String,
 
     @SerialName("name")
-    val spokenName : String = ""
+    val spokenName : String
 )
 
 
