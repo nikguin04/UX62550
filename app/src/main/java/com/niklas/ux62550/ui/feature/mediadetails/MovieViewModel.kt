@@ -38,6 +38,10 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         mediaDetailsRepository.getTrailer(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
 
+    private fun addToWatchlist(media: MediaObject) = viewModelScope.launch {
+        mediaDetailsRepository.addWatchList(media);
+    }
+
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
     val movieState: StateFlow<MovieState> = mutableMovieState
 
@@ -49,6 +53,9 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
 
     private val mutableTrailerState = MutableStateFlow<TrailerState>(TrailerState.Empty)
     val trailerState: StateFlow<TrailerState> = mutableTrailerState
+
+    private val mutableWatchlistState = MutableStateFlow<WatchlistState>(WatchlistState.Empty)
+    val watchlistState: StateFlow<WatchlistState> = mutableWatchlistState
 
 
     init {
@@ -84,11 +91,19 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
                 }
             }
         }
+        viewModelScope.launch {
+            mediaDetailsRepository.addToWatchListFlow.collect { mediaDetailObjects ->
+                mutableWatchlistState.update {
+                    WatchlistState.Data(mediaDetailObjects)
+                }
+            }
+        }
 
         getDetails(MovieID = media.id)
         getSimilarMovies(MovieID = media.id)
         getProviderForMovies(MovieID = media.id)
         getTrailerForMovies(MovieID = media.id)
+        addToWatchlist(media = media)
     }
 
     fun initPreview() {
@@ -106,7 +121,7 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         mutableProviderState.update {
             ProviderState.Data(
                 providerDataObject = mapOf<String,Result>(
-                    "DK" to com.niklas.ux62550.data.model.Result(link = "", flatrate = listOf(Provider(logoPath = "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg", providerId=0, providerName = "Netflix")) )
+                    "DK" to Result(link = "", flatrate = listOf(Provider(logoPath = "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg", providerId=0, providerName = "Netflix")) )
                 )
             )
         }
@@ -140,4 +155,8 @@ sealed class ProviderState {
 sealed class TrailerState {
     object Empty : TrailerState()
     data class Data(val trailerObject: TrailerObject) : TrailerState()
+}
+sealed class WatchlistState {
+    data object Empty : WatchlistState()
+    data class Data(val mediaDetailObjects: MediaObject) : WatchlistState()
 }

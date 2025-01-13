@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.StarHalf
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.Star
@@ -31,6 +32,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -55,6 +60,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.domain.WatchListRepository
 import com.niklas.ux62550.ui.feature.common.CreditState
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
@@ -62,6 +68,7 @@ import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.home.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
+import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
@@ -95,6 +102,7 @@ fun MediaDetailsScreen(
     val trailerState = movieViewModel.trailerState.collectAsState().value
     val creditState = creditsViewModel.creditState.collectAsState().value
     val providerState = movieViewModel.providerState.collectAsState().value
+    val watchListState = movieViewModel.watchlistState.collectAsState().value
 
 
     when  {
@@ -108,7 +116,7 @@ fun MediaDetailsScreen(
                     .verticalScroll(rememberScrollState())
             )
             {
-                Header(movieState = movieState, trailerState = trailerState)
+                Header(movieState = movieState, trailerState = trailerState, watchlistState = watchListState)
                 InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
                 Genres(genres = movieState, providerState = providerState)
                 DescriptionText(description = movieState.mediaDetailObjects.Description)
@@ -123,7 +131,7 @@ fun MediaDetailsScreen(
     }
 }
 @Composable
-fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState) {
+fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState, watchlistState: WatchlistState) {
     val context = LocalContext.current
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
@@ -216,14 +224,14 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
     }
 
         // Bookmark Button
-        Image(
-            Icons.Outlined.BookmarkBorder,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(20.dp),
-            colorFilter = ColorFilter.tint(Color.White),
-            contentDescription = "Bookmark"
-        )
+        when(watchlistState){
+            WatchlistState.Empty ->{
+                Text("No bookmark")
+            }
+            is WatchlistState.Data -> {
+                BookmarkButton()
+            }
+        }
     }
 }
 
@@ -331,5 +339,21 @@ fun DescriptionText(description: String) {
 
             )
     }
+}
+@Composable
+fun BookmarkButton(){
+    var isBookmarked by remember { mutableStateOf(false)}
+    Image(
+        imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+        modifier = Modifier
+            .padding(100.dp)
+            .clickable {
+                isBookmarked = !isBookmarked
+                WatchlistState
+
+            },
+        colorFilter = ColorFilter.tint(Color.White),
+        contentDescription = "Bookmark"
+    )
 }
 

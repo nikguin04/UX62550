@@ -1,12 +1,9 @@
 package com.niklas.ux62550.data.remote
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.toObject
 import com.niklas.ux62550.data.model.MediaObject
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.tasks.await
 
@@ -22,6 +19,13 @@ class RemoteFirebase {
         } catch (e: Exception){
             Log.w("Firebase_info", "Error getting documents.", e)
             mutableWatchListFlow.emit(null)
+        }
+    }
+    suspend fun addToWatchList(data: MediaObject){
+        try {
+            db.collection("Watchlist").document("1NhBN640YoUdZq848o3C").set(data.id)
+        } catch (e: Exception){
+            Log.w("Firebase_info", "No movieID found", e)
         }
     }
 }
