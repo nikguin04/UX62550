@@ -117,17 +117,13 @@ fun SearchContent(
             }
         }
 
-        item {
-            SectionHeader(title = "Movies and Series")
-        }
 
-        var firstTimePerson = false
-        var firstTimeMovie = false
+
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
                 item {
                     Text(
-                        text = "No movies to be found",
+                        text = "No search data yet",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = SearchColorForText
@@ -135,86 +131,60 @@ fun SearchContent(
                 }
             }
             is MovieItemsUIState.Data -> {
-                itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
-                    when (movieBoxItem.media_type) {
-                        "tv" -> {
-                        }
-                        "person" -> {
-                        }
-                        "movie" -> {
-                            if(firstTimeMovie == true){
-                                Box(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    HorizontalDivider(
-                                        color = SearchColorForText,
-                                        thickness = 1.dp,
-                                        modifier = Modifier
-                                            .padding(horizontal = 16.dp)
-                                            .fillMaxWidth(0.7f)
-                                    )
-                                }
+                val movieList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.media_type == "movie" }
+                val actorList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.media_type == "person" }
 
-                            }
-                            firstTimeMovie = true
-                            MovieBoxRow(
-                                movie = movieBoxItem,
-                                modifier = Modifier.clickable(
-                                    onClick = { onNavigateToMedia(movieBoxItem) }
-                                )
+                item {
+                    SectionHeader(title = "Movies")
+                }
+                itemsIndexed(movieList) { index, movieBoxItem ->
+                    if (index != 0) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            HorizontalDivider(
+                                color = SearchColorForText,
+                                thickness = 1.dp,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .fillMaxWidth(0.7f)
                             )
                         }
+
                     }
-                }
-            }
-        }
-
-        item {
-            SectionHeader(title = "Actors and Genres")
-        }
-
-        when (movieItemsUIState) {
-            MovieItemsUIState.Empty -> {
-                item {
-                    Text(
-                        text = "No person found",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = SearchColorForText
+                    MovieBoxRow(
+                        movie = movieBoxItem,
+                        modifier = Modifier.clickable(
+                            onClick = { onNavigateToMedia(movieBoxItem) }
+                        )
                     )
                 }
-            }
-            is MovieItemsUIState.Data -> {
-                itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
-                    when (movieBoxItem.media_type) {
-                        "tv" -> {
-                        }
-                        "person" -> {
-                            if(firstTimePerson == true){
-                                    Box(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        HorizontalDivider(
-                                            color = SearchColorForText,
-                                            thickness = 1.dp,
-                                            modifier = Modifier
-                                                .padding(horizontal = 16.dp)
-                                                .fillMaxWidth(0.7f)
-                                        )
 
-                                    }
-                            }
-                            firstTimePerson = true
-                            NonMovieBoxRow(person = movieBoxItem)
-                        }
-                        "movie" -> {
+                item {
+                    SectionHeader(title = "Actors and Genres")
+                }
+                itemsIndexed(actorList) { index, movieBoxItem ->
+                    if(index != 0){
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            HorizontalDivider(
+                                color = SearchColorForText,
+                                thickness = 1.dp,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .fillMaxWidth(0.7f)
+                            )
+
                         }
                     }
+                    NonMovieBoxRow(person = movieBoxItem)
                 }
             }
         }
+
     }
 }
 
