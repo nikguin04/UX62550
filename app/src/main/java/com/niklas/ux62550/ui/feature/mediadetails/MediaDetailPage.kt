@@ -59,7 +59,6 @@ import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.home.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
-import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
@@ -305,22 +304,29 @@ fun TitleText(title: String) {
 
 @Composable
 fun DescriptionText(description: String) {
-    Text(
-        text = description,
-        style = TextStyle(
-            lineHeight = 1.25.em,
-            lineBreak = LineBreak.Paragraph,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Justify,
-            color = DescriptionColor,
-            shadow = Shadow(color = Color.Black, blurRadius = 7.5f)
+    Box(modifier = Modifier
+        .padding(20.dp, 10.dp, 20.dp, 10.dp)
+        .clip(RoundedCornerShape(25.dp))
+        .background(color = Color(0xA4111111))) {
+        Text(
+            text = description,
+            style = TextStyle(
+                lineHeight = 1.25.em,
+                lineBreak = LineBreak.Paragraph,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Justify,
+                color = Color.White,
+                shadow = Shadow(color = Color.Black, blurRadius = 7.5f)
 
 
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp, 10.dp, 20.dp, 0.dp),
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp, 5.dp, 10.dp, 5.dp)
 
-    )
+            ,
+
+            )
+    }
 }
 
