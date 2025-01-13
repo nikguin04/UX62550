@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 
 class KeywordRepository {
 
-    private val keywordDataSource = RemoteMediaDataSource()
+    private val keywordDataSource = RemoteMediaDataSource
 
     private val mutableKeywordFlow = MutableSharedFlow<SearchDataObject>()
     val keywordFlow = mutableKeywordFlow.asSharedFlow()

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class SearchRepository {
-    private val searchDataSource = RemoteMediaDataSource()
+    private val searchDataSource = RemoteMediaDataSource
 
     private val mutableSearchFlow = MutableSharedFlow<SearchDataObject>()
     val SearchFlow = mutableSearchFlow.asSharedFlow()

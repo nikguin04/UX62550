@@ -8,6 +8,7 @@ import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.data.model.TrailerObject
 import kotlinx.serialization.json.Json
+import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -18,26 +19,41 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.io.File
+import javax.inject.Singleton
+import kotlin.concurrent.Volatile
+
 
 val loggingInterceptor = HttpLoggingInterceptor().apply {
     level = HttpLoggingInterceptor.Level.NONE //HttpLoggingInterceptor.Level.BODY // Logs request and response body
 }
 
-class RemoteMediaDataSource {
+object RemoteMediaDataSource {
 
-    companion object {
-        const val BASE_URL = "https://api.themoviedb.org/3/"
-        const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/"
-        private const val CONTENT_TYPE = "application/json; charset=UTF8"
-    }
+    private const val BASE_URL = "https://api.themoviedb.org/3/"
+    const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/"
+    private const val CONTENT_TYPE = "application/json; charset=UTF8"
 
     private val json = Json {
         ignoreUnknownKeys = true
     }
 
-    val okHttpClient = OkHttpClient.Builder()
+    private val cacheSize = 25L * 1024 * 1024 // 25 MB
+    private val cache = Cache(File("http_cache"), cacheSize)
+    private val CacheInterceptor = Interceptor { chain ->
+        val response = chain.proceed(chain.request())
+        // Cache data for 1 hour
+        val maxAge = 60 * 60
+        response.newBuilder()
+            .header("Cache-Control", "public, max-age=$maxAge")
+            .build()
+    }
+
+    private val okHttpClient = OkHttpClient.Builder()
+        .cache(cache)
         .addInterceptor(ApiKeyInterceptor("cf1263628c618a27a88c8cec3f0b1d1f")) // Add the interceptor
         .addInterceptor(loggingInterceptor)
+        .addInterceptor(CacheInterceptor)
         .build()
 
     private val retrofit = Retrofit.Builder()

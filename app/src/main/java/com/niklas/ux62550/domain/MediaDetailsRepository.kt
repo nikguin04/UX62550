@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 
 class MediaDetailsRepository {
 
-    private val detailsDataSource = RemoteMediaDataSource()
+    private val detailsDataSource = RemoteMediaDataSource
 
     private val mutableDetailFlow = MutableSharedFlow<MovieDetailObject>()
     val detailFlow = mutableDetailFlow.asSharedFlow()

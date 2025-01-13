@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class CastDetailsRepository {
-    private val creditDataSource = RemoteMediaDataSource()
+    private val creditDataSource = RemoteMediaDataSource
 
     private val mutableCreditFlow = MutableSharedFlow<CreditObject>()
     val creditFlow = mutableCreditFlow.asSharedFlow()

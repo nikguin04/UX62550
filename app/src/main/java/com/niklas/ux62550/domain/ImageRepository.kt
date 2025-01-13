@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class ImageRepository {
-    private val imageDataSource = RemoteMediaDataSource()
+    private val imageDataSource = RemoteMediaDataSource
 
     private val mutableDiscoverFlow = MutableSharedFlow<ImagesDataObject>()
     val imagesFlow = mutableDiscoverFlow.asSharedFlow()

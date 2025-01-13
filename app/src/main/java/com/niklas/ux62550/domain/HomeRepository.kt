@@ -11,7 +11,7 @@ import retrofit2.http.Query
 
 class HomeRepository {
 
-    private val homeDataSource = RemoteMediaDataSource()
+    private val homeDataSource = RemoteMediaDataSource
 
     private val mutableFeaturedMediaFlow = MutableSharedFlow<SearchDataObject>()
     val featuredMediaFlow = mutableFeaturedMediaFlow.asSharedFlow()

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 
 class DiscoverRepository {
 
-    private val discoverDataSource = RemoteMediaDataSource()
+    private val discoverDataSource = RemoteMediaDataSource
 
     private val mutableDiscoverFlow = MutableSharedFlow<SearchDataObject>()
     val discoverFlow = mutableDiscoverFlow.asSharedFlow()
