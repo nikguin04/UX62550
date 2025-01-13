@@ -3,7 +3,6 @@ package com.niklas.ux62550.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -29,7 +28,7 @@ data class WatchListDataObject(
     val title: String,
 
     @SerialName("vote_average")
-    val rating : Double,
+    val vote_average : Double,
 
     @SerialName("id")
     val id : Int,
