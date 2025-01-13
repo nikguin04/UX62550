@@ -310,7 +310,7 @@ fun DescriptionText(description: String) {
     Box(modifier = Modifier
         .padding(20.dp, 10.dp, 20.dp, 10.dp)
         .clip(RoundedCornerShape(25.dp))
-        .background(color = Color(0xA4111111))) {
+        .background(color = Color(0xFF353433))) {
         Text(
             text = description,
             style = TextStyle(
