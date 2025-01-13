@@ -1,6 +1,7 @@
 package com.niklas.ux62550.data.model
 
 import android.os.Parcelable
+import android.provider.MediaStore.Audio.Media
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -16,7 +17,10 @@ data class SearchDataObject(
     @SerialName("total_pages")
     val total_pages: Int,
     @SerialName("total_results")
-    val total_results: Int
+    val total_results: Int,
+
+//    @SerialName("known_for")
+//    val known_for: List<MediaObject>
 )
 /*
  NOTE: EASY SEARCH AND REPLACE:
@@ -42,6 +46,9 @@ data class MediaObject(
 
     @SerialName("id")
 	val id: Int,
+
+    @SerialName("profile_path")
+    val profile_path: String? = null,
 
     @SerialName("title")
 	val title: String = "",
@@ -73,4 +80,6 @@ data class MediaObject(
     @SerialName("vote_count")
 	val vote_count: Int? = null,
     ): Parcelable
+
+
 
