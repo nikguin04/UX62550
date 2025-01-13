@@ -21,7 +21,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 val loggingInterceptor = HttpLoggingInterceptor().apply {
-    level = HttpLoggingInterceptor.Level.NONE //HttpLoggingInterceptor.Level.BODY // Logs request and response body
+    level = HttpLoggingInterceptor.Level.BASIC //HttpLoggingInterceptor.Level.BODY // Logs request and response body
 }
 
 class RemoteMediaDataSource {

@@ -1,17 +1,14 @@
 package com.niklas.ux62550.ui.feature.watchlist
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.niklas.ux62550.data.model.MovieDetailObject
-import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.data.model.WatchListDataObject
 import com.niklas.ux62550.domain.WatchListRepository
-import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import okhttp3.internal.connection.reorderForHappyEyeballs
 
 class WatchlistViewModel() : ViewModel() {
 
@@ -20,12 +17,6 @@ class WatchlistViewModel() : ViewModel() {
     private fun getWatchList() = viewModelScope.launch {
         watchListRepository.getWatchList()
     }
-
-    private fun getWatchListRow(MovieId: Int) = viewModelScope.launch {
-        watchListRepository.getMovieForRow(MovieId)
-    }
-
-
 
     private val mutableWatchListState = MutableStateFlow<MovieIds>(MovieIds.Empty)
     val watchListState: StateFlow<MovieIds> = mutableWatchListState
@@ -53,24 +44,7 @@ class WatchlistViewModel() : ViewModel() {
         }
 // TODO make work
         getWatchList()
-
-        getWatchListRow(MovieId =  205321)
-
-
-
-
-
-
     }
-
-//    fun initPreview() {
-//
-//        mutableMovieState.update {
-//            MovieState.Data(
-//                mediaDetailObjects = MovieDetailObject()
-//            )
-//        }
-//    }
 }
 
 sealed class MovieIds {

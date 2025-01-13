@@ -41,7 +41,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.feature.common.MediaDetailFetchViewModel
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
+import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 import com.niklas.ux62550.ui.feature.search.MovieBoxRow
 import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
 import com.niklas.ux62550.ui.theme.SearchColorForText
@@ -59,6 +61,27 @@ fun WatchlistPreview() {
 
 
 
+@Composable
+fun MovieBoxRowFromId(movieId: Int,  onNavigateToMedia: (MediaObject) -> Unit) {
+
+    val mediaDetailFetchViewModel: MediaDetailFetchViewModel = viewModel(
+        factory = MediaDetailFetchViewModel.MediaDetailFetchViewModelFactory(movieId),
+        key = movieId.toString()
+    )
+
+    val mediaState = mediaDetailFetchViewModel.movieState.collectAsState().value
+    when (mediaState) {
+        MovieState.Empty -> {
+            Text(text = "Loading")
+        }
+        is MovieState.Data -> {
+            MovieBoxRow(mediaState.mediaDetailObject.toMediaObject(), modifier = Modifier.clickable(
+                onClick = { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject())}
+            ))
+        }
+    }
+
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,35 +97,6 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
 
             val watchListState = watchlistViewModel.watchListState.collectAsState().value
             val watchListRowState = watchlistViewModel.watchListRowState.collectAsState().value
-            when (watchListState) {
-                MovieIds.Empty -> {
-                    Text("No data yet")
-
-                }
-
-                is MovieIds.Data -> {
-                    // Display list of movie items in LazyColumn
-                    watchListState.movies?.forEach{id -> Text(id.toString()) }
-
-                }
-            }
-
-
-            when (watchListRowState) {
-                MovieIdsRow.Empty -> {
-                    Text("No data yet")
-
-                }
-
-                is MovieIdsRow.Data -> {
-                    // Display list of movie items in LazyColumn
-                    Text(watchListRowState.movies.relaseDate)
-
-                }
-            }
-
-
-
 
             SearchBar(
                 inputField = {
@@ -160,37 +154,20 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                     )
                 }
             }
-        }
+            when (watchListState) {
+                MovieIds.Empty -> {
+                    Text("No data yet")
+                }
 
-//        when (movieItemsUIState) {
-//            MovieItemsUIState.Empty -> {
-//                Text("No movies to be found")
-//                LoadingScreen()
-//                            }
-//
-//            is MovieItemsUIState.Data -> {
-//                // Display list of movie items in LazyColumn
-//                LazyColumn(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    items(movieItemsUIState.movies.results) { movieItem ->
-//                        HorizontalDivider(
-//                            color = SearchColorForText,
-//                            thickness = 1.dp,
-//                            modifier = Modifier
-//                                .padding(horizontal = 16.dp)
-//                                .fillMaxWidth(0.7f)
-//                        )
-//                        MovieBoxRow(
-//                            movie = movieItem,
-//                            modifier = Modifier.clickable(
-//                                onClick = { onNavigateToMedia(movieItem) }
-//                            )
-//                        )
-//                    }
-//                }
-//            }
-//        }
+                is MovieIds.Data -> {
+                    // Display list of movie items in LazyColumn
+                    watchListState.movies?.forEach{id -> MovieBoxRowFromId(
+                        id,
+                        onNavigateToMedia = onNavigateToMedia
+                    ) }
+
+                }
+            }
+        }
     }
 }

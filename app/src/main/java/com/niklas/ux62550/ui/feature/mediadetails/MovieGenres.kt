@@ -31,7 +31,7 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        for ((index, genre) in genres.mediaDetailObjects.genre.withIndex().takeWhile { it.index <= 2 }) {
+        for ((index, genre) in genres.mediaDetailObject.genre.withIndex().takeWhile { it.index <= 2 }) {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(40.dp))
@@ -46,7 +46,7 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
-            if ((index != 2) && (index != genres.mediaDetailObjects.genre.lastIndex)) {
+            if ((index != 2) && (index != genres.mediaDetailObject.genre.lastIndex)) {
                 Spacer(modifier = Modifier.width(4.dp))
                 DrawCircle(Modifier.size(10.dp), Color.LightGray)
                 Spacer(modifier = Modifier.width(4.dp))
