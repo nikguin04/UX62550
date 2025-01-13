@@ -116,7 +116,12 @@ fun ReviewLayout(
                 size = ImageSize.BACKDROP
             )
             ReviewText()
-            TitleText(media.Originaltitle)
+            if (media.title.isNotEmpty()) {
+                TitleText(media.title)
+            }
+            else {
+                TitleText(media.Originaltitle)
+            }
 
         }
 //        Box(
