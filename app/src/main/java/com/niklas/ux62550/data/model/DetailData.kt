@@ -40,7 +40,7 @@ data class MovieDetailObject(
     val relaseDate : String,
 
     @SerialName("title")
-    val title: String,
+    val title: String = "",
 
     @SerialName("vote_average")
     val rating : Double,

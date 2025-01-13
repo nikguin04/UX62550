@@ -209,7 +209,11 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                     )
                 }
                 Spacer(modifier = Modifier.height(12.dp))
-                TitleText(movieState.mediaDetailObjects.Originaltitle)
+                if (movieState.mediaDetailObjects.title.isNotEmpty()) {
+                    TitleText(movieState.mediaDetailObjects.title)
+                }
+                else {TitleText(movieState.mediaDetailObjects.Originaltitle)}
+
             }
         }
          else -> {}
