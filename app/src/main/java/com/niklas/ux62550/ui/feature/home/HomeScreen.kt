@@ -51,7 +51,6 @@ fun HomeScreen(
         MediaItemsUIState.Empty -> {
             LoadingScreen()
         }
-
         is MediaItemsUIState.Data -> {
             Column(modifier.verticalScroll(rememberScrollState())) {
                 HomeWelcomeTopBar()

@@ -44,7 +44,7 @@ class HomeViewModel : ViewModel() {
         getMovieGenres()
     }
     private fun getFeaturedMedia() = viewModelScope.launch {
-        homeRepository.getTrending("all", "day")
+        homeRepository.getTrending("movie", "day")
     }
     private fun getMovieGenres() = viewModelScope.launch {
         homeRepository.getGenres(GenreType.MOVIE)
