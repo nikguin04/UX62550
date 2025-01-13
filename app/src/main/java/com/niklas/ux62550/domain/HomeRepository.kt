@@ -25,8 +25,6 @@ class HomeRepository {
         when(type) {
             GenreType.MOVIE ->
                 homeDataSource.getMovieGenres()
-            GenreType.TV ->
-                homeDataSource.getTvGenres()
             else ->
                 throw Exception("Unimplemented genre type")
         }
