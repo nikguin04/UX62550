@@ -23,13 +23,13 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.ImageSize
@@ -71,11 +72,17 @@ fun ReviewAndRatingPreview() {
 @Composable
 fun ScreenReviewAndRating(
     modifier: Modifier = Modifier,
-    media: MovieDetailObject)
+    media: MovieDetailObject,
+    reviewViewModel: ReviewViewModel = viewModel()
+)
     {
+        val reviewState = reviewViewModel.reviewState.collectAsState().value
 
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())
+
+        Column(
+        modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
+        ReviewViewModel()
         ReviewLayout(media = media)
         PublishReview()
         MoreDetailedReview()
