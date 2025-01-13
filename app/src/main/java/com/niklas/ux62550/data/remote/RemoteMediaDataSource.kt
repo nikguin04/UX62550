@@ -51,7 +51,7 @@ class RemoteMediaDataSource {
     private val mediaApi: TMDBApiService = retrofit.create(TMDBApiService::class.java)
 
     suspend fun getSearch(search_mode: String, query: String) = mediaApi.getSearch(search_mode, query)
-    suspend fun getTrending(search_mode: String = "all", time_window: String = "day") = mediaApi.getTrending(search_mode, time_window)
+    suspend fun getTrending(time_window: String = "day") = mediaApi.getTrending(time_window)
     suspend fun getKeywordMovies(keyword_id: String, page: Int) = mediaApi.getKeywordMovies(keyword_id,page)
     suspend fun getDiscoverMovies(genres: String, page: Int) = mediaApi.getDiscoverMovies(genres,page)
 	suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
@@ -70,8 +70,8 @@ interface TMDBApiService {
     @GET("search/{search_mode}?&page=1&language=en-US")
     suspend fun getSearch(@Path("search_mode") search_mode: String, @Query("query") query: String): SearchDataObject
 
-    @GET("trending/{search_mode}/{time_window}") // Note: Does not support "people" as search mode
-    suspend fun getTrending(@Path("search_mode") search_mode: String, @Path("time_window") time_window: String): SearchDataObject
+    @GET("trending/movie/{time_window}") // Note: Does not support "people" as search mode
+    suspend fun getTrending(@Path("time_window") time_window: String): SearchDataObject
 
 
     @GET("search/multi")
