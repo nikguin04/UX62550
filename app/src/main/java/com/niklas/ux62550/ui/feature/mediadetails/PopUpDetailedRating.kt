@@ -31,19 +31,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailedRating(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.padding(8.dp, 12.dp, 0.dp, 0.dp),
+        modifier = modifier.padding(20.dp, 10.dp, 20.dp, 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Needs to be made to a button later on
-        Text("Detailed Rating", color = AwardAndDetailRating)
+        Text("Detailed Rating",
+            style = TextStyle(
+            fontSize = 18.sp,
+            color = Color.White,
+            shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+
+            )
+        )
         val sheetState = rememberModalBottomSheetState()
         var showBottomSheet by remember { mutableStateOf(false) }
         IconButton(

@@ -4,6 +4,7 @@ package com.niklas.ux62550.ui.feature.mediadetails
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.StarHalf
@@ -32,7 +34,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -56,11 +60,8 @@ import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
-import com.niklas.ux62550.ui.feature.common.MediaItemBackdropIntercept
+import com.niklas.ux62550.ui.feature.home.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
-import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
-import com.niklas.ux62550.ui.theme.AwardAndDetailRating
-import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
@@ -249,7 +250,11 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
                 }
                 Image(
                     imageVector = starIcon,
-                    modifier = Modifier.requiredSize(18.dp),
+                    modifier = Modifier.requiredSize(18.dp)
+                        .shadow(
+                            elevation = 15.dp,
+                            ambientColor = Color.Black.copy(alpha = 255f), // Slightly less opaque for a softer effect
+                            ),
                     colorFilter = ColorFilter.tint(Color.Yellow),
                     contentDescription = "Rating star"
                 )
@@ -263,12 +268,22 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
         //Spacer(modifier = Modifier.weight(1f))
         Text(
             movieState.mediaDetailObjects.relaseDate.substring(0, 4),
-            fontSize = 18.sp
+            style = TextStyle(
+                fontSize = 18.sp,
+                color = Color.White,
+                shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+
+            )
         )
         //Spacer(modifier = Modifier.weight(1f))
         Text(
             movieState.mediaDetailObjects.runTime.minutes.toString(),
-            fontSize = 18.sp
+            style = TextStyle(
+                fontSize = 18.sp,
+                color = Color.White,
+                shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+
+            )
         )
     }
 }
@@ -292,18 +307,29 @@ fun TitleText(title: String) {
 
 @Composable
 fun DescriptionText(description: String) {
-    Text(
-        text = description,
-        style = TextStyle(
-            lineHeight = 1.25.em,
-            lineBreak = LineBreak.Paragraph,
-            fontSize = 14.sp,
-            textAlign = TextAlign.Start,
-            color = DescriptionColor
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp, 6.dp, 0.dp, 0.dp),
-    )
+    Box(modifier = Modifier
+        .padding(20.dp, 10.dp, 20.dp, 10.dp)
+        .clip(RoundedCornerShape(25.dp))
+        .background(color = Color(0xFF353433))) {
+        Text(
+            text = description,
+            style = TextStyle(
+                lineHeight = 1.25.em,
+                lineBreak = LineBreak.Paragraph,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Justify,
+                color = Color.White,
+                shadow = Shadow(color = Color.Black, blurRadius = 7.5f)
+
+
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp, 5.dp, 10.dp, 5.dp)
+
+            ,
+
+            )
+    }
 }
 
