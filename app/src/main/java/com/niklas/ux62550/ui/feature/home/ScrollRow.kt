@@ -47,6 +47,7 @@ import com.niklas.ux62550.ui.feature.common.ImageViewModel
 import com.niklas.ux62550.ui.feature.common.ImageViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImagesDataUIState
 import com.niklas.ux62550.ui.feature.common.MediaItem
+import com.niklas.ux62550.ui.feature.common.MediaItemBackdropIntercept
 import kotlin.math.absoluteValue
 
 
@@ -161,64 +162,6 @@ fun HorizontalLazyRowMovies(
             }
         }
     }
-}
-
-@Composable
-fun MediaItemBackdropIntercept(
-    modifier: Modifier = Modifier,
-    fetchEnBackdrop: Boolean,
-    mediaItem: MediaObject
-) {
-    if (fetchEnBackdrop) {
-        //if (mediaItem.media_type == null) {throw Exception("Media type unknown, cant fetch english backdrop")}
-        val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + mediaItem.id)
-        val imagesDataUIState: ImagesDataUIState = imageViewModel.imagesDataState.collectAsState().value
-        when (imagesDataUIState) {
-            ImagesDataUIState.Empty -> {
-                // TODO: CWL loading page?
-
-                MediaItem(
-                    round = 6.dp,
-                    uri = mediaItem.backdrop_path,
-                    modifier = modifier,
-                    size = ImageSize.BACKDROP
-                )
-            }
-
-            is ImagesDataUIState.Data -> {
-                val enBackdrop = imagesDataUIState.media.getFirstEnBackdrop()
-                enBackdrop?.let {
-                    MediaItem(
-                        round = 6.dp,
-                        uri = it.file_path,
-                        modifier = modifier,
-                        size = ImageSize.BACKDROP
-                    )
-                } ?: // ELSE
-                Box(modifier = modifier) // Red color is to indicate that the media has no english backdrop, this box is TEMPORARY! and for later debugging purposes when making title over media with no english backdrop
-                {
-                    MediaItem(
-                        round = 6.dp,
-                        uri = mediaItem.backdrop_path, // TODO: catch null case here
-                        modifier = Modifier.fillMaxSize(),
-                        size = ImageSize.BACKDROP
-                    )
-                    Box(modifier = Modifier.size(8.dp).background(Color.Red))
-                }
-            }
-
-            else -> {}
-        }
-    } else {
-        MediaItem(
-            round = 6.dp,
-            uri = mediaItem.backdrop_path,
-            modifier = modifier,
-            size = ImageSize.BACKDROP
-        )
-    }
-
-
 }
 
 
