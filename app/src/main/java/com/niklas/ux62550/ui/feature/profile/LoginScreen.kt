@@ -40,7 +40,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true)
 fun LoginPreview() {
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
         Surface {
             LoginScreen({})
         }
