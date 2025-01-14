@@ -18,7 +18,9 @@ class RemoteFirebase {
         try {
             val document = db.collection("Watchlist").document("1NhBN640YoUdZq848o3C").get().await()
             Log.d("Firebase_info", "${document.id} => ${document.data}")
-            mutableWatchListFlow.emit(document.data?.get("MovieIds") as List<Int> ) // TODO make type safe.
+            val arrayData = document.data?.get("MovieIds") as List<*>
+            val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
+            mutableWatchListFlow.emit(intData)
         } catch (e: Exception){
             Log.w("Firebase_info", "Error getting documents.", e)
             mutableWatchListFlow.emit(null)
