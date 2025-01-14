@@ -3,10 +3,6 @@ package com.niklas.ux62550.data.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-enum class GenreType {
-    MOVIE, TV
-}
-
 @Serializable
 data class GenreDataObject(
     @SerialName("genres")

@@ -43,7 +43,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true)
 fun SearchPreview() {
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
 
         val viewModel: SearchViewModel = viewModel()
         viewModel.initPreview()
