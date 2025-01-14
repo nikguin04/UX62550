@@ -32,7 +32,7 @@ fun HomePreview() {
     val mvm: HomeViewModel = viewModel()
     mvm.initPreview()
 
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
         HomeScreen(onNavigateToMedia = {}, homeViewModel = mvm)
         // TODO: perhaps split up the feature items and genre items into composables so we can preview them individually
     }
@@ -118,5 +118,3 @@ fun GenreMediaStack(homeViewModel: HomeViewModel, onNavigateToMedia: (MediaObjec
         }
     }
 }
-
-

@@ -66,7 +66,7 @@ import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
-import com.niklas.ux62550.ui.feature.home.MediaItemBackdropIntercept
+import com.niklas.ux62550.ui.feature.common.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -82,7 +82,7 @@ fun MediaDetailPagePreview() {
 
     val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
 
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
         Surface {
             MediaDetailsScreen(movieViewModel, creditsViewModel, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
@@ -356,4 +356,3 @@ fun BookmarkButton(){
         contentDescription = "Bookmark"
     )
 }
-
