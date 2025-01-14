@@ -1,6 +1,7 @@
 package com.niklas.ux62550.ui.feature.review
 
 
+import ReviewViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -45,11 +46,13 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.firestore.FirebaseFirestore
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.ImageSize
@@ -64,7 +67,7 @@ fun ReviewAndRatingPreview() {
 
     UX62550Theme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample)
+            //ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample)
         }
     }
 }
@@ -76,23 +79,32 @@ fun ScreenReviewAndRating(
     reviewViewModel: ReviewViewModel = viewModel()
 )
     {
-        val reviewState = reviewViewModel.reviewState.collectAsState().value
+        val reviewState by reviewViewModel.reviewState.collectAsState()
 
 
         Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-        ReviewViewModel()
-        ReviewLayout(media = media)
-        PublishReview()
-        MoreDetailedReview()
+
+
+        ReviewLayout(media = media, reviewViewModel)
+
+        PublishReview(stars = reviewState.rating,
+            reviewText = reviewState.reviewText,
+            onRatingChange = { newRating -> reviewViewModel.updateRating(newRating) },
+            onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
+            onSubmit = {
+                reviewViewModel.submitReview(mediaId = media.id)
+            })
+
+        MoreDetailedReview(reviewViewModel)
     }
 }
 
 @Composable
 fun ReviewLayout(
-    modifier: Modifier = Modifier,
-    media: MovieDetailObject
+    media: MovieDetailObject,
+    reviewViewModel: ReviewViewModel
 ) {
     Column {
         Box {
@@ -140,60 +152,45 @@ fun ReviewLayout(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Row(
-                //modifier = Modifier
-                //.align(Alignment.BottomCenter),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                var rating by remember { mutableFloatStateOf(0f) }
+            RatingStars(
+                rating = reviewViewModel.reviewState.collectAsState().value.rating,
 
-                Row(modifier = Modifier.wrapContentWidth()) {
-                    for (i in 0..4) {
-                        val isFilled = i < rating.toInt()
-                        val isHalfFilled = (rating - i) in 0.5..0.99
-                        Image(
-                            imageVector = when {
-                                isFilled -> Icons.Filled.Star
-                                isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
-                                else -> Icons.Outlined.StarOutline
-                            },
-                            modifier = Modifier
-                                .requiredSize(38.dp)
-                                .clickable {
-                                    val clickedPosition = i + 1
-                                    rating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
-                                },
-                            colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
-                            contentDescription = "Star icon",
-                        )
-                    }
-                    Text(
-                        text = "${rating}/5.0",
-                        style = TextStyle(
-                            fontSize = 34.sp,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        color = Color.White,
-                        modifier = Modifier.padding(4.dp, 0.dp, 4.dp, 0.dp)
-                    )
-                }
-            }
+                onRatingSelected = { reviewViewModel.updateRating(it) }
+            )
+            val currentRating = reviewViewModel.reviewState.collectAsState().value.rating
+            Text(
+                text = "${currentRating}/5.0",
+                style = TextStyle(
+                    fontSize = 34.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Color.White,
+                modifier = Modifier.padding(4.dp, 0.dp, 4.dp, 0.dp)
+            )
+
         }
     }
 }
 
-    @Composable
-    fun PublishReview() {
-        var text by remember { mutableStateOf("") }
-
+@Composable
+fun PublishReview(
+    stars: Float,
+    reviewText: String,
+    onRatingChange: (Float) -> Unit,
+    onReviewChange: (String) -> Unit,
+    onSubmit: () -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         TextField(
-            value = text,
-            onValueChange = { text = it },
+            value = reviewText,
+            onValueChange = { onReviewChange(it) },
             shape = RoundedCornerShape(15),
             modifier = Modifier
                 .requiredSize(400.dp, 200.dp)
                 .padding(20.dp, 10.dp),
-
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = TextFieldColor,
                 unfocusedContainerColor = TextFieldColor,
@@ -201,16 +198,18 @@ fun ReviewLayout(
                 unfocusedIndicatorColor = Color.Transparent,
                 unfocusedLabelColor = Color.Black,
                 focusedTextColor = Color.Black
-
             ),
             label = { Text("Write a review with accordance to the rating") },
         )
+
         Box(
-            modifier = Modifier.fillMaxWidth().padding(0.dp, 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
             Button(
-                onClick = { TODO("functionality") },
+                onClick = onSubmit,
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
             ) {
@@ -218,71 +217,31 @@ fun ReviewLayout(
             }
         }
     }
-
-    @Composable
-    fun MoreDetailedReview() {
-        Text(
-            text = "More detailed review",
-            color = ReviewColor,
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(0.dp, 10.dp)
-        )
-
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Music:",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
-            RatingStars()
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Plot:",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
-            RatingStars()
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Acting:",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
-            RatingStars()
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Directing:",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
-            RatingStars()
+}
+@Composable
+fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
+    Column {
+        listOf("Music", "Plot", "Acting", "Directing").forEach { category ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "$category:",
+                    modifier = Modifier.weight(1f),
+                    fontSize = 16.sp
+                )
+                RatingStars(
+                    rating = reviewViewModel.getCategoryRating(category),
+                    onRatingSelected = { reviewViewModel.updateCategoryRating(category, it) }
+                )
+            }
         }
     }
+}
+
 
     @Composable
     fun ReviewText() {
@@ -322,34 +281,32 @@ fun ReviewLayout(
     }
 
 
-    @Composable
-    fun RatingStars() {
-        var rating by remember { mutableFloatStateOf(0f) }
+@Composable
+fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit) {
+    Row(modifier = Modifier.wrapContentWidth()) {
+        for (i in 1..5) {
+            val isFilled = i <= rating
+            val isHalfFilled = (rating - i) in 0.5..0.99
 
-        Row(modifier = Modifier.wrapContentWidth()) {
-            for (i in 0..4) {
-                val isFilled = i < rating.toInt()
-                val isHalfFilled = (rating - i) in 0.5..0.99
-
-                Image(
-                    imageVector = when {
-                        isFilled -> Icons.Filled.Star
-                        isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
-                        else -> Icons.Outlined.StarOutline
+            Image(
+                imageVector = when {
+                    isFilled -> Icons.Filled.Star
+                    isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
+                    else -> Icons.Outlined.StarOutline
+                },
+                modifier = Modifier
+                    .requiredSize(34.dp)
+                    .clickable {
+                        val newRating = i.toFloat()
+                        onRatingSelected(newRating)
                     },
-                    modifier = Modifier
-                        .requiredSize(34.dp)
-                        .clickable {
-                            val clickedPosition = i + 1
-                            rating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
-                        },
-                    colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
-                    contentDescription = "Star icon",
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-            }
+                colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
+                contentDescription = "Star icon",
+            )
+            Spacer(modifier = Modifier.width(4.dp))
         }
     }
+}
 
 
 
