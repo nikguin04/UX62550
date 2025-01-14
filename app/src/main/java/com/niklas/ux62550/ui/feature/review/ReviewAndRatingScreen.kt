@@ -4,6 +4,7 @@ package com.niklas.ux62550.ui.feature.review
 import ReviewViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,6 +33,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -43,9 +49,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
@@ -57,9 +65,10 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Preview(showBackground = true)
 fun ReviewAndRatingPreview() {
 
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
         }
+
     }
 }
 
@@ -121,19 +130,22 @@ fun ReviewLayout(
                 size = ImageSize.BACKDROP
             )
             ReviewText()
-            TitleText(media.Originaltitle)
+            TitleText(media.title)
 
         }
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .align(Alignment.CenterHorizontally)
+                .align(Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
 
         ) {
             RatingStars(
                 rating = reviewViewModel.reviewState.collectAsState().value.rating,
 
-                onRatingSelected = { reviewViewModel.updateRating(it) }
+                onRatingSelected = { reviewViewModel.updateRating(it) },
+                starSize = 40.dp
             )
             val currentRating = reviewViewModel.reviewState.collectAsState().value.rating
             Text(
@@ -143,7 +155,7 @@ fun ReviewLayout(
                     fontWeight = FontWeight.Bold
                 ),
                 color = Color.White,
-                modifier = Modifier.padding(4.dp, 0.dp, 4.dp, 0.dp)
+                modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
             )
 
         }
@@ -214,7 +226,7 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
                 Text(
                     text = "$category:",
                     modifier = Modifier.weight(1f),
-                    fontSize = 16.sp
+                    fontSize = 25.sp
                 )
 
                 val categoryRating = categoryRatings[category] ?: 0f
@@ -273,7 +285,7 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
 
 
 @Composable
-fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit) {
+fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit,  starSize: Dp = 34.dp) {
     Row(modifier = Modifier.wrapContentWidth()) {
         for (i in 0..4) {
             val isFilled = i < rating.toInt()
@@ -286,7 +298,7 @@ fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit) {
                     else -> Icons.Outlined.StarOutline
                 },
                 modifier = Modifier
-                    .requiredSize(34.dp)
+                    .requiredSize(starSize)
                     .clickable {
                         val clickedPosition = i + 1
                         val newRating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
