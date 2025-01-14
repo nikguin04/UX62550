@@ -25,7 +25,6 @@ import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import kotlinx.coroutines.flow.update
 
 @Composable
 @Preview(showBackground = true)
@@ -46,20 +45,18 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel(),
     onNavigateToMedia: (MediaObject) -> Unit) {
     val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
-    Box {
-    if (!homeViewModel.mutableGenreDisplayState.collectAsState().value || !homeViewModel.mutableFeaturedDisplayState.collectAsState().value) {
-        LoadingScreen()
-    }
     when (mediaItemsUIState) {
-        MediaItemsUIState.Empty -> { }
+        MediaItemsUIState.Empty -> {
+            LoadingScreen()
+        }
         is MediaItemsUIState.Data -> {
+
             Column(modifier.padding().verticalScroll(rememberScrollState())) {
                 FeaturedMediaScroller(homeViewModel, onNavigateToMedia)
                 GenreMediaStack(homeViewModel, onNavigateToMedia)
             }
         }
     }
-        }
 }
 
 @Composable
@@ -87,12 +84,13 @@ fun HomeWelcomeTopBar(modifier: Modifier = Modifier) {
 fun FeaturedMediaScroller(homeViewModel: HomeViewModel, onNavigateToMedia: (MediaObject) -> Unit) {
     val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
     when (mediaItemsUIState) {
-        MediaItemsUIState.Empty -> { }
+        MediaItemsUIState.Empty -> {
+            LoadingScreen()
+        }
 
         is MediaItemsUIState.Data -> {
-        	HomeWelcomeTopBar() // TODO: This should not be here
+        	HomeWelcomeTopBar()
             HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaObjects.subList(0,7), onNavigateToMedia)
-            homeViewModel.mutableFeaturedDisplayState.update { true }
         }
         else -> {}
     }
@@ -116,9 +114,7 @@ fun GenreMediaStack(homeViewModel: HomeViewModel, onNavigateToMedia: (MediaObjec
                     onNavigateToMedia = onNavigateToMedia
                 )
             }
-            homeViewModel.mutableGenreDisplayState.update { true }
             Box(Modifier.size(0.dp, 20.dp))
-
         }
     }
 }
