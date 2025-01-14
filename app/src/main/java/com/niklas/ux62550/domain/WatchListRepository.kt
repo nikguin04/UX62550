@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class WatchListRepository {
-    private val firebaseDataSource = RemoteFirebase()
+    private val firebaseDataSource = RemoteFirebase
 
     private val mutableWatchListFlow = MutableSharedFlow<List<Int>?>()
     val watchListFlow = mutableWatchListFlow.asSharedFlow()
