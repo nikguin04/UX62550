@@ -10,43 +10,40 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MovieDetailObject(
     @SerialName("spoken_languages")
-    val spokenLanguages: List<SpokenLanguages>,
+    val spokenLanguages: List<SpokenLanguages>?,
 
     @SerialName("genres")
     val genre: List<Genre>,
 
     @SerialName("adult")
-    val adult: Boolean,
+    val adult: Boolean = false,
 
     @SerialName("backdrop_path")
     val backDropPath : String?,
 
     @SerialName("homepage")
-    val homePage : String,
-
-    @SerialName("imdb_id")
-    val imbdID : String,
+    val homePage : String = "",
 
     @SerialName("original_title")
     val Originaltitle : String,
 
     @SerialName("overview")
-    val Description : String,
+    val Description : String = "",
 
     @SerialName("poster_path")
-    val posterPath : String,
+    val posterPath : String?,
 
     @SerialName("release_date")
-    val relaseDate : String,
+    val relaseDate : String = "0",
 
     @SerialName("title")
-    val title: String,
+    val title: String = "",
 
     @SerialName("vote_average")
-    val rating : Double,
+    val rating : Double = 0.0,
 
     @SerialName("runtime")
-    val runTime : Int,
+    val runTime : Int = 0,
 
     @SerialName("id")
     val id : Int,
@@ -69,23 +66,23 @@ data class MovieDetailObject(
 @Serializable
 data class Genre(
     @SerialName("id")
-    val genreID: Int,
+    val genreID: Int = 0,
 
     @SerialName("name")
-    val genreName: String
+    val genreName: String = ""
 ): Parcelable
 
 @Parcelize
 @Serializable
 data class SpokenLanguages(
     @SerialName("english_name")
-    val languageName : String,
+    val languageName : String = "",
 
     @SerialName("iso_639_1")
-    val isoNumber: String,
+    val isoNumber: String = "",
 
     @SerialName("name")
-    val spokenName : String
+    val spokenName : String = ""
 ): Parcelable
 
 
