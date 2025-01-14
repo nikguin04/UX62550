@@ -39,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -67,7 +68,6 @@ fun ReviewAndRatingPreview() {
 
     UX62550Theme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            //ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample)
         }
     }
 }
@@ -81,12 +81,9 @@ fun ScreenReviewAndRating(
     {
         val reviewState by reviewViewModel.reviewState.collectAsState()
 
-
         Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-
-
         ReviewLayout(media = media, reviewViewModel)
 
         PublishReview(stars = reviewState.rating,
@@ -115,9 +112,7 @@ fun ReviewLayout(
                     .fillMaxWidth()
                     .graphicsLayer(alpha = 1f)
                     .drawWithContent {
-                        drawContent() // Draw the actual image
-
-                        // Draw the fade
+                        drawContent()
                         drawRect(
                             brush = Brush.verticalGradient(
                                 colors = listOf(
@@ -138,20 +133,12 @@ fun ReviewLayout(
             TitleText(media.Originaltitle)
 
         }
-//        Box(
-//            modifier = Modifier
-//                .size(
-//                    LocalConfiguration.current.screenWidthDp.dp,
-//                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-//                )
-//
-//        ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.CenterHorizontally)
 
+        ) {
             RatingStars(
                 rating = reviewViewModel.reviewState.collectAsState().value.rating,
 
@@ -218,9 +205,14 @@ fun PublishReview(
         }
     }
 }
+
 @Composable
 fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
-    Column {
+    val reviewState by reviewViewModel.reviewState.collectAsState()
+
+    val categoryRatings = reviewState.categoryRatings
+
+    Column(modifier = Modifier.padding(16.dp)) {
         listOf("Music", "Plot", "Acting", "Directing").forEach { category ->
             Row(
                 modifier = Modifier
@@ -233,9 +225,14 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
                     modifier = Modifier.weight(1f),
                     fontSize = 16.sp
                 )
+
+                val categoryRating = categoryRatings[category] ?: 0f
+
                 RatingStars(
-                    rating = reviewViewModel.getCategoryRating(category),
-                    onRatingSelected = { reviewViewModel.updateCategoryRating(category, it) }
+                    rating = categoryRating,
+                    onRatingSelected = { newRating ->
+                        reviewViewModel.updateCategoryRating(category, newRating)
+                    }
                 )
             }
         }
@@ -243,7 +240,9 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
 }
 
 
-    @Composable
+
+
+@Composable
     fun ReviewText() {
         Text(
             text = "Write a review for",
@@ -281,11 +280,12 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
     }
 
 
+
 @Composable
 fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit) {
     Row(modifier = Modifier.wrapContentWidth()) {
-        for (i in 1..5) {
-            val isFilled = i <= rating
+        for (i in 0..4) {
+            val isFilled = i < rating.toInt()
             val isHalfFilled = (rating - i) in 0.5..0.99
 
             Image(
@@ -297,7 +297,8 @@ fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit) {
                 modifier = Modifier
                     .requiredSize(34.dp)
                     .clickable {
-                        val newRating = i.toFloat()
+                        val clickedPosition = i + 1
+                        val newRating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
                         onRatingSelected(newRating)
                     },
                 colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
@@ -307,6 +308,7 @@ fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit) {
         }
     }
 }
+
 
 
 

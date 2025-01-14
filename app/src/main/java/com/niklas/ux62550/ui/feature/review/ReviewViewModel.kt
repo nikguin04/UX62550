@@ -36,15 +36,15 @@ class ReviewViewModel : ViewModel() {
     // Update a specific category rating
     fun updateCategoryRating(category: String, rating: Float) {
         val updatedRatings = _reviewState.value.categoryRatings.toMutableMap()
-        updatedRatings[category] = rating
-        _reviewState.value = _reviewState.value.copy(categoryRatings = updatedRatings)
+        updatedRatings[category] = rating // Update the rating for the selected category
+        _reviewState.value = _reviewState.value.copy(categoryRatings = updatedRatings) // Update the state
     }
 
-    // Submit the review to Firebase
+
     fun submitReview(mediaId: Int) {
         val review = mapOf(
             "MovieIDs" to mediaId,
-            "MovieRatings" to _reviewState.value.rating,
+            "MainRating" to _reviewState.value.rating,
             "ReviewText" to _reviewState.value.reviewText,
             "CategoryRatings" to _reviewState.value.categoryRatings,
             "timestamp" to System.currentTimeMillis()
