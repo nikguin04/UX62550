@@ -50,7 +50,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true)
 fun WatchlistPreview() {
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
 //            WatchlistScreen(onNavigateToMedia = {})
         }
