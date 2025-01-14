@@ -21,7 +21,7 @@ class RemoteFirebase {
             mutableWatchListFlow.emit(null)
         }
     }
-    suspend fun addToWatchList(data: MediaObject){
+    fun addToWatchList(data: MediaObject){
         try {
             db.collection("Watchlist").document("1NhBN640YoUdZq848o3C").set(data.id)
         } catch (e: Exception){

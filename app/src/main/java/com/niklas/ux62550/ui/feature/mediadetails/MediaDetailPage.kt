@@ -35,6 +35,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,10 +57,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.domain.WatchListRepository
 import com.niklas.ux62550.ui.feature.common.CreditState
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
@@ -69,7 +72,9 @@ import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.common.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
+import com.niklas.ux62550.ui.feature.watchlist.WatchlistViewModel
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
 
@@ -224,14 +229,9 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
     }
 
         // Bookmark Button
-        when(watchlistState){
-            WatchlistState.Empty ->{
-                Text("No bookmark")
-            }
-            is WatchlistState.Data -> {
-                BookmarkButton()
-            }
-        }
+        BookmarkButton(
+            mediaObject = movieState.mediaDetailObjects.toMediaObject(),
+        )
     }
 }
 
@@ -341,16 +341,22 @@ fun DescriptionText(description: String) {
     }
 }
 @Composable
-fun BookmarkButton(){
-    var isBookmarked by remember { mutableStateOf(false)}
+fun BookmarkButton(mediaObject: MediaObject, movieViewModel: MovieViewModel) {
+    var isBookmarked by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
     Image(
         imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
         modifier = Modifier
             .padding(100.dp)
             .clickable {
                 isBookmarked = !isBookmarked
-                WatchlistState
-
+                scope.launch {
+                    if (isBookmarked) {
+                        movieViewModel(mediaObject)
+                    } else {
+                    }
+                }
             },
         colorFilter = ColorFilter.tint(Color.White),
         contentDescription = "Bookmark"

@@ -104,6 +104,8 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         getProviderForMovies(MovieID = media.id)
         getTrailerForMovies(MovieID = media.id)
         addToWatchlist(media = media)
+
+
     }
 
     fun initPreview() {
