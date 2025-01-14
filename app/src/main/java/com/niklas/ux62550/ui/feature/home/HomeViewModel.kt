@@ -18,6 +18,9 @@ class HomeViewModel : ViewModel() {
         MediaItem("Name 3", R.drawable.logo, Color.Green),
     )*/
 
+    val mutableGenreDisplayState = MutableStateFlow<Boolean>(false)
+    val mutableFeaturedDisplayState = MutableStateFlow<Boolean>(false)
+
     private val homeRepository = HomeRepository()
 
     private val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
