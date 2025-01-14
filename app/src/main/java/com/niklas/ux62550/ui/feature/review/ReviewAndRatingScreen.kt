@@ -24,7 +24,6 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,10 +32,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -53,7 +48,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
@@ -64,7 +58,6 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true)
 fun ReviewAndRatingPreview() {
-
     UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
         }
@@ -78,13 +71,13 @@ fun ScreenReviewAndRating(
     media: MovieDetailObject,
     reviewViewModel: ReviewViewModel = viewModel()
 )
-    {
-        val reviewState by reviewViewModel.reviewState.collectAsState()
+{
+    val reviewState by reviewViewModel.reviewState.collectAsState()
 
-        Column(
+    Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-        ReviewLayout(media = media, reviewViewModel)
+        Header(media = media, reviewViewModel)
 
         PublishReview(stars = reviewState.rating,
             reviewText = reviewState.reviewText,
@@ -98,45 +91,46 @@ fun ScreenReviewAndRating(
     }
 }
 
+
+
 @Composable
-fun ReviewLayout(
+fun Header(
     media: MovieDetailObject,
     reviewViewModel: ReviewViewModel
 ) {
-    Column {
-        Box {
-            val backColor = MaterialTheme.colorScheme.background
-            MediaItem(
-                uri = media.backDropPath,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .graphicsLayer(alpha = 1f)
-                    .drawWithContent {
-                        drawContent()
-                        drawRect(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    backColor,
-                                    backColor,
-                                    backColor.copy(alpha = 0.5f),
-                                    Color.Transparent,
-                                ),
-                                startY = 0f,
-                                endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
-                            ),
-                            blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
-                        )
-                    },
-                size = ImageSize.BACKDROP
-            )
-            ReviewText()
-            TitleText(media.title)
+    Box {
+        val backColor = MaterialTheme.colorScheme.background
+        MediaItem(
+            uri = media.backDropPath,
+            modifier = Modifier
+                .fillMaxWidth()
+                .graphicsLayer(alpha = 1f)
+                .drawWithContent {
+                    drawContent() // Draw the actual image
 
-        }
+                    // Draw the fade
+                    drawRect(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                backColor,
+                                backColor,
+                                backColor.copy(alpha = 0.5f),
+                                Color.Transparent,
+                            ),
+                            startY = 0f,
+                            endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
+                        ),
+                        blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
+                    )
+                },
+            size = ImageSize.BACKDROP
+        )
+        ReviewText()
+        TitleText(media.Originaltitle)
+    }
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.CenterHorizontally),
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
 
@@ -160,7 +154,7 @@ fun ReviewLayout(
 
         }
     }
-}
+
 
 @Composable
 fun PublishReview(
@@ -264,24 +258,23 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
         )
     }
 
-    @Composable
-    fun TitleText(movieTitle: String) {
-        Text(
-            text = movieTitle,
-            style = TextStyle(
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Bold,
-                shadow = Shadow(
-                    color = Color.Black, blurRadius = 10f
-                ),
-                textAlign = TextAlign.Center,
+@Composable
+fun TitleText(movieTitle: String) {
+    Text(
+        text = movieTitle,
+        style = TextStyle(
+            fontSize = 36.sp,
+            fontWeight = FontWeight.Bold,
+            shadow = Shadow(
+                color = Color.Black, blurRadius = 10f
             ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 120.dp),
-        )
-    }
-
+            textAlign = TextAlign.Center,
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 120.dp)
+    )
+}
 
 
 @Composable
