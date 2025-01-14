@@ -75,7 +75,7 @@ fun MediaDetailPagePreview() {
 
     val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
 
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
         Surface {
             MediaDetailsScreen(movieViewModel, creditsViewModel, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
@@ -331,4 +331,3 @@ fun DescriptionText(description: String) {
             )
     }
 }
-

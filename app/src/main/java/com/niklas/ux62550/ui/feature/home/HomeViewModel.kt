@@ -4,14 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.GenreObject
-import com.niklas.ux62550.data.model.GenreType
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.domain.HomeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.SerialName
 
 class HomeViewModel : ViewModel() {
     /*private val mediaItems: List<MediaItem> = listOf(
@@ -44,10 +42,10 @@ class HomeViewModel : ViewModel() {
         getMovieGenres()
     }
     private fun getFeaturedMedia() = viewModelScope.launch {
-        homeRepository.getTrending("movie", "day")
+        homeRepository.getTrending( "day")
     }
     private fun getMovieGenres() = viewModelScope.launch {
-        homeRepository.getGenres(GenreType.MOVIE)
+        homeRepository.getGenres()
     }
 
 

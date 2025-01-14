@@ -1,7 +1,6 @@
 package com.niklas.ux62550.ui.feature.watchlist
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,8 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -22,7 +19,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
@@ -41,16 +37,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.LogoBox
-import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
-import com.niklas.ux62550.ui.feature.search.MovieBoxRow
-import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
-import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
 @Preview(showBackground = true)
 fun WatchlistPreview() {
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
 //            WatchlistScreen(onNavigateToMedia = {})
         }
