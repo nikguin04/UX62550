@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 
 class DiscoverRepository {
 
-    private val discoverDataSource = RemoteMediaDataSource
+    private val remoteDataSource = RemoteMediaDataSource
 
     private val mutableDiscoverFlow = MutableSharedFlow<SearchDataObject>()
     val discoverFlow = mutableDiscoverFlow.asSharedFlow()
     suspend fun getDiscoverMovies(genres: String, page: Int)  = mutableDiscoverFlow.emit(
-        discoverDataSource.getDiscoverMovies(genres, page)
+        remoteDataSource.getDiscoverMovies(genres, page)
     )
 
 }
