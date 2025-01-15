@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.common
 
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -21,20 +20,19 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
     init {
         viewModelScope.launch {
             discoverRepository.discoverFlow.collect { searchDataObject ->
-                run { // Append media_type before updating data
-                    searchDataObject.results.forEach { res -> res.media_type = "movie" }
-                    // Either append to current data or make new data completely
-                    when (discoverItemsState.value) {
-                        is DiscoverItemsUIState.Data -> {
-                            mutableDiscoverItemsState.update {
-                                DiscoverItemsUIState.Data(
-                                    (discoverItemsState.value as DiscoverItemsUIState.Data).mediaObjects + searchDataObject.results
-                                )
-                            }
+                // Append media_type before updating data
+                searchDataObject.results.forEach { res -> res.media_type = "movie" }
+                // Either append to current data or make new data completely
+                when (discoverItemsState.value) {
+                    is DiscoverItemsUIState.Data -> {
+                        mutableDiscoverItemsState.update {
+                            DiscoverItemsUIState.Data(
+                                (discoverItemsState.value as DiscoverItemsUIState.Data).mediaObjects + searchDataObject.results
+                            )
                         }
-                        DiscoverItemsUIState.Empty -> {
-                            mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
-                        }
+                    }
+                    DiscoverItemsUIState.Empty -> {
+                        mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
                     }
                 }
             }
@@ -44,10 +42,10 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
 
     var lastGenreId: String? = null
     var lastPage: Int = 1
-    fun getDiscover(genre_id: String, page: Int = 1) = viewModelScope.launch {
-        lastGenreId = genre_id
+    fun getDiscover(genreId: String, page: Int = 1) = viewModelScope.launch {
+        lastGenreId = genreId
         lastPage = page
-        discoverRepository.getDiscoverMovies(genre_id, page)
+        discoverRepository.getDiscoverMovies(genreId, page)
     }
 }
 
