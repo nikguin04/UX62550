@@ -62,7 +62,6 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
         for (i in 0 until minOf(4, creditState.creditObject.cast.size)) {
             MediaItem(
                 creditState.creditObject.cast[i].castProfilePath,
-                0.dp,
                 modifier
                     .clip(RoundedCornerShape(25))
                     .size(width = 60.dp, height = 90.dp),
@@ -109,7 +108,6 @@ fun CastRow(modifier: Modifier, cast: Cast){
         verticalAlignment = Alignment.CenterVertically
     ) {
         MediaItem(cast.castProfilePath,
-            0.dp,
             modifier
                 .clip(RoundedCornerShape(25))
                 .size(width = 60.dp, height = 90.dp),
@@ -146,7 +144,6 @@ fun CrewRow(modifier: Modifier, crew: Crew){
         verticalAlignment = Alignment.CenterVertically
     ) {
         MediaItem(crew.castProfilePath,
-            0.dp,
             modifier
                 .clip(RoundedCornerShape(25))
                 .size(width = 60.dp, height = 90.dp),

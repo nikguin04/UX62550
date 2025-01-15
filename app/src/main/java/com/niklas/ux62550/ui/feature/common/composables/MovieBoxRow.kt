@@ -71,7 +71,6 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
         else {
             MediaItem(
                 uri = movie.backdrop_path,
-                round = 0.dp,
                 modifier = Modifier.width(110.dp).height(70.62.dp),
                 size = ImageSize.BACKDROP
             )

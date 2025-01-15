@@ -42,7 +42,6 @@ fun NonMovieBoxRow(person: MediaObject, modifier: Modifier = Modifier) {
     ) {
         MediaItem(
             uri = person.profile_path,
-            round = 0.dp,
             modifier
                 .clip(RoundedCornerShape(25))
                 .size(width = 50.dp, height = 80.dp),

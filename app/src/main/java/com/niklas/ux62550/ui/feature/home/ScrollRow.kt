@@ -92,7 +92,8 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
                 modifier = Modifier
                     .clickable(onClick = { onNavigateToMedia(items[page])})
                     .align(Alignment.CenterHorizontally)
-                    .size(Dp(w),Dp(h)),
+                    .size(Dp(w),Dp(h))
+                    .clip(RoundedCornerShape(6.dp)),
                 mediaItem = items[page],
                 fetchEnBackdrop = true
             )
@@ -158,7 +159,8 @@ fun HorizontalLazyRowMovies(
                             (if (index == 0) 12f.dp else 6f.dp), 0.dp,
                             (if (index == items.size - 1) 12f.dp else 6f.dp), 0.dp,
                         )
-                        .size(width,height),
+                        .size(width,height)
+                        .clip(RoundedCornerShape(6.dp)),
                     fetchEnBackdrop,mediaItem
 
                 )

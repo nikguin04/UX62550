@@ -78,7 +78,6 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                         Spacer(modifier = Modifier.width(4.dp))
                         MediaItem(
                             uri = provider,
-                            round = 0.dp,
                             modifier = modifier
                                 .clip(CircleShape)
                                 .size(32.dp),

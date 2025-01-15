@@ -192,7 +192,8 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                         MediaItemBackdropIntercept(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .aspectRatio(16f / 9f),
+                                .aspectRatio(16f / 9f)
+                                .clip(RoundedCornerShape(6.dp)),
                             fetchEnBackdrop = true,
                             mediaItem = movieState.mediaDetailObject.toMediaObject()
                         )

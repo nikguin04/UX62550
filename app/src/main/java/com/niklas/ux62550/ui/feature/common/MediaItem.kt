@@ -70,7 +70,6 @@ fun MediaItemBackdropIntercept(
                 val enBackdrop = imagesDataUIState.media.getFirstEnBackdrop()
                 enBackdrop?.let {
                     MediaItem(
-                        round = 6.dp,
                         uri = it.file_path,
                         modifier = modifier,
                         size = ImageSize.BACKDROP,
@@ -80,9 +79,8 @@ fun MediaItemBackdropIntercept(
                 Box(modifier = modifier) // Red color is to indicate that the media has no english backdrop, this box is TEMPORARY! and for later debugging purposes when making title over media with no english backdrop
                 {
                     MediaItem(
-                        round = 6.dp,
                         uri = mediaItem.backdrop_path, // TODO: catch null case here
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(6.dp)),
                         size = ImageSize.BACKDROP,
                         animationProgress = animationProgress
                     )
@@ -94,9 +92,9 @@ fun MediaItemBackdropIntercept(
         }
     } else {
         MediaItem(
-            round = 6.dp,
+
             uri = mediaItem.backdrop_path,
-            modifier = modifier,
+            modifier = modifier.clip(RoundedCornerShape(6.dp)),
             size = ImageSize.BACKDROP
         )
     }
@@ -118,7 +116,7 @@ fun getMediaItemAnimationProgress(): State<Float> {
 }
 
 @Composable
-fun MediaItem(uri: String?, round: Dp = 0.dp, modifier: Modifier = Modifier, size: ImageSize, animationProgress: State<Float> = getMediaItemAnimationProgress()) { // TODO: Remove round from here since it basically it a modifier
+fun MediaItem(uri: String?, modifier: Modifier = Modifier, size: ImageSize, animationProgress: State<Float> = getMediaItemAnimationProgress()) { // TODO: Remove round from here since it basically it a modifier
     val sizeStr = when (size) {
         ImageSize.BACKDROP -> "w1280"
         ImageSize.LOGO -> "w500"
@@ -138,7 +136,7 @@ fun MediaItem(uri: String?, round: Dp = 0.dp, modifier: Modifier = Modifier, siz
             error = debugPlaceholder(R.drawable.howlsmovingcastle_en),
             onSuccess = { isLoading = false },
             onError = { isLoading = false },
-            modifier = modifier.clip(RoundedCornerShape(round)),
+            modifier = modifier,
         )
 
         LaunchedEffect(isLoading) {
@@ -150,7 +148,7 @@ fun MediaItem(uri: String?, round: Dp = 0.dp, modifier: Modifier = Modifier, siz
 
         if (!hasCrossFaded) {
             // Circular progress indicator for loading animation
-            AnimatedImagePlaceholder(modifier.clip(RoundedCornerShape(round)), animationProgress)
+            AnimatedImagePlaceholder(modifier, animationProgress)
         }
     }
 }
