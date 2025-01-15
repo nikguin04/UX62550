@@ -47,4 +47,14 @@ data class ImagesDataObject(
         backdrops.forEach { backdrop -> if (backdrop.iso_639_1 == "en") { return backdrop } }
         return null
     }
+
+    companion object {
+        val EmptyExample = ImagesDataObject(
+            id = 0,
+            backdrops = listOf(),
+            logos = listOf(),
+            posters = listOf()
+        )
+    }
+
 }

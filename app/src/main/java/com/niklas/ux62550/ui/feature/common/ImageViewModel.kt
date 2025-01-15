@@ -34,6 +34,10 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
     private fun getImages(media_type: String, media_id: Int) = viewModelScope.launch {
         imageRepo.getImages(media_type = media_type, media_id = media_id) // TODO: Don't hardcore this, get some proper discovers
     }
+
+    fun initPreview_NoFetch() {
+        mutableImagesDataState.update { ImagesDataUIState.Data(ImagesDataObject.EmptyExample) }
+    }
 }
 
 class ImageViewModelFactory(private val media: MediaObject) : ViewModelProvider.Factory {
