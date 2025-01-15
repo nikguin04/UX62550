@@ -1,5 +1,11 @@
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
+import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
+import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
+import com.niklas.ux62550.ui.feature.watchlist.MovieIds
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -25,6 +31,27 @@ class ReviewViewModel : ViewModel() {
         reviewStateFlow.value = reviewStateFlow.value.copy(rating = rating)
     }
 
+    fun submitReview(mediaId: Int) {
+        val review = mapOf(
+            "MovieIDs" to mediaId,
+            "MainRating" to reviewStateFlow.value.rating,
+            "ReviewText" to reviewStateFlow.value.reviewText,
+            "CategoryRatings" to reviewStateFlow.value.categoryRatings,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        // shoud this be move to the firebase repository
+        if(FirebaseFirestore.getInstance().collection("Review").document(review.getValue("MovieIDs").toString()).get().isSuccessful){
+            FirebaseFirestore.getInstance().collection("Review").document(review.getValue("MovieIDs").toString()).update(review)
+        } else {
+            FirebaseFirestore.getInstance().collection("Review").document(review.getValue("MovieIDs").toString())
+                .set(review)
+                .addOnSuccessListener { println("Review submitted successfully!") }
+                .addOnFailureListener { println("Error submitting review: ${it.message}") }
+
+        }
+    }
+
     // Update the review text
     fun updateReviewText(text: String) {
         reviewStateFlow.value = reviewStateFlow.value.copy(reviewText = text)
@@ -35,26 +62,11 @@ class ReviewViewModel : ViewModel() {
         return reviewStateFlow.value.categoryRatings[category] ?: 0f
     }
 
+
     // Update a specific category rating
     fun updateCategoryRating(category: String, rating: Float) {
         val updatedRatings = reviewStateFlow.value.categoryRatings.toMutableMap()
         updatedRatings[category] = rating // Update the rating for the selected category
         reviewStateFlow.value = reviewStateFlow.value.copy(categoryRatings = updatedRatings) // Update the state
-    }
-
-
-    fun submitReview(mediaId: Int) {
-        val review = mapOf(
-            "MovieIDs" to mediaId,
-            "MainRating" to reviewStateFlow.value.rating,
-            "ReviewText" to reviewStateFlow.value.reviewText,
-            "CategoryRatings" to reviewStateFlow.value.categoryRatings,
-            "timestamp" to System.currentTimeMillis()
-        )
-
-        FirebaseFirestore.getInstance().collection("Review")
-            .add(review)
-            .addOnSuccessListener { println("Review submitted successfully!") }
-            .addOnFailureListener { println("Error submitting review: ${it.message}") }
     }
 }
