@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
@@ -48,6 +49,7 @@ fun WatchlistPreview() {
         }
     }
 }
+
 
 
 
@@ -65,21 +67,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
         ) {
 
             val watchListState = watchlistViewModel.watchListState.collectAsState().value
-            when (watchListState) {
-                MovieIds.Empty -> {
-                    Text("No data yet")
-
-                }
-
-                is MovieIds.Data -> {
-                    // Display list of movie items in LazyColumn
-                    watchListState.movies?.forEach{id -> Text(id.toString()) }
-
-                }
-            }
-
-
-
+            val watchListRowState = watchlistViewModel.watchListRowState.collectAsState().value
 
             SearchBar(
                 inputField = {
@@ -137,37 +125,20 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                     )
                 }
             }
-        }
+            when (watchListState) {
+                MovieIds.Empty -> {
+                    Text("No data yet")
+                }
 
-//        when (movieItemsUIState) {
-//            MovieItemsUIState.Empty -> {
-//                Text("No movies to be found")
-//                LoadingScreen()
-//                            }
-//
-//            is MovieItemsUIState.Data -> {
-//                // Display list of movie items in LazyColumn
-//                LazyColumn(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    items(movieItemsUIState.movies.results) { movieItem ->
-//                        HorizontalDivider(
-//                            color = SearchColorForText,
-//                            thickness = 1.dp,
-//                            modifier = Modifier
-//                                .padding(horizontal = 16.dp)
-//                                .fillMaxWidth(0.7f)
-//                        )
-//                        MovieBoxRow(
-//                            movie = movieItem,
-//                            modifier = Modifier.clickable(
-//                                onClick = { onNavigateToMedia(movieItem) }
-//                            )
-//                        )
-//                    }
-//                }
-//            }
-//        }
+                is MovieIds.Data -> {
+                    // Display list of movie items in LazyColumn
+                    watchListState.movies?.forEach{id -> MovieBoxRowFromId(
+                        id,
+                        onNavigateToMedia = onNavigateToMedia
+                    ) }
+
+                }
+            }
+        }
     }
 }
