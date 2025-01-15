@@ -229,12 +229,15 @@ fun MediaItemBackdropFallback(
     animationProgress: State<Float> = getMediaItemAnimationProgress()
 ) {
     Box (modifier = modifier) {
-        MediaItem(
-            uri = media.backdrop_path,
-            modifier = modifier,
-            size = size,
-            animationProgress = animationProgress
-        )
+        Box {
+            MediaItem(
+                uri = media.backdrop_path,
+                modifier = modifier,
+                size = size,
+                animationProgress = animationProgress
+            )
+            Box(modifier = modifier.background(Color(0.5f, 0.5f, 0.5f, 0.5f)))
+        }
         if (backdropFallback) {
             Box (
                 modifier = Modifier
