@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
@@ -139,11 +141,13 @@ fun HorizontalLazyRowMovies(
     height: Dp,
     items: List<MediaObject>,
     onNavigateToMedia: (MediaObject) -> Unit,
+    rowListState: LazyListState? = null,
     fetchEnBackdrop: Boolean = false
 ) {
     // LazyRow with snapping effect
     LazyRow(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        state = rowListState?: rememberLazyListState()
     ) {
         items.forEachIndexed { index, mediaItem ->
             item {

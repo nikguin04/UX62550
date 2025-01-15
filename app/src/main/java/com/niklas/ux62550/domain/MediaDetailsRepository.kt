@@ -1,15 +1,18 @@
 package com.niklas.ux62550.domain
 
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.data.model.TrailerObject
+import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class MediaDetailsRepository {
 
+    private val firebaseDataSource = RemoteFirebase
     private val remoteDataSource = RemoteMediaDataSource
 
     private val mutableDetailFlow = MutableSharedFlow<MovieDetailObject>()
@@ -37,4 +40,7 @@ class MediaDetailsRepository {
         remoteDataSource.getTrailer(movie_id)
 
     )
+
+
+
 }
