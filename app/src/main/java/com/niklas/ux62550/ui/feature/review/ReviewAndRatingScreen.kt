@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
@@ -60,6 +61,8 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun ReviewAndRatingPreview() {
     UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample)
+
         }
 
     }
@@ -143,7 +146,7 @@ fun Header(
             )
             val currentRating = reviewViewModel.reviewState.collectAsState().value.rating
             Text(
-                text = "${currentRating}/5.0",
+                text = "${currentRating}/5",
                 style = TextStyle(
                     fontSize = 34.sp,
                     fontWeight = FontWeight.Bold
