@@ -350,7 +350,6 @@ fun BookmarkButton(){
             .padding(100.dp)
             .clickable {
                 isBookmarked = !isBookmarked
-                WatchlistState
 
             },
         colorFilter = ColorFilter.tint(Color.White),

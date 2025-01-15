@@ -36,7 +36,7 @@ object RemoteFirebase {
     }
     suspend fun addToWatchList(data: MediaObject){
         try {
-            db.collection("Watchlist").document("1NhBN640YoUdZq848o3C").set(data.id)
+            FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C").set(data.id)
         } catch (e: Exception){
             Log.w("Firebase_info", "No movieID found", e)
         }

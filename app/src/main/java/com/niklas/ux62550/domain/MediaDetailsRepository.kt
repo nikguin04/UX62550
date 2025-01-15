@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 
 class MediaDetailsRepository {
 
-    private val firebaseDataSource = RemoteFirebase()
+    private val firebaseDataSource = RemoteFirebase
     private val remoteDataSource = RemoteMediaDataSource
 
     private val mutableDetailFlow = MutableSharedFlow<MovieDetailObject>()
