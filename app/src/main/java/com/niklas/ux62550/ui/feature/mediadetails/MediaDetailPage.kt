@@ -199,6 +199,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                                 .aspectRatio(16f / 9f)
                                 .clip(RoundedCornerShape(6.dp)),
                             fetchEnBackdrop = true,
+                            backdropFallback = false,
                             mediaItem = movieState.mediaDetailObject.toMediaObject()
                         )
                         if (youtubeUrl != null) {
