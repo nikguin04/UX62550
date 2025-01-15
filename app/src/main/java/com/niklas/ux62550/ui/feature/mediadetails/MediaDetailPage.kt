@@ -56,14 +56,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
-import com.niklas.ux62550.data.remote.FirebaseInstance
-import com.niklas.ux62550.data.remote.RemoteFirebase
-import com.niklas.ux62550.domain.WatchListRepository
 import com.niklas.ux62550.ui.feature.common.CreditState
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
@@ -71,8 +67,8 @@ import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.common.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
-import com.niklas.ux62550.ui.theme.DescriptionColor
-import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
+import com.niklas.ux62550.ui.feature.watchlist.MovieIds
+import com.niklas.ux62550.ui.feature.watchlist.WatchlistViewModel
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
@@ -98,7 +94,8 @@ fun MediaDetailsScreen(
     movieViewModel: MovieViewModel,
     creditsViewModel: CreditViewModel,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
-    onNavigateToReview: (MovieDetailObject) -> Unit
+    onNavigateToReview: (MovieDetailObject) -> Unit,
+    watchlistViewModel: WatchlistViewModel = WatchlistViewModel()
 ) {
 
     val movieState = movieViewModel.movieState.collectAsState().value
@@ -106,6 +103,7 @@ fun MediaDetailsScreen(
     val trailerState = movieViewModel.trailerState.collectAsState().value
     val creditState = creditsViewModel.creditState.collectAsState().value
     val providerState = movieViewModel.providerState.collectAsState().value
+    val watchListState = watchlistViewModel.watchListState.collectAsState().value
 
     when  {
        movieState is MovieState.Empty || creditState is CreditState.Empty -> {
@@ -118,7 +116,7 @@ fun MediaDetailsScreen(
                     .verticalScroll(rememberScrollState())
             )
             {
-                Header(movieState = movieState, trailerState = trailerState, movieViewModel = movieViewModel)
+                Header(movieState = movieState, trailerState = trailerState, movieViewModel = movieViewModel, watchlistState = watchListState)
                 InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
                 Genres(genres = movieState, providerState = providerState)
                 DescriptionText(description = movieState.mediaDetailObject.Description)
@@ -133,7 +131,7 @@ fun MediaDetailsScreen(
     }
 }
 @Composable
-fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState, movieViewModel: MovieViewModel) {
+fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState, movieViewModel: MovieViewModel, watchlistState: MovieIds) {
     val context = LocalContext.current
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
@@ -225,7 +223,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
     }
 
         // Bookmark Button
-        BookmarkButton(movieState.mediaDetailObject.toMediaObject(), movieViewModel)
+        BookmarkButton(movieState.mediaDetailObject.toMediaObject(), movieViewModel, watchlistState)
     }
 }
 
@@ -335,8 +333,20 @@ fun DescriptionText(description: String) {
     }
 }
 @Composable
-fun BookmarkButton(media: MediaObject, movieViewModel: MovieViewModel){
-    var isBookmarked by remember { mutableStateOf(false)}
+fun BookmarkButton(media: MediaObject, movieViewModel: MovieViewModel, watchlistState: MovieIds){
+    var isBookmarked by remember { mutableStateOf(false) }
+
+    when (watchlistState) {
+        MovieIds.Empty -> {
+            Text("No data yet")
+        }
+        is MovieIds.Data -> {
+            isBookmarked = watchlistState.movies?.contains(media.id) == true
+        }
+    }
+
+
+
     Image(
         imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
         modifier = Modifier
