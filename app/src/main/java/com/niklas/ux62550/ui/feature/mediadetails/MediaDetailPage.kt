@@ -66,8 +66,9 @@ import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
-import com.niklas.ux62550.ui.feature.home.MediaItemBackdropIntercept
+import com.niklas.ux62550.ui.feature.common.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
+import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import java.util.Locale
@@ -82,7 +83,7 @@ fun MediaDetailPagePreview() {
 
     val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
 
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
         Surface {
             MediaDetailsScreen(movieViewModel, creditsViewModel, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
@@ -119,7 +120,7 @@ fun MediaDetailsScreen(
                 Header(movieState = movieState, trailerState = trailerState, watchlistState = watchListState)
                 InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
                 Genres(genres = movieState, providerState = providerState)
-                DescriptionText(description = movieState.mediaDetailObjects.Description)
+                DescriptionText(description = movieState.mediaDetailObject.Description)
 
                 ActorsAndDirectors(creditState = creditState)
                 DetailedRating()
@@ -138,7 +139,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
         Box(modifier = Modifier.alpha(0.5f)) {
             val backColor = MaterialTheme.colorScheme.background
             MediaItem(
-                uri = movieState.mediaDetailObjects.backDropPath,
+                uri = movieState.mediaDetailObject.backDropPath,
                 modifier = Modifier
                 .fillMaxWidth()
                 .graphicsLayer(alpha = 1f)
@@ -205,7 +206,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                             .fillMaxWidth()
                             .aspectRatio(16f / 9f),
                         fetchEnBackdrop = true,
-                        mediaItem = movieState.mediaDetailObjects.toMediaObject()
+                        mediaItem = movieState.mediaDetailObject.toMediaObject()
                     )
                     Image(
                         Icons.Outlined.PlayCircleOutline,
@@ -217,7 +218,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                     )
                 }
                 Spacer(modifier = Modifier.height(12.dp))
-                TitleText(movieState.mediaDetailObjects.Originaltitle)
+                TitleText(movieState.mediaDetailObject.Originaltitle)
             }
         }
          else -> {}
@@ -246,10 +247,10 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
     ) {
         // Row for the stars so that we can use spaced evenly.
         Row(
-            modifier = Modifier.clickable(onClick = { onNavigateToReview(movieState.mediaDetailObjects) }),
+            modifier = Modifier.clickable(onClick = { onNavigateToReview(movieState.mediaDetailObject) }),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val rating = movieState.mediaDetailObjects.rating/2
+            val rating = movieState.mediaDetailObject.vote_average/2
             for (i in 1..5) {
                 val starIcon = when {
                     i <= rating -> Icons.Outlined.Star
@@ -269,13 +270,13 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
             }
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                String.format(Locale.ENGLISH, "%.1f", movieState.mediaDetailObjects.rating/2),
+                String.format(Locale.ENGLISH, "%.1f", movieState.mediaDetailObject.vote_average/2),
                 fontSize = 18.sp
             )
         }
         //Spacer(modifier = Modifier.weight(1f))
         Text(
-            movieState.mediaDetailObjects.relaseDate.substring(0, 4),
+            movieState.mediaDetailObject.relaseDate.substring(0, 4),
             style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,
@@ -285,7 +286,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
         )
         //Spacer(modifier = Modifier.weight(1f))
         Text(
-            movieState.mediaDetailObjects.runTime.minutes.toString(),
+            movieState.mediaDetailObject.runTime.minutes.toString(),
             style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,

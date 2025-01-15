@@ -37,13 +37,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRow
+import com.niklas.ux62550.ui.feature.common.composables.NonMovieBoxRow
 import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
 @Preview(showBackground = true)
 fun SearchPreview() {
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
 
         val viewModel: SearchViewModel = viewModel()
         viewModel.initPreview()
