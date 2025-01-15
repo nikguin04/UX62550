@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 
 class KeywordRepository {
 
-    private val keywordDataSource = RemoteMediaDataSource()
+    private val remoteDataSource = RemoteMediaDataSource
 
     private val mutableKeywordFlow = MutableSharedFlow<SearchDataObject>()
     val keywordFlow = mutableKeywordFlow.asSharedFlow()
     suspend fun getKeywordSearch(keyword_id: String, page: Int)  = mutableKeywordFlow.emit(
-        keywordDataSource.getKeywordMovies(keyword_id, page)
+        remoteDataSource.getKeywordMovies(keyword_id, page)
     )
 
 }

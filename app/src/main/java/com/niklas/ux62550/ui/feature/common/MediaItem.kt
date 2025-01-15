@@ -39,7 +39,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.niklas.ux62550.R
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.data.remote.RemoteMediaDataSource.Companion.BASE_IMAGE_URL
+import com.niklas.ux62550.data.remote.RemoteMediaDataSource.BASE_IMAGE_URL
 import kotlinx.coroutines.delay
 
 enum class ImageSize {
