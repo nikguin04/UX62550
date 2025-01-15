@@ -8,18 +8,18 @@ import kotlinx.coroutines.flow.asSharedFlow
 
 class HomeRepository {
 
-    private val homeDataSource = RemoteMediaDataSource()
+    private val remoteDataSource = RemoteMediaDataSource
 
     private val mutableFeaturedMediaFlow = MutableSharedFlow<SearchDataObject>()
     val featuredMediaFlow = mutableFeaturedMediaFlow.asSharedFlow()
     suspend fun getTrending(time_window: String = "day") = mutableFeaturedMediaFlow.emit(
-        homeDataSource.getTrending(time_window)
+        remoteDataSource.getTrending(time_window)
     )
 
     private val mutableGenreFetchFlow = MutableSharedFlow<GenreDataObject>()
     val genreFetchFlow = mutableGenreFetchFlow.asSharedFlow()
     suspend fun getGenres() = mutableGenreFetchFlow.emit(
-        homeDataSource.getMovieGenres()
+        remoteDataSource.getMovieGenres()
 
     )
 
