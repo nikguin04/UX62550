@@ -332,20 +332,14 @@ fun DescriptionText(description: String) {
             )
     }
 }
+//TODO fix bookmark position
 @Composable
 fun BookmarkButton(media: MediaObject, movieViewModel: MovieViewModel, watchlistState: MovieIds){
     var isBookmarked by remember { mutableStateOf(false) }
 
-    when (watchlistState) {
-        MovieIds.Empty -> {
-            Text("No data yet")
-        }
-        is MovieIds.Data -> {
-            isBookmarked = watchlistState.movies?.contains(media.id) == true
-        }
+    if (watchlistState is MovieIds.Data) {
+        isBookmarked = watchlistState.movies?.contains(media.id) == true
     }
-
-
 
     Image(
         imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
