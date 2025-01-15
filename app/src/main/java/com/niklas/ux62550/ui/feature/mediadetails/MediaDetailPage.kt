@@ -56,10 +56,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.data.remote.FirebaseInstance
+import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.domain.WatchListRepository
 import com.niklas.ux62550.ui.feature.common.CreditState
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
@@ -103,8 +106,6 @@ fun MediaDetailsScreen(
     val trailerState = movieViewModel.trailerState.collectAsState().value
     val creditState = creditsViewModel.creditState.collectAsState().value
     val providerState = movieViewModel.providerState.collectAsState().value
-    val watchListState = movieViewModel.watchlistState.collectAsState().value
-
 
     when  {
        movieState is MovieState.Empty || creditState is CreditState.Empty -> {
@@ -117,7 +118,7 @@ fun MediaDetailsScreen(
                     .verticalScroll(rememberScrollState())
             )
             {
-                Header(movieState = movieState, trailerState = trailerState, watchlistState = watchListState)
+                Header(movieState = movieState, trailerState = trailerState, movieViewModel = movieViewModel)
                 InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
                 Genres(genres = movieState, providerState = providerState)
                 DescriptionText(description = movieState.mediaDetailObject.Description)
@@ -132,7 +133,7 @@ fun MediaDetailsScreen(
     }
 }
 @Composable
-fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState, watchlistState: WatchlistState) {
+fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState, movieViewModel: MovieViewModel) {
     val context = LocalContext.current
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
@@ -225,14 +226,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
     }
 
         // Bookmark Button
-        when(watchlistState){
-            WatchlistState.Empty ->{
-                Text("No bookmark")
-            }
-            is WatchlistState.Data -> {
-                BookmarkButton()
-            }
-        }
+        BookmarkButton(movieState.mediaDetailObject.toMediaObject(), movieViewModel)
     }
 }
 
@@ -342,18 +336,19 @@ fun DescriptionText(description: String) {
     }
 }
 @Composable
-fun BookmarkButton(){
+fun BookmarkButton(media: MediaObject, movieViewModel: MovieViewModel){
     var isBookmarked by remember { mutableStateOf(false)}
     Image(
         imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
         modifier = Modifier
             .padding(100.dp)
             .clickable {
+                movieViewModel.updateToDatabase(media, isBookmarked)
                 isBookmarked = !isBookmarked
-
             },
         colorFilter = ColorFilter.tint(Color.White),
         contentDescription = "Bookmark"
     )
 }
+
 

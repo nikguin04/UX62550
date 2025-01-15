@@ -40,7 +40,7 @@ class MediaDetailsRepository {
         remoteDataSource.getTrailer(movie_id)
 
     )
-    private val mutableAddToWatchListFlow = MutableSharedFlow<MediaObject>()
-    val addToWatchListFlow = mutableAddToWatchListFlow.asSharedFlow()
-    suspend fun addWatchList(mediaObject: MediaObject)  = firebaseDataSource.addToWatchList(mediaObject)
+
+
+
 }

@@ -10,6 +10,7 @@ import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.Provider
 import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.data.model.TrailerObject
+import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,9 +34,10 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
     private fun getTrailerForMovies(MovieID : Int) = viewModelScope.launch {
         mediaDetailsRepository.getTrailer(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
-
-    private fun addToWatchlist(media: MediaObject) = viewModelScope.launch {
-        mediaDetailsRepository.addWatchList(media);
+    fun updateToDatabase(media: MediaObject, remove: Boolean = false){
+        viewModelScope.launch {
+            RemoteFirebase.UpdateToWatchList(media, remove)
+        }
     }
 
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
@@ -87,19 +89,11 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
                 }
             }
         }
-        viewModelScope.launch {
-            mediaDetailsRepository.addToWatchListFlow.collect { mediaDetailObjects ->
-                mutableWatchlistState.update {
-                    WatchlistState.Data(mediaDetailObjects)
-                }
-            }
-        }
 
         getDetails(MovieID = media.id)
         getSimilarMovies(MovieID = media.id)
         getProviderForMovies(MovieID = media.id)
         getTrailerForMovies(MovieID = media.id)
-        addToWatchlist(media = media)
     }
 
     fun initPreview() {

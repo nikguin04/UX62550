@@ -2,6 +2,7 @@ package com.niklas.ux62550.data.remote
 
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.niklas.ux62550.data.model.MediaObject
@@ -34,12 +35,15 @@ object RemoteFirebase {
             mutableWatchListFlow.emit(null)
         }
     }
-    suspend fun addToWatchList(data: MediaObject){
-        try {
-            FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C").set(data.id)
-        } catch (e: Exception){
-            Log.w("Firebase_info", "No movieID found", e)
-        }
+    suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean){
+        val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C")
+        // Set the the movieID
+        // Atomically add or remove a new region to the "MovieIds" array field.
+        watchlist.update(
+            "MovieIds",
+            if (remove) {FieldValue.arrayRemove(data.id)}
+            else {FieldValue.arrayUnion(data.id)}
+        )
     }
 }
 
