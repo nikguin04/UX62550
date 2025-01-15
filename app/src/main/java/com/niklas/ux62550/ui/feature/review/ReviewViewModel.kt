@@ -3,50 +3,52 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-data class ReviewState(
+
+
+data class ReviewStateDataClass(
     val rating: Float = 0f,
     val reviewText: String = "",
-    val categoryRatings: Map<String, Float> = mapOf(
-        "Music" to 0f,
-        "Plot" to 0f,
-        "Acting" to 0f,
-        "Directing" to 0f
-    )
+    val categoryRatings: Map<String, Float> =
+        ReviewViewModel.ReviewCategoryList.map { it to 0f}.toMap()
 )
 
 class ReviewViewModel : ViewModel() {
-    private val _reviewState = MutableStateFlow(ReviewState())
-    val reviewState: StateFlow<ReviewState> = _reviewState
+    companion object {
+        val ReviewCategoryList = listOf("Music", "Plot", "Acting", "Directing")
+    }
+
+    private val reviewStateFlow = MutableStateFlow(ReviewStateDataClass())
+    val reviewState: StateFlow<ReviewStateDataClass> = reviewStateFlow
 
     // Update the overall rating
     fun updateRating(rating: Float) {
-        _reviewState.value = _reviewState.value.copy(rating = rating)
+        reviewStateFlow.value = reviewStateFlow.value.copy(rating = rating)
     }
 
     // Update the review text
     fun updateReviewText(text: String) {
-        _reviewState.value = _reviewState.value.copy(reviewText = text)
+        reviewStateFlow.value = reviewStateFlow.value.copy(reviewText = text)
     }
 
     // Get the category rating
     fun getCategoryRating(category: String): Float {
-        return _reviewState.value.categoryRatings[category] ?: 0f
+        return reviewStateFlow.value.categoryRatings[category] ?: 0f
     }
 
     // Update a specific category rating
     fun updateCategoryRating(category: String, rating: Float) {
-        val updatedRatings = _reviewState.value.categoryRatings.toMutableMap()
+        val updatedRatings = reviewStateFlow.value.categoryRatings.toMutableMap()
         updatedRatings[category] = rating // Update the rating for the selected category
-        _reviewState.value = _reviewState.value.copy(categoryRatings = updatedRatings) // Update the state
+        reviewStateFlow.value = reviewStateFlow.value.copy(categoryRatings = updatedRatings) // Update the state
     }
 
 
     fun submitReview(mediaId: Int) {
         val review = mapOf(
             "MovieIDs" to mediaId,
-            "MainRating" to _reviewState.value.rating,
-            "ReviewText" to _reviewState.value.reviewText,
-            "CategoryRatings" to _reviewState.value.categoryRatings,
+            "MainRating" to reviewStateFlow.value.rating,
+            "ReviewText" to reviewStateFlow.value.reviewText,
+            "CategoryRatings" to reviewStateFlow.value.categoryRatings,
             "timestamp" to System.currentTimeMillis()
         )
 

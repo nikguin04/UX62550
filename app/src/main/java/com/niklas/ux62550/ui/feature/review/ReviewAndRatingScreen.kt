@@ -61,7 +61,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun ReviewAndRatingPreview() {
     UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample)
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {})
 
         }
 
@@ -72,6 +72,7 @@ fun ReviewAndRatingPreview() {
 fun ScreenReviewAndRating(
     modifier: Modifier = Modifier,
     media: MovieDetailObject,
+    navBack: () -> Unit,
     reviewViewModel: ReviewViewModel = viewModel()
 )
 {
@@ -88,6 +89,7 @@ fun ScreenReviewAndRating(
             onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
             onSubmit = {
                 reviewViewModel.submitReview(mediaId = media.id)
+                navBack()
             })
 
         MoreDetailedReview(reviewViewModel)
@@ -213,7 +215,7 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
     val categoryRatings = reviewState.categoryRatings
 
     Column(modifier = Modifier.padding(16.dp)) {
-        listOf("Music", "Plot", "Acting", "Directing").forEach { category ->
+        ReviewViewModel.ReviewCategoryList.forEach { category ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
