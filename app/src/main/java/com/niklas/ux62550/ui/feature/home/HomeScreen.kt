@@ -1,12 +1,13 @@
 package com.niklas.ux62550.ui.feature.home
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -25,7 +26,6 @@ import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import kotlinx.coroutines.flow.update
 
 @Composable
 @Preview(showBackground = true)
@@ -39,86 +39,69 @@ fun HomePreview() {
     }
 }
 
-
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = viewModel(),
-    onNavigateToMedia: (MediaObject) -> Unit) {
+    onNavigateToMedia: (MediaObject) -> Unit
+) {
     val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
-    Box {
-    if (!homeViewModel.mutableGenreDisplayState.collectAsState().value || !homeViewModel.mutableFeaturedDisplayState.collectAsState().value) {
-        LoadingScreen()
-    }
+    val movieGenresDataState: GenresDataState = homeViewModel.movieGenresState.collectAsState().value
     when (mediaItemsUIState) {
-        MediaItemsUIState.Empty -> { }
+        MediaItemsUIState.Empty -> {
+            LoadingScreen()
+        }
         is MediaItemsUIState.Data -> {
-            Column(modifier.padding().verticalScroll(rememberScrollState())) {
-                FeaturedMediaScroller(homeViewModel, onNavigateToMedia)
-                GenreMediaStack(homeViewModel, onNavigateToMedia)
+            Column(modifier.verticalScroll(rememberScrollState())) {
+                HomeWelcomeTopBar()
+                FeaturedMediaScroller(mediaItemsUIState.mediaObjects, onNavigateToMedia)
+                GenreMediaStack(movieGenresDataState, onNavigateToMedia)
             }
         }
     }
-        }
 }
 
 @Composable
 fun HomeWelcomeTopBar(modifier: Modifier = Modifier) {
     Row(
+        // TODO: nicer padding values? what about 30 all-around?
         modifier.fillMaxWidth().padding(32.dp, 45.dp, 0.dp, 38.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
         LogoBox(size = 55.dp)
-
-        Box(modifier = Modifier.padding(20.dp, 0.dp, 0.dp, 0.dp)) {
-            Text(
-                text = "Welcome, User",
-                style = TextStyle(
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Normal
-                )
+        Spacer(Modifier.width(20.dp))
+        Text(
+            text = "Welcome, User",
+            style = TextStyle(
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Normal
             )
-        }
+        )
     }
 }
 
 @Composable
-fun FeaturedMediaScroller(homeViewModel: HomeViewModel, onNavigateToMedia: (MediaObject) -> Unit) {
-    val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
-    when (mediaItemsUIState) {
-        MediaItemsUIState.Empty -> { }
-
-        is MediaItemsUIState.Data -> {
-        	HomeWelcomeTopBar() // TODO: This should not be here
-            HomeFeaturedMediaHorizontalPager(mediaItemsUIState.mediaObjects.subList(0,7), onNavigateToMedia)
-            homeViewModel.mutableFeaturedDisplayState.update { true }
-        }
-        else -> {}
-    }
+fun FeaturedMediaScroller(featuredMedia: List<MediaObject>, onNavigateToMedia: (MediaObject) -> Unit) {
+    HomeFeaturedMediaHorizontalPager(featuredMedia.subList(0, 7), onNavigateToMedia)
 }
 
 @Composable
-fun GenreMediaStack(homeViewModel: HomeViewModel, onNavigateToMedia: (MediaObject) -> Unit) {
-    val movieGenresDataState: GenresDataState = homeViewModel.movieGenresState.collectAsState().value
+fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (MediaObject) -> Unit) {
     when (movieGenresDataState) {
         GenresDataState.Empty -> {
-
-            // No placeholder here since it is managed by the individual genre viewmodels
             // TODO: We should make a loading screen for all the genres, so that they are only displayed when ALL genre fetching is done. Async image loading may be neglected from said fetching
         }
 
         is GenresDataState.Data -> {
-            for (genreObject in movieGenresDataState.genres) {
-                DiscoverSlider (
-                    discoverViewModel = viewModel(factory = DiscoverViewModelFactory(genreObject), key = genreObject.id.toString()),
-                    headerTitle = genreObject.name,
+            for (genre in movieGenresDataState.genres) {
+                DiscoverSlider(
+                    discoverViewModel = viewModel(factory = DiscoverViewModelFactory(genre), key = genre.id.toString()),
+                    headerTitle = genre.name,
                     onNavigateToMedia = onNavigateToMedia
                 )
             }
-            homeViewModel.mutableGenreDisplayState.update { true }
-            Box(Modifier.size(0.dp, 20.dp))
-
+            Spacer(Modifier.height(20.dp))
         }
     }
 }

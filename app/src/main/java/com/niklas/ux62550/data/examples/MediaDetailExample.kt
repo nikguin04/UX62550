@@ -17,9 +17,8 @@ public class MediaDetailExample {
                 title = "Venom: The Last Dance",
                 Originaltitle = "Venom: The Last Dance",
                 runTime = 109,
-                rating = 6.8,
+                vote_average = 6.8,
                 relaseDate = "2024-10-22",
-                imbdID = "tt16366836",
                 Description = "Eddie and Venom are on the run. Hunted by both of their worlds and with the net closing in, the duo are forced into a devastating decision that will bring the curtains down on Venom and Eddie's last dance.",
                 posterPath = "/670x9sf0Ru8y6ezBggmYudx61yB.jpg"
             )

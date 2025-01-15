@@ -78,7 +78,10 @@ fun MainNavHost(
         composable<Route.ReviewScreen> { backStackEntry ->
             val media = navController.previousBackStackEntry?.savedStateHandle?.get<MovieDetailObject>("reviewMedia")
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
-            ScreenReviewAndRating(media = media?: MediaDetailExample.MediaDetailObjectExample)
+            ScreenReviewAndRating(
+                media = media?: MediaDetailExample.MediaDetailObjectExample,
+                navBack = navController::popBackStack
+            )
         }
 
         composable<Route.LoginRegisterScreen> {

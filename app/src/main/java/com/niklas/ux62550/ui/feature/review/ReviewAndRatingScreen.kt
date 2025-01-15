@@ -1,6 +1,7 @@
 package com.niklas.ux62550.ui.feature.review
 
 
+import ReviewViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,18 +24,14 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -47,8 +44,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.ImageSize
@@ -60,133 +59,127 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Composable
 @Preview(showBackground = true)
 fun ReviewAndRatingPreview() {
-
     UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample)
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {})
+
         }
+
     }
 }
 
 @Composable
 fun ScreenReviewAndRating(
     modifier: Modifier = Modifier,
-    media: MovieDetailObject)
-    {
+    media: MovieDetailObject,
+    navBack: () -> Unit,
+    reviewViewModel: ReviewViewModel = viewModel()
+)
+{
+    val reviewState by reviewViewModel.reviewState.collectAsState()
 
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-        ReviewLayout(media = media)
-        PublishReview()
-        MoreDetailedReview()
+        Header(media = media, reviewViewModel)
+
+        PublishReview(stars = reviewState.rating,
+            reviewText = reviewState.reviewText,
+            onRatingChange = { newRating -> reviewViewModel.updateRating(newRating) },
+            onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
+            onSubmit = {
+                reviewViewModel.submitReview(mediaId = media.id)
+                navBack()
+            })
+
+        MoreDetailedReview(reviewViewModel)
     }
 }
+
+
 
 @Composable
-fun ReviewLayout(
-    modifier: Modifier = Modifier,
-    media: MovieDetailObject
+fun Header(
+    media: MovieDetailObject,
+    reviewViewModel: ReviewViewModel
 ) {
-    Column {
-        Box {
-            val backColor = MaterialTheme.colorScheme.background
-            MediaItem(
-                uri = media.backDropPath,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .graphicsLayer(alpha = 1f)
-                    .drawWithContent {
-                        drawContent() // Draw the actual image
+    Box {
+        val backColor = MaterialTheme.colorScheme.background
+        MediaItem(
+            uri = media.backDropPath,
+            modifier = Modifier
+                .fillMaxWidth()
+                .graphicsLayer(alpha = 1f)
+                .drawWithContent {
+                    drawContent() // Draw the actual image
 
-                        // Draw the fade
-                        drawRect(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    backColor,
-                                    backColor,
-                                    backColor.copy(alpha = 0.5f),
-                                    Color.Transparent,
-                                ),
-                                startY = 0f,
-                                endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
+                    // Draw the fade
+                    drawRect(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                backColor,
+                                backColor,
+                                backColor.copy(alpha = 0.5f),
+                                Color.Transparent,
                             ),
-                            blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
-                        )
-                    },
-                size = ImageSize.BACKDROP
-            )
-            ReviewText()
-            TitleText(media.Originaltitle)
-
-        }
-//        Box(
-//            modifier = Modifier
-//                .size(
-//                    LocalConfiguration.current.screenWidthDp.dp,
-//                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-//                )
-//
-//        ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Row(
-                //modifier = Modifier
-                //.align(Alignment.BottomCenter),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                var rating by remember { mutableFloatStateOf(0f) }
-
-                Row(modifier = Modifier.wrapContentWidth()) {
-                    for (i in 0..4) {
-                        val isFilled = i < rating.toInt()
-                        val isHalfFilled = (rating - i) in 0.5..0.99
-                        Image(
-                            imageVector = when {
-                                isFilled -> Icons.Filled.Star
-                                isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
-                                else -> Icons.Outlined.StarOutline
-                            },
-                            modifier = Modifier
-                                .requiredSize(38.dp)
-                                .clickable {
-                                    val clickedPosition = i + 1
-                                    rating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
-                                },
-                            colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
-                            contentDescription = "Star icon",
-                        )
-                    }
-                    Text(
-                        text = "${rating}/5.0",
-                        style = TextStyle(
-                            fontSize = 34.sp,
-                            fontWeight = FontWeight.Bold
+                            startY = 0f,
+                            endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
                         ),
-                        color = Color.White,
-                        modifier = Modifier.padding(4.dp, 0.dp, 4.dp, 0.dp)
+                        blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
                     )
-                }
-            }
+                },
+            size = ImageSize.BACKDROP
+        )
+        ReviewText()
+        TitleText(media.Originaltitle)
+    }
+        Row(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+            RatingStars(
+                rating = reviewViewModel.reviewState.collectAsState().value.rating,
+
+                onRatingSelected = { reviewViewModel.updateRating(it) },
+                starSize = 40.dp
+            )
+            val currentRating = reviewViewModel.reviewState.collectAsState().value.rating
+            Text(
+                text = "${currentRating}/5",
+                style = TextStyle(
+                    fontSize = 34.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Color.White,
+                modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
+            )
+
         }
     }
-}
 
-    @Composable
-    fun PublishReview() {
-        var text by remember { mutableStateOf("") }
 
+@Composable
+fun PublishReview(
+    stars: Float,
+    reviewText: String,
+    onRatingChange: (Float) -> Unit,
+    onReviewChange: (String) -> Unit,
+    onSubmit: () -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         TextField(
-            value = text,
-            onValueChange = { text = it },
+            value = reviewText,
+            onValueChange = { onReviewChange(it) },
             shape = RoundedCornerShape(15),
             modifier = Modifier
                 .requiredSize(400.dp, 200.dp)
                 .padding(20.dp, 10.dp),
-
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = TextFieldColor,
                 unfocusedContainerColor = TextFieldColor,
@@ -194,16 +187,18 @@ fun ReviewLayout(
                 unfocusedIndicatorColor = Color.Transparent,
                 unfocusedLabelColor = Color.Black,
                 focusedTextColor = Color.Black
-
             ),
             label = { Text("Write a review with accordance to the rating") },
         )
+
         Box(
-            modifier = Modifier.fillMaxWidth().padding(0.dp, 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
             Button(
-                onClick = { TODO("functionality") },
+                onClick = onSubmit,
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
             ) {
@@ -211,73 +206,45 @@ fun ReviewLayout(
             }
         }
     }
+}
 
-    @Composable
-    fun MoreDetailedReview() {
-        Text(
-            text = "More detailed review",
-            color = ReviewColor,
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(0.dp, 10.dp)
-        )
+@Composable
+fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
+    val reviewState by reviewViewModel.reviewState.collectAsState()
 
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Music:",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
-            RatingStars()
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Plot:",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
-            RatingStars()
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Acting:",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
-            RatingStars()
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(30.dp, 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Directing:",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
-            RatingStars()
+    val categoryRatings = reviewState.categoryRatings
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        ReviewViewModel.ReviewCategoryList.forEach { category ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "$category:",
+                    modifier = Modifier.weight(1f),
+                    fontSize = 25.sp
+                )
+
+                val categoryRating = categoryRatings[category] ?: 0f
+
+                RatingStars(
+                    rating = categoryRating,
+                    onRatingSelected = { newRating ->
+                        reviewViewModel.updateCategoryRating(category, newRating)
+                    }
+                )
+            }
         }
     }
+}
 
-    @Composable
+
+
+
+@Composable
     fun ReviewText() {
         Text(
             text = "Write a review for",
@@ -296,50 +263,53 @@ fun ReviewLayout(
         )
     }
 
-    @Composable
-    fun TitleText(movieTitle: String) {
-        Text(
-            text = movieTitle,
-            style = TextStyle(
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Bold,
-                shadow = Shadow(
-                    color = Color.Black, blurRadius = 10f
-                ),
-                textAlign = TextAlign.Center,
+@Composable
+fun TitleText(movieTitle: String) {
+    Text(
+        text = movieTitle,
+        style = TextStyle(
+            fontSize = 36.sp,
+            fontWeight = FontWeight.Bold,
+            shadow = Shadow(
+                color = Color.Black, blurRadius = 10f
             ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 120.dp),
-        )
-    }
+            textAlign = TextAlign.Center,
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 120.dp)
+    )
+}
 
 
-    @Composable
-    fun RatingStars() {
-        var rating by remember { mutableFloatStateOf(0f) }
+@Composable
+fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit,  starSize: Dp = 34.dp) {
+    Row(modifier = Modifier.wrapContentWidth()) {
+        for (i in 0..4) {
+            val isFilled = i < rating.toInt()
+            val isHalfFilled = (rating - i) in 0.5..0.99
 
-        Row(modifier = Modifier.wrapContentWidth()) {
-            for (i in 0..4) {
-                val isFilled = i < rating.toInt()
-                val isHalfFilled = (rating - i) in 0.5..0.99
-
-                Image(
-                    imageVector = when {
-                        isFilled -> Icons.Filled.Star
-                        isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
-                        else -> Icons.Outlined.StarOutline
+            Image(
+                imageVector = when {
+                    isFilled -> Icons.Filled.Star
+                    isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
+                    else -> Icons.Outlined.StarOutline
+                },
+                modifier = Modifier
+                    .requiredSize(starSize)
+                    .clickable {
+                        val clickedPosition = i + 1
+                        val newRating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
+                        onRatingSelected(newRating)
                     },
-                    modifier = Modifier
-                        .requiredSize(34.dp)
-                        .clickable {
-                            val clickedPosition = i + 1
-                            rating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
-                        },
-                    colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
-                    contentDescription = "Star icon",
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-            }
+                colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
+                contentDescription = "Star icon",
+            )
+            Spacer(modifier = Modifier.width(4.dp))
         }
     }
+}
+
+
+
+

@@ -1,28 +1,60 @@
-package com.niklas.ux62550.ui.feature.mediadetails
-
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import com.niklas.ux62550.R
-import com.niklas.ux62550.models.MediaItem
-import com.niklas.ux62550.models.Movie
-import com.niklas.ux62550.models.NonMovieBox
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlin.time.Duration.Companion.minutes
+
+
+
+data class ReviewStateDataClass(
+    val rating: Float = 0f,
+    val reviewText: String = "",
+    val categoryRatings: Map<String, Float> =
+        ReviewViewModel.ReviewCategoryList.map { it to 0f}.toMap()
+)
 
 class ReviewViewModel : ViewModel() {
-    private val movie = Movie(
-        name = "RED: The Movie",
-        year = "2022",
-        duration = 131.minutes,
-        rating = 3.5,
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        genres = listOf("Action", "Dinosaur Adventure", "Romance"),
-        pgRating = 18,
-        tempColor = Color.Red
-    )
-    private val mutableMovieState = MutableStateFlow<Movie>(movie)
-    val movieState: StateFlow<Movie> = mutableMovieState
+    companion object {
+        val ReviewCategoryList = listOf("Music", "Plot", "Acting", "Directing")
+    }
 
+    private val reviewStateFlow = MutableStateFlow(ReviewStateDataClass())
+    val reviewState: StateFlow<ReviewStateDataClass> = reviewStateFlow
+
+    // Update the overall rating
+    fun updateRating(rating: Float) {
+        reviewStateFlow.value = reviewStateFlow.value.copy(rating = rating)
+    }
+
+    // Update the review text
+    fun updateReviewText(text: String) {
+        reviewStateFlow.value = reviewStateFlow.value.copy(reviewText = text)
+    }
+
+    // Get the category rating
+    fun getCategoryRating(category: String): Float {
+        return reviewStateFlow.value.categoryRatings[category] ?: 0f
+    }
+
+    // Update a specific category rating
+    fun updateCategoryRating(category: String, rating: Float) {
+        val updatedRatings = reviewStateFlow.value.categoryRatings.toMutableMap()
+        updatedRatings[category] = rating // Update the rating for the selected category
+        reviewStateFlow.value = reviewStateFlow.value.copy(categoryRatings = updatedRatings) // Update the state
+    }
+
+
+    fun submitReview(mediaId: Int) {
+        val review = mapOf(
+            "MovieIDs" to mediaId,
+            "MainRating" to reviewStateFlow.value.rating,
+            "ReviewText" to reviewStateFlow.value.reviewText,
+            "CategoryRatings" to reviewStateFlow.value.categoryRatings,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        FirebaseFirestore.getInstance().collection("Review")
+            .add(review)
+            .addOnSuccessListener { println("Review submitted successfully!") }
+            .addOnFailureListener { println("Error submitting review: ${it.message}") }
+    }
 }
-
