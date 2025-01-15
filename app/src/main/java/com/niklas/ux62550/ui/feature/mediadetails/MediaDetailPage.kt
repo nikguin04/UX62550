@@ -95,7 +95,7 @@ fun MediaDetailsScreen(
     creditsViewModel: CreditViewModel,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (MovieDetailObject) -> Unit,
-    watchlistViewModel: WatchlistViewModel = WatchlistViewModel()
+    watchlistViewModel: WatchlistViewModel = viewModel()
 ) {
     val movieState = movieViewModel.movieState.collectAsState().value
     val similarMediaState = movieViewModel.similarMediaState.collectAsState().value
