@@ -1,8 +1,9 @@
-package com.niklas.ux62550.ui.feature.search
+package com.niklas.ux62550.ui.feature.common.composables
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,11 +31,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.ui.feature.common.ImageSize
+import com.niklas.ux62550.ui.feature.common.MediaDetailFetchViewModel
 import com.niklas.ux62550.ui.feature.common.MediaItem
-import kotlin.math.round
+import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 
 @Composable
 fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, text: String, textColor: Color, modifier: Modifier = Modifier) {
@@ -128,4 +131,26 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+@Composable
+fun MovieBoxRowFromId(movieId: Int,  onNavigateToMedia: (MediaObject) -> Unit) {
+
+    val mediaDetailFetchViewModel: MediaDetailFetchViewModel = viewModel(
+        factory = MediaDetailFetchViewModel.MediaDetailFetchViewModelFactory(movieId),
+        key = movieId.toString()
+    )
+
+    val mediaState = mediaDetailFetchViewModel.movieState.collectAsState().value
+    when (mediaState) {
+        MovieState.Empty -> {
+            Text(text = "Loading")
+        }
+        is MovieState.Data -> {
+            MovieBoxRow(mediaState.mediaDetailObject.toMediaObject(), modifier = Modifier.clickable(
+                onClick = { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject())}
+            ))
+        }
+    }
+
 }

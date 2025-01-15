@@ -7,6 +7,7 @@ import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.data.model.TrailerObject
+import com.niklas.ux62550.data.model.WatchListDataObject
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -71,6 +72,7 @@ object RemoteMediaDataSource {
     suspend fun getKeywordMovies(keyword_id: String, page: Int) = mediaApi.getKeywordMovies(keyword_id,page)
     suspend fun getDiscoverMovies(genres: String, page: Int) = mediaApi.getDiscoverMovies(genres,page)
 	suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
+    suspend fun getMovieForRow(movie_id: Int) = mediaApi.getMovieForRow(movie_id)
     suspend fun getSimilarMoviesDetail(movie_id: Int) = mediaApi.getSimilarMovies(movie_id)
     suspend fun getCreditDetails(movie_id: Int) = mediaApi.getCredit(movie_id)
     suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)
@@ -102,6 +104,9 @@ interface TMDBApiService {
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): MovieDetailObject
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieForRow(@Path("movie_id") movie_id: Int): WatchListDataObject
 
     @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SearchDataObject

@@ -1,7 +1,6 @@
 package com.niklas.ux62550.domain
 
-import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.data.model.SearchDataObject
+import com.niklas.ux62550.data.model.WatchListDataObject
 import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,5 +14,14 @@ class WatchListRepository {
     suspend fun getWatchList()  = firebaseDataSource.getWatchList(mutableWatchListFlow)
 
 
+    private val MovieDataSource = RemoteMediaDataSource()
+
+    private val mutableWatchListRowFlow = MutableSharedFlow<WatchListDataObject>()
+
+    val watchListRowFlow = mutableWatchListRowFlow.asSharedFlow()
+    suspend fun getMovieForRow(MovieId: Int)  = mutableWatchListRowFlow.emit(
+        MovieDataSource.getMovieForRow(MovieId)
+    )
 
 }
+
