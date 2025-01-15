@@ -319,7 +319,7 @@ fun BookmarkButton(media: MediaObject, movieViewModel: MovieViewModel, watchlist
     var isBookmarked by remember { mutableStateOf(false) }
 
     if (watchlistState is MovieIds.Data) {
-        isBookmarked = watchlistState.movies?.contains(media.id) == true
+        isBookmarked = watchlistState.movies?.contains(media.id) ?: false
     }
 
     Image(
