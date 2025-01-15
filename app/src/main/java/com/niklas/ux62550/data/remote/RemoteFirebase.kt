@@ -2,6 +2,8 @@ package com.niklas.ux62550.data.remote
 
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
@@ -11,13 +13,19 @@ import kotlinx.coroutines.tasks.await
 
 class FirebaseInstance { // We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
     private val db = Firebase.firestore
+
     companion object {
         private var instance: FirebaseInstance? = null
         fun getDB(): FirebaseFirestore? {
             if (instance == null) { instance = FirebaseInstance() }
             return instance.let { fb -> fb?.db }
         }
+
     }
+
+
+
+
 }
 
 object RemoteFirebase {
@@ -59,6 +67,7 @@ object RemoteFirebase {
             else {FieldValue.arrayUnion(data.id)}
         )
     }
+
 }
 
 

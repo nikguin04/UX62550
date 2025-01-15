@@ -31,7 +31,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
 import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.feature.mediadetails.ProfileViewModel
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.TextFieldDescColor
@@ -77,6 +79,10 @@ fun RegisterScreen(onNavigateToProfile: (String) -> Unit) {
         }
     }
 }
+
+
+private val Email = ""
+private val Password = ""
 
 @Composable
 fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: MutableState<String>, passValue: MutableState<String>, onNavigateToProfile: (String) -> Unit) {
@@ -131,7 +137,7 @@ fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: Mutable
         )
 
         Button(
-            onClick = { onNavigateToProfile("Register") },
+            onClick = { ProfileViewModel.onCreate(emailValue.value, passValue.value) },
             colors = ButtonDefaults.buttonColors(
                 containerColor = RegisterButtonBlue
             ),
