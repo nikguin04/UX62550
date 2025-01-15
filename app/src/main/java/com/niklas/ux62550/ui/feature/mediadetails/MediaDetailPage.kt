@@ -213,7 +213,6 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                 TitleText(movieState.mediaDetailObject.Originaltitle)
             }
         }
-         else -> {}
     }
 
         // Bookmark Button
