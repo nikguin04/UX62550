@@ -81,6 +81,7 @@ fun MediaDetailPagePreview() {
     movieViewModel.initPreview()
 
     val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
+    creditsViewModel.initPreview()
 
     UX62550Theme {
         Surface {
