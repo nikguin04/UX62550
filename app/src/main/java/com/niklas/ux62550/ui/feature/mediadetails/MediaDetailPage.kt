@@ -1,4 +1,3 @@
-
 package com.niklas.ux62550.ui.feature.mediadetails
 
 import android.content.Intent
@@ -62,7 +61,6 @@ import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.common.MediaItemBackdropIntercept
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
-import com.niklas.ux62550.ui.theme.DescriptionColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
@@ -90,25 +88,19 @@ fun MediaDetailsScreen(
     onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (MovieDetailObject) -> Unit
 ) {
-
     val movieState = movieViewModel.movieState.collectAsState().value
     val similarMediaState = movieViewModel.similarMediaState.collectAsState().value
     val trailerState = movieViewModel.trailerState.collectAsState().value
     val creditState = creditsViewModel.creditState.collectAsState().value
     val providerState = movieViewModel.providerState.collectAsState().value
 
-
-    when  {
-       movieState is MovieState.Empty || creditState is CreditState.Empty -> {
+    when {
+        movieState is MovieState.Empty || creditState is CreditState.Empty -> {
             LoadingScreen()
         }
 
-       movieState is MovieState.Data && creditState is CreditState.Data-> {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-            )
-            {
+        movieState is MovieState.Data && creditState is CreditState.Data -> {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
                 Header(movieState = movieState, trailerState = trailerState)
                 InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
                 Genres(genres = movieState, providerState = providerState)
@@ -117,12 +109,11 @@ fun MediaDetailsScreen(
                 ActorsAndDirectors(creditState = creditState)
                 DetailedRating()
                 SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
-
-
             }
         }
     }
 }
+
 @Composable
 fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState) {
     val context = LocalContext.current
@@ -133,87 +124,82 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
             MediaItem(
                 uri = movieState.mediaDetailObject.backDropPath,
                 modifier = Modifier
-                .fillMaxWidth()
-                .graphicsLayer(alpha = 1f)
-                .drawWithContent {
-                    drawContent() // Draw the actual image
+                    .fillMaxWidth()
+                    .graphicsLayer(alpha = 1f)
+                    .drawWithContent {
+                        drawContent() // Draw the actual image
 
-                    // Draw the fade
-                    drawRect(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                backColor,
-                                backColor.copy(alpha = 0.5f),
-                                Color.Transparent,
+                        // Draw the fade
+                        drawRect(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    backColor,
+                                    backColor.copy(alpha = 0.5f),
+                                    Color.Transparent,
+                                ),
+                                startY = 0f,
+                                endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
                             ),
-                            startY = 0f,
-                            endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
-                        ),
-                        blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
-                    )
-                },
+                            blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
+                        )
+                    },
                 size = ImageSize.BACKDROP
-
-
             )
         }
-    when (trailerState) {
-        TrailerState.Empty -> {
-
-        }
-        is TrailerState.Data -> {
-            var youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
-                "https://www.youtube.com/watch?v=${it.key}"
-            }
-            if(youtubeUrl == null && trailerState.trailerObject.resultsTrailerLinks.isNotEmpty()){
-                youtubeUrl = "https://www.youtube.com/watch?v=${trailerState.trailerObject.resultsTrailerLinks[0].key}"
-            }
-            Column(
-                modifier = Modifier
-                    .padding(30.dp, 70.dp, 30.dp, 8.dp)
-                    .fillMaxWidth()
-            ) {
-                Box( // Playable Trailer Box
+        when (trailerState) {
+            TrailerState.Empty -> {}
+            is TrailerState.Data -> {
+                var youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
+                    "https://www.youtube.com/watch?v=${it.key}"
+                }
+                if (youtubeUrl == null && trailerState.trailerObject.resultsTrailerLinks.isNotEmpty()) {
+                    youtubeUrl = "https://www.youtube.com/watch?v=${trailerState.trailerObject.resultsTrailerLinks[0].key}"
+                }
+                Column(
                     modifier = Modifier
-                        .aspectRatio(16f / 9f)
+                        .padding(30.dp, 70.dp, 30.dp, 8.dp)
                         .fillMaxWidth()
-                        .clickable {
-                            youtubeUrl?.let {
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it)).apply {
-                                    setPackage("com.google.android.youtube")
-                                }
-                                if (intent.resolveActivity(context.packageManager) != null) {
-                                    context.startActivity(intent)
-                                } else {
-                                    // Fallback to a web browser
-                                    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-                                    context.startActivity(webIntent)
+                ) {
+                    Box( // Playable Trailer Box
+                        modifier = Modifier
+                            .aspectRatio(16f / 9f)
+                            .fillMaxWidth()
+                            .clickable {
+                                youtubeUrl?.let {
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it)).apply {
+                                        setPackage("com.google.android.youtube")
+                                    }
+                                    if (intent.resolveActivity(context.packageManager) != null) {
+                                        context.startActivity(intent)
+                                    } else {
+                                        // Fallback to a web browser
+                                        val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                                        context.startActivity(webIntent)
+                                    }
                                 }
                             }
-                        }
-                ) {
-                    MediaItemBackdropIntercept(
-                        //uri = movieState.mediaDetailObjects.backDropPath,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(16f / 9f),
-                        fetchEnBackdrop = true,
-                        mediaItem = movieState.mediaDetailObject.toMediaObject()
-                    )
-                    Image(
-                        Icons.Outlined.PlayCircleOutline,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .requiredSize(72.dp),
-                        colorFilter = ColorFilter.tint(Color.White),
-                        contentDescription = "Play circle"
-                    )
+                    ) {
+                        MediaItemBackdropIntercept(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(16f / 9f),
+                            fetchEnBackdrop = true,
+                            mediaItem = movieState.mediaDetailObject.toMediaObject()
+                        )
+                        Image(
+                            Icons.Outlined.PlayCircleOutline,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .requiredSize(72.dp),
+                            colorFilter = ColorFilter.tint(Color.White),
+                            contentDescription = "Play circle"
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                    TitleText(movieState.mediaDetailObject.Originaltitle)
                 }
-                Spacer(modifier = Modifier.height(12.dp))
-                TitleText(movieState.mediaDetailObject.Originaltitle)
             }
         }
-    }
 
         // Bookmark Button
         Image(
@@ -230,18 +216,16 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
 @Composable
 fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNavigateToReview: (MovieDetailObject) -> Unit) {
     Row(
-        modifier = modifier
-            //.padding(4.dp, 0.dp, 4.dp, 0.dp)
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        // Row for the stars so that we can use spaced evenly.
+        // Row for the stars so that we can use spaced evenly
         Row(
-            modifier = Modifier.clickable(onClick = { onNavigateToReview(movieState.mediaDetailObject) }),
+            modifier = Modifier.clickable { onNavigateToReview(movieState.mediaDetailObject) },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val rating = movieState.mediaDetailObject.vote_average/2
+            val rating = movieState.mediaDetailObject.vote_average / 2
             for (i in 1..5) {
                 val starIcon = when {
                     i <= rating -> Icons.Outlined.Star
@@ -250,44 +234,40 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
                 }
                 Image(
                     imageVector = starIcon,
-                    modifier = Modifier.requiredSize(18.dp)
+                    modifier = Modifier
+                        .requiredSize(18.dp)
                         .shadow(
                             elevation = 15.dp,
                             ambientColor = Color.Black.copy(alpha = 255f), // Slightly less opaque for a softer effect
-                            ),
+                        ),
                     colorFilter = ColorFilter.tint(Color.Yellow),
                     contentDescription = "Rating star"
                 )
             }
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                String.format(Locale.ENGLISH, "%.1f", movieState.mediaDetailObject.vote_average/2),
+                String.format(Locale.ENGLISH, "%.1f", rating),
                 fontSize = 18.sp
             )
         }
-        //Spacer(modifier = Modifier.weight(1f))
         Text(
             movieState.mediaDetailObject.relaseDate.substring(0, 4),
             style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,
-                shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
-
+                shadow = Shadow(color = Color.Black, blurRadius = 5f)
             )
         )
-        //Spacer(modifier = Modifier.weight(1f))
         Text(
             movieState.mediaDetailObject.runTime.minutes.toString(),
             style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,
-                shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
-
+                shadow = Shadow(color = Color.Black, blurRadius = 5f)
             )
         )
     }
 }
-
 
 @Composable
 fun TitleText(title: String) {
@@ -307,10 +287,12 @@ fun TitleText(title: String) {
 
 @Composable
 fun DescriptionText(description: String) {
-    Box(modifier = Modifier
-        .padding(20.dp, 10.dp, 20.dp, 10.dp)
-        .clip(RoundedCornerShape(25.dp))
-        .background(color = Color(0xFF353433))) {
+    Box(
+        modifier = Modifier
+            .padding(20.dp, 10.dp, 20.dp, 10.dp)
+            .clip(RoundedCornerShape(25.dp))
+            .background(color = Color(0xFF353433))
+    ) {
         Text(
             text = description,
             style = TextStyle(
@@ -320,15 +302,10 @@ fun DescriptionText(description: String) {
                 textAlign = TextAlign.Justify,
                 color = Color.White,
                 shadow = Shadow(color = Color.Black, blurRadius = 7.5f)
-
-
             ),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp, 5.dp, 10.dp, 5.dp)
-
-            ,
-
-            )
+        )
     }
 }
