@@ -35,7 +35,7 @@ object RemoteFirebase {
     }
     suspend fun getReview(mutableReviewFlow: MutableSharedFlow<List<Int>?>){
         try {
-            val document = db.collection("Review").document("MH7d5iwY0tj4eEYbu52u").get().await()
+            val document = FirebaseInstance.getDB()!!.collection("Review").document("MH7d5iwY0tj4eEYbu52u").get().await()
             Log.d("Firebase_info", "${document.id} => ${document.data}")
             mutableReviewFlow.emit(document.data?.get("MovieIds") as List<Int> ) // TODO make type safe.
 

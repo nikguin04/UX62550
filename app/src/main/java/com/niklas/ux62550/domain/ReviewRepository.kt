@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class ReviewRepository {
-    private val firebaseDataSource = RemoteFirebase()
+    private val firebaseDataSource = RemoteFirebase
 
     private val mutableReviewFlow = MutableSharedFlow<List<Int>?>()
     val reviewFlow = mutableReviewFlow.asSharedFlow()

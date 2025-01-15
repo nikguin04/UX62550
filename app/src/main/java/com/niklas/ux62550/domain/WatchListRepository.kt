@@ -14,7 +14,7 @@ class WatchListRepository {
     suspend fun getWatchList()  = firebaseDataSource.getWatchList(mutableWatchListFlow)
 
 
-    private val MovieDataSource = RemoteMediaDataSource()
+    private val MovieDataSource = RemoteMediaDataSource
 
     private val mutableWatchListRowFlow = MutableSharedFlow<WatchListDataObject>()
 
