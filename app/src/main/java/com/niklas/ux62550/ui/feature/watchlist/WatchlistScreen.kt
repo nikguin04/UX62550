@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -39,6 +41,7 @@ import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import androidx.compose.foundation.lazy.items
 
 @Composable
 @Preview(showBackground = true)
@@ -132,11 +135,12 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
 
                 is MovieIds.Data -> {
                     // Display list of movie items in LazyColumn
-                    watchListState.movies?.forEach{id -> MovieBoxRowFromId(
-                        id,
-                        onNavigateToMedia = onNavigateToMedia
-                    ) }
-
+                    val movieIDList: List<Int> = watchListState.movies?:emptyList()
+                    LazyColumn {
+                        items(movieIDList) {id ->
+                            MovieBoxRowFromId(id, onNavigateToMedia = onNavigateToMedia)
+                        }
+                    }
                 }
             }
         }
