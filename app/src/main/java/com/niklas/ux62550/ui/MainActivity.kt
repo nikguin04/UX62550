@@ -39,7 +39,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.niklas.ux62550.navigation.GeneralNavBar
 import com.niklas.ux62550.navigation.MainNavHost
-import com.niklas.ux62550.ui.feature.common.singletons.SnackBar
+import com.niklas.ux62550.ui.feature.common.singletons.SnackBarData
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 class MainActivity : ComponentActivity() {
@@ -68,15 +68,16 @@ class MainActivity : ComponentActivity() {
 
                 val snackbarHostState = remember { SnackbarHostState() }
                 val scope = rememberCoroutineScope()
+                val snackBarData: SnackBarData = SnackBarData(scope, snackbarHostState)
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     topBar = {
                         // Moved down to content for padding reasons?
                         // TODO: This seems really scuffed and *NOT* like the way to do things
                     },
-                    //bottomBar = { GeneralNavBar(navController) },
+                    bottomBar = { GeneralNavBar(navController) },
                     contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp),
                     snackbarHost = {
-                        SnackbarHost(hostState = SnackBar().getSnackBarHostState())
+                        SnackbarHost(hostState = snackBarData.getSnackBarHostState())
                     }
                 ) {
                     Box {

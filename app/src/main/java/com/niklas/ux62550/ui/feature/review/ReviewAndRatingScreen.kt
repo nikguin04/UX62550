@@ -52,7 +52,7 @@ import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
-import com.niklas.ux62550.ui.feature.common.singletons.SnackBar
+import com.niklas.ux62550.ui.feature.common.singletons.SnackBarData
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -199,13 +199,13 @@ fun PublishReview(
                 .padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
-            val scope = SnackBar().getSnackBarScope()
-            val snackBarHostState = SnackBar().getSnackBarHostState()
+            val scope = SnackBarData.get()?.getSnackBarScope()
+            val snackBarHostState = SnackBarData.get()?.getSnackBarHostState()
             Button(
-                //onClick = onSubmit,
-                onClick = {
-                    scope.launch {
-                        snackBarHostState.showSnackbar("SnackBar")
+                onClick =  {
+                    onSubmit()
+                    scope?.launch {
+                        snackBarHostState?.showSnackbar("Successfully submitted movie")
                     }
                 },
                 modifier = Modifier.width(150.dp),
