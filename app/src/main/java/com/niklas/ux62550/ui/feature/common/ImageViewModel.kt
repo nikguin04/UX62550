@@ -15,9 +15,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 
 class ImageViewModel(private val media: MediaObject) : ViewModel() {
-    private val imageRepo = DataModule.newImageRepository()
+    private val imageRepo = DataModule.imageRepository
 
     private val mutableImagesDataState = MutableStateFlow<ImagesDataUIState>(ImagesDataUIState.Empty)
     val imagesDataState: StateFlow<ImagesDataUIState> = mutableImagesDataState
@@ -25,7 +26,8 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
     init {
         media.media_type?.let {
             viewModelScope.launch {
-                imageRepo.imagesFlow.collect { imagesObj ->
+                while (!imageRepo.imagesFlow.containsKey(media.id)) { yield() }
+                imageRepo.imagesFlow[media.id]?.collect { imagesObj ->
                     mutableImagesDataState.update { ImagesDataUIState.Data(imagesObj) }
                 }
             }
