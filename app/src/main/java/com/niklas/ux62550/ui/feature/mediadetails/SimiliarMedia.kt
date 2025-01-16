@@ -31,7 +31,7 @@ fun SimilarMedia(
         }
         is SimilarMovieState.Data -> {
             HorizontalLazyRowMovies(
-                Modifier.padding(10.dp, 5.dp, 20.dp,15.dp),
+                Modifier.padding(0.dp, 0.dp),
                 Dp(255f),
                 Dp(255f/16*9),
                 similarMediaState.similarMoviesObject,
