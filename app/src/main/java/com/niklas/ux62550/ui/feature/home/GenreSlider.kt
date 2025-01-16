@@ -54,12 +54,11 @@ fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, on
         }
         is DiscoverItemsUIState.Data -> {
             HorizontalLazyRowMovies(
-                Modifier.padding(0.dp, 0.dp),
                 width = w,
                 height = h,
-                discoverUiState.mediaObjects,
-                onNavigateToMedia,
-                listState,
+                items = discoverUiState.mediaObjects,
+                onNavigateToMedia = onNavigateToMedia,
+                rowListState = listState,
                 fetchEnBackdrop = true
             )
         }

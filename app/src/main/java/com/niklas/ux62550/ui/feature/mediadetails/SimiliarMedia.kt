@@ -31,11 +31,10 @@ fun SimilarMedia(
         }
         is SimilarMovieState.Data -> {
             HorizontalLazyRowMovies(
-                Modifier.padding(0.dp, 0.dp),
-                Dp(255f),
-                Dp(255f/16*9),
-                similarMediaState.similarMoviesObject,
-                onNavigateToOtherMedia,
+                width = Dp(255f),
+                height = Dp(255f/16*9),
+                items = similarMediaState.similarMoviesObject,
+                onNavigateToMedia = onNavigateToOtherMedia,
                 fetchEnBackdrop = true
             )
         }
