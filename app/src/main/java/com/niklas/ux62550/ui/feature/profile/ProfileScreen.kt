@@ -173,7 +173,7 @@ fun ProfileContent(
 
             Box(Modifier.size(0.dp, 20.dp))
             Button  (
-                onClick = { FirebaseAuthController().logout() },
+                onClick = { FirebaseAuthController().logout(); onNavigateToLoginRegister("Sign out")},
                 colors = ButtonDefaults.buttonColors(
                     containerColor = LoginButtonGray
                 ),
@@ -196,7 +196,7 @@ fun ProfileContent(
 fun ProfileAttribute(label: String, value: MutableState<String>) {
     Row(Modifier.fillMaxWidth(), Arrangement.Start, Alignment.CenterVertically) {
         TextField(
-            value = value.value,
+            value = FirebaseAuthController().getAuth().currentUser?.email.toString(),
             modifier = Modifier
                 .size(260.dp, 55.dp)
                 .padding(16.dp, 0.dp, 0.dp, 0.dp),

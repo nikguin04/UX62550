@@ -137,7 +137,7 @@ fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: Mutable
         )
 
         Button(
-            onClick = { FirebaseAuthController().createAccount(emailValue.value.toString(), passValue.value.toString()) },
+            onClick = { FirebaseAuthController().createAccount(emailValue.value.toString(), passValue.value.toString());onNavigateToProfile("Login") },
             colors = ButtonDefaults.buttonColors(
                 containerColor = RegisterButtonBlue
             ),

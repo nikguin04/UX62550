@@ -42,8 +42,8 @@ class ReviewViewModel : ViewModel() {
         )
 
         // shoud this be move to the firebase repository
-        // TODO now the user id is hard coded this needs to be changed
-
+        // if true then use the user that is sigent ind else the defult user will be used
+        // in the real app there will be no defult user you need to sign in to used this function
         if(FirebaseAuthController().getAuth().currentUser?.uid != null){
             if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document(FirebaseAuthController().getAuth().currentUser?.uid.toString()).get().isSuccessful){
                 FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document(FirebaseAuthController().getAuth().currentUser?.uid.toString()).update(review)
@@ -55,14 +55,13 @@ class ReviewViewModel : ViewModel() {
 
             }
         } else {
-            if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").get().isSuccessful){
-                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").update(review)
+            if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User1").get().isSuccessful){
+                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User1").update(review)
             } else {
-                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2")
+                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User1")
                     .set(review)
                     .addOnSuccessListener { println("Review submitted successfully!") }
                     .addOnFailureListener { println("Error submitting review: ${it.message}") }
-
             }
         }
     }
