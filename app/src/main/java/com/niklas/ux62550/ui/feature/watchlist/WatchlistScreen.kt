@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -106,7 +107,9 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                 expanded = false,
                 onExpandedChange = {},
                 content = {},
-                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp)
+                modifier = Modifier
+                    .padding(0.dp, 0.dp, 0.dp, 20.dp)
+                    .widthIn(max = 360.dp)
             )
             LogoBox(size = 200.dp)
             Row(
