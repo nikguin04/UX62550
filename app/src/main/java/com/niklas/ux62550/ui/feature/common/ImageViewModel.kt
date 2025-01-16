@@ -26,18 +26,13 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
     init {
         media.media_type?.let {
             viewModelScope.launch {
-                while (!imageRepo.imagesFlow.containsKey(media.id)) { yield() }
-                imageRepo.imagesFlow[media.id]?.collect { imagesObj ->
+                imageRepo.getImages(media_type = it, media_id = media.id, scope = viewModelScope)?.collect { imagesObj ->
                     mutableImagesDataState.update { ImagesDataUIState.Data(imagesObj) }
                 }
             }
-            getImages(it, media.id)
         } ?: Log.w("No media_type", "Media passed to ImageViewModel contained no media_type, so we can not fetch images, Please note that this sometimes need to be set manually when fetching data since endpoints for specific media will not include the media_type")
     }
 
-    private fun getImages(media_type: String, media_id: Int) = viewModelScope.launch {
-        imageRepo.getImages(media_type = media_type, media_id = media_id) // TODO: Don't hardcore this, get some proper discovers
-    }
 
     fun initPreview_NoFetch() {
         mutableImagesDataState.update { ImagesDataUIState.Data(ImagesDataObject.EmptyExample) }
