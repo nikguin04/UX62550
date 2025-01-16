@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailedRating(modifier: Modifier = Modifier) {
+fun DetailedRating(modifier: Modifier = Modifier, movieViewModel: MovieViewModel, movieID: MovieState.Data) {
     Row(
         modifier = modifier.padding(20.dp, 10.dp, 20.dp, 5.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -78,12 +78,12 @@ fun DetailedRating(modifier: Modifier = Modifier) {
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Category: $i")
+                        Text("Category: Acting")
                         Spacer(modifier = Modifier.width(12.dp))
                         Row {
-                            var rating by remember { mutableIntStateOf(0) }
-                            for (i in 1..5) {
-                                val isFilled = i <= rating
+                            val rating by remember { mutableIntStateOf(calculateDetailedRatingForActing(movieViewModel, movieID)) }
+                            for (g in 1..5) {
+                                val isFilled = g <= rating
                                 val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
 
                                 Image(
@@ -114,5 +114,8 @@ fun DetailedRating(modifier: Modifier = Modifier) {
             }
         }
     }
-
+}
+fun calculateDetailedRatingForActing(movieViewModel: MovieViewModel, movieID: MovieState.Data): Int {
+    val movieReviewID = movieViewModel.getDetailReviews(movieID.mediaDetailObject.toMediaObject().id)
+    return 2
 }

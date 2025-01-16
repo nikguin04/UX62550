@@ -118,7 +118,7 @@ fun MediaDetailsScreen(
                 DescriptionText(description = movieState.mediaDetailObject.Description)
 
                 ActorsAndDirectors(creditState = creditState)
-                DetailedRating()
+                DetailedRating(movieViewModel = movieViewModel, movieID = movieState)
                 SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
             }
         }

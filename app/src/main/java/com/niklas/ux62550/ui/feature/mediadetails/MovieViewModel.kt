@@ -12,6 +12,7 @@ import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.data.model.TrailerObject
 import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.domain.MediaDetailsRepository
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -37,6 +38,11 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
     fun updateToDatabase(media: MediaObject, remove: Boolean = false){
         viewModelScope.launch {
             RemoteFirebase.UpdateToWatchList(media, remove)
+        }
+    }
+    fun getDetailReviews(movieID: Int){
+        viewModelScope.launch {
+            RemoteFirebase.getReview(movieID)
         }
     }
 

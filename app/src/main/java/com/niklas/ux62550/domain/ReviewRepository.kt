@@ -9,6 +9,5 @@ class ReviewRepository {
 
     private val mutableReviewFlow = MutableSharedFlow<List<Int>?>()
     val reviewFlow = mutableReviewFlow.asSharedFlow()
-    suspend fun getReview()  = firebaseDataSource.getReview(mutableReviewFlow)
 
 }

@@ -1,5 +1,6 @@
 package com.niklas.ux62550.data.remote
 
+import android.provider.MediaStore.Video.Media
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FieldValue
@@ -35,20 +36,17 @@ object RemoteFirebase {
             mutableWatchListFlow.emit(null)
         }
     }
-    suspend fun getReview(mutableReviewFlow: MutableSharedFlow<List<Int>?>){
+    suspend fun getReview(movieId: Int){
         try {
-            val document = FirebaseInstance.getDB()!!.collection("Review").document("MH7d5iwY0tj4eEYbu52u").get().await()
+            val document = FirebaseInstance.getDB()!!.collection("UserReviews").document("Movies").collection(movieId.toString()).document().get().await()
             Log.d("Firebase_info", "${document.id} => ${document.data}")
-            mutableReviewFlow.emit(document.data?.get("MovieIds") as List<Int> ) // TODO make type safe.
-
+            document.get(movieId.toString()) // TODO make type safe.
         } catch (e: Exception)
         {
             Log.w("Firebase_info", "Error getting documents.", e)
-            mutableReviewFlow.emit(null)
         }
-
-
     }
+
     suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean){
         val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C")
         // Set the the movieID
