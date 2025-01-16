@@ -52,9 +52,11 @@ import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
+import com.niklas.ux62550.ui.feature.common.singletons.SnackBar
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import kotlinx.coroutines.launch
 
 @Composable
 @Preview(showBackground = true)
@@ -197,8 +199,15 @@ fun PublishReview(
                 .padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
+            val scope = SnackBar().getSnackBarScope()
+            val snackBarHostState = SnackBar().getSnackBarHostState()
             Button(
-                onClick = onSubmit,
+                //onClick = onSubmit,
+                onClick = {
+                    scope.launch {
+                        snackBarHostState.showSnackbar("SnackBar")
+                    }
+                },
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
             ) {
