@@ -37,14 +37,29 @@ object RemoteFirebase {
         }
     }
     suspend fun getReview(movieId: Int){
+        val detailedRating = mutableMapOf<Int, Int>()
+
         try {
-            val document = FirebaseInstance.getDB()!!.collection("UserReviews").document("Movies").collection(movieId.toString()).document().get().await()
-            Log.d("Firebase_info", "${document.id} => ${document.data}")
-            document.get(movieId.toString()) // TODO make type safe.
+            val document = FirebaseInstance.getDB()!!.collection("UserReviews").document("Movies").collection(movieId.toString()).get().await()
+            for (rating in document.documents){
+                val ratings = document.get("CategoryRatings") as? List<String>
+                val actorRating
+                val directingRating
+                val musicRating
+                val plotRating
+
+                if(rating != null){
+                    Log.d("Firebase_info", "$actorRating => $actorRating")
+                    Log.d("Firebase_info", "$directingRating => $directingRating")
+                    Log.d("Firebase_info", "$musicRating => $musicRating")
+                    Log.d("Firebase_info", "$plotRating => $plotRating")
+                }
+            }
         } catch (e: Exception)
         {
             Log.w("Firebase_info", "Error getting documents.", e)
         }
+        return
     }
 
     suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean){

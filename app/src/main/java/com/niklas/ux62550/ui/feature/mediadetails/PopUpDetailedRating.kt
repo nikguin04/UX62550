@@ -117,5 +117,6 @@ fun DetailedRating(modifier: Modifier = Modifier, movieViewModel: MovieViewModel
 }
 fun calculateDetailedRatingForActing(movieViewModel: MovieViewModel, movieID: MovieState.Data): Int {
     val movieReviewID = movieViewModel.getDetailReviews(movieID.mediaDetailObject.toMediaObject().id)
+
     return 2
 }
