@@ -4,10 +4,12 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.ui.feature.profile.FirebaseAuthController
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.tasks.await
 
@@ -33,11 +35,21 @@ object RemoteFirebase {
     suspend fun getWatchList(mutableWatchListFlow: MutableSharedFlow<List<Int>?>){
 
         try {
-            val document = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C").get().await()
-            Log.d("Firebase_info", "${document.id} => ${document.data}")
-            val arrayData = document.data?.get("MovieIds") as List<*>
-            val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
-            mutableWatchListFlow.emit(intData)
+            if(FirebaseAuthController().getAuth().currentUser == null){
+                var document = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C").get().await()
+                Log.d("Firebase_info", "${document.id} => ${document.data}")
+                val arrayData = document.data?.get("MovieIds") as List<*>
+                val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
+                mutableWatchListFlow.emit(intData)
+            } else{
+                var document = FirebaseInstance.getDB()!!.collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString()).get().await()
+                Log.d("Firebase_info", "${document.id} => ${document.data}")
+                val arrayData = document.data?.get("MovieIds") as List<*>
+                val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
+                mutableWatchListFlow.emit(intData)
+            }
+
+
         } catch (e: Exception){
             Log.w("Firebase_info", "Error getting documents.", e)
             mutableWatchListFlow.emit(null)
@@ -58,14 +70,29 @@ object RemoteFirebase {
 
     }
     suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean){
-        val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C")
+        if(FirebaseAuthController().getAuth().currentUser == null){
+            val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C")
+            watchlist.update(
+                "MovieIds",
+                if (remove) {FieldValue.arrayRemove(data.id)}
+                else {FieldValue.arrayUnion(data.id)}
+            )
+        } else {
+            if(FirebaseInstance.getDB()!!.collection("Watchlist").document(FirebaseAuthController().getAuth().currentUser?.uid.toString())){
+                val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document(FirebaseAuthController().getAuth().currentUser?.uid.toString())
+                watchlist.update("MovieIds",
+                    if (remove) {FieldValue.arrayRemove(data.id)}
+                    else {FieldValue.arrayUnion(data.id)}
+                )
+            } else{
+                FirebaseInstance.getDB()!!.collection("Watchlist").document(FirebaseAuthController().getAuth().currentUser?.uid.toString()).set(hashMapOf("MovieIds" to listOf(data.id)))
+            }
+
+
+        }
         // Set the the movieID
         // Atomically add or remove a new region to the "MovieIds" array field.
-        watchlist.update(
-            "MovieIds",
-            if (remove) {FieldValue.arrayRemove(data.id)}
-            else {FieldValue.arrayUnion(data.id)}
-        )
+
     }
 
 }
