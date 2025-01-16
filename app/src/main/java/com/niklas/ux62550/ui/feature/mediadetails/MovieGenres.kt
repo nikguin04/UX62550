@@ -32,7 +32,8 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        for ((index, genre) in genres.mediaDetailObjects.genre.withIndex().takeWhile { it.index <= 2 }) {
+        val firstGenres = genres.mediaDetailObject.genre.take(3)
+        firstGenres.forEachIndexed { index, genre ->
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(40.dp))
@@ -50,13 +51,17 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
-                    modifier = Modifier.align(Alignment.Center)                    ,
-
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
-            if ((index != 2) && (index != genres.mediaDetailObjects.genre.lastIndex)) {
+            if (index < firstGenres.lastIndex) {
                 Spacer(modifier = Modifier.width(4.dp))
-                DrawCircle(Modifier.size(10.dp).shadow(10.dp, RoundedCornerShape(40.dp), false,Color.Black), Color.LightGray, )
+                DrawCircle(
+                    color = Color.LightGray,
+                    modifier = Modifier
+                        .size(10.dp)
+                        .shadow(10.dp, RoundedCornerShape(40.dp), false, Color.Black)
+                )
                 Spacer(modifier = Modifier.width(4.dp))
             }
         }
@@ -67,19 +72,13 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                 Text("NO PIC")
             }
             is ProviderState.Data -> {
-                val country = providerState.providerDataObject["DK"]
-                val StreamRentAndBuyProviderMap =
-                    (country?.flatrate?.map { it.logoPath } ?: emptyList()) +
-                        (country?.rent?.map { it.logoPath } ?: emptyList()) +
-                        (country?.buy?.map { it.logoPath } ?: emptyList())
-
-                if (country != null) {
-                    for (i in 0 until minOf(3, StreamRentAndBuyProviderMap.size)) {
+                providerState.providerDataObject["DK"]?.run {
+                    val providers = (flatrate + rent + buy).map { it.logoPath }
+                    for (provider in providers.take(3)) {
                         Spacer(modifier = Modifier.width(4.dp))
                         MediaItem(
-                            StreamRentAndBuyProviderMap[i],
-                            0.dp,
-                            modifier
+                            uri = provider,
+                            modifier = modifier
                                 .clip(CircleShape)
                                 .size(32.dp),
                             size = ImageSize.LOGO

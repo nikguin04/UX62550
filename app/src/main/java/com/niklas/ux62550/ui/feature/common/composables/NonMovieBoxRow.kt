@@ -1,14 +1,11 @@
-package com.niklas.ux62550.ui.feature.search
+package com.niklas.ux62550.ui.feature.common.composables
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -22,7 +19,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.models.NonMovieBox
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 
@@ -46,7 +42,6 @@ fun NonMovieBoxRow(person: MediaObject, modifier: Modifier = Modifier) {
     ) {
         MediaItem(
             uri = person.profile_path,
-            round = 0.dp,
             modifier
                 .clip(RoundedCornerShape(25))
                 .size(width = 50.dp, height = 80.dp),

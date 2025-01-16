@@ -37,6 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRow
+import com.niklas.ux62550.ui.feature.common.composables.NonMovieBoxRow
 import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
@@ -78,8 +80,8 @@ fun SearchContent(
         item {
             Row(
                 modifier = Modifier
-
-                    .padding(20.dp, 45.dp, 20.dp, 20.dp),
+                    .padding(20.dp, 45.dp, 20.dp, 20.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
