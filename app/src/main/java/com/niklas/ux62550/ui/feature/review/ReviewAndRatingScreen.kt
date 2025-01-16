@@ -205,7 +205,7 @@ fun PublishReview(
                 onClick =  {
                     onSubmit()
                     scope?.launch {
-                        snackBarHostState?.showSnackbar("Successfully submitted movie")
+                        snackBarHostState?.showSnackbar("Successfully submitted review")
                     }
                 },
                 modifier = Modifier.width(150.dp),
