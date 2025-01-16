@@ -8,6 +8,7 @@ import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.ImageDataObject
 import com.niklas.ux62550.data.model.ImagesDataObject
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.DiscoverRepository
 import com.niklas.ux62550.domain.ImageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ImageViewModel(private val media: MediaObject) : ViewModel() {
-    private val imageRepo = ImageRepository()
+    private val imageRepo = DataModule.newImageRepository()
 
     private val mutableImagesDataState = MutableStateFlow<ImagesDataUIState>(ImagesDataUIState.Empty)
     val imagesDataState: StateFlow<ImagesDataUIState> = mutableImagesDataState

@@ -11,6 +11,7 @@ import com.niklas.ux62550.data.model.Provider
 import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.data.model.TrailerObject
 import com.niklas.ux62550.data.remote.RemoteFirebase
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MovieViewModel(media: MediaObject) : ViewModel() {
-    private val mediaDetailsRepository = MediaDetailsRepository()
+    private val mediaDetailsRepository = DataModule.mediaDetailsRepository
 
     private fun getDetails(MovieID: Int) = viewModelScope.launch {
         mediaDetailsRepository.getMoviesDetails(MovieID) // TODO: Don't hardcore this, get some proper featured films

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.SearchDataObject
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.domain.SearchRepository
 import com.niklas.ux62550.models.Movie
@@ -26,7 +27,7 @@ class SearchViewModel : ViewModel() {
 
 
 
-    private val searchRepository = SearchRepository()
+    private val searchRepository = DataModule.searchRepository
 
 
     public fun getDetails(query: String) = viewModelScope.launch {

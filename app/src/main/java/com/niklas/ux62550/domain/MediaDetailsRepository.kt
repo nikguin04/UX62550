@@ -10,11 +10,10 @@ import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-class MediaDetailsRepository {
-
-    private val firebaseDataSource = RemoteFirebase
-    private val remoteDataSource = RemoteMediaDataSource
-
+class MediaDetailsRepository(
+    private val remoteDataSource: RemoteMediaDataSource,
+    private val firebaseDataSource: RemoteFirebase
+) {
     private val mutableDetailFlow = MutableSharedFlow<MovieDetailObject>()
     val detailFlow = mutableDetailFlow.asSharedFlow()
     suspend fun getMoviesDetails(movie_id: Int)  = mutableDetailFlow.emit(

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.DiscoverRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
-    private val discoverRepository = DiscoverRepository()
+    private val discoverRepository = DataModule.discoverRepository
 
     private val mutableDiscoverItemsState = MutableStateFlow<DiscoverItemsUIState>(DiscoverItemsUIState.Empty)
     val discoverItemsState: StateFlow<DiscoverItemsUIState> = mutableDiscoverItemsState

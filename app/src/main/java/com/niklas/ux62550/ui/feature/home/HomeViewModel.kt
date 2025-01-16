@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.HomeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +19,7 @@ class HomeViewModel : ViewModel() {
         MediaItem("Name 3", R.drawable.logo, Color.Green),
     )*/
 
-    private val homeRepository = HomeRepository()
+    private val homeRepository = DataModule.homeRepository
 
     private val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
     val mediaItemsState: StateFlow<MediaItemsUIState> = mutableMediaItemsState

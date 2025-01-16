@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.KeywordObject
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.KeywordRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class KeywordViewModel(private val keywordObject: KeywordObject) : ViewModel() {
-    private val keywordRepository = KeywordRepository()
+    private val keywordRepository = DataModule.keywordRepository
 
     private val mutableKeywordItemsState = MutableStateFlow<KeywordItemsUIState>(KeywordItemsUIState.Empty)
     val keywordItemsState: StateFlow<KeywordItemsUIState> = mutableKeywordItemsState

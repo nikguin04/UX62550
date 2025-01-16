@@ -6,9 +6,9 @@ import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-class HomeRepository {
-
-    private val remoteDataSource = RemoteMediaDataSource
+class HomeRepository (
+    private val remoteDataSource: RemoteMediaDataSource
+) {
 
     private val mutableFeaturedMediaFlow = MutableSharedFlow<SearchDataObject>()
     val featuredMediaFlow = mutableFeaturedMediaFlow.asSharedFlow()
