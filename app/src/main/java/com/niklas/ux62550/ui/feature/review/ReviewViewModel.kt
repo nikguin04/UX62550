@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
 import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
+import com.niklas.ux62550.ui.feature.profile.FirebaseAuthController
 import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
 import com.niklas.ux62550.ui.feature.watchlist.MovieIds
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,14 +43,27 @@ class ReviewViewModel : ViewModel() {
 
         // shoud this be move to the firebase repository
         // TODO now the user id is hard coded this needs to be changed
-        if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").get().isSuccessful){
-            FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").update(review)
-        } else {
-            FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2")
-                .set(review)
-                .addOnSuccessListener { println("Review submitted successfully!") }
-                .addOnFailureListener { println("Error submitting review: ${it.message}") }
 
+        if(FirebaseAuthController().getAuth().currentUser?.uid != null){
+            if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document(FirebaseAuthController().getAuth().currentUser?.uid.toString()).get().isSuccessful){
+                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document(FirebaseAuthController().getAuth().currentUser?.uid.toString()).update(review)
+            } else {
+                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document(FirebaseAuthController().getAuth().currentUser?.uid.toString())
+                    .set(review)
+                    .addOnSuccessListener { println("Review submitted successfully!") }
+                    .addOnFailureListener { println("Error submitting review: ${it.message}") }
+
+            }
+        } else {
+            if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").get().isSuccessful){
+                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").update(review)
+            } else {
+                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2")
+                    .set(review)
+                    .addOnSuccessListener { println("Review submitted successfully!") }
+                    .addOnFailureListener { println("Error submitting review: ${it.message}") }
+
+            }
         }
     }
 

@@ -30,6 +30,6 @@ class ProfileViewModel : ViewModel() {
 
 
 
-    // From some of the documenttaion from firebase
+
 
 }

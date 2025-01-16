@@ -173,7 +173,7 @@ fun ProfileContent(
 
             Box(Modifier.size(0.dp, 20.dp))
             Button  (
-                onClick = { onNavigateToLoginRegister("Sign out") },
+                onClick = { FirebaseAuthController().logout() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = LoginButtonGray
                 ),

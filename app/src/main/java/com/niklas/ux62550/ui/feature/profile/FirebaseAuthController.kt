@@ -2,25 +2,63 @@ package com.niklas.ux62550.ui.feature.profile
 
 import android.app.Activity
 import android.content.ContentValues.TAG
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.remote.RemoteFirebase
+import kotlinx.coroutines.launch
 
 class FirebaseAuthController: Activity() {
+    // taken from firebase documentation
 
-    lateinit var auth: FirebaseAuth
-    var isFirstTime = true
+    private lateinit var auth: FirebaseAuth
 
 
-    fun gettheauth(){
-        if(isFirstTime == true){
-            auth = Firebase.auth
-            isFirstTime = false
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+        auth = Firebase.auth
+
+    }
+
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+
         }
     }
-    fun onCreate(email: String, password: String) {
-        gettheauth()
+
+
+    public fun signIn(email: String, password: String){
+        auth = Firebase.auth
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val user = auth.currentUser
+
+
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+
+                }
+            }
+    }
+
+    public fun createAccount(email: String, password: String){
+        auth = Firebase.auth
+
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -34,26 +72,13 @@ class FirebaseAuthController: Activity() {
             }
     }
 
-
-    fun signIn(email: String, password: String){
-        gettheauth()
-
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-
-                }
-            }
-
-
-
+    public fun getAuth() : FirebaseAuth{
+        auth = Firebase.auth
+        return auth
     }
 
-
+    public fun logout() {
+        auth = Firebase.auth
+        return auth.signOut()
+    }
 }

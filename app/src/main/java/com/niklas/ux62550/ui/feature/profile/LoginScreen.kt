@@ -113,7 +113,7 @@ fun LoginInputHolder(emailValue: MutableState<String>, passValue: MutableState<S
         )
 
             Button(
-                onClick = {  },
+                onClick = { FirebaseAuthController().signIn(emailValue.value.toString(), passValue.value.toString()) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = RegisterButtonBlue
                 ),
