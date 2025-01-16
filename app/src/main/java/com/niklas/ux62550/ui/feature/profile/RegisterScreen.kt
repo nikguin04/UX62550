@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.niklas.ux62550.ui.feature.common.LogoBox
-import com.niklas.ux62550.ui.feature.mediadetails.ProfileViewModel
+
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.TextFieldDescColor
@@ -137,7 +137,7 @@ fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: Mutable
         )
 
         Button(
-            onClick = { ProfileViewModel.onCreate(emailValue.value, passValue.value) },
+            onClick = {  },
             colors = ButtonDefaults.buttonColors(
                 containerColor = RegisterButtonBlue
             ),

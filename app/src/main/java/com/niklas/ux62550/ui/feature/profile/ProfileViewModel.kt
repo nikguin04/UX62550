@@ -1,4 +1,4 @@
-package com.niklas.ux62550.ui.feature.mediadetails
+package com.niklas.ux62550.ui.feature.profile
 
 
 
@@ -31,43 +31,5 @@ class ProfileViewModel : ViewModel() {
 
 
     // From some of the documenttaion from firebase
-    companion object {
-        lateinit var auth: FirebaseAuth
-        var isFirstTime = true
-
-
-        fun gettheauth(){
-            if(isFirstTime == true){
-                auth = Firebase.auth
-                isFirstTime = false
-            }
-        }
-        fun onCreate(Email: String, Password: String) {
-            gettheauth()
-            if(auth.createUserWithEmailAndPassword(Email, Password).isSuccessful){
-                Log.w("login", "No problem user log in.")
-            } else{
-                Log.w("login", "nope fuck the user.")
-            }
-        }
-
-
-        fun signIn(Email: String, Password: String){
-            gettheauth()
-                if (auth.signInWithEmailAndPassword(Email, Password).result.user != null) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.w("login", "signInWithEmail:success")
-                    val user = auth.currentUser
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("login", "signInWithEmail:failure")
-                }
-
-
-        }
-
-
-    }
-
 
 }

@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.ui.feature.common.LogoBox
-import com.niklas.ux62550.ui.feature.mediadetails.ProfileViewModel
+
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.TextFieldDescColor
@@ -113,7 +113,7 @@ fun LoginInputHolder(emailValue: MutableState<String>, passValue: MutableState<S
         )
 
             Button(
-                onClick = { ProfileViewModel.signIn(emailValue.value, passValue.value) },
+                onClick = {  },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = RegisterButtonBlue
                 ),

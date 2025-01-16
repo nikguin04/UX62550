@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.Profile
-import com.niklas.ux62550.ui.feature.mediadetails.ProfileViewModel
+
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.ProfileBtnRed
 import com.niklas.ux62550.ui.theme.RedColorGradient
