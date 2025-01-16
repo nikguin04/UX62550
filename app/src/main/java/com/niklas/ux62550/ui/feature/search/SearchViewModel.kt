@@ -26,8 +26,6 @@ class SearchViewModel : ViewModel() {
         NonMovieBox("John Doe", Color.Green, "Actor"),
     )
 
-
-
     private val searchRepository = SearchRepository()
 
     private val mutableNonMoviesState = MutableStateFlow<NonMovieBoxItemsUIState>(NonMovieBoxItemsUIState.Data(nonMovies))
@@ -37,8 +35,6 @@ class SearchViewModel : ViewModel() {
     val movieItemsUIState: StateFlow<MovieItemsUIState> = mutableMovieItemsUIState
 
     private val _searchQuery = MutableStateFlow("")
-//    val searchQuery: StateFlow<String> = _searchQuery
-
 
     init {
         viewModelScope.launch {
@@ -59,18 +55,13 @@ class SearchViewModel : ViewModel() {
         }
     }
 
-
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
     }
 
-    public fun getDetails(query: String) = viewModelScope.launch {
+    private fun getDetails(query: String) = viewModelScope.launch {
         searchRepository.getUserSearch(query) // TODO: Don't hardcore this, get some proper featured films
     }
-
-
-
-
 
     fun initPreview() {
          val movies = listOf(
@@ -84,7 +75,6 @@ class SearchViewModel : ViewModel() {
             )
         }
     }
-
 }
 
 sealed class MovieItemsUIState {
