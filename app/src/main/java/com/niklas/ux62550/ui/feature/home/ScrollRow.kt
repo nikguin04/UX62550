@@ -55,20 +55,20 @@ import kotlin.math.absoluteValue
 @Composable
 fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia: (MediaObject) -> Unit) {
     val pagerState = rememberPagerState(pageCount = { items.size }, initialPage = items.size/2)
-    val w = 350f
+    val w = 350.dp
     val h = w/16*9
-    val gap = 10f
+    val gap = 10.dp
     HorizontalPager(state = pagerState,
-        contentPadding = PaddingValues(start = Dp((LocalConfiguration.current.screenWidthDp - w) / 2)),
+        contentPadding = PaddingValues(start = Dp((LocalConfiguration.current.screenWidthDp - w.value) / 2)),
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        pageSize = PageSize.Fixed(Dp(w)),
-        pageSpacing = Dp(gap)
+        pageSize = PageSize.Fixed(w),
+        pageSpacing = gap
     )
     { page ->
         Card(
             Modifier
-                .size(Dp(w), Dp(h))
+                .size(w, h)
                 .graphicsLayer {
                     // Calculate the absolute offset for the current page from the
                     // scroll position. We use the absolute value which allows us to mirror
@@ -92,7 +92,8 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
                 modifier = Modifier
                     .clickable(onClick = { onNavigateToMedia(items[page])})
                     .align(Alignment.CenterHorizontally)
-                    .size(Dp(w),Dp(h)),
+                    .size(w,h)
+                    .clip(RoundedCornerShape(6.dp)),
                 mediaItem = items[page],
                 fetchEnBackdrop = true
             )
@@ -158,7 +159,8 @@ fun HorizontalLazyRowMovies(
                             (if (index == 0) 12f.dp else 6f.dp), 0.dp,
                             (if (index == items.size - 1) 12f.dp else 6f.dp), 0.dp,
                         )
-                        .size(width,height),
+                        .size(width,height)
+                        .clip(RoundedCornerShape(6.dp)),
                     fetchEnBackdrop,mediaItem
 
                 )
