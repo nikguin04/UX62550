@@ -42,7 +42,7 @@ class SearchViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            _searchQuery.debounce(300)
+            _searchQuery.debounce(200)
                 .collect { query ->
                     if (query.isNotBlank()) {
                         getDetails(query)
