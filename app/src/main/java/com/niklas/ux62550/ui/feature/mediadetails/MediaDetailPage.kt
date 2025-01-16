@@ -308,7 +308,7 @@ fun DescriptionText(description: String) {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp, 5.dp, 10.dp, 5.dp)
+                .padding(30.dp, 20.dp, 30.dp, 20.dp)
         )
     }
 }
