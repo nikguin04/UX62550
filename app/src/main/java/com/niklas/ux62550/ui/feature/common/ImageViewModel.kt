@@ -26,7 +26,11 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
     init {
         media.media_type?.let {
             viewModelScope.launch {
-                imageRepo.getImages(media_type = it, media_id = media.id, scope = viewModelScope)?.collect { imagesObj ->
+                imageRepo.getWithKey(
+                    itemId = media.id,
+                    getUnit = { (imageRepo::getImages)(it, media.id, "en") },
+                    scope = viewModelScope
+                ).collect { imagesObj ->
                     mutableImagesDataState.update { ImagesDataUIState.Data(imagesObj) }
                 }
             }
