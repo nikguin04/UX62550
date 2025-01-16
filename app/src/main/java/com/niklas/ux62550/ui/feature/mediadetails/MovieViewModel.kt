@@ -5,16 +5,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.examples.SearchDataExamples
-import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.Provider
 import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.data.model.TrailerObject
+import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.domain.MediaDetailsRepository
-import com.niklas.ux62550.ui.feature.common.DiscoverItemsUIState
-import com.niklas.ux62550.ui.feature.home.GenresDataState
-import com.niklas.ux62550.ui.feature.home.MediaItemsUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -37,6 +34,11 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
     private fun getTrailerForMovies(MovieID : Int) = viewModelScope.launch {
         mediaDetailsRepository.getTrailer(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
+    fun updateToDatabase(media: MediaObject, remove: Boolean = false){
+        viewModelScope.launch {
+            RemoteFirebase.UpdateToWatchList(media, remove)
+        }
+    }
 
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
     val movieState: StateFlow<MovieState> = mutableMovieState
@@ -49,6 +51,9 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
 
     private val mutableTrailerState = MutableStateFlow<TrailerState>(TrailerState.Empty)
     val trailerState: StateFlow<TrailerState> = mutableTrailerState
+
+    private val mutableWatchlistState = MutableStateFlow<WatchlistState>(WatchlistState.Empty)
+    val watchlistState: StateFlow<WatchlistState> = mutableWatchlistState
 
 
     init {
@@ -94,7 +99,7 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
     fun initPreview() {
         mutableMovieState.update {
             MovieState.Data(
-                mediaDetailObjects = MediaDetailExample.MediaDetailObjectExample
+                mediaDetailObject = MediaDetailExample.MediaDetailObjectExample
             )
         }
         mutableSimilarMovieState.update {
@@ -106,7 +111,7 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         mutableProviderState.update {
             ProviderState.Data(
                 providerDataObject = mapOf<String,Result>(
-                    "DK" to com.niklas.ux62550.data.model.Result(link = "", flatrate = listOf(Provider(logoPath = "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg", providerId=0, providerName = "Netflix")) )
+                    "DK" to Result(link = "", flatrate = listOf(Provider(logoPath = "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg", providerId=0, providerName = "Netflix")) )
                 )
             )
         }
@@ -126,7 +131,7 @@ class MovieViewModelFactory(private val media: MediaObject) : ViewModelProvider.
 
 sealed class MovieState {
     data object Empty : MovieState()
-    data class Data(val mediaDetailObjects: MovieDetailObject) : MovieState()
+    data class Data(val mediaDetailObject: MovieDetailObject) : MovieState()
 }
 sealed class SimilarMovieState {
     object Empty : SimilarMovieState()
@@ -140,4 +145,8 @@ sealed class ProviderState {
 sealed class TrailerState {
     object Empty : TrailerState()
     data class Data(val trailerObject: TrailerObject) : TrailerState()
+}
+sealed class WatchlistState {
+    data object Empty : WatchlistState()
+    data class Data(val mediaDetailObjects: MediaObject) : WatchlistState()
 }

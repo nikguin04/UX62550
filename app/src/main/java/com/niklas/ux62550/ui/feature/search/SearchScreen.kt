@@ -37,13 +37,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRow
+import com.niklas.ux62550.ui.feature.common.composables.NonMovieBoxRow
 import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
 @Preview(showBackground = true)
 fun SearchPreview() {
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
 
         val viewModel: SearchViewModel = viewModel()
         viewModel.initPreview()
@@ -78,8 +80,8 @@ fun SearchContent(
         item {
             Row(
                 modifier = Modifier
-
-                    .padding(20.dp, 45.dp, 20.dp, 20.dp),
+                    .padding(20.dp, 45.dp, 20.dp, 20.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -117,17 +119,13 @@ fun SearchContent(
             }
         }
 
-        item {
-            SectionHeader(title = "Movies and Series")
-        }
 
-        var firstTimePerson = false
-        var firstTimeMovie = false
+
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
                 item {
                     Text(
-                        text = "No movies to be found",
+                        text = "No search data yet",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = SearchColorForText
@@ -135,86 +133,60 @@ fun SearchContent(
                 }
             }
             is MovieItemsUIState.Data -> {
-                itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
-                    when (movieBoxItem.media_type) {
-                        "tv" -> {
-                        }
-                        "person" -> {
-                        }
-                        "movie" -> {
-                            if(firstTimeMovie == true){
-                                Box(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    HorizontalDivider(
-                                        color = SearchColorForText,
-                                        thickness = 1.dp,
-                                        modifier = Modifier
-                                            .padding(horizontal = 16.dp)
-                                            .fillMaxWidth(0.7f)
-                                    )
-                                }
+                val movieList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.media_type == "movie" }
+                val actorList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.media_type == "person" }
 
-                            }
-                            firstTimeMovie = true
-                            MovieBoxRow(
-                                movie = movieBoxItem,
-                                modifier = Modifier.clickable(
-                                    onClick = { onNavigateToMedia(movieBoxItem) }
-                                )
+                item {
+                    SectionHeader(title = "Movies")
+                }
+                itemsIndexed(movieList) { index, movieBoxItem ->
+                    if (index != 0) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            HorizontalDivider(
+                                color = SearchColorForText,
+                                thickness = 1.dp,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .fillMaxWidth(0.7f)
                             )
                         }
+
                     }
-                }
-            }
-        }
-
-        item {
-            SectionHeader(title = "Actors and Genres")
-        }
-
-        when (movieItemsUIState) {
-            MovieItemsUIState.Empty -> {
-                item {
-                    Text(
-                        text = "No person found",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = SearchColorForText
+                    MovieBoxRow(
+                        movie = movieBoxItem,
+                        modifier = Modifier.clickable(
+                            onClick = { onNavigateToMedia(movieBoxItem) }
+                        )
                     )
                 }
-            }
-            is MovieItemsUIState.Data -> {
-                itemsIndexed(movieItemsUIState.movies.results) { index, movieBoxItem ->
-                    when (movieBoxItem.media_type) {
-                        "tv" -> {
-                        }
-                        "person" -> {
-                            if(firstTimePerson == true){
-                                    Box(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        HorizontalDivider(
-                                            color = SearchColorForText,
-                                            thickness = 1.dp,
-                                            modifier = Modifier
-                                                .padding(horizontal = 16.dp)
-                                                .fillMaxWidth(0.7f)
-                                        )
 
-                                    }
-                            }
-                            firstTimePerson = true
-                            NonMovieBoxRow(person = movieBoxItem)
-                        }
-                        "movie" -> {
+                item {
+                    SectionHeader(title = "Actors and Genres")
+                }
+                itemsIndexed(actorList) { index, movieBoxItem ->
+                    if(index != 0){
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            HorizontalDivider(
+                                color = SearchColorForText,
+                                thickness = 1.dp,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .fillMaxWidth(0.7f)
+                            )
+
                         }
                     }
+                    NonMovieBoxRow(person = movieBoxItem)
                 }
             }
         }
+
     }
 }
 

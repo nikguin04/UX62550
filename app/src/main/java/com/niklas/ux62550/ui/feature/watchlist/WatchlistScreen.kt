@@ -1,7 +1,6 @@
 package com.niklas.ux62550.ui.feature.watchlist
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -22,7 +21,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
@@ -39,32 +37,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.LogoBox
-import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
-import com.niklas.ux62550.ui.feature.search.MovieBoxRow
-import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
-import com.niklas.ux62550.ui.theme.SearchColorForText
+import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import androidx.compose.foundation.lazy.items
 
 @Composable
 @Preview(showBackground = true)
 fun WatchlistPreview() {
-    UX62550Theme(darkTheme = true) {
+    UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            WatchlistScreen(onNavigateToMedia = {})
+//            WatchlistScreen(onNavigateToMedia = {})
         }
     }
 }
 
-@Composable
-fun WatchlistScreen(viewModel: WatchlistViewModel = viewModel(), onNavigateToMedia: (String) -> Unit) {
-//    val movies = viewModel.moviesState.collectAsState().value
-//    WatchlistContent(movieItemsUIState = movies, onNavigateToMedia = onNavigateToMedia)
-}
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItemsUIState, onNavigateToMedia: (String) -> Unit) {
+fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObject) -> Unit, watchlistViewModel: WatchlistViewModel = viewModel()) {
     Column(modifier.padding()) {
         Column(
             modifier = modifier
@@ -73,6 +68,10 @@ fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItem
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            val watchListState = watchlistViewModel.watchListState.collectAsState().value
+            val watchListRowState = watchlistViewModel.watchListRowState.collectAsState().value
+
             SearchBar(
                 inputField = {
                     var text = ""
@@ -129,34 +128,18 @@ fun WatchlistContent(modifier: Modifier = Modifier, movieItemsUIState: MovieItem
                     )
                 }
             }
-        }
+            when (watchListState) {
+                MovieIds.Empty -> {
+                    Text("No data yet")
+                }
 
-        when (movieItemsUIState) {
-            MovieItemsUIState.Empty -> {
-                Text("No movies to be found")
-                LoadingScreen()
-                            }
-
-            is MovieItemsUIState.Data -> {
-                // Display list of movie items in LazyColumn
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    items(movieItemsUIState.movies.results) { movieItem ->
-                        HorizontalDivider(
-                            color = SearchColorForText,
-                            thickness = 1.dp,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .fillMaxWidth(0.7f)
-                        )
-                        MovieBoxRow(
-                            movie = movieItem,
-                            modifier = Modifier.clickable(
-                                onClick = { onNavigateToMedia(movieItem.title) }
-                            )
-                        )
+                is MovieIds.Data -> {
+                    // Display list of movie items in LazyColumn
+                    val movieIDList: List<Int> = watchListState.movies?:emptyList()
+                    LazyColumn {
+                        items(movieIDList) {id ->
+                            MovieBoxRowFromId(id, onNavigateToMedia = onNavigateToMedia)
+                        }
                     }
                 }
             }

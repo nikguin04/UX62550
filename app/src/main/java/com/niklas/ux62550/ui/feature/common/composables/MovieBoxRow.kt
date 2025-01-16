@@ -1,11 +1,14 @@
-package com.niklas.ux62550.ui.feature.search
+package com.niklas.ux62550.ui.feature.common.composables
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,10 +31,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.ui.feature.common.ImageSize
+import com.niklas.ux62550.ui.feature.common.MediaDetailFetchViewModel
 import com.niklas.ux62550.ui.feature.common.MediaItem
+import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 
 @Composable
 fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, text: String, textColor: Color, modifier: Modifier = Modifier) {
@@ -45,12 +51,13 @@ fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, text: S
         Text(
             text = text,
             color = textColor,
-            modifier = Modifier.align(Alignment.Center)
-                .padding(7.5.dp, 0.dp)
+            modifier = Modifier
+                .padding(18.dp, 0.dp)
         )
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
     Row(
@@ -58,17 +65,12 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        if (movie.backdrop_path == null) {
-            MovieBoxMoviePicture(90.dp, 50.62.dp, 0.dp, Color.Black, "No image available", Color.White)
-        }
-        else {
-            MediaItem(
-                uri = movie.backdrop_path,
-                round = 0.dp,
-                modifier = Modifier.width(90.dp).height(50.62.dp),
-                size = ImageSize.BACKDROP
-            )
-        }
+
+        MediaItem(
+            uri = movie.backdrop_path,
+            modifier = Modifier.width(110.dp).height(110.dp/16*9).clip(RoundedCornerShape(6.dp)),
+            size = ImageSize.BACKDROP
+        )
         Column(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
@@ -79,10 +81,10 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
 
                     Text(
                         text = movie.title,
-                        modifier = Modifier.width(150.dp),
+                        modifier = Modifier.width(210.dp),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        maxLines = 1,
+                        maxLines = 8,
                         overflow = TextOverflow.Ellipsis
                     )
 
@@ -97,32 +99,53 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
                             contentDescription = "Star icon"
                         )
                         Text(
-                            text = movie.vote_average?.div(2).toString() + "/5", // Conveting the 10/10 to an 5/5 rating system
+                            text = String.format("%.1f", movie.vote_average?.div(2)) + "/5", // Converting the 10/10 to an 5/5 rating system
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
+
+                        Spacer(modifier = Modifier.width(62.dp))
+
+                        if(movie.release_date.toString().count() >= 5){
+                            Text(
+                                text = movie.release_date.toString().substring(0, 4),
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        else {
+                            Text(
+                                text = "N/A",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
                     }
-                }
-                Text(
-                    text = " · ",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                if(movie.release_date.toString().count() >= 5){
-                    Text(
-                        text = movie.release_date.toString().substring(0, 4),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                else {
-                    Text(
-                        text = "unknown",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
                 }
             }
         }
     }
+}
+
+@Composable
+fun MovieBoxRowFromId(movieId: Int,  onNavigateToMedia: (MediaObject) -> Unit) {
+
+    val mediaDetailFetchViewModel: MediaDetailFetchViewModel = viewModel(
+        factory = MediaDetailFetchViewModel.MediaDetailFetchViewModelFactory(movieId),
+        key = movieId.toString()
+    )
+
+    val mediaState = mediaDetailFetchViewModel.movieState.collectAsState().value
+    when (mediaState) {
+        MovieState.Empty -> {
+            Text(text = "Loading")
+        }
+        is MovieState.Data -> {
+            MovieBoxRow(mediaState.mediaDetailObject.toMediaObject(), modifier = Modifier.clickable(
+                onClick = { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject())}
+            ))
+        }
+    }
+
 }

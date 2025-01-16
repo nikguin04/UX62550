@@ -11,7 +11,6 @@ import androidx.navigation.toRoute
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.home.HomeScreen
@@ -23,6 +22,8 @@ import com.niklas.ux62550.ui.feature.profile.ProfileScreen
 import com.niklas.ux62550.ui.feature.profile.RegisterScreen
 import com.niklas.ux62550.ui.feature.review.ScreenReviewAndRating
 import com.niklas.ux62550.ui.feature.search.SearchScreen
+import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
+
 
 @Composable
 fun MainNavHost(
@@ -59,7 +60,7 @@ fun MainNavHost(
         composable<Route.MediaDetailsScreen> { backStackEntry ->
             //val mediaRoute: Route.MediaDetailsScreen = backStackEntry.toRoute()
             //val media = mediaRoute.media
-            val media = navController.previousBackStackEntry?.savedStateHandle?.get<MediaObject>("media")?: SearchDataExamples.MediaObjectExample // Default to media object example if no media as placeholder
+            val media = getRelevantBackstackMedia<MediaObject>(navController, "media") ?: SearchDataExamples.MediaObjectExample // Default to media object example if no media as placeholder
             LaunchedEffect(Unit) { /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/ }
             MediaDetailsScreen(
                 movieViewModel = viewModel(factory = MovieViewModelFactory(media = media)),
@@ -74,9 +75,12 @@ fun MainNavHost(
         }
 
         composable<Route.ReviewScreen> { backStackEntry ->
-            val media = navController.previousBackStackEntry?.savedStateHandle?.get<MovieDetailObject>("reviewMedia")
+            val media = getRelevantBackstackMedia<MovieDetailObject>(navController, "reviewMedia")
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
-            ScreenReviewAndRating(media = media?: MediaDetailExample.MediaDetailObjectExample)
+            ScreenReviewAndRating(
+                media = media?: MediaDetailExample.MediaDetailObjectExample,
+                navBack = navController::popBackStack
+            )
         }
 
         composable<Route.LoginRegisterScreen> {
@@ -104,7 +108,10 @@ fun MainNavHost(
 
         composable<Route.WatchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.WatchScreen>()) }
-            //WatchlistScreen(onNavigateToMedia = { name -> navController.navigate(Route.MediaDetailsScreen(name)) })
+            WatchlistContent( onNavigateToMedia = { media ->
+                navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
+                navController.navigate(Route.MediaDetailsScreen)
+            })
         }
     }
 }
@@ -117,4 +124,11 @@ fun NavHostController.navigateAndClearBackStack(route: Route) {
         // Set launchSingleTop to prevent multiple copies of the same destination on the backstack
         launchSingleTop = true
     }
+}
+
+private fun <T> getRelevantBackstackMedia(navController: NavHostController, name: String): T? {
+    val toReturn =
+        navController.previousBackStackEntry?.savedStateHandle?.get<T>(name)?: // Current media when on screen
+        navController.currentBackStackEntry?.savedStateHandle?.get<T>(name) // Current media when navigating back
+    return toReturn
 }

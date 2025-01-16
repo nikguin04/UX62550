@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            UX62550Theme(darkTheme = true) {
+            UX62550Theme {
                 val navController = rememberNavController()
                 var canNavigateBack by remember { mutableStateOf(false) }
                 LaunchedEffect(navController.currentBackStackEntryAsState().value) {

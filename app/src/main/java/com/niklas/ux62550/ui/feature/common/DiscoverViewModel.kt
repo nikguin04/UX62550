@@ -20,17 +20,32 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
     init {
         viewModelScope.launch {
             discoverRepository.discoverFlow.collect { searchDataObject ->
-                run { // Append media_type before updating data
-                    searchDataObject.results.forEach { res -> res.media_type = "movie" } // TODO: Movies are hardcoded in discover, make this change smoothly when fetching TV
-                    mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
+                // Append media_type before updating data
+                searchDataObject.results.forEach { res -> res.media_type = "movie" }
+                // Either append to current data or make new data completely
+                when (discoverItemsState.value) {
+                    is DiscoverItemsUIState.Data -> {
+                        mutableDiscoverItemsState.update {
+                            DiscoverItemsUIState.Data(
+                                (discoverItemsState.value as DiscoverItemsUIState.Data).mediaObjects + searchDataObject.results
+                            )
+                        }
+                    }
+                    DiscoverItemsUIState.Empty -> {
+                        mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
+                    }
                 }
             }
         }
         getDiscover(genreObject.id.toString())
     }
 
-    private fun getDiscover(genre_id: String) = viewModelScope.launch {
-        discoverRepository.getDiscoverMovies(genre_id, 1) // TODO: Don't hardcore this, get some proper discovers
+    var lastGenreId: String? = null
+    var lastPage: Int = 1
+    fun getDiscover(genreId: String, page: Int = 1) = viewModelScope.launch {
+        lastGenreId = genreId
+        lastPage = page
+        discoverRepository.getDiscoverMovies(genreId, page)
     }
 }
 
