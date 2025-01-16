@@ -42,6 +42,11 @@ import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import com.niklas.ux62550.data.model.WatchListDataObject
 
 @Composable
 @Preview(showBackground = true)
@@ -72,10 +77,11 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
             val watchListState = watchlistViewModel.watchListState.collectAsState().value
             val watchListRowState = watchlistViewModel.watchListRowState.collectAsState().value
 
+            var text by rememberSaveable { mutableStateOf("") }
+            var expanded by rememberSaveable { mutableStateOf(false) }
+
             SearchBar(
                 inputField = {
-                    var text = ""
-                    var expanded = false
 
                     SearchBarDefaults.InputField(
                         query = text,
