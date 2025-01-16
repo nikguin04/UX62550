@@ -69,12 +69,12 @@ fun GeneralNavBar(navController: NavHostController) {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun GeneralTopBar(navController: NavHostController, showBackButton: Boolean, actions: @Composable RowScope.() -> Unit = {}) {
+fun GeneralTopBar(navigateBack: (() -> Unit)? = null, actions: @Composable RowScope.() -> Unit = {}) {
     TopAppBar(
         title = {},
         navigationIcon = {
-            if (showBackButton) {
-                IconButton(onClick = { navController.popBackStack() }) {
+            if (navigateBack != null) {
+                IconButton(onClick = navigateBack) {
                     ShadowIcon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back"

@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                             onRouteChanged = {},
                             modifier = Modifier.padding(innerPadding)
                         )
-                        GeneralTopBar(navController, canNavigateBack)
+                        GeneralTopBar(navigateBack = if (canNavigateBack) ({ navController.popBackStack() }) else null)
                     }
                 }
             }
