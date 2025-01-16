@@ -25,6 +25,7 @@ import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,6 +33,8 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -63,7 +66,9 @@ import kotlinx.coroutines.launch
 fun ReviewAndRatingPreview() {
     UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {})
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {},
+                snackBarData = SnackBarData(scope = rememberCoroutineScope(), snackbarHostState = remember { SnackbarHostState() })
+            )
 
         }
 
@@ -75,6 +80,7 @@ fun ScreenReviewAndRating(
     modifier: Modifier = Modifier,
     media: MovieDetailObject,
     navBack: () -> Unit,
+    snackBarData: SnackBarData,
     reviewViewModel: ReviewViewModel = viewModel()
 )
 {
@@ -92,7 +98,9 @@ fun ScreenReviewAndRating(
             onSubmit = {
                 reviewViewModel.submitReview(mediaId = media.id)
                 navBack()
-            })
+            },
+            snackBarData = snackBarData
+        )
 
         MoreDetailedReview(reviewViewModel)
     }
@@ -169,7 +177,8 @@ fun PublishReview(
     reviewText: String,
     onRatingChange: (Float) -> Unit,
     onReviewChange: (String) -> Unit,
-    onSubmit: () -> Unit
+    onSubmit: () -> Unit,
+    snackBarData: SnackBarData,
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -199,13 +208,11 @@ fun PublishReview(
                 .padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
-            val scope = SnackBarData.get()?.getSnackBarScope()
-            val snackBarHostState = SnackBarData.get()?.getSnackBarHostState()
             Button(
                 onClick =  {
                     onSubmit()
-                    scope?.launch {
-                        snackBarHostState?.showSnackbar("Successfully submitted review")
+                    snackBarData.scope.launch {
+                        snackBarData.snackBarHostState.showSnackbar("Successfully submitted review")
                     }
                 },
                 modifier = Modifier.width(150.dp),

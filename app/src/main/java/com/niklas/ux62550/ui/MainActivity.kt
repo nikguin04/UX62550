@@ -77,13 +77,14 @@ class MainActivity : ComponentActivity() {
                     bottomBar = { GeneralNavBar(navController) },
                     contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp),
                     snackbarHost = {
-                        SnackbarHost(hostState = snackBarData.getSnackBarHostState())
+                        SnackbarHost(hostState = snackBarData.snackBarHostState)
                     }
                 ) {
                     Box {
                         MainNavHost(
                             navController = navController,
                             onRouteChanged = { route -> currentScreenTitle = route.title },
+                            snackBarData = snackBarData,
                             modifier = Modifier.padding(it)
                         )
                         TopAppBar(

@@ -13,6 +13,7 @@ import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.ui.feature.common.singletons.SnackBarData
 import com.niklas.ux62550.ui.feature.home.HomeScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModelFactory
@@ -29,6 +30,7 @@ import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
 fun MainNavHost(
     navController: NavHostController,
     onRouteChanged: (Route) -> Unit,
+    snackBarData: SnackBarData,
     modifier: Modifier
 ) {
     NavHost(
@@ -79,7 +81,8 @@ fun MainNavHost(
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
             ScreenReviewAndRating(
                 media = media?: MediaDetailExample.MediaDetailObjectExample,
-                navBack = navController::popBackStack
+                navBack = navController::popBackStack,
+                snackBarData = snackBarData
             )
         }
 
