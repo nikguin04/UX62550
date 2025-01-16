@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -301,7 +302,7 @@ fun TitleText(title: String) {
 fun DescriptionText(description: String) {
     Box(
         modifier = Modifier
-            .padding(20.dp, 10.dp, 20.dp, 10.dp)
+            .padding(20.dp, 10.dp)
             .clip(RoundedCornerShape(25.dp))
             .background(color = Color(0xFF353433))
     ) {
@@ -310,6 +311,7 @@ fun DescriptionText(description: String) {
             style = TextStyle(
                 lineHeight = 1.25.em,
                 lineBreak = LineBreak.Paragraph,
+                hyphens = Hyphens.Auto,
                 fontSize = 18.sp,
                 textAlign = TextAlign.Justify,
                 color = Color.White,
@@ -317,7 +319,7 @@ fun DescriptionText(description: String) {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp, 5.dp, 10.dp, 5.dp)
+                .padding(20.dp)
         )
     }
 }
