@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.GenreObject
+import com.niklas.ux62550.data.model.ImageDataObject
 import com.niklas.ux62550.data.model.ImagesDataObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.domain.DiscoverRepository
@@ -33,6 +34,13 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
 
     private fun getImages(media_type: String, media_id: Int) = viewModelScope.launch {
         imageRepo.getImages(media_type = media_type, media_id = media_id) // TODO: Don't hardcore this, get some proper discovers
+    }
+
+    fun initPreview_NoFetch() {
+        mutableImagesDataState.update { ImagesDataUIState.Data(ImagesDataObject.EmptyExample) }
+    }
+    fun initPreview() {
+        mutableImagesDataState.update { ImagesDataUIState.Data(ImagesDataObject.EmptyExample.copy(backdrops = listOf(ImageDataObject.EmptyExample))) }
     }
 }
 

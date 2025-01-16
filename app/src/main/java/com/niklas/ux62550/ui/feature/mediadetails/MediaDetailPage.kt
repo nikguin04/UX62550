@@ -95,7 +95,7 @@ fun MediaDetailsScreen(
     creditsViewModel: CreditViewModel,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (MovieDetailObject) -> Unit,
-    watchlistViewModel: WatchlistViewModel = WatchlistViewModel()
+    watchlistViewModel: WatchlistViewModel = viewModel()
 ) {
     val movieState = movieViewModel.movieState.collectAsState().value
     val similarMediaState = movieViewModel.similarMediaState.collectAsState().value
@@ -165,50 +165,59 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                 if (youtubeUrl == null && trailerState.trailerObject.resultsTrailerLinks.isNotEmpty()) {
                     youtubeUrl = "https://www.youtube.com/watch?v=${trailerState.trailerObject.resultsTrailerLinks[0].key}"
                 }
+
                 Column(
                     modifier = Modifier
                         .padding(30.dp, 70.dp, 30.dp, 8.dp)
                         .fillMaxWidth()
                 ) {
+                    val playModifier =
+                        if (youtubeUrl == null) { Modifier }
+                        else {
+                            Modifier.clickable {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl)).apply {
+                                    setPackage("com.google.android.youtube")
+                                }
+                                if (intent.resolveActivity(context.packageManager) != null) {
+                                    context.startActivity(intent)
+                                } else {
+                                    // Fallback to a web browser
+                                    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
+                                    context.startActivity(webIntent)
+                                }
+
+                            }
+                        }
                     Box( // Playable Trailer Box
-                        modifier = Modifier
+                        modifier = playModifier
                             .aspectRatio(16f / 9f)
                             .fillMaxWidth()
-                            .clickable {
-                                youtubeUrl?.let {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it)).apply {
-                                        setPackage("com.google.android.youtube")
-                                    }
-                                    if (intent.resolveActivity(context.packageManager) != null) {
-                                        context.startActivity(intent)
-                                    } else {
-                                        // Fallback to a web browser
-                                        val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-                                        context.startActivity(webIntent)
-                                    }
-                                }
-                            }
                     ) {
                         MediaItemBackdropIntercept(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .aspectRatio(16f / 9f),
+                                .aspectRatio(16f / 9f)
+                                .clip(RoundedCornerShape(6.dp)),
                             fetchEnBackdrop = true,
+                            backdropFallback = false,
                             mediaItem = movieState.mediaDetailObject.toMediaObject()
                         )
-                        Image(
-                            Icons.Outlined.PlayCircleOutline,
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .requiredSize(72.dp),
-                            colorFilter = ColorFilter.tint(Color.White),
-                            contentDescription = "Play circle"
-                        )
+                        if (youtubeUrl != null) {
+                            Image(
+                                Icons.Outlined.PlayCircleOutline,
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .requiredSize(72.dp),
+                                colorFilter = ColorFilter.tint(Color.White),
+                                contentDescription = "Play circle"
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(12.dp))
                     TitleText(movieState.mediaDetailObject.Originaltitle)
                 }
             }
+
         }
 
         // Bookmark Button
@@ -318,7 +327,7 @@ fun BookmarkButton(media: MediaObject, movieViewModel: MovieViewModel, watchlist
     var isBookmarked by remember { mutableStateOf(false) }
 
     if (watchlistState is MovieIds.Data) {
-        isBookmarked = watchlistState.movies?.contains(media.id) == true
+        isBookmarked = watchlistState.movies?.contains(media.id) ?: false
     }
 
     Image(
