@@ -80,8 +80,8 @@ fun SearchContent(
         item {
             Row(
                 modifier = Modifier
-
-                    .padding(20.dp, 45.dp, 20.dp, 20.dp),
+                    .padding(20.dp, 45.dp, 20.dp, 20.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
