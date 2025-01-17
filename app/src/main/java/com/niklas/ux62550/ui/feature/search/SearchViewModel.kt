@@ -15,6 +15,8 @@ import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 import com.niklas.ux62550.ui.feature.mediadetails.ProviderState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.minutes
@@ -29,28 +31,24 @@ class SearchViewModel : ViewModel() {
 
     private val searchRepository = DataModule.searchRepository
 
-
-    public fun getDetails(query: String) = viewModelScope.launch {
-        searchRepository.getUserSearch(query) // TODO: Don't hardcore this, get some proper featured films
-    }
-
-
     private val mutableNonMoviesState = MutableStateFlow<NonMovieBoxItemsUIState>(NonMovieBoxItemsUIState.Data(nonMovies))
     val nonMoviesState: StateFlow<NonMovieBoxItemsUIState> = mutableNonMoviesState
-
-
-
-    //private val mutableMoviesState = MutableStateFlow<MovieItemsUIState>(MovieItemsUIState.Data(movies))
-    //val moviesState: StateFlow<MovieItemsUIState> = mutableMoviesState
-
-
 
     private val mutableMovieItemsUIState = MutableStateFlow<MovieItemsUIState>(MovieItemsUIState.Empty)
     val movieItemsUIState: StateFlow<MovieItemsUIState> = mutableMovieItemsUIState
 
-
+    private val _searchQuery = MutableStateFlow("")
 
     init {
+        viewModelScope.launch {
+            _searchQuery.debounce(200)
+                .collect { query ->
+                    if (query.isNotBlank()) {
+                        getDetails(query)
+                    }
+                }
+        }
+
         viewModelScope.launch {
             searchRepository.SearchFlow.collect { SearchDataObject ->
                 mutableMovieItemsUIState.update {
@@ -58,9 +56,15 @@ class SearchViewModel : ViewModel() {
                 }
             }
         }
-        //getDetails()
     }
 
+    fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
+    }
+
+    private fun getDetails(query: String) = viewModelScope.launch {
+        searchRepository.getUserSearch(query) // TODO: Don't hardcore this, get some proper featured films
+    }
 
     fun initPreview() {
          val movies = listOf(
@@ -74,7 +78,6 @@ class SearchViewModel : ViewModel() {
             )
         }
     }
-
 }
 
 sealed class MovieItemsUIState {

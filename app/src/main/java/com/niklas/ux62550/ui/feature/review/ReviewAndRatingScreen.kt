@@ -38,9 +38,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
@@ -114,28 +116,20 @@ fun Header(
     reviewViewModel: ReviewViewModel
 ) {
     Box {
-        val backColor = MaterialTheme.colorScheme.background
         MediaItem(
             uri = media.backDropPath,
             modifier = Modifier
                 .fillMaxWidth()
-                .graphicsLayer(alpha = 1f)
+                .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
                 .drawWithContent {
                     drawContent() // Draw the actual image
-
-                    // Draw the fade
-                    drawRect(
+                    drawRect( // Draw the fade
                         brush = Brush.verticalGradient(
-                            colors = listOf(
-                                backColor,
-                                backColor,
-                                backColor.copy(alpha = 0.5f),
-                                Color.Transparent,
-                            ),
-                            startY = 0f,
-                            endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
+                            0f to Color.Black,
+                            1/3f to Color.Black,
+                            1f to Color.Transparent,
                         ),
-                        blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
+                        blendMode = BlendMode.DstIn
                     )
                 },
             size = ImageSize.BACKDROP
