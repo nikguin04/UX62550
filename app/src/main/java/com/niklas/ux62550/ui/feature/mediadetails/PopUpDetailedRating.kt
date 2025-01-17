@@ -22,8 +22,8 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,20 +35,29 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niklas.ux62550.data.remote.RemoteFirebase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailedRating(modifier: Modifier = Modifier, movieViewModel: MovieViewModel, movieID: MovieState.Data) {
+    val movieReviewID = remember { mutableStateOf<Map<String, Double>>(emptyMap()) }
+
+    LaunchedEffect(movieID) {
+        val reviews = RemoteFirebase.getReview(movieID.mediaDetailObject.id)
+        movieReviewID.value = reviews
+    }
+
     Row(
         modifier = modifier.padding(20.dp, 10.dp, 20.dp, 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Needs to be made to a button later on
-        Text("Detailed Rating",
+        Text(
+            "Detailed Rating",
             style = TextStyle(
-            fontSize = 18.sp,
-            color = Color.White,
-            shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                fontSize = 18.sp,
+                color = Color.White,
+                shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
 
             )
         )
@@ -72,51 +81,44 @@ fun DetailedRating(modifier: Modifier = Modifier, movieViewModel: MovieViewModel
                 onDismissRequest = { showBottomSheet = false },
                 sheetState = sheetState
             ) {
-                for (i in 1..4) {
-                    Row(
-                        modifier = Modifier.padding(50.dp, 0.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text("Category: Acting")
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Row {
-                            val rating by remember { mutableIntStateOf(calculateDetailedRatingForActing(movieViewModel, movieID)) }
-                            for (g in 1..5) {
-                                val isFilled = g <= rating
-                                val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
+                Row(
+                    modifier = Modifier.padding(50.dp, 0.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Category: Acting")
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Row {
+                        val rating = movieReviewID.value["actor"] ?: 0.0
+                        for (i in 1..5) {
+                            val isFilled = i <= rating
+                            val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
 
-                                Image(
-                                    imageVector = starIcon,
-                                    modifier = Modifier
-                                        .requiredSize(18.dp),
-                                    colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
-                                    contentDescription = "Star icon"
-                                )
-                            }
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "$rating/5",
-                                fontSize = 18.sp,
-                                modifier = Modifier.weight(0.5f)
+                            Image(
+                                imageVector = starIcon,
+                                modifier = Modifier
+                                    .requiredSize(18.dp),
+                                colorFilter = ColorFilter.tint(if (isFilled) Color.Yellow else Color.Gray), // Change color based on filled or not
+                                contentDescription = "Star icon"
                             )
                         }
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "$rating/5",
+                            fontSize = 18.sp,
+                            modifier = Modifier.weight(0.5f)
+                        )
                     }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-                    HorizontalDivider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(30.dp, 5.dp),
-                        color = Color.Gray
-                    )
                 }
+
+                Spacer(modifier = Modifier.height(12.dp))
+                HorizontalDivider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(30.dp, 5.dp),
+                    color = Color.Gray
+                )
             }
         }
     }
-}
-fun calculateDetailedRatingForActing(movieViewModel: MovieViewModel, movieID: MovieState.Data): Int {
-    val movieReviewID = movieViewModel.getDetailReviews(movieID.mediaDetailObject.toMediaObject().id)
-
-    return 2
 }

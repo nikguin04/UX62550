@@ -12,14 +12,15 @@ import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.data.model.TrailerObject
 import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.domain.MediaDetailsRepository
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MovieViewModel(media: MediaObject) : ViewModel() {
     private val mediaDetailsRepository = MediaDetailsRepository()
+
 
     private fun getDetails(MovieID: Int) = viewModelScope.launch {
         mediaDetailsRepository.getMoviesDetails(MovieID) // TODO: Don't hardcore this, get some proper featured films
@@ -40,8 +41,8 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
             RemoteFirebase.UpdateToWatchList(media, remove)
         }
     }
-    fun getDetailReviews(movieID: Int){
-        viewModelScope.launch {
+    fun getDetailReviews(movieID: Int): Map<String, Double> {
+        return runBlocking {
             RemoteFirebase.getReview(movieID)
         }
     }

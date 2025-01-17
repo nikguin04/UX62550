@@ -1,6 +1,5 @@
 package com.niklas.ux62550.data.remote
 
-import android.provider.MediaStore.Video.Media
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FieldValue
@@ -36,30 +35,43 @@ object RemoteFirebase {
             mutableWatchListFlow.emit(null)
         }
     }
-    suspend fun getReview(movieId: Int){
-        val detailedRating = mutableMapOf<Int, Int>()
+    suspend fun getReview(movieId: Int): Map<String, Double> {
+        var totalActorRating = 0
+        var totalDirectingRating = 0
+        var totalMusicRating = 0
+        var totalPlotRating = 0
+        var reviewCount = 0
 
         try {
             val document = FirebaseInstance.getDB()!!.collection("UserReviews").document("Movies").collection(movieId.toString()).get().await()
-            for (rating in document.documents){
-                val ratings = document.get("CategoryRatings") as? List<String>
-                val actorRating
-                val directingRating
-                val musicRating
-                val plotRating
+            if (document != null && document.isEmpty.not()) {
+                for (documents in document.documents) {
+                    val ratings = documents.get("CategoryRatings") as Map<String, Long>
 
-                if(rating != null){
-                    Log.d("Firebase_info", "$actorRating => $actorRating")
-                    Log.d("Firebase_info", "$directingRating => $directingRating")
-                    Log.d("Firebase_info", "$musicRating => $musicRating")
-                    Log.d("Firebase_info", "$plotRating => $plotRating")
+                    totalActorRating += (ratings["actor"] ?: 0).toInt()
+                    totalDirectingRating += (ratings["directing"] ?: 0).toInt()
+                    totalMusicRating += (ratings["music"] ?: 0).toInt()
+                    totalPlotRating += (ratings["plot"] ?: 0).toInt()
+                    reviewCount++
                 }
+            } else {
+                Log.d("Firebase_info", "No reviews found for movieId: $movieId")
             }
-        } catch (e: Exception)
-        {
-            Log.w("Firebase_info", "Error getting documents.", e)
+        } catch (e: Exception) {
+            Log.w("Firebase_info", "Error getting documents for movieId: $movieId", e)
         }
-        return
+
+        val averageActorRating = if (reviewCount > 0) totalActorRating.toDouble() / reviewCount else 0.0
+        val averageDirectingRating = if (reviewCount > 0) totalDirectingRating.toDouble() / reviewCount else 0.0
+        val averageMusicRating = if (reviewCount > 0) totalMusicRating.toDouble() / reviewCount else 0.0
+        val averagePlotRating = if (reviewCount > 0) totalPlotRating.toDouble() / reviewCount else 0.0
+
+        return mapOf(
+            "actor" to averageActorRating,
+            "directing" to averageDirectingRating,
+            "music" to averageMusicRating,
+            "plot" to averagePlotRating
+        )
     }
 
     suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean){
