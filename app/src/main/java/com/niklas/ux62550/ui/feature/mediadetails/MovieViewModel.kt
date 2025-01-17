@@ -16,11 +16,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class MovieViewModel(media: MediaObject) : ViewModel() {
     private val mediaDetailsRepository = MediaDetailsRepository()
+    private val _movieReviewID = MutableStateFlow<Map<String, Double>>(emptyMap())
+    val movieReviewID: StateFlow<Map<String, Double>> = _movieReviewID
 
+    fun getDetailReviews(movieID: Int) {
+        viewModelScope.launch {
+            val reviews = RemoteFirebase.getReview(movieID)
+            _movieReviewID.value = reviews
+        }
+    }
 
     private fun getDetails(MovieID: Int) = viewModelScope.launch {
         mediaDetailsRepository.getMoviesDetails(MovieID) // TODO: Don't hardcore this, get some proper featured films
@@ -39,11 +46,6 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
     fun updateToDatabase(media: MediaObject, remove: Boolean = false){
         viewModelScope.launch {
             RemoteFirebase.UpdateToWatchList(media, remove)
-        }
-    }
-    fun getDetailReviews(movieID: Int): Map<String, Double> {
-        return runBlocking {
-            RemoteFirebase.getReview(movieID)
         }
     }
 

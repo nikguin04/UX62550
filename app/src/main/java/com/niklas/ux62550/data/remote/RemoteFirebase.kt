@@ -35,6 +35,7 @@ object RemoteFirebase {
             mutableWatchListFlow.emit(null)
         }
     }
+    //Help from chat
     suspend fun getReview(movieId: Int): Map<String, Double> {
         var totalActorRating = 0
         var totalDirectingRating = 0
@@ -46,7 +47,7 @@ object RemoteFirebase {
             val document = FirebaseInstance.getDB()!!.collection("UserReviews").document("Movies").collection(movieId.toString()).get().await()
             if (document != null && document.isEmpty.not()) {
                 for (documents in document.documents) {
-                    val ratings = documents.get("CategoryRatings") as Map<String, Long>
+                    val ratings = documents.get("CategoryRatings") as Map<String, Double>
 
                     totalActorRating += (ratings["Acting"] ?: 0).toInt()
                     totalDirectingRating += (ratings["Directing"] ?: 0).toInt()
@@ -67,10 +68,10 @@ object RemoteFirebase {
         val averagePlotRating = if (reviewCount > 0) totalPlotRating.toDouble() / reviewCount else 0.0
 
         return mapOf(
-            "actor" to averageActorRating,
-            "directing" to averageDirectingRating,
-            "music" to averageMusicRating,
-            "plot" to averagePlotRating
+            "Acting" to averageActorRating,
+            "Directing" to averageDirectingRating,
+            "Music" to averageMusicRating,
+            "Plot" to averagePlotRating
         )
     }
 
