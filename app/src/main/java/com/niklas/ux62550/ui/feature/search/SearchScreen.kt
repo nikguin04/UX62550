@@ -89,7 +89,7 @@ fun SearchContent(
                     inputField = {
                         SearchBarDefaults.InputField(
                             query = text,
-                            onQueryChange = { text = it; viewModel.getDetails(it) },
+                            onQueryChange = { text = it; viewModel.onSearchQueryChanged(it) },
                             onSearch = { expanded = false },
                             expanded = expanded,
                             onExpandedChange = { expanded = it },
