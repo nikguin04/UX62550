@@ -39,23 +39,25 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
                 scope = viewModelScope
             ).collect { searchDataObject ->
                 // Append media_type before updating data
-                searchDataObject.results.forEach { res -> res.media_type = "movie" }
-                // Either append to current data or make new data completely
-                when (discoverItemsState.value) {
-                    is DiscoverItemsUIState.Data -> {
-                        mutableDiscoverItemsState.update {
-                            DiscoverItemsUIState.Data(
-                                (discoverItemsState.value as DiscoverItemsUIState.Data).mediaObjects + searchDataObject.results
-                            )
+                searchDataObject?.let { searchDataObject ->
+                    searchDataObject.results.forEach { res -> res.media_type = "movie" }
+                    // Either append to current data or make new data completely
+                    when (discoverItemsState.value) {
+                        is DiscoverItemsUIState.Data -> {
+                            mutableDiscoverItemsState.update {
+                                DiscoverItemsUIState.Data(
+                                    (discoverItemsState.value as DiscoverItemsUIState.Data).mediaObjects + searchDataObject.results
+                                )
+                            }
+                        }
+                        DiscoverItemsUIState.Empty -> {
+                            mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
+                        }
+                        DiscoverItemsUIState.Error -> {
+                            mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
                         }
                     }
-                    DiscoverItemsUIState.Empty -> {
-                        mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
-                    }
-                    DiscoverItemsUIState.Error -> {
-                        mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
-                    }
-                }
+                } ?: run { mutableDiscoverItemsState.update { DiscoverItemsUIState.Error }  }
             }
         }
     }
