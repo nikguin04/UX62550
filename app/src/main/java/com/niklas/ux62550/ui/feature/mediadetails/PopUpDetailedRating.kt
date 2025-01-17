@@ -93,7 +93,6 @@ fun DetailedRating(modifier: Modifier = Modifier, movieViewModel: MovieViewModel
                         for (i in 1..5) {
                             val isFilled = i <= rating
                             val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
-
                             Image(
                                 imageVector = starIcon,
                                 modifier = Modifier
@@ -110,7 +109,6 @@ fun DetailedRating(modifier: Modifier = Modifier, movieViewModel: MovieViewModel
                         )
                     }
                 }
-
                 Spacer(modifier = Modifier.height(12.dp))
                 HorizontalDivider(
                     modifier = Modifier
@@ -119,6 +117,7 @@ fun DetailedRating(modifier: Modifier = Modifier, movieViewModel: MovieViewModel
                     color = Color.Gray
                 )
             }
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }

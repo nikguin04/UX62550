@@ -48,10 +48,10 @@ object RemoteFirebase {
                 for (documents in document.documents) {
                     val ratings = documents.get("CategoryRatings") as Map<String, Long>
 
-                    totalActorRating += (ratings["actor"] ?: 0).toInt()
-                    totalDirectingRating += (ratings["directing"] ?: 0).toInt()
-                    totalMusicRating += (ratings["music"] ?: 0).toInt()
-                    totalPlotRating += (ratings["plot"] ?: 0).toInt()
+                    totalActorRating += (ratings["Acting"] ?: 0).toInt()
+                    totalDirectingRating += (ratings["Directing"] ?: 0).toInt()
+                    totalMusicRating += (ratings["Music"] ?: 0).toInt()
+                    totalPlotRating += (ratings["Plot"] ?: 0).toInt()
                     reviewCount++
                 }
             } else {
