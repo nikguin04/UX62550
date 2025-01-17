@@ -15,7 +15,7 @@ abstract class KeyRepository <T> (
     private val mutableItemsFlow: MutableMap<Int, MutableSharedFlow<T>> = mutableMapOf()
     val itemsFlow: MutableMap<Int, SharedFlow<T>> = mutableMapOf()
 
-    suspend fun getWithKey(itemId: Int, getUnit: suspend() -> T, scope: CoroutineScope): SharedFlow<T> {
+    fun getWithKey(itemId: Int, getUnit: suspend() -> T, scope: CoroutineScope): SharedFlow<T> {
         if (itemsFlow.containsKey(itemId)) {
             return itemsFlow[itemId]!!
         }
@@ -35,5 +35,4 @@ abstract class KeyRepository <T> (
 
         return itemsFlow[itemId]!!
     }
-
 }

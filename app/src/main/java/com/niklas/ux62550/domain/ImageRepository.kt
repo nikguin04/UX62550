@@ -14,31 +14,8 @@ class ImageRepository (
     private val remoteDataSource: RemoteMediaDataSource
 ) : KeyRepository<ImagesDataObject>(remoteDataSource) {
 
-    /*override fun <IN>
-    scopeEmitFlow(itemId: Int, mutableItemFlow: MutableSharedFlow<ImagesDataObject>?, vararg inputs: IN) {
-        scope.launch {
-            mutableDiscoverFlow[media_id]?.emit(
-                remoteDataSource.getImages(media_type, media_id, include_image_language)
-            )
-        }
-    }*/
-
-//    suspend fun scopeEmitFlow: (CoroutineScope, MutableSharedFlow<RemoteMediaDataSource>) -> Unit {
-//
-//    }
-
-//    suspend fun test() {
-//        val testvar: suspend() -> Unit = { (this::getImages)("a", 0, "en", scope) }
-//    }
-
     suspend fun getImages(media_type: String, media_id: Int, include_image_language: String = "en"): ImagesDataObject {
-        //mutableDiscoverFlow[media_id]?.emit(
-            return remoteDataSource.getImages(media_type, media_id, include_image_language)
-        //)
+        return remoteDataSource.getImages(media_type, media_id, include_image_language)
     }
 
-
-    /*suspend fun getImages(media_type: String, media_id: Int, include_image_language: String = "en", scope: CoroutineScope): SharedFlow<ImagesDataObject> {
-
-    }*/
 }
