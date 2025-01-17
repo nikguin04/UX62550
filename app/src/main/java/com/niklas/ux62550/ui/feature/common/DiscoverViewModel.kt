@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.GenreObject
+import com.niklas.ux62550.data.model.ImagesDataObject
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.DiscoverRepository
+import com.niklas.ux62550.domain.common.KeyRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -18,9 +21,14 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
     private val mutableDiscoverItemsState = MutableStateFlow<DiscoverItemsUIState>(DiscoverItemsUIState.Empty)
     val discoverItemsState: StateFlow<DiscoverItemsUIState> = mutableDiscoverItemsState
 
+    var lastPage: Int = 1
     init {
         viewModelScope.launch {
-            discoverRepository.discoverFlow.collect { searchDataObject ->
+            discoverRepository.getWithKey(
+                itemId = genreObject.id,
+                getUnit = { (discoverRepository::getDiscoverMovies)(genreObject.id.toString(), 1) },
+                scope = viewModelScope
+            ).collect { searchDataObject ->
                 // Append media_type before updating data
                 searchDataObject.results.forEach { res -> res.media_type = "movie" }
                 // Either append to current data or make new data completely
@@ -38,15 +46,16 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
                 }
             }
         }
-        getDiscover(genreObject.id.toString())
     }
 
-    var lastGenreId: String? = null
-    var lastPage: Int = 1
-    fun getDiscover(genreId: String, page: Int = 1) = viewModelScope.launch {
-        lastGenreId = genreId
+
+    fun getDiscover(page: Int = 1) {
         lastPage = page
-        discoverRepository.getDiscoverMovies(genreId, page)
+        discoverRepository.getWithKey(
+            itemId = genreObject.id,
+            getUnit = { (discoverRepository::getDiscoverMovies)(genreObject.id.toString(), page) },
+            scope = viewModelScope
+        )
     }
 }
 
@@ -60,3 +69,4 @@ sealed class DiscoverItemsUIState {
     data object Empty : DiscoverItemsUIState()
     data class Data(val mediaObjects: List<MediaObject>) : DiscoverItemsUIState()
 }
+

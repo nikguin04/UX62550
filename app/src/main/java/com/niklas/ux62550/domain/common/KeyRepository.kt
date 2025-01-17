@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 abstract class KeyRepository <T> (
-    private val remoteDataSource: RemoteMediaDataSource
+    private val remoteDataSource: RemoteMediaDataSource,
+    private val reuse
 ) {
 
     private val mutableItemsFlow: MutableMap<Int, MutableSharedFlow<T>> = mutableMapOf()

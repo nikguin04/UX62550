@@ -37,8 +37,7 @@ fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, on
     // Load more if scrolled to bottom
     LaunchedEffect(reachedBottom) {
         if (reachedBottom) {
-            discoverViewModel.lastGenreId?.let { discoverViewModel.getDiscover(it, discoverViewModel.lastPage + 1) }
-                ?: run { throw Exception("Last genre id not set for discoverViewModel, reached bottom before initializing") }
+            discoverViewModel.getDiscover(discoverViewModel.lastPage + 1)
         }
     }
 
