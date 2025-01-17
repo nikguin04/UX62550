@@ -1,6 +1,5 @@
 package com.niklas.ux62550.domain.common
 
-import android.util.Log
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -8,32 +7,27 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-abstract class KeyRepository <T> (
+abstract class KeyRepository <K, T> (
     private val remoteDataSource: RemoteMediaDataSource,
-    private val reuse
 ) {
 
-    private val mutableItemsFlow: MutableMap<Int, MutableSharedFlow<T>> = mutableMapOf()
-    val itemsFlow: MutableMap<Int, SharedFlow<T>> = mutableMapOf()
+    private val mutableItemsFlow: MutableMap<K, MutableSharedFlow<T>> = mutableMapOf()
+    val itemsFlow: MutableMap<K, SharedFlow<T>> = mutableMapOf()
 
-    fun getWithKey(itemId: Int, getUnit: suspend() -> T, scope: CoroutineScope): SharedFlow<T> {
-        if (itemsFlow.containsKey(itemId)) {
-            return itemsFlow[itemId]!!
+    fun getWithKey(itemKey: K, getUnit: suspend() -> T, scope: CoroutineScope): SharedFlow<T> {
+        if (itemsFlow.containsKey(itemKey)) {
+            return itemsFlow[itemKey]!!
         }
-        mutableItemsFlow[itemId] = MutableSharedFlow()
-        itemsFlow[itemId] = mutableItemsFlow[itemId]!!.asSharedFlow()
+        mutableItemsFlow[itemKey] = MutableSharedFlow()
+        itemsFlow[itemKey] = mutableItemsFlow[itemKey]!!.asSharedFlow()
 
-        // Launch scope here
-//        mutableItemsFlow[itemId]!!.emit(
-//            getUnit()
-//        )
         scope.launch {
-            mutableItemsFlow[itemId]!!.emit(
+            mutableItemsFlow[itemKey]!!.emit(
                 getUnit()
             )
         }
 
 
-        return itemsFlow[itemId]!!
+        return itemsFlow[itemKey]!!
     }
 }

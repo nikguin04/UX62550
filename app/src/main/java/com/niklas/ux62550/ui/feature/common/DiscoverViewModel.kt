@@ -8,6 +8,7 @@ import com.niklas.ux62550.data.model.ImagesDataObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import com.niklas.ux62550.di.DataModule
+import com.niklas.ux62550.domain.DiscoverKey
 import com.niklas.ux62550.domain.DiscoverRepository
 import com.niklas.ux62550.domain.common.KeyRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,10 +24,16 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
 
     var lastPage: Int = 1
     init {
+        getDiscover(page = 1)
+    }
+
+
+    fun getDiscover(page: Int) {
+        lastPage = page
         viewModelScope.launch {
             discoverRepository.getWithKey(
-                itemId = genreObject.id,
-                getUnit = { (discoverRepository::getDiscoverMovies)(genreObject.id.toString(), 1) },
+                itemKey = DiscoverKey(genreObject.id, page),
+                getUnit = { (discoverRepository::getDiscoverMovies)(genreObject.id.toString(), page) },
                 scope = viewModelScope
             ).collect { searchDataObject ->
                 // Append media_type before updating data
@@ -46,16 +53,6 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
                 }
             }
         }
-    }
-
-
-    fun getDiscover(page: Int = 1) {
-        lastPage = page
-        discoverRepository.getWithKey(
-            itemId = genreObject.id,
-            getUnit = { (discoverRepository::getDiscoverMovies)(genreObject.id.toString(), page) },
-            scope = viewModelScope
-        )
     }
 }
 

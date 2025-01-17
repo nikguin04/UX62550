@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class ImageRepository (
     private val remoteDataSource: RemoteMediaDataSource
-) : KeyRepository<ImagesDataObject>(remoteDataSource) {
+) : KeyRepository<Int, ImagesDataObject>(remoteDataSource) {
 
     suspend fun getImages(media_type: String, media_id: Int, include_image_language: String = "en"): ImagesDataObject {
         return remoteDataSource.getImages(media_type, media_id, include_image_language)

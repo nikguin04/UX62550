@@ -27,7 +27,7 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
         media.media_type?.let {
             viewModelScope.launch {
                 imageRepo.getWithKey(
-                    itemId = media.id,
+                    itemKey = media.id,
                     getUnit = { (imageRepo::getImages)(it, media.id, "en") },
                     scope = viewModelScope
                 ).collect { imagesObj ->

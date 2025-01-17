@@ -9,10 +9,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 
 class DiscoverRepository(
     private val remoteDataSource: RemoteMediaDataSource
-) : KeyRepository<SearchDataObject>(remoteDataSource) {
+) : KeyRepository<DiscoverKey, SearchDataObject>(remoteDataSource) {
 
     suspend fun getDiscoverMovies(genres: String, page: Int): SearchDataObject {
         return remoteDataSource.getDiscoverMovies(genres, page)
     }
 
 }
+
+data class DiscoverKey ( val genreId: Int, val page: Int )
