@@ -83,9 +83,11 @@ class SearchViewModel : ViewModel() {
 sealed class MovieItemsUIState {
     data object Empty : MovieItemsUIState()
     data class Data(val movies: SearchDataObject) : MovieItemsUIState()
+    data object Error : MovieItemsUIState()
 }
 
 sealed class NonMovieBoxItemsUIState {
     data object Empty : NonMovieBoxItemsUIState()
     data class Data(val nonMovieBoxes: List<NonMovieBox>) : NonMovieBoxItemsUIState()
+    data object Error : NonMovieBoxItemsUIState()
 }

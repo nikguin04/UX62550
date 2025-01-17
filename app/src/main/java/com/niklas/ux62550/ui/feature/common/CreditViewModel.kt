@@ -58,4 +58,5 @@ class CreditsViewModelFactory(private val media: MediaObject) : ViewModelProvide
 sealed class CreditState {
     data object Empty : CreditState()
     data class Data(val creditObject: CreditObject) : CreditState()
+    data object Error : CreditState()
 }

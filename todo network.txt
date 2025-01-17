@@ -1,0 +1,14 @@
+to check:
+Discover error preview
+MovieBoxRowFromIdErrorPreview
+HomeScreenErrorPreview
+
+
+
+todo preview:
+GenreMediaStack
+Header - trailerState
+Genres - providerState
+SimilarMedia
+SearchContent
+WatchlistContent - watchListState

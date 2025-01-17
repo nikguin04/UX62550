@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
 
 class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
     private val discoverRepository = DataModule.discoverRepository
@@ -23,8 +24,9 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
     val discoverItemsState: StateFlow<DiscoverItemsUIState> = mutableDiscoverItemsState
 
     var lastPage: Int = 1
+
     init {
-        getDiscover(page = 1)
+        //getDiscover(page = 1)
     }
 
 
@@ -50,6 +52,9 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
                     DiscoverItemsUIState.Empty -> {
                         mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
                     }
+                    DiscoverItemsUIState.Error -> {
+                        mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
+                    }
                 }
             }
         }
@@ -65,5 +70,6 @@ class DiscoverViewModelFactory(private val genreObject: GenreObject) : ViewModel
 sealed class DiscoverItemsUIState {
     data object Empty : DiscoverItemsUIState()
     data class Data(val mediaObjects: List<MediaObject>) : DiscoverItemsUIState()
+    data object Error : DiscoverItemsUIState()
 }
 

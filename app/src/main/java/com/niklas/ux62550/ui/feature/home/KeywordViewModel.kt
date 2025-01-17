@@ -41,4 +41,5 @@ class KeywordViewModelFactory(private val keywordObject: KeywordObject) : ViewMo
 sealed class KeywordItemsUIState {
     data object Empty : KeywordItemsUIState()
     data class Data(val mediaObjects: List<MediaObject>) : KeywordItemsUIState()
+    data object Error : KeywordItemsUIState()
 }

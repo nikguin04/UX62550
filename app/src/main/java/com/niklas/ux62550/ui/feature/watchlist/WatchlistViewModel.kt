@@ -51,9 +51,11 @@ class WatchlistViewModel() : ViewModel() {
 sealed class MovieIds {
     data object Empty : MovieIds()
     data class Data(val movies: List<Int>?) : MovieIds()
+    data object Error : MovieIds()
 }
 
 sealed class MovieIdsRow {
     data object Empty : MovieIdsRow()
     data class Data(val movies: WatchListDataObject) : MovieIdsRow()
+    data object Error : MovieIdsRow()
 }

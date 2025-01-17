@@ -48,5 +48,6 @@ class MediaDetailFetchViewModel(movieId: Int): ViewModel() {
     sealed class MediaDetailState {
         data object Empty : MediaDetailState()
         data class Data(val movieDetailObject: MovieDetailObject) : MediaDetailState()
+        data object Error : MediaDetailState()
     }
 }

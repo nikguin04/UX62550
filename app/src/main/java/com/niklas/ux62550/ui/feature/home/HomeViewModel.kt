@@ -49,6 +49,9 @@ class HomeViewModel : ViewModel() {
         homeRepository.getGenres()
     }
 
+    fun initErrorPreview() {
+        mutableMediaItemsState.update { MediaItemsUIState.Error }
+    }
 
     fun initPreview() {
         mutableMediaItemsState.update {
@@ -81,6 +84,7 @@ sealed class MediaItemsUIState {
     data class Data(
         val mediaObjects: List<MediaObject>
     ) : MediaItemsUIState()
+    data object Error : MediaItemsUIState()
 }
 
 sealed class GenresDataState {
@@ -88,5 +92,6 @@ sealed class GenresDataState {
     data class Data(
         val genres: List<GenreObject>
     ) : GenresDataState()
+    data object Error : GenresDataState()
 }
 

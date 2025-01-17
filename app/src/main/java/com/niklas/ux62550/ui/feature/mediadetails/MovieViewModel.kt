@@ -133,21 +133,26 @@ class MovieViewModelFactory(private val media: MediaObject) : ViewModelProvider.
 sealed class MovieState {
     data object Empty : MovieState()
     data class Data(val mediaDetailObject: MovieDetailObject) : MovieState()
+    data object Error : MovieState()
 }
 sealed class SimilarMovieState {
     object Empty : SimilarMovieState()
     data class Data(val similarMoviesObject: List<MediaObject>) : SimilarMovieState()
+    data object Error : SimilarMovieState()
 }
 
 sealed class ProviderState {
     object Empty : ProviderState()
     data class Data(val providerDataObject: Map<String,Result>) : ProviderState()
+    data object Error : ProviderState()
 }
 sealed class TrailerState {
     object Empty : TrailerState()
     data class Data(val trailerObject: TrailerObject) : TrailerState()
+    data object Error : TrailerState()
 }
 sealed class WatchlistState {
     data object Empty : WatchlistState()
     data class Data(val mediaDetailObjects: MediaObject) : WatchlistState()
+    data object Error : WatchlistState()
 }
