@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -67,6 +68,7 @@ class MainActivity : ComponentActivity() {
                     topBar = {
                         // Moved down to content for padding reasons?
                         // TODO: This seems really scuffed and *NOT* like the way to do things
+                        Box(modifier = Modifier.statusBarsPadding())
                     },
                     bottomBar = { GeneralNavBar(navController) },
                     contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp)
