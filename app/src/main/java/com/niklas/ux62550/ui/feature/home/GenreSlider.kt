@@ -1,5 +1,6 @@
 package com.niklas.ux62550.ui.feature.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,7 +38,6 @@ fun PreviewDiscoverSliderError() {
 
 @Composable
 fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, onNavigateToMedia: (MediaObject) -> Unit) {
-    discoverViewModel.getDiscover(page = 1)
     val discoverUiState = discoverViewModel.discoverItemsState.collectAsState().value
 
     val listState = rememberLazyListState()
@@ -51,6 +51,7 @@ fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, on
     // Load more if scrolled to bottom
     LaunchedEffect(reachedBottom) {
         if (reachedBottom) {
+            Log.w("bottom", "reached bottom")
             discoverViewModel.getDiscover(discoverViewModel.lastPage + 1)
         }
     }

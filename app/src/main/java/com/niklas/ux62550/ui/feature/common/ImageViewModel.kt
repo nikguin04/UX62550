@@ -30,10 +30,11 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
                     itemKey = media.id,
                     getUnit = { (imageRepo::getImages)(it, media.id, "en") },
                     scope = viewModelScope
-                ).collect { imagesObj ->
-                    imagesObj?.let { imagesObj ->
+                ).collect { imagesObjResult ->
+                    if (imagesObjResult.isSuccess) {
+                        val imagesObj = imagesObjResult.getOrThrow()
                         mutableImagesDataState.update { ImagesDataUIState.Data(imagesObj) }
-                    } ?: run {
+                    } else {
                         mutableImagesDataState.update { ImagesDataUIState.Error }
                     }
 

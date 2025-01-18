@@ -11,10 +11,10 @@ abstract class KeyRepository <K, T> (
     private val remoteDataSource: RemoteMediaDataSource,
 ) {
 
-    private val mutableItemsFlow: MutableMap<K, MutableSharedFlow<T?>> = mutableMapOf()
-    val itemsFlow: MutableMap<K, SharedFlow<T?>> = mutableMapOf()
+    private val mutableItemsFlow: MutableMap<K, MutableSharedFlow<Result<T>>> = mutableMapOf()
+    val itemsFlow: MutableMap<K, SharedFlow<Result<T>>> = mutableMapOf()
 
-    fun getWithKey(itemKey: K, getUnit: suspend() -> T, scope: CoroutineScope): SharedFlow<T?> {
+    fun getWithKey(itemKey: K, getUnit: suspend() -> T, scope: CoroutineScope): SharedFlow<Result<T>> {
         if (itemsFlow.containsKey(itemKey)) {
             return itemsFlow[itemKey]!!
         }
@@ -22,13 +22,15 @@ abstract class KeyRepository <K, T> (
         itemsFlow[itemKey] = mutableItemsFlow[itemKey]!!.asSharedFlow()
 
         scope.launch {
-            mutableItemsFlow[itemKey]!!.emit(
-                try {
-                    getUnit()
-                } catch (e: Exception) {
-                    null
-                }
-            )
+            try {
+                Result.success(getUnit())
+            } catch (e: Exception) {
+                Result.failure(e)
+            }.let {
+                mutableItemsFlow[itemKey]!!.emit(
+                    it
+                )
+            }
         }
 
 

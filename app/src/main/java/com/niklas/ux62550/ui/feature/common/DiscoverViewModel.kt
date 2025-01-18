@@ -26,24 +26,25 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
     var lastPage: Int = 1
 
     init {
-        //getDiscover(page = 1)
+        getDiscover(page = 1)
     }
 
 
     fun getDiscover(page: Int) {
-        lastPage = page
         viewModelScope.launch {
             discoverRepository.getWithKey(
                 itemKey = DiscoverKey(genreObject.id, page),
                 getUnit = { (discoverRepository::getDiscoverMovies)(genreObject.id.toString(), page) },
                 scope = viewModelScope
-            ).collect { searchDataObject ->
+            ).collect { searchDataObjectResult ->
                 // Append media_type before updating data
-                searchDataObject?.let { searchDataObject ->
+                if (searchDataObjectResult.isSuccess) {
+                    val searchDataObject = searchDataObjectResult.getOrThrow()
                     searchDataObject.results.forEach { res -> res.media_type = "movie" }
                     // Either append to current data or make new data completely
                     when (discoverItemsState.value) {
                         is DiscoverItemsUIState.Data -> {
+                            lastPage = page
                             mutableDiscoverItemsState.update {
                                 DiscoverItemsUIState.Data(
                                     (discoverItemsState.value as DiscoverItemsUIState.Data).mediaObjects + searchDataObject.results
@@ -57,7 +58,9 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
                             mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
                         }
                     }
-                } ?: run { mutableDiscoverItemsState.update { DiscoverItemsUIState.Error }  }
+                } else {
+                    mutableDiscoverItemsState.update { DiscoverItemsUIState.Error }
+                }
             }
         }
     }
