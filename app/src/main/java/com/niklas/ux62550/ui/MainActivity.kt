@@ -68,7 +68,6 @@ class MainActivity : ComponentActivity() {
                     topBar = {
                         // Moved down to content for padding reasons?
                         // TODO: This seems really scuffed and *NOT* like the way to do things
-                        Box(modifier = Modifier.statusBarsPadding())
                     },
                     bottomBar = { GeneralNavBar(navController) },
                     contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp)

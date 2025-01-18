@@ -1,5 +1,6 @@
 package com.niklas.ux62550.navigation
 
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -39,7 +40,7 @@ fun MainNavHost(
         composable<Route.HomeScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
             HomeScreen(
-
+                modifier = Modifier.statusBarsPadding(),
                 onNavigateToMedia = { media ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
                     navController.navigate(Route.MediaDetailsScreen)
