@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.WatchListDataObject
 import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.WatchListRepository
+import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -39,7 +40,8 @@ class WatchlistViewModel() : ViewModel() {
         viewModelScope.launch {
             watchListRepository.watchListRowFlow.collect { WatchListDataObject ->
                 mutableWatchListRowState.update {
-                    MovieIdsRow.Data(WatchListDataObject)
+                    if (WatchListDataObject.isSuccess) { MovieIdsRow.Data(WatchListDataObject.getOrThrow()) }
+                    else { MovieIdsRow.Error }
                 }
             }
         }

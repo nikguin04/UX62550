@@ -43,7 +43,8 @@ class CreditViewModel(media: MediaObject) : ViewModel() {
         viewModelScope.launch {
             creditDetailsRepository.creditFlow.collect { creditDetailObject ->
                 mutableCreditState.update {
-                    CreditState.Data(creditDetailObject)
+                    if (creditDetailObject.isSuccess) { CreditState.Data(creditDetailObject.getOrThrow()) }
+                    else { CreditState.Error }
                 }
             }
         }

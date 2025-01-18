@@ -27,7 +27,8 @@ class MediaDetailFetchViewModel(movieId: Int): ViewModel() {
             viewModelScope.launch {
                 mediaDetailsRepository.detailFlow.collect { movieDetailObject ->
                     mutableMovieState.update {
-                        MovieState.Data(movieDetailObject)
+                        if (movieDetailObject.isSuccess) { MovieState.Data(movieDetailObject.getOrThrow()) }
+                        else { MovieState.Error }
                     }
                 }
             }

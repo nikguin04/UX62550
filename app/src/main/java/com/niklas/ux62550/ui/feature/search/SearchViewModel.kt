@@ -13,6 +13,7 @@ import com.niklas.ux62550.models.NonMovieBox
 import com.niklas.ux62550.ui.feature.home.MediaItemsUIState
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 import com.niklas.ux62550.ui.feature.mediadetails.ProviderState
+import com.niklas.ux62550.ui.feature.mediadetails.TrailerState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
@@ -52,7 +53,8 @@ class SearchViewModel : ViewModel() {
         viewModelScope.launch {
             searchRepository.SearchFlow.collect { SearchDataObject ->
                 mutableMovieItemsUIState.update {
-                    MovieItemsUIState.Data(SearchDataObject)
+                    if (SearchDataObject.isSuccess) { MovieItemsUIState.Data(SearchDataObject.getOrThrow()) }
+                    else { MovieItemsUIState.Error }
                 }
             }
         }
