@@ -2,6 +2,7 @@ package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -81,159 +82,60 @@ fun DetailedRating(
                 onDismissRequest = { showBottomSheet = false },
                 sheetState = sheetState
             ) {
-                Row(
-                    modifier = Modifier.padding(50.dp, 0.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Category: Acting")
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Row {
-                        val actorRating = movieReviewID["Acting"] ?: 0.0
-                        for (i in 1..5) {
-                            val isFilled = i <= actorRating
-                            val starIcon =
-                                if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
-                            Image(
-                                imageVector = starIcon,
-                                modifier = Modifier.requiredSize(18.dp),
-                                colorFilter = ColorFilter.tint(
-                                    if (isFilled) Color.Yellow else Color.Gray
-                                ),
-                                contentDescription = "Star icon"
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "$actorRating/5",
-                            fontSize = 18.sp,
-                            modifier = Modifier.weight(0.5f)
-                        )
-                    }
+                Column {
+                    RatingRow("Acting", movieReviewID["Acting"] ?: 0.0)
+                    RatingRow("Directing", movieReviewID["Directing"] ?: 0.0)
+                    RatingRow("Plot", movieReviewID["Plot"] ?: 0.0)
+                    RatingRow("Music", movieReviewID["Music"] ?: 0.0)
                 }
-                Spacer(modifier = Modifier.height(12.dp))
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(30.dp, 5.dp),
-                    color = Color.Gray
-                )
-                Row(
-                    modifier = Modifier.padding(50.dp, 0.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Category: Directing")
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Row {
-                        val actorRating = movieReviewID["Directing"] ?: 0.0
-                        for (i in 1..5) {
-                            val isFilled = i <= actorRating
-                            val starIcon =
-                                if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
-                            Image(
-                                imageVector = starIcon,
-                                modifier = Modifier.requiredSize(18.dp),
-                                colorFilter = ColorFilter.tint(
-                                    if (isFilled) Color.Yellow else Color.Gray
-                                ),
-                                contentDescription = "Star icon"
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "$actorRating/5",
-                            fontSize = 18.sp,
-                            modifier = Modifier.weight(0.5f)
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(30.dp, 5.dp),
-                    color = Color.Gray
-                )
-                Row(
-                    modifier = Modifier.padding(50.dp, 0.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Category: Music")
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Row {
-                        val actorRating = movieReviewID["Music"] ?: 0.0
-                        for (i in 1..5) {
-                            val isFilled = i <= actorRating
-                            val starIcon =
-                                if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
-                            Image(
-                                imageVector = starIcon,
-                                modifier = Modifier.requiredSize(18.dp),
-                                colorFilter = ColorFilter.tint(
-                                    if (isFilled) Color.Yellow else Color.Gray
-                                ),
-                                contentDescription = "Star icon"
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "$actorRating/5",
-                            fontSize = 18.sp,
-                            modifier = Modifier.weight(0.5f)
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(30.dp, 5.dp),
-                    color = Color.Gray
-                )
-                Row(
-                    modifier = Modifier.padding(50.dp, 0.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Category: Plot")
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Row {
-                        val actorRating = movieReviewID["Plot"] ?: 0.0
-                        for (i in 1..5) {
-                            val isFilled = i <= actorRating
-                            val starIcon =
-                                if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
-                            Image(
-                                imageVector = starIcon,
-                                modifier = Modifier.requiredSize(18.dp),
-                                colorFilter = ColorFilter.tint(
-                                    if (isFilled) Color.Yellow else Color.Gray
-                                ),
-                                contentDescription = "Star icon"
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "$actorRating/5",
-                            fontSize = 18.sp,
-                            modifier = Modifier.weight(0.5f)
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(30.dp, 5.dp),
-                    color = Color.Gray
-                )
-
-
-
             }
-            Spacer(modifier = Modifier.height(12.dp))
         }
     }
+}
+
+@Composable
+fun RatingRow(detailRatingName: String, rating: Double) {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 30.dp, vertical = 10.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "Category: $detailRatingName",
+            modifier = Modifier.weight(1f),
+            fontSize = 16.sp
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            for (i in 1..5) {
+                val isFilled = i <= rating
+                val starIcon =
+                    if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
+                Image(
+                    imageVector = starIcon,
+                    modifier = Modifier.requiredSize(18.dp),
+                    colorFilter = ColorFilter.tint(
+                        if (isFilled) Color.Yellow else Color.Gray
+                    ),
+                    contentDescription = "Star icon"
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "$rating/5",
+                fontSize = 16.sp
+            )
+        }
+    }
+    HorizontalDivider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 5.dp),
+        color = Color.Gray
+    )
+    Spacer(modifier = Modifier.height(12.dp))
 }
