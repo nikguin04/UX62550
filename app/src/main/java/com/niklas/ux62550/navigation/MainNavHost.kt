@@ -33,13 +33,11 @@ fun MainNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Route.HomeScreen,
-        modifier = modifier
+        startDestination = Route.HomeScreen
     ) {
         composable<Route.HomeScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.HomeScreen>()) }
             HomeScreen(
-
                 onNavigateToMedia = { media ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
                     navController.navigate(Route.MediaDetailsScreen)
@@ -65,6 +63,7 @@ fun MainNavHost(
             MediaDetailsScreen(
                 movieViewModel = viewModel(factory = MovieViewModelFactory(media = media)),
                 creditsViewModel = viewModel(factory = CreditsViewModelFactory(media = media)),
+                navigateBack = navController::popBackStack,
                 onNavigateToReview = { mediaDetails ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
                     navController.navigate(Route.ReviewScreen) },
