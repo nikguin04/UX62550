@@ -14,29 +14,34 @@ class MediaDetailsRepository(
     private val remoteDataSource: RemoteMediaDataSource,
     private val firebaseDataSource: RemoteFirebase
 ) {
-    private val mutableDetailFlow = MutableSharedFlow<MovieDetailObject>()
+    private val mutableDetailFlow = MutableSharedFlow<Result<MovieDetailObject>>()
     val detailFlow = mutableDetailFlow.asSharedFlow()
     suspend fun getMoviesDetails(movie_id: Int)  = mutableDetailFlow.emit(
-        remoteDataSource.getMoviesDetails(movie_id)
+        try { Result.success( remoteDataSource.getMoviesDetails(movie_id) ) }
+        catch (e: Exception) { Result.failure(e)  }
     )
 
-    private val mutableSimilarMoviesFlow = MutableSharedFlow<SearchDataObject>()
+    private val mutableSimilarMoviesFlow = MutableSharedFlow<Result<SearchDataObject>>()
     val similarFlow = mutableSimilarMoviesFlow.asSharedFlow()
     suspend fun getSimilarsMovies(movie_id: Int)  = mutableSimilarMoviesFlow.emit(
-        remoteDataSource.getSimilarMoviesDetail(movie_id)
+        try { Result.success( remoteDataSource.getSimilarMoviesDetail(movie_id) ) }
+        catch (e: Exception) { Result.failure(e)  }
 
     )
 
-    private val mutableProviderFlow = MutableSharedFlow<ProviderDataObject>()
+    private val mutableProviderFlow = MutableSharedFlow<Result<ProviderDataObject>>()
     val providerFlow = mutableProviderFlow.asSharedFlow()
     suspend fun getProvider(movie_id: Int)  = mutableProviderFlow.emit(
-        remoteDataSource.getProviders(movie_id)
+        try { Result.success( remoteDataSource.getProviders(movie_id) ) }
+        catch (e: Exception) { Result.failure(e)  }
 
     )
-    private val mutableTrailerFlow = MutableSharedFlow<TrailerObject>()
+    
+    private val mutableTrailerFlow = MutableSharedFlow<Result<TrailerObject>>()
     val trailerFlow = mutableTrailerFlow.asSharedFlow()
     suspend fun getTrailer(movie_id: Int)  = mutableTrailerFlow.emit(
-        remoteDataSource.getTrailer(movie_id)
+        try { Result.success( remoteDataSource.getTrailer(movie_id) ) }
+        catch (e: Exception) { Result.failure(e)  }
 
     )
 

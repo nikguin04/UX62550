@@ -9,10 +9,11 @@ class KeywordRepository(
     private val remoteDataSource: RemoteMediaDataSource
 ) {
 
-    private val mutableKeywordFlow = MutableSharedFlow<SearchDataObject>()
+    private val mutableKeywordFlow = MutableSharedFlow<Result<SearchDataObject>>()
     val keywordFlow = mutableKeywordFlow.asSharedFlow()
     suspend fun getKeywordSearch(keyword_id: String, page: Int)  = mutableKeywordFlow.emit(
-        remoteDataSource.getKeywordMovies(keyword_id, page)
+        try { Result.success( remoteDataSource.getKeywordMovies(keyword_id, page) ) }
+        catch (e: Exception) { Result.failure(e)  }
     )
 
 }

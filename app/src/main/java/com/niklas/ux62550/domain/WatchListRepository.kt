@@ -15,11 +15,12 @@ class WatchListRepository(
     val watchListFlow = mutableWatchListFlow.asSharedFlow()
     suspend fun getWatchList()  = firebaseDataSource.getWatchList(mutableWatchListFlow)
 
-    private val mutableWatchListRowFlow = MutableSharedFlow<WatchListDataObject>()
+    private val mutableWatchListRowFlow = MutableSharedFlow<Result<WatchListDataObject>>()
 
     val watchListRowFlow = mutableWatchListRowFlow.asSharedFlow()
     suspend fun getMovieForRow(MovieId: Int)  = mutableWatchListRowFlow.emit(
-        remoteDataSource.getMovieForRow(MovieId)
+        try { Result.success( remoteDataSource.getMovieForRow(MovieId) ) }
+        catch (e: Exception) { Result.failure(e)  }
     )
 
 }

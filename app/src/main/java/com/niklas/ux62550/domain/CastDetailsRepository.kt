@@ -9,8 +9,10 @@ class CastDetailsRepository(
     private val remoteDataSource: RemoteMediaDataSource
 ) {
 
-    private val mutableCreditFlow = MutableSharedFlow<CreditObject>()
+    private val mutableCreditFlow = MutableSharedFlow<Result<CreditObject>>()
     val creditFlow = mutableCreditFlow.asSharedFlow()
     suspend fun getCredits(movie_id: Int)  = mutableCreditFlow.emit(
-        remoteDataSource.getCreditDetails(movie_id))
+        try { Result.success( remoteDataSource.getCreditDetails(movie_id)) }
+        catch (e: Exception) { Result.failure(e) }
+    )
 }
