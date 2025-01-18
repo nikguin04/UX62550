@@ -31,12 +31,16 @@ class HomeViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             homeRepository.featuredMediaFlow.collect { searchDataObject ->
-                mutableMediaItemsState.update { MediaItemsUIState.Data(searchDataObject.results) }
+                mutableMediaItemsState.update {
+                    if (searchDataObject.isSuccess) { MediaItemsUIState.Data(searchDataObject.getOrThrow().results) }
+                    else { MediaItemsUIState.Error }
+                }
             }
         }
         viewModelScope.launch {
             homeRepository.genreFetchFlow.collect { genreDataObject ->
-                mutableMovieGenresState.update { GenresDataState.Data(genreDataObject.genres) }
+                if (genreDataObject.isSuccess) { mutableMovieGenresState.update { GenresDataState.Data(genreDataObject.getOrThrow().genres) } }
+                else { GenresDataState.Error }
             }
         }
         getFeaturedMedia()

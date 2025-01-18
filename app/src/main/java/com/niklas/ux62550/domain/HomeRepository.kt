@@ -10,16 +10,18 @@ class HomeRepository (
     private val remoteDataSource: RemoteMediaDataSource
 ) {
 
-    private val mutableFeaturedMediaFlow = MutableSharedFlow<SearchDataObject>()
+    private val mutableFeaturedMediaFlow = MutableSharedFlow<Result<SearchDataObject>>()
     val featuredMediaFlow = mutableFeaturedMediaFlow.asSharedFlow()
     suspend fun getTrending(time_window: String = "day") = mutableFeaturedMediaFlow.emit(
-        remoteDataSource.getTrending(time_window)
+        try { Result.success(remoteDataSource.getTrending(time_window)) }
+        catch (e: Exception) { Result.failure(e)  }
     )
 
-    private val mutableGenreFetchFlow = MutableSharedFlow<GenreDataObject>()
+    private val mutableGenreFetchFlow = MutableSharedFlow<Result<GenreDataObject>>()
     val genreFetchFlow = mutableGenreFetchFlow.asSharedFlow()
     suspend fun getGenres() = mutableGenreFetchFlow.emit(
-        remoteDataSource.getMovieGenres()
+        try { Result.success(remoteDataSource.getMovieGenres()) }
+        catch (e: Exception) { Result.failure(e)  }
 
     )
 
