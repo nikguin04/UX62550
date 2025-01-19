@@ -66,6 +66,7 @@ fun MainNavHost(
             MediaDetailsScreen(
                 movieViewModel = viewModel(factory = MovieViewModelFactory(media = media)),
                 creditsViewModel = viewModel(factory = CreditsViewModelFactory(media = media)),
+                navigateBack = navController::popBackStack,
                 onNavigateToReview = { mediaDetails ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
                     navController.navigate(Route.ReviewScreen) },
