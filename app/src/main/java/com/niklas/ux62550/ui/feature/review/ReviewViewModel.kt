@@ -41,10 +41,11 @@ class ReviewViewModel : ViewModel() {
         )
 
         // shoud this be move to the firebase repository
-        if(FirebaseFirestore.getInstance().collection("Review").document(review.getValue("MovieIDs").toString()).get().isSuccessful){
-            FirebaseFirestore.getInstance().collection("Review").document(review.getValue("MovieIDs").toString()).update(review)
+        // TODO now the user id is hard coded this needs to be changed
+        if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").get().isSuccessful){
+            FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").update(review)
         } else {
-            FirebaseFirestore.getInstance().collection("Review").document(review.getValue("MovieIDs").toString())
+            FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2")
                 .set(review)
                 .addOnSuccessListener { println("Review submitted successfully!") }
                 .addOnFailureListener { println("Error submitting review: ${it.message}") }

@@ -26,7 +26,6 @@ import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,14 +40,17 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -117,7 +119,7 @@ fun MediaDetailsScreen(
                 DescriptionText(description = movieState.mediaDetailObject.Description)
 
                 ActorsAndDirectors(creditState = creditState)
-                DetailedRating()
+                DetailedRating(movieViewModel = movieViewModel, movieID = movieState)
                 SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
             }
         }
@@ -130,27 +132,18 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
         Box(modifier = Modifier.alpha(0.5f)) {
-            val backColor = MaterialTheme.colorScheme.background
             MediaItem(
                 uri = movieState.mediaDetailObject.backDropPath,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .graphicsLayer(alpha = 1f)
+                    .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
                     .drawWithContent {
                         drawContent() // Draw the actual image
-
-                        // Draw the fade
-                        drawRect(
+                        drawRect( // Draw the fade
                             brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    backColor,
-                                    backColor.copy(alpha = 0.5f),
-                                    Color.Transparent,
-                                ),
-                                startY = 0f,
-                                endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
+                                listOf(Color.Black, Color.Transparent)
                             ),
-                            blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
+                            blendMode = BlendMode.DstIn
                         )
                     },
                 size = ImageSize.BACKDROP
@@ -301,7 +294,7 @@ fun TitleText(title: String) {
 fun DescriptionText(description: String) {
     Box(
         modifier = Modifier
-            .padding(20.dp, 10.dp, 20.dp, 10.dp)
+            .padding(20.dp, 10.dp)
             .clip(RoundedCornerShape(25.dp))
             .background(color = Color(0xFF353433))
     ) {
@@ -310,6 +303,7 @@ fun DescriptionText(description: String) {
             style = TextStyle(
                 lineHeight = 1.25.em,
                 lineBreak = LineBreak.Paragraph,
+                hyphens = Hyphens.Auto,
                 fontSize = 18.sp,
                 textAlign = TextAlign.Justify,
                 color = Color.White,
@@ -317,7 +311,7 @@ fun DescriptionText(description: String) {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp, 5.dp, 10.dp, 5.dp)
+                .padding(20.dp)
         )
     }
 }

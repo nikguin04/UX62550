@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -39,6 +42,12 @@ import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import com.niklas.ux62550.data.model.WatchListDataObject
 
 @Composable
 @Preview(showBackground = true)
@@ -69,10 +78,11 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
             val watchListState = watchlistViewModel.watchListState.collectAsState().value
             val watchListRowState = watchlistViewModel.watchListRowState.collectAsState().value
 
+            var text by rememberSaveable { mutableStateOf("") }
+            var expanded by rememberSaveable { mutableStateOf(false) }
+
             SearchBar(
                 inputField = {
-                    var text = ""
-                    var expanded = false
 
                     SearchBarDefaults.InputField(
                         query = text,
@@ -97,7 +107,9 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                 expanded = false,
                 onExpandedChange = {},
                 content = {},
-                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp)
+                modifier = Modifier
+                    .padding(0.dp, 0.dp, 0.dp, 20.dp)
+                    .widthIn(max = 360.dp)
             )
             LogoBox(size = 200.dp)
             Row(
@@ -132,11 +144,12 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
 
                 is MovieIds.Data -> {
                     // Display list of movie items in LazyColumn
-                    watchListState.movies?.forEach{id -> MovieBoxRowFromId(
-                        id,
-                        onNavigateToMedia = onNavigateToMedia
-                    ) }
-
+                    val movieIDList: List<Int> = watchListState.movies?:emptyList()
+                    LazyColumn {
+                        items(movieIDList) {id ->
+                            MovieBoxRowFromId(id, onNavigateToMedia = onNavigateToMedia)
+                        }
+                    }
                 }
             }
         }

@@ -4,6 +4,7 @@ package com.niklas.ux62550.ui.feature.review
 import ReviewViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,14 +36,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -59,6 +66,7 @@ import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 @Composable
 @Preview(showBackground = true)
@@ -111,28 +119,20 @@ fun Header(
     reviewViewModel: ReviewViewModel
 ) {
     Box {
-        val backColor = MaterialTheme.colorScheme.background
         MediaItem(
             uri = media.backDropPath,
             modifier = Modifier
                 .fillMaxWidth()
-                .graphicsLayer(alpha = 1f)
+                .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
                 .drawWithContent {
                     drawContent() // Draw the actual image
-
-                    // Draw the fade
-                    drawRect(
+                    drawRect( // Draw the fade
                         brush = Brush.verticalGradient(
-                            colors = listOf(
-                                backColor,
-                                backColor,
-                                backColor.copy(alpha = 0.5f),
-                                Color.Transparent,
-                            ),
-                            startY = 0f,
-                            endY = Float.POSITIVE_INFINITY // Adjust for gradient depth
+                            0f to Color.Black,
+                            1/3f to Color.Black,
+                            1f to Color.Transparent,
                         ),
-                        blendMode = androidx.compose.ui.graphics.BlendMode.DstIn
+                        blendMode = BlendMode.DstIn
                     )
                 },
             size = ImageSize.BACKDROP
@@ -291,14 +291,35 @@ fun TitleText(movieTitle: String) {
             .padding(0.dp, 120.dp)
     )
 }
-
-
 @Composable
-fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit,  starSize: Dp = 34.dp) {
-    Row(modifier = Modifier.wrapContentWidth()) {
+fun RatingStars(
+    rating: Float,
+    onRatingSelected: (Float) -> Unit,
+    starSize: Dp = 34.dp
+) {
+    var currentRating by remember { mutableFloatStateOf(rating) }
+
+    Row(
+        modifier = Modifier
+            .wrapContentWidth()
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures { _, dragAmount ->
+                    val totalStarsWidthPx = starSize.toPx() * 5
+                    val dragPosition = (dragAmount + (currentRating * starSize.toPx())).coerceIn(0f, totalStarsWidthPx)
+
+                    val newRating = (dragPosition / totalStarsWidthPx * 5).coerceIn(0f, 5f)
+                    val roundedRating = (newRating * 2).roundToInt() / 2f  // Round to nearest 0.5
+
+                    if (roundedRating != currentRating) {
+                        currentRating = roundedRating
+                        onRatingSelected(roundedRating)
+                    }
+                }
+            }
+    ) {
         for (i in 0..4) {
-            val isFilled = i < rating.toInt()
-            val isHalfFilled = (rating - i) in 0.5..0.99
+            val isFilled = i + 1 <= currentRating.toInt()
+            val isHalfFilled = (currentRating - i) in 0.5..0.99
 
             Image(
                 imageVector = when {
@@ -310,16 +331,20 @@ fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit,  starSize: Dp 
                     .requiredSize(starSize)
                     .clickable {
                         val clickedPosition = i + 1
-                        val newRating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
+                        val newRating = if (currentRating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
+                        currentRating = newRating
                         onRatingSelected(newRating)
                     },
-                colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
+                colorFilter = ColorFilter.tint(
+                    if (isFilled || isHalfFilled) Color.Yellow else Color.Gray
+                ),
                 contentDescription = "Star icon",
             )
             Spacer(modifier = Modifier.width(4.dp))
         }
     }
 }
+
 
 
 

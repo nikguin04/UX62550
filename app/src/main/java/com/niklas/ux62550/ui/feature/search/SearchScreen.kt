@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
@@ -80,8 +81,8 @@ fun SearchContent(
         item {
             Row(
                 modifier = Modifier
-
-                    .padding(20.dp, 45.dp, 20.dp, 20.dp),
+                    .padding(20.dp, 45.dp, 20.dp, 20.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -89,7 +90,7 @@ fun SearchContent(
                     inputField = {
                         SearchBarDefaults.InputField(
                             query = text,
-                            onQueryChange = { text = it; viewModel.getDetails(it) },
+                            onQueryChange = { text = it; viewModel.onSearchQueryChanged(it) },
                             onSearch = { expanded = false },
                             expanded = expanded,
                             onExpandedChange = { expanded = it },
@@ -107,14 +108,18 @@ fun SearchContent(
                                     colorFilter = ColorFilter.tint(Color.Black),
                                     contentDescription = "Search icon"
                                 )
-                            }
+                            },
+                                modifier = Modifier
                         )
                     },
+
                     colors = SearchBarDefaults.colors(containerColor = Color(0xFFACACAC)),
                     expanded = false,
                     onExpandedChange = { expanded = it },
                     content = {},
-                    modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp)
+                    modifier = Modifier
+                        .padding(0.dp, 0.dp, 0.dp, 20.dp)
+                        .widthIn(max = 360.dp)
                 )
             }
         }
