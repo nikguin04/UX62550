@@ -10,13 +10,14 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
@@ -25,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.niklas.ux62550.navigation.GeneralNavBar
 import com.niklas.ux62550.navigation.MainNavHost
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -63,18 +66,29 @@ class MainActivity : ComponentActivity() {
                     canNavigateBack = navController.previousBackStackEntry != null
                 }
 
+                val snackbarHostState = remember { SnackbarHostState() }
+                val scope = rememberCoroutineScope()
+                val snackbarShow: (String) -> Unit = { message ->
+                    scope.launch {
+                        snackbarHostState.showSnackbar(message)
+                    }
+                }
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     topBar = {
                         // Moved down to content for padding reasons?
                         // TODO: This seems really scuffed and *NOT* like the way to do things
                     },
                     bottomBar = { GeneralNavBar(navController) },
-                    contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp)
+                    contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp),
+                    snackbarHost = {
+                        SnackbarHost(hostState = snackbarHostState)
+                    }
                 ) {
                     Box {
                         MainNavHost(
                             navController = navController,
                             onRouteChanged = { route -> currentScreenTitle = route.title },
+                            snackbarShow = snackbarShow,
                             modifier = Modifier.padding(it)
                         )
                         TopAppBar(

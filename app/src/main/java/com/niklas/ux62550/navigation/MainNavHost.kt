@@ -29,6 +29,7 @@ import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
 fun MainNavHost(
     navController: NavHostController,
     onRouteChanged: (Route) -> Unit,
+    snackbarShow: (String) -> Unit,
     modifier: Modifier
 ) {
     NavHost(
@@ -79,7 +80,8 @@ fun MainNavHost(
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
             ScreenReviewAndRating(
                 media = media?: MediaDetailExample.MediaDetailObjectExample,
-                navBack = navController::popBackStack
+                navBack = navController::popBackStack,
+                snackbarShow = snackbarShow
             )
         }
 
