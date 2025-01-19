@@ -55,7 +55,6 @@ import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
-import com.niklas.ux62550.ui.feature.common.singletons.SnackBarData
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -66,9 +65,7 @@ import kotlinx.coroutines.launch
 fun ReviewAndRatingPreview() {
     UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {},
-                snackBarData = SnackBarData(scope = rememberCoroutineScope(), snackbarHostState = remember { SnackbarHostState() })
-            )
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {}, snackbarShow =  {})
 
         }
 
@@ -80,7 +77,7 @@ fun ScreenReviewAndRating(
     modifier: Modifier = Modifier,
     media: MovieDetailObject,
     navBack: () -> Unit,
-    snackBarData: SnackBarData,
+    snackbarShow: (String) -> Unit,
     reviewViewModel: ReviewViewModel = viewModel()
 )
 {
@@ -99,7 +96,7 @@ fun ScreenReviewAndRating(
                 reviewViewModel.submitReview(mediaId = media.id)
                 navBack()
             },
-            snackBarData = snackBarData
+            snackbarShow = snackbarShow
         )
 
         MoreDetailedReview(reviewViewModel)
@@ -178,7 +175,7 @@ fun PublishReview(
     onRatingChange: (Float) -> Unit,
     onReviewChange: (String) -> Unit,
     onSubmit: () -> Unit,
-    snackBarData: SnackBarData,
+    snackbarShow: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -211,9 +208,7 @@ fun PublishReview(
             Button(
                 onClick =  {
                     onSubmit()
-                    snackBarData.scope.launch {
-                        snackBarData.snackBarHostState.showSnackbar("Successfully submitted review")
-                    }
+                    snackbarShow("Successfully submitted review")
                 },
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),

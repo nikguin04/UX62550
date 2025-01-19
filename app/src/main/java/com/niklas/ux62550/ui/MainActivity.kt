@@ -39,8 +39,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.niklas.ux62550.navigation.GeneralNavBar
 import com.niklas.ux62550.navigation.MainNavHost
-import com.niklas.ux62550.ui.feature.common.singletons.SnackBarData
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -68,7 +68,11 @@ class MainActivity : ComponentActivity() {
 
                 val snackbarHostState = remember { SnackbarHostState() }
                 val scope = rememberCoroutineScope()
-                val snackBarData: SnackBarData = SnackBarData(scope, snackbarHostState)
+                val snackbarShow: (String) -> Unit = { message ->
+                    scope.launch {
+                        snackbarHostState.showSnackbar(message)
+                    }
+                }
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     topBar = {
                         // Moved down to content for padding reasons?
@@ -77,14 +81,14 @@ class MainActivity : ComponentActivity() {
                     bottomBar = { GeneralNavBar(navController) },
                     contentWindowInsets = WindowInsets(0.dp,0.dp,0.dp,0.dp),
                     snackbarHost = {
-                        SnackbarHost(hostState = snackBarData.snackBarHostState)
+                        SnackbarHost(hostState = snackbarHostState)
                     }
                 ) {
                     Box {
                         MainNavHost(
                             navController = navController,
                             onRouteChanged = { route -> currentScreenTitle = route.title },
-                            snackBarData = snackBarData,
+                            snackbarShow = snackbarShow,
                             modifier = Modifier.padding(it)
                         )
                         TopAppBar(
