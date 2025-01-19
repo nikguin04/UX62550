@@ -96,12 +96,18 @@ fun MainNavHost(
 
         composable<Route.LoginScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginScreen>()) }
-            LoginScreen(onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) })
+            LoginScreen(
+                navigateBack = navController::popBackStack,
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+            )
         }
 
         composable<Route.RegisterScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
-            RegisterScreen(onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) })
+            RegisterScreen(
+                navigateBack = navController::popBackStack,
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+            )
         }
 
         composable<Route.ProfileScreen> {
