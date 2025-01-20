@@ -1,11 +1,13 @@
 package com.niklas.ux62550.data.remote
 
 import android.util.Log
+import androidx.compose.ui.graphics.vector.EmptyPath
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.tasks.await
 
@@ -92,12 +94,29 @@ object RemoteFirebase {
     }
 
     suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean){
-        val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C")
-        watchlist.update(
-            "MovieIds",
-            if (remove) {FieldValue.arrayRemove(data.id)}
-            else {FieldValue.arrayUnion(data.id)}
+        val Watchlistlist = mapOf(
+            "MovieIds" to listOf(data.id)
         )
+
+        if(FirebaseAuthController().getAuth().currentUser != null){
+            if(FirebaseFirestore.getInstance().collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString()) == EmptyPath){
+                FirebaseFirestore.getInstance().collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString()).set(Watchlistlist)
+            } else {
+                FirebaseFirestore.getInstance().collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString()).update(
+                    "MovieIds",
+                    if (remove) {FieldValue.arrayRemove(data.id)}
+                    else {FieldValue.arrayUnion(data.id)}
+                )
+            }
+        } else {
+            val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C")
+            watchlist.update(
+                "MovieIds",
+                if (remove) {FieldValue.arrayRemove(data.id)}
+                else {FieldValue.arrayUnion(data.id)}
+            )
+        }
+
     }
 
 }
