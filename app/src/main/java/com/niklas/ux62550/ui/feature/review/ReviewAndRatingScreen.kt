@@ -60,13 +60,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 @Composable
 @Preview(showBackground = true)
@@ -91,23 +92,27 @@ fun ScreenReviewAndRating(
 {
     val reviewState by reviewViewModel.reviewState.collectAsState()
 
-    Column(
-        modifier = Modifier.verticalScroll(rememberScrollState())
-    ) {
-        Header(media = media, reviewViewModel)
+    Box {
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            Header(media = media, reviewViewModel)
 
-        PublishReview(stars = reviewState.rating,
-            reviewText = reviewState.reviewText,
-            onRatingChange = { newRating -> reviewViewModel.updateRating(newRating) },
-            onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
-            onSubmit = {
-                reviewViewModel.submitReview(mediaId = media.id)
-                navBack()
-            },
-            snackbarShow = snackbarShow
-        )
+            PublishReview(stars = reviewState.rating,
+                reviewText = reviewState.reviewText,
+                onRatingChange = { newRating -> reviewViewModel.updateRating(newRating) },
+                onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
+                onSubmit = {
+                    reviewViewModel.submitReview(mediaId = media.id)
+                    navBack()
+                },
+                snackbarShow = snackbarShow
+            )
 
-        MoreDetailedReview(reviewViewModel)
+            MoreDetailedReview(reviewViewModel)
+        }
+
+        GeneralTopBar(navigateBack = navBack)
     }
 }
 

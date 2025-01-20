@@ -6,21 +6,21 @@ import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-class WatchListRepository {
-    private val firebaseDataSource = RemoteFirebase
+class WatchListRepository(
+    private val remoteDataSource: RemoteMediaDataSource,
+    private val firebaseDataSource: RemoteFirebase
+) {
 
     private val mutableWatchListFlow = MutableSharedFlow<List<Int>?>()
     val watchListFlow = mutableWatchListFlow.asSharedFlow()
     suspend fun getWatchList()  = firebaseDataSource.getWatchList(mutableWatchListFlow)
 
-
-    private val MovieDataSource = RemoteMediaDataSource
-
-    private val mutableWatchListRowFlow = MutableSharedFlow<WatchListDataObject>()
+    private val mutableWatchListRowFlow = MutableSharedFlow<Result<WatchListDataObject>>()
 
     val watchListRowFlow = mutableWatchListRowFlow.asSharedFlow()
     suspend fun getMovieForRow(MovieId: Int)  = mutableWatchListRowFlow.emit(
-        MovieDataSource.getMovieForRow(MovieId)
+        try { Result.success( remoteDataSource.getMovieForRow(MovieId) ) }
+        catch (e: Exception) { Result.failure(e)  }
     )
 
 }

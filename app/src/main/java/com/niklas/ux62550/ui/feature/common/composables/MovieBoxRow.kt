@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -128,6 +129,12 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
     }
 }
 
+@Preview
+@Composable
+fun MovieBoxRowFromIdErrorPreview() {
+    MovieBoxRowFromId(0, {} )
+}
+
 @Composable
 fun MovieBoxRowFromId(movieId: Int,  onNavigateToMedia: (MediaObject) -> Unit) {
 
@@ -145,6 +152,9 @@ fun MovieBoxRowFromId(movieId: Int,  onNavigateToMedia: (MediaObject) -> Unit) {
             MovieBoxRow(mediaState.mediaDetailObject.toMediaObject(), modifier = Modifier.clickable(
                 onClick = { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject())}
             ))
+        }
+        is MovieState.Error -> {
+            Text(text = "Network error")
         }
     }
 

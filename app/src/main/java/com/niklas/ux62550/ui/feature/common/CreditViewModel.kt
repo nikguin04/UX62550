@@ -9,6 +9,7 @@ import com.niklas.ux62550.data.model.CreditObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.Provider
 import com.niklas.ux62550.data.model.Result
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.CastDetailsRepository
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 import com.niklas.ux62550.ui.feature.mediadetails.ProviderState
@@ -19,7 +20,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CreditViewModel(media: MediaObject) : ViewModel() {
-    private val creditDetailsRepository = CastDetailsRepository()
+    private val creditDetailsRepository = DataModule.castDetailsRepository
 
     private fun getCredit(movieID: Int) = viewModelScope.launch {
         creditDetailsRepository.getCredits(movieID) // TODO: Don't hardcore this, get some proper featured films
@@ -42,7 +43,8 @@ class CreditViewModel(media: MediaObject) : ViewModel() {
         viewModelScope.launch {
             creditDetailsRepository.creditFlow.collect { creditDetailObject ->
                 mutableCreditState.update {
-                    CreditState.Data(creditDetailObject)
+                    if (creditDetailObject.isSuccess) { CreditState.Data(creditDetailObject.getOrThrow()) }
+                    else { CreditState.Error }
                 }
             }
         }
@@ -57,4 +59,5 @@ class CreditsViewModelFactory(private val media: MediaObject) : ViewModelProvide
 sealed class CreditState {
     data object Empty : CreditState()
     data class Data(val creditObject: CreditObject) : CreditState()
+    data object Error : CreditState()
 }

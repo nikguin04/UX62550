@@ -66,6 +66,7 @@ fun MainNavHost(
             MediaDetailsScreen(
                 movieViewModel = viewModel(factory = MovieViewModelFactory(media = media)),
                 creditsViewModel = viewModel(factory = CreditsViewModelFactory(media = media)),
+                navigateBack = navController::popBackStack,
                 onNavigateToReview = { mediaDetails ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
                     navController.navigate(Route.ReviewScreen) },
@@ -95,12 +96,18 @@ fun MainNavHost(
 
         composable<Route.LoginScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginScreen>()) }
-            LoginScreen(onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) })
+            LoginScreen(
+                navigateBack = navController::popBackStack,
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+            )
         }
 
         composable<Route.RegisterScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
-            RegisterScreen(onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) })
+            RegisterScreen(
+                navigateBack = navController::popBackStack,
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+            )
         }
 
         composable<Route.ProfileScreen> {
