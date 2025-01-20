@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -83,6 +84,22 @@ fun DetailedRating(
                 sheetState = sheetState
             ) {
                 Column {
+                    Text(
+                        "User Rating",
+                        Modifier.fillMaxWidth(),
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            color = Color.White,
+                            shadow = Shadow(color = Color.Black, blurRadius = 5f)
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 5.dp),
+                        color = Color.Gray
+                    )
                     RatingRow("Rating", movieReviewID["MainRating"] ?: 0.0)
                     RatingRow("Acting", movieReviewID["Acting"] ?: 0.0)
                     RatingRow("Directing", movieReviewID["Directing"] ?: 0.0)
