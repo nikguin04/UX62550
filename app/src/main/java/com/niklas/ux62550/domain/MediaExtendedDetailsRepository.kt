@@ -1,6 +1,5 @@
 package com.niklas.ux62550.domain
 
-import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
@@ -10,7 +9,7 @@ import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-class MediaDetailsRepository(
+class MediaExtendedDetailsRepository(
     private val remoteDataSource: RemoteMediaDataSource,
     private val firebaseDataSource: RemoteFirebase
 ) {

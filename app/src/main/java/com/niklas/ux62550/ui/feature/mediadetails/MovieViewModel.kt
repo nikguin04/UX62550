@@ -12,15 +12,13 @@ import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.data.model.TrailerObject
 import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.domain.MediaDetailsRepository
-import com.niklas.ux62550.ui.feature.home.KeywordItemsUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MovieViewModel(media: MediaObject) : ViewModel() {
-    private val mediaDetailsRepository = DataModule.mediaDetailsRepository
+    private val mediaDetailsRepository = DataModule.mediaExtendedDetailsRepository
     private val _movieReviewID = MutableStateFlow<Map<String, Double>>(emptyMap())
     val movieReviewID: StateFlow<Map<String, Double>> = _movieReviewID
 
