@@ -112,7 +112,10 @@ fun MediaDetailsScreen(
         }
 
         movieState is MovieState.Data && creditState is CreditState.Data -> {
-            Column(Modifier.verticalScroll(rememberScrollState())) {
+            Column(Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(0.dp, 0.dp, 0.dp, 12.dp)
+            ) {
                 Header(movieState = movieState, trailerState = trailerState, movieViewModel = movieViewModel, watchlistState = watchListState)
                 InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
                 Genres(genres = movieState, providerState = providerState)
