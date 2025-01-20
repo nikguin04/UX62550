@@ -51,7 +51,6 @@ fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, on
     // Load more if scrolled to bottom
     LaunchedEffect(reachedBottom) {
         if (reachedBottom) {
-            Log.w("bottom", "reached bottom")
             discoverViewModel.getDiscover(discoverViewModel.lastPage + 1)
         }
     }

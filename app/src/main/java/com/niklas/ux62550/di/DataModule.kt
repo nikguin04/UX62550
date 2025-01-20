@@ -90,15 +90,13 @@ object DataModule {
     lateinit var castDetailsRepository: CastDetailsRepository
     lateinit var discoverRepository: DiscoverRepository
     lateinit var homeRepository: HomeRepository
-    lateinit var imageRepository: ImageRepository // Needs to have multiple repositories for
+    lateinit var imageRepository: ImageRepository
     lateinit var keywordRepository: KeywordRepository
     lateinit var mediaDetailsRepository: MediaDetailsRepository
     lateinit var reviewRepository: ReviewRepository
     lateinit var searchRepository: SearchRepository
     lateinit var watchListRepository: WatchListRepository
-
-    //fun newImageRepository(): ImageRepository { return ImageRepository(remoteDataSource = remoteMediaDataSource) }
-
+    
     fun initialize() {
         castDetailsRepository = CastDetailsRepository(remoteDataSource = remoteMediaDataSource)
         discoverRepository = DiscoverRepository(remoteDataSource = remoteMediaDataSource)
