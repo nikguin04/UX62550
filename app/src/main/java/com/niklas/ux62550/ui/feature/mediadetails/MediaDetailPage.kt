@@ -128,7 +128,7 @@ fun MediaDetailsScreen(
 
                     ActorsAndDirectors(creditState = creditState)
                     DetailedRating(movieViewModel = movieViewModel, movieID = movieState)
-                    SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
+                    SimilarMedia(modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 0.dp), similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
                 }
                 GeneralTopBar(navigateBack = navigateBack) {
                     BookmarkButton(movieState.mediaDetailObject.toMediaObject(), movieViewModel, watchListState)

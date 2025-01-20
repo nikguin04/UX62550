@@ -1,5 +1,7 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,27 +21,34 @@ fun SimilarMedia(
     similarMediaState: SimilarMovieState,
     onNavigateToOtherMedia: (MediaObject) -> Unit) {
 
-    Text("Movies similar to this one", style = TextStyle(
-        fontSize = 18.sp,
-        color = Color.White,
-        shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
-    ),
-        modifier = modifier.padding(20.dp, 0.dp, 20.dp, 0.dp))
-    when (similarMediaState) {
-        SimilarMovieState.Empty -> {
-            Text("NO PIC")
-        }
-        is SimilarMovieState.Data -> {
-            HorizontalLazyRowMovies(
-                width = Dp(255f),
-                height = Dp(255f/16*9),
-                items = similarMediaState.similarMoviesObject,
-                onNavigateToMedia = onNavigateToOtherMedia,
-                fetchEnBackdrop = true
-            )
-        }
-        is SimilarMovieState.Error -> {
-            Text("Network error")
+    Text(
+        "Movies similar to this one",
+        style = TextStyle(
+            fontSize = 18.sp,
+            color = Color.White,
+            shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+        ),
+        modifier = modifier.padding(0.dp, 0.dp, 0.dp, 10.dp)
+    )
+    Box(modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp,)) {
+        when (similarMediaState) {
+            SimilarMovieState.Empty -> {
+                Text("NO PIC")
+            }
+            is SimilarMovieState.Data -> {
+                HorizontalLazyRowMovies(
+                    width = Dp(255f),
+                    height = Dp(255f / 16 * 9),
+                    edgeGap = 20.dp,
+                    betweenGap = 6.dp,
+                    items = similarMediaState.similarMoviesObject,
+                    onNavigateToMedia = onNavigateToOtherMedia,
+                    fetchEnBackdrop = true
+                )
+            }
+            is SimilarMovieState.Error -> {
+                Text("Network error")
+            }
         }
     }
 }

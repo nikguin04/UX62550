@@ -140,6 +140,8 @@ fun HorizontalLazyRowMovies(
     modifier: Modifier = Modifier,
     width: Dp,
     height: Dp,
+    edgeGap: Dp,
+    betweenGap: Dp,
     items: List<MediaObject>,
     onNavigateToMedia: (MediaObject) -> Unit,
     rowListState: LazyListState? = null,
@@ -156,8 +158,8 @@ fun HorizontalLazyRowMovies(
                     modifier = Modifier
                         .clickable(onClick = { onNavigateToMedia(mediaItem) })
                         .padding(
-                            (if (index == 0) 12f.dp else 6f.dp), 0.dp,
-                            (if (index == items.size - 1) 12f.dp else 6f.dp), 0.dp,
+                            (if (index == 0) edgeGap else betweenGap), 0.dp,
+                            (if (index == items.size - 1) edgeGap else betweenGap), 0.dp,
                         )
                         .size(width,height)
                         .clip(RoundedCornerShape(6.dp)),
