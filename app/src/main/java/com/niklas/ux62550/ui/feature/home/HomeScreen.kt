@@ -39,6 +39,15 @@ fun HomePreview() {
     }
 }
 
+@Preview
+@Composable
+fun HomeScreenErrorPreview() {
+    val homeViewModel: HomeViewModel = viewModel()
+    homeViewModel.initErrorPreview()
+
+    HomeScreen( homeViewModel = viewModel(), onNavigateToMedia = {} )
+}
+
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -57,6 +66,9 @@ fun HomeScreen(
                 FeaturedMediaScroller(mediaItemsUIState.mediaObjects, onNavigateToMedia)
                 GenreMediaStack(movieGenresDataState, onNavigateToMedia)
             }
+        }
+        is MediaItemsUIState.Error -> {
+            Text(text = "Network error")
         }
     }
 }
@@ -102,6 +114,9 @@ fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (M
                 )
             }
             Spacer(Modifier.height(20.dp))
+        }
+        is GenresDataState.Error -> {
+            Text(text = "Network error")
         }
     }
 }

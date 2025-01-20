@@ -190,6 +190,11 @@ fun SearchContent(
                     NonMovieBoxRow(person = movieBoxItem)
                 }
             }
+            is MovieItemsUIState.Error -> {
+                item {
+                    Text("Network error")
+                }
+            }
         }
 
     }

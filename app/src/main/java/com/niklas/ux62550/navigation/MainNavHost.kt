@@ -30,6 +30,7 @@ import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
 fun MainNavHost(
     navController: NavHostController,
     onRouteChanged: (Route) -> Unit,
+    snackbarShow: (String) -> Unit,
     modifier: Modifier
 ) {
     NavHost(
@@ -68,6 +69,7 @@ fun MainNavHost(
                 modifier = Modifier.statusBarsPadding(),
                 movieViewModel = viewModel(factory = MovieViewModelFactory(media = media)),
                 creditsViewModel = viewModel(factory = CreditsViewModelFactory(media = media)),
+                navigateBack = navController::popBackStack,
                 onNavigateToReview = { mediaDetails ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
                     navController.navigate(Route.ReviewScreen) },
@@ -83,7 +85,8 @@ fun MainNavHost(
             ScreenReviewAndRating(
                 modifier = Modifier.statusBarsPadding(),
                 media = media?: MediaDetailExample.MediaDetailObjectExample,
-                navBack = navController::popBackStack
+                navBack = navController::popBackStack,
+                snackbarShow = snackbarShow
             )
         }
 
@@ -99,8 +102,9 @@ fun MainNavHost(
         composable<Route.LoginScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginScreen>()) }
             LoginScreen(
-                modifier = Modifier.statusBarsPadding(),
-                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen)}
+            	modifier = Modifier.statusBarsPadding(),
+                navigateBack = navController::popBackStack,
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
             )
         }
 
@@ -108,6 +112,7 @@ fun MainNavHost(
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
             RegisterScreen(
                 modifier = Modifier.statusBarsPadding(),
+                navigateBack = navController::popBackStack,
                 onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
             )
         }

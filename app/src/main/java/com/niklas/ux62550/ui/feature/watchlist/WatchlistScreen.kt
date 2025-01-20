@@ -151,6 +151,9 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                         }
                     }
                 }
+                is MovieIds.Error -> {
+                    Text("Network Error")
+                }
             }
         }
     }

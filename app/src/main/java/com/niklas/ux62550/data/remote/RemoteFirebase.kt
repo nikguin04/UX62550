@@ -35,20 +35,46 @@ object RemoteFirebase {
             mutableWatchListFlow.emit(null)
         }
     }
-    suspend fun getReview(mutableReviewFlow: MutableSharedFlow<List<Int>?>){
-        try {
-            val document = FirebaseInstance.getDB()!!.collection("Review").document("MH7d5iwY0tj4eEYbu52u").get().await()
-            Log.d("Firebase_info", "${document.id} => ${document.data}")
-            mutableReviewFlow.emit(document.data?.get("MovieIds") as List<Int> ) // TODO make type safe.
+    //Help from chat
+    suspend fun getReview(movieId: Int): Map<String, Double> {
+        var totalActorRating = 0
+        var totalDirectingRating = 0
+        var totalMusicRating = 0
+        var totalPlotRating = 0
+        var reviewCount = 0
 
-        } catch (e: Exception)
-        {
-            Log.w("Firebase_info", "Error getting documents.", e)
-            mutableReviewFlow.emit(null)
+        try {
+            val document = FirebaseInstance.getDB()!!.collection("UserReviews").document("Movies").collection(movieId.toString()).get().await()
+            if (document != null && document.isEmpty.not()) {
+                for (documents in document.documents) {
+                    val ratings = documents.get("CategoryRatings") as Map<String, Double>
+
+                    totalActorRating += (ratings["Acting"] ?: 0).toInt()
+                    totalDirectingRating += (ratings["Directing"] ?: 0).toInt()
+                    totalMusicRating += (ratings["Music"] ?: 0).toInt()
+                    totalPlotRating += (ratings["Plot"] ?: 0).toInt()
+                    reviewCount++
+                }
+            } else {
+                Log.d("Firebase_info", "No reviews found for movieId: $movieId")
+            }
+        } catch (e: Exception) {
+            Log.w("Firebase_info", "Error getting documents for movieId: $movieId", e)
         }
 
+        val averageActorRating = if (reviewCount > 0) totalActorRating.toDouble() / reviewCount else 0.0
+        val averageDirectingRating = if (reviewCount > 0) totalDirectingRating.toDouble() / reviewCount else 0.0
+        val averageMusicRating = if (reviewCount > 0) totalMusicRating.toDouble() / reviewCount else 0.0
+        val averagePlotRating = if (reviewCount > 0) totalPlotRating.toDouble() / reviewCount else 0.0
 
+        return mapOf(
+            "Acting" to averageActorRating,
+            "Directing" to averageDirectingRating,
+            "Music" to averageMusicRating,
+            "Plot" to averagePlotRating
+        )
     }
+
     suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean){
         val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C")
         // Set the the movieID

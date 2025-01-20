@@ -56,7 +56,7 @@ import coil3.request.crossfade
 import com.niklas.ux62550.R
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.data.remote.RemoteMediaDataSource.BASE_IMAGE_URL
+import com.niklas.ux62550.di.DataModule.BASE_IMAGE_URL
 import kotlinx.coroutines.delay
 
 enum class ImageSize {
@@ -194,7 +194,9 @@ fun MediaItemBackdropIntercept(
                 }
             }
 
-            else -> {}
+            is ImagesDataUIState.Error -> {
+                Text(text = "Network error")
+            }
         }
     } else {
         MediaItem (
@@ -229,16 +231,15 @@ fun MediaItemBackdropFallback(
     animationProgress: State<Float> = getMediaItemAnimationProgress()
 ) {
     Box (modifier = modifier) {
-        Box {
-            MediaItem(
-                uri = media.backdrop_path,
-                modifier = modifier,
-                size = size,
-                animationProgress = animationProgress
-            )
-            Box(modifier = modifier.background(Color(0.5f, 0.5f, 0.5f, 0.5f)))
-        }
+        MediaItem(
+            uri = media.backdrop_path,
+            modifier = modifier,
+            size = size,
+            animationProgress = animationProgress
+        )
+
         if (backdropFallback) {
+            Box(modifier = modifier.background(Color(0.5f, 0.5f, 0.5f, 0.5f)))
             Box (
                 modifier = Modifier
                     .fillMaxSize(0.9f)

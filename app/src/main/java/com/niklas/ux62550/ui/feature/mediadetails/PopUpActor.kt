@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -62,6 +63,11 @@ fun PreviewActorsAndDirectors() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.Data) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val actorItemWidth = 60.dp + 12.dp
+    val maxActors = ((screenWidth - 80.dp) / actorItemWidth).toInt()
+
     Column (Modifier.padding(20.dp, 0.dp, 20.dp, 0.dp)) {
         Text(
             "Actors and Directors",
@@ -85,7 +91,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            for (i in 0 until minOf(4, creditState.creditObject.cast.size)) {
+            for (i in 0 until minOf(maxActors, creditState.creditObject.cast.size)) {
                 MediaItem(
                     creditState.creditObject.cast[i].castProfilePath,
                     modifier

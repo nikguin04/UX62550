@@ -31,6 +31,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.RegisterButtonBlue
@@ -42,39 +43,40 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun RegisterPreview() {
     UX62550Theme {
         Surface {
-            RegisterScreen(Modifier, {})
+            RegisterScreen(modifier = Modifier, navigateBack = {}, onNavigateToProfile = {})
         }
     }
 }
 
 @Composable
-fun RegisterScreen(modifier: Modifier = Modifier, onNavigateToProfile: (String) -> Unit) {
+fun RegisterScreen(modifier: Modifier = Modifier, navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
 
-    Box {
+    Box(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box(
             modifier = Modifier
-                .size(
+            .size(
                     LocalConfiguration.current.screenWidthDp.dp,
                     LocalConfiguration.current.screenWidthDp.dp / 3 * 2
                 )
                 .background(Brush.verticalGradient(colorStops = RedColorGradient))
         )
-    }
 
 
-    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(
-            modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
+        Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(
+                modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
+            }
+            RegisterInputHolder(usernameValue, emailValue, passValue, onNavigateToProfile)
         }
-        RegisterInputHolder(usernameValue, emailValue, passValue, onNavigateToProfile)
-    }
 
+        GeneralTopBar(navigateBack = navigateBack)
+    }
 }
 
 @Composable

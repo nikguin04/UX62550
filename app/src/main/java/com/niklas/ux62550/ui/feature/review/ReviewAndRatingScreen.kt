@@ -4,6 +4,7 @@ package com.niklas.ux62550.ui.feature.review
 import ReviewViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,8 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,6 +34,11 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -41,6 +49,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,18 +60,21 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
+import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 @Composable
 @Preview(showBackground = true)
 fun ReviewAndRatingPreview() {
     UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {})
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {}, snackbarShow =  {})
 
         }
 
@@ -74,25 +86,32 @@ fun ScreenReviewAndRating(
     modifier: Modifier = Modifier,
     media: MovieDetailObject,
     navBack: () -> Unit,
+    snackbarShow: (String) -> Unit,
     reviewViewModel: ReviewViewModel = viewModel()
 ) {
     val reviewState by reviewViewModel.reviewState.collectAsState()
 
-    Column(
-        modifier = Modifier.verticalScroll(rememberScrollState())
-    ) {
-        Header(modifier = modifier, media = media, reviewViewModel)
+    Box {
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            Header(modifier = modifier, media = media, reviewViewModel)
 
-        PublishReview(stars = reviewState.rating,
-            reviewText = reviewState.reviewText,
-            onRatingChange = { newRating -> reviewViewModel.updateRating(newRating) },
-            onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
-            onSubmit = {
-                reviewViewModel.submitReview(mediaId = media.id)
-                navBack()
-            })
+            PublishReview(stars = reviewState.rating,
+                reviewText = reviewState.reviewText,
+                onRatingChange = { newRating -> reviewViewModel.updateRating(newRating) },
+                onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
+                onSubmit = {
+                    reviewViewModel.submitReview(mediaId = media.id)
+                    navBack()
+                },
+                snackbarShow = snackbarShow
+            )
 
-        MoreDetailedReview(reviewViewModel)
+            MoreDetailedReview(reviewViewModel)
+        }
+
+        GeneralTopBar(navigateBack = navBack)
     }
 }
 
@@ -164,7 +183,8 @@ fun PublishReview(
     reviewText: String,
     onRatingChange: (Float) -> Unit,
     onReviewChange: (String) -> Unit,
-    onSubmit: () -> Unit
+    onSubmit: () -> Unit,
+    snackbarShow: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -195,7 +215,10 @@ fun PublishReview(
             contentAlignment = Alignment.Center
         ) {
             Button(
-                onClick = onSubmit,
+                onClick =  {
+                    onSubmit()
+                    snackbarShow("Successfully submitted review")
+                },
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
             ) {
@@ -277,14 +300,35 @@ fun TitleText(movieTitle: String) {
             .padding(0.dp, 5.dp, 0.dp, 0.dp)
     )
 }
-
-
 @Composable
-fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit,  starSize: Dp = 34.dp) {
-    Row(modifier = Modifier.wrapContentWidth()) {
+fun RatingStars(
+    rating: Float,
+    onRatingSelected: (Float) -> Unit,
+    starSize: Dp = 34.dp
+) {
+    var currentRating by remember { mutableFloatStateOf(rating) }
+
+    Row(
+        modifier = Modifier
+            .wrapContentWidth()
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures { _, dragAmount ->
+                    val totalStarsWidthPx = starSize.toPx() * 5
+                    val dragPosition = (dragAmount + (currentRating * starSize.toPx())).coerceIn(0f, totalStarsWidthPx)
+
+                    val newRating = (dragPosition / totalStarsWidthPx * 5).coerceIn(0f, 5f)
+                    val roundedRating = (newRating * 2).roundToInt() / 2f  // Round to nearest 0.5
+
+                    if (roundedRating != currentRating) {
+                        currentRating = roundedRating
+                        onRatingSelected(roundedRating)
+                    }
+                }
+            }
+    ) {
         for (i in 0..4) {
-            val isFilled = i < rating.toInt()
-            val isHalfFilled = (rating - i) in 0.5..0.99
+            val isFilled = i + 1 <= currentRating.toInt()
+            val isHalfFilled = (currentRating - i) in 0.5..0.99
 
             Image(
                 imageVector = when {
@@ -296,16 +340,20 @@ fun RatingStars(rating: Float, onRatingSelected: (Float) -> Unit,  starSize: Dp 
                     .requiredSize(starSize)
                     .clickable {
                         val clickedPosition = i + 1
-                        val newRating = if (rating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
+                        val newRating = if (currentRating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
+                        currentRating = newRating
                         onRatingSelected(newRating)
                     },
-                colorFilter = ColorFilter.tint(if (isFilled || isHalfFilled) Color.Yellow else Color.Gray),
+                colorFilter = ColorFilter.tint(
+                    if (isFilled || isHalfFilled) Color.Yellow else Color.Gray
+                ),
                 contentDescription = "Star icon",
             )
             Spacer(modifier = Modifier.width(4.dp))
         }
     }
 }
+
 
 
 

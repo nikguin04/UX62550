@@ -31,6 +31,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.RegisterButtonBlue
@@ -42,17 +43,17 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun LoginPreview() {
     UX62550Theme {
         Surface {
-            LoginScreen(Modifier, {})
+            LoginScreen(modifier = Modifier, navigateBack = {}, onNavigateToProfile = {})
         }
     }
 }
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier, onNavigateToProfile: (String) -> Unit) {
+fun LoginScreen(modifier: Modifier = Modifier, navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit) {
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
 
-    Box {
+    Box(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box(
             modifier = Modifier
                 .size(
@@ -72,7 +73,7 @@ fun LoginScreen(modifier: Modifier = Modifier, onNavigateToProfile: (String) -> 
         }
         LoginInputHolder(emailValue, passValue, onNavigateToProfile)
     }
-
+	GeneralTopBar(navigateBack = navigateBack)
 }
 
 @Composable
