@@ -83,6 +83,7 @@ fun DetailedRating(
                 sheetState = sheetState
             ) {
                 Column {
+                    RatingRow("Rating", movieReviewID["MainRating"] ?: 0.0)
                     RatingRow("Acting", movieReviewID["Acting"] ?: 0.0)
                     RatingRow("Directing", movieReviewID["Directing"] ?: 0.0)
                     RatingRow("Plot", movieReviewID["Plot"] ?: 0.0)
