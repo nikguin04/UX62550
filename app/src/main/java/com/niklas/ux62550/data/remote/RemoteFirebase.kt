@@ -3,6 +3,7 @@ package com.niklas.ux62550.data.remote
 import android.util.Log
 import androidx.compose.ui.graphics.vector.EmptyPath
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
@@ -99,15 +100,17 @@ object RemoteFirebase {
         )
 
         if(FirebaseAuthController().getAuth().currentUser != null){
-            if(FirebaseFirestore.getInstance().collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString()) == EmptyPath){
-                FirebaseFirestore.getInstance().collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString()).set(Watchlistlist)
-            } else {
+
+            if(FirebaseFirestore.getInstance().collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString()).get().await().data != null){
                 FirebaseFirestore.getInstance().collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString()).update(
                     "MovieIds",
                     if (remove) {FieldValue.arrayRemove(data.id)}
                     else {FieldValue.arrayUnion(data.id)}
                 )
+            } else{
+                FirebaseFirestore.getInstance().collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString()).set(Watchlistlist)
             }
+
         } else {
             val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C")
             watchlist.update(
