@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niklas.ux62550.data.model.Provider
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 
@@ -85,6 +86,9 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                         )
                     }
                 }
+            }
+            is ProviderState.Error -> {
+                Text("Network error")
             }
         }
         Spacer(modifier = Modifier.width(4.dp))

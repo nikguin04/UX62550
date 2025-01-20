@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.SearchDataObject
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.domain.SearchRepository
 import com.niklas.ux62550.models.Movie
@@ -12,6 +13,7 @@ import com.niklas.ux62550.models.NonMovieBox
 import com.niklas.ux62550.ui.feature.home.MediaItemsUIState
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 import com.niklas.ux62550.ui.feature.mediadetails.ProviderState
+import com.niklas.ux62550.ui.feature.mediadetails.TrailerState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
@@ -26,7 +28,9 @@ class SearchViewModel : ViewModel() {
         NonMovieBox("John Doe", Color.Green, "Actor"),
     )
 
-    private val searchRepository = SearchRepository()
+
+
+    private val searchRepository = DataModule.searchRepository
 
     private val mutableNonMoviesState = MutableStateFlow<NonMovieBoxItemsUIState>(NonMovieBoxItemsUIState.Data(nonMovies))
     val nonMoviesState: StateFlow<NonMovieBoxItemsUIState> = mutableNonMoviesState
@@ -49,7 +53,8 @@ class SearchViewModel : ViewModel() {
         viewModelScope.launch {
             searchRepository.SearchFlow.collect { SearchDataObject ->
                 mutableMovieItemsUIState.update {
-                    MovieItemsUIState.Data(SearchDataObject)
+                    if (SearchDataObject.isSuccess) { MovieItemsUIState.Data(SearchDataObject.getOrThrow()) }
+                    else { MovieItemsUIState.Error }
                 }
             }
         }
@@ -80,9 +85,11 @@ class SearchViewModel : ViewModel() {
 sealed class MovieItemsUIState {
     data object Empty : MovieItemsUIState()
     data class Data(val movies: SearchDataObject) : MovieItemsUIState()
+    data object Error : MovieItemsUIState()
 }
 
 sealed class NonMovieBoxItemsUIState {
     data object Empty : NonMovieBoxItemsUIState()
     data class Data(val nonMovieBoxes: List<NonMovieBox>) : NonMovieBoxItemsUIState()
+    data object Error : NonMovieBoxItemsUIState()
 }

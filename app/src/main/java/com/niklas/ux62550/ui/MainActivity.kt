@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.navigation.GeneralNavBar
 import com.niklas.ux62550.navigation.MainNavHost
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -43,6 +44,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             UX62550Theme {
+                DataModule.initialize()
                 val navController = rememberNavController()
 
                 val snackbarHostState = remember { SnackbarHostState() }

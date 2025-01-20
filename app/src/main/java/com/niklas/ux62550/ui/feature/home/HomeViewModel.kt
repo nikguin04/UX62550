@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.HomeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +19,7 @@ class HomeViewModel : ViewModel() {
         MediaItem("Name 3", R.drawable.logo, Color.Green),
     )*/
 
-    private val homeRepository = HomeRepository()
+    private val homeRepository = DataModule.homeRepository
 
     private val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
     val mediaItemsState: StateFlow<MediaItemsUIState> = mutableMediaItemsState
@@ -30,12 +31,16 @@ class HomeViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             homeRepository.featuredMediaFlow.collect { searchDataObject ->
-                mutableMediaItemsState.update { MediaItemsUIState.Data(searchDataObject.results) }
+                mutableMediaItemsState.update {
+                    if (searchDataObject.isSuccess) { MediaItemsUIState.Data(searchDataObject.getOrThrow().results) }
+                    else { MediaItemsUIState.Error }
+                }
             }
         }
         viewModelScope.launch {
             homeRepository.genreFetchFlow.collect { genreDataObject ->
-                mutableMovieGenresState.update { GenresDataState.Data(genreDataObject.genres) }
+                if (genreDataObject.isSuccess) { mutableMovieGenresState.update { GenresDataState.Data(genreDataObject.getOrThrow().genres) } }
+                else { GenresDataState.Error }
             }
         }
         getFeaturedMedia()
@@ -48,6 +53,9 @@ class HomeViewModel : ViewModel() {
         homeRepository.getGenres()
     }
 
+    fun initErrorPreview() {
+        mutableMediaItemsState.update { MediaItemsUIState.Error }
+    }
 
     fun initPreview() {
         mutableMediaItemsState.update {
@@ -80,6 +88,7 @@ sealed class MediaItemsUIState {
     data class Data(
         val mediaObjects: List<MediaObject>
     ) : MediaItemsUIState()
+    data object Error : MediaItemsUIState()
 }
 
 sealed class GenresDataState {
@@ -87,5 +96,6 @@ sealed class GenresDataState {
     data class Data(
         val genres: List<GenreObject>
     ) : GenresDataState()
+    data object Error : GenresDataState()
 }
 

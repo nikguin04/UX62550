@@ -7,6 +7,7 @@ import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.WatchListDataObject
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.DiscoverRepository
 import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MediaDetailFetchViewModel(movieId: Int): ViewModel() {
-        private val mediaDetailsRepository = MediaDetailsRepository()
+    private val mediaDetailsRepository = DataModule.mediaDetailsRepository
 
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
     val movieState: StateFlow<MovieState> = mutableMovieState
@@ -26,7 +27,8 @@ class MediaDetailFetchViewModel(movieId: Int): ViewModel() {
             viewModelScope.launch {
                 mediaDetailsRepository.detailFlow.collect { movieDetailObject ->
                     mutableMovieState.update {
-                        MovieState.Data(movieDetailObject)
+                        if (movieDetailObject.isSuccess) { MovieState.Data(movieDetailObject.getOrThrow()) }
+                        else { MovieState.Error }
                     }
                 }
             }
@@ -47,5 +49,6 @@ class MediaDetailFetchViewModel(movieId: Int): ViewModel() {
     sealed class MediaDetailState {
         data object Empty : MediaDetailState()
         data class Data(val movieDetailObject: MovieDetailObject) : MediaDetailState()
+        data object Error : MediaDetailState()
     }
 }

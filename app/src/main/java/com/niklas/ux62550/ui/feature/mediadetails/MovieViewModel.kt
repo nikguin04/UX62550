@@ -11,14 +11,16 @@ import com.niklas.ux62550.data.model.Provider
 import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.data.model.TrailerObject
 import com.niklas.ux62550.data.remote.RemoteFirebase
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.MediaDetailsRepository
+import com.niklas.ux62550.ui.feature.home.KeywordItemsUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MovieViewModel(media: MediaObject) : ViewModel() {
-    private val mediaDetailsRepository = MediaDetailsRepository()
+    private val mediaDetailsRepository = DataModule.mediaDetailsRepository
     private val _movieReviewID = MutableStateFlow<Map<String, Double>>(emptyMap())
     val movieReviewID: StateFlow<Map<String, Double>> = _movieReviewID
 
@@ -69,7 +71,8 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         viewModelScope.launch {
             mediaDetailsRepository.detailFlow.collect { movieDetailObject ->
                 mutableMovieState.update {
-                    MovieState.Data(movieDetailObject)
+                    if (movieDetailObject.isSuccess) { MovieState.Data(movieDetailObject.getOrThrow()) }
+                    else { MovieState.Error }
                 }
             }
         }
@@ -77,8 +80,12 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
             mediaDetailsRepository.similarFlow.collect { searchDataObject ->
                 mutableSimilarMovieState.update {
                     run { // Append media_type before updating data
-                        searchDataObject.results.forEach { res -> res.media_type = "movie" } // TODO: Movies are hardcoded in discover, make this change smoothly when fetching TV
-                        SimilarMovieState.Data(searchDataObject.results)
+                        if (searchDataObject.isSuccess) {
+                            searchDataObject.getOrThrow().results.forEach { res -> res.media_type = "movie" } // TODO: Movies are hardcoded in discover, make this change smoothly when fetching TV
+                            SimilarMovieState.Data(searchDataObject.getOrThrow().results)
+                        }
+                        else { SimilarMovieState.Error }
+
                     }
 
                 }
@@ -87,14 +94,16 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         viewModelScope.launch {
             mediaDetailsRepository.providerFlow.collect { ProviderDataObject ->
                 mutableProviderState.update {
-                    ProviderState.Data(ProviderDataObject.result)
+                    if (ProviderDataObject.isSuccess) { ProviderState.Data(ProviderDataObject.getOrThrow().result) }
+                    else { ProviderState.Error }
                 }
             }
         }
         viewModelScope.launch {
             mediaDetailsRepository.trailerFlow.collect { TrailerObject ->
                 mutableTrailerState.update {
-                    TrailerState.Data(TrailerObject)
+                    if (TrailerObject.isSuccess) { TrailerState.Data(TrailerObject.getOrThrow()) }
+                    else { TrailerState.Error }
                 }
             }
         }
@@ -141,21 +150,26 @@ class MovieViewModelFactory(private val media: MediaObject) : ViewModelProvider.
 sealed class MovieState {
     data object Empty : MovieState()
     data class Data(val mediaDetailObject: MovieDetailObject) : MovieState()
+    data object Error : MovieState()
 }
 sealed class SimilarMovieState {
     object Empty : SimilarMovieState()
     data class Data(val similarMoviesObject: List<MediaObject>) : SimilarMovieState()
+    data object Error : SimilarMovieState()
 }
 
 sealed class ProviderState {
     object Empty : ProviderState()
     data class Data(val providerDataObject: Map<String,Result>) : ProviderState()
+    data object Error : ProviderState()
 }
 sealed class TrailerState {
     object Empty : TrailerState()
     data class Data(val trailerObject: TrailerObject) : TrailerState()
+    data object Error : TrailerState()
 }
 sealed class WatchlistState {
     data object Empty : WatchlistState()
     data class Data(val mediaDetailObjects: MediaObject) : WatchlistState()
+    data object Error : WatchlistState()
 }

@@ -5,14 +5,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.KeywordObject
 import com.niklas.ux62550.data.model.MediaObject
+import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.KeywordRepository
+import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class KeywordViewModel(private val keywordObject: KeywordObject) : ViewModel() {
-    private val keywordRepository = KeywordRepository()
+    private val keywordRepository = DataModule.keywordRepository
 
     private val mutableKeywordItemsState = MutableStateFlow<KeywordItemsUIState>(KeywordItemsUIState.Empty)
     val keywordItemsState: StateFlow<KeywordItemsUIState> = mutableKeywordItemsState
@@ -20,7 +22,10 @@ class KeywordViewModel(private val keywordObject: KeywordObject) : ViewModel() {
     init {
         viewModelScope.launch {
             keywordRepository.keywordFlow.collect { searchDataObject ->
-                mutableKeywordItemsState.update { KeywordItemsUIState.Data(searchDataObject.results) }
+                mutableKeywordItemsState.update {
+                    if (searchDataObject.isSuccess) { KeywordItemsUIState.Data(searchDataObject.getOrThrow().results) }
+                    else { KeywordItemsUIState.Error }
+                }
             }
         }
         getKeyword(keywordObject.id.toString())
@@ -40,4 +45,5 @@ class KeywordViewModelFactory(private val keywordObject: KeywordObject) : ViewMo
 sealed class KeywordItemsUIState {
     data object Empty : KeywordItemsUIState()
     data class Data(val mediaObjects: List<MediaObject>) : KeywordItemsUIState()
+    data object Error : KeywordItemsUIState()
 }
