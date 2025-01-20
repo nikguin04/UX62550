@@ -18,7 +18,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MovieViewModel(media: MediaObject) : ViewModel() {
-    private val mediaDetailsRepository = DataModule.mediaExtendedDetailsRepository
+    private val mediaExtendedDetailsRepository = DataModule.mediaExtendedDetailsRepository
+    private val mediaDetailsRepository = DataModule.mediaDetailRepository
     private val _movieReviewID = MutableStateFlow<Map<String, Double>>(emptyMap())
     val movieReviewID: StateFlow<Map<String, Double>> = _movieReviewID
 
@@ -29,19 +30,15 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         }
     }
 
-    private fun getDetails(MovieID: Int) = viewModelScope.launch {
-        mediaDetailsRepository.getMoviesDetails(MovieID) // TODO: Don't hardcore this, get some proper featured films
-    }
-
     private fun getSimilarMovies(MovieID : Int) = viewModelScope.launch {
-        mediaDetailsRepository.getSimilarsMovies(MovieID)
+        mediaExtendedDetailsRepository.getSimilarsMovies(MovieID)
     }
 
     private fun getProviderForMovies(MovieID: Int) = viewModelScope.launch {
-        mediaDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
+        mediaExtendedDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
     private fun getTrailerForMovies(MovieID : Int) = viewModelScope.launch {
-        mediaDetailsRepository.getTrailer(MovieID) // TODO: Don't hardcore this, get some proper featured films
+        mediaExtendedDetailsRepository.getTrailer(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
     fun updateToDatabase(media: MediaObject, remove: Boolean = false){
         viewModelScope.launch {
@@ -67,15 +64,21 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            mediaDetailsRepository.detailFlow.collect { movieDetailObject ->
-                mutableMovieState.update {
-                    if (movieDetailObject.isSuccess) { MovieState.Data(movieDetailObject.getOrThrow()) }
-                    else { MovieState.Error }
+            mediaDetailsRepository.getWithKey(
+                itemKey = media.id,
+                getUnit = { (mediaDetailsRepository::getMoviesDetails)(media.id) },
+                scope = viewModelScope
+            ).collect { movieDetailObjectResult ->
+                if (movieDetailObjectResult.isSuccess) {
+                    mutableMovieState.update { MovieState.Data(movieDetailObjectResult.getOrThrow()) }
+                } else {
+                    mutableMovieState.update { MovieState.Error }
                 }
+
             }
         }
         viewModelScope.launch {
-            mediaDetailsRepository.similarFlow.collect { searchDataObject ->
+            mediaExtendedDetailsRepository.similarFlow.collect { searchDataObject ->
                 mutableSimilarMovieState.update {
                     run { // Append media_type before updating data
                         if (searchDataObject.isSuccess) {
@@ -90,7 +93,7 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
             }
         }
         viewModelScope.launch {
-            mediaDetailsRepository.providerFlow.collect { ProviderDataObject ->
+            mediaExtendedDetailsRepository.providerFlow.collect { ProviderDataObject ->
                 mutableProviderState.update {
                     if (ProviderDataObject.isSuccess) { ProviderState.Data(ProviderDataObject.getOrThrow().result) }
                     else { ProviderState.Error }
@@ -98,7 +101,7 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
             }
         }
         viewModelScope.launch {
-            mediaDetailsRepository.trailerFlow.collect { TrailerObject ->
+            mediaExtendedDetailsRepository.trailerFlow.collect { TrailerObject ->
                 mutableTrailerState.update {
                     if (TrailerObject.isSuccess) { TrailerState.Data(TrailerObject.getOrThrow()) }
                     else { TrailerState.Error }
@@ -106,7 +109,6 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
             }
         }
 
-        getDetails(MovieID = media.id)
         getSimilarMovies(MovieID = media.id)
         getProviderForMovies(MovieID = media.id)
         getTrailerForMovies(MovieID = media.id)

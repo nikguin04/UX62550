@@ -13,13 +13,6 @@ class MediaExtendedDetailsRepository(
     private val remoteDataSource: RemoteMediaDataSource,
     private val firebaseDataSource: RemoteFirebase
 ) {
-    private val mutableDetailFlow = MutableSharedFlow<Result<MovieDetailObject>>()
-    val detailFlow = mutableDetailFlow.asSharedFlow()
-    suspend fun getMoviesDetails(movie_id: Int)  = mutableDetailFlow.emit(
-        try { Result.success( remoteDataSource.getMoviesDetails(movie_id) ) }
-        catch (e: Exception) { Result.failure(e)  }
-    )
-
     private val mutableSimilarMoviesFlow = MutableSharedFlow<Result<SearchDataObject>>()
     val similarFlow = mutableSimilarMoviesFlow.asSharedFlow()
     suspend fun getSimilarsMovies(movie_id: Int)  = mutableSimilarMoviesFlow.emit(
