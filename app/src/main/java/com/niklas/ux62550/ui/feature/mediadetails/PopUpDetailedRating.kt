@@ -1,6 +1,7 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -38,13 +40,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niklas.ux62550.data.model.MovieDetailObject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailedRating(
     modifier: Modifier = Modifier,
     movieViewModel: MovieViewModel,
-    movieID: MovieState.Data
+    movieID: MovieState.Data,
+    onNavigateToReview: (MovieDetailObject) -> Unit
 ) {
     val movieReviewID by movieViewModel.movieReviewID.collectAsState()
 
@@ -52,67 +56,96 @@ fun DetailedRating(
     LaunchedEffect(movieID) {
         movieViewModel.getDetailReviews(movieID.mediaDetailObject.id)
     }
-
-    Row(
-        modifier = modifier.padding(20.dp, 10.dp, 20.dp, 5.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Column {
         Text(
-            "Detailed Rating",
+            "User Rating",
             style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,
-                shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
-            )
+                shadow = Shadow(color = Color.Black, blurRadius = 5f)
+            ),
+            textAlign = TextAlign.Center
         )
-        val sheetState = rememberModalBottomSheetState()
-        var showBottomSheet by remember { mutableStateOf(false) }
-        IconButton(
-            onClick = { showBottomSheet = true },
-            modifier = Modifier.size(40.dp)
+        OverallRating(movieReviewID["MainRating"] ?: 0.0)
+        ReviewButton(movieID, onNavigateToReview)
+        Row(
+            modifier = modifier.padding(20.dp, 10.dp, 20.dp, 5.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
-                contentDescription = "Show bottom sheet",
-                tint = Color.White
-            )
-        }
 
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = { showBottomSheet = false },
-                sheetState = sheetState
+            Text(
+                "Detailed Rating",
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    color = Color.White,
+                    shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                )
+            )
+            val sheetState = rememberModalBottomSheetState()
+            var showBottomSheet by remember { mutableStateOf(false) }
+            IconButton(
+                onClick = { showBottomSheet = true },
+                modifier = Modifier.size(40.dp)
             ) {
-                Column {
-                    Text(
-                        "User Rating",
-                        Modifier.fillMaxWidth(),
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            color = Color.White,
-                            shadow = Shadow(color = Color.Black, blurRadius = 5f)
-                        ),
-                        textAlign = TextAlign.Center
-                    )
-                    HorizontalDivider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 5.dp),
-                        color = Color.Gray
-                    )
-                    RatingRow("Rating", movieReviewID["MainRating"] ?: 0.0)
-                    RatingRow("Acting", movieReviewID["Acting"] ?: 0.0)
-                    RatingRow("Directing", movieReviewID["Directing"] ?: 0.0)
-                    RatingRow("Plot", movieReviewID["Plot"] ?: 0.0)
-                    RatingRow("Music", movieReviewID["Music"] ?: 0.0)
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
+                    contentDescription = "Show bottom sheet",
+                    tint = Color.White
+                )
+            }
+
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = { showBottomSheet = false },
+                    sheetState = sheetState
+                ) {
+                    Column {
+
+                        HorizontalDivider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 5.dp),
+                            color = Color.Gray
+                        )
+                        DetailRatingRow("Acting", movieReviewID["Acting"] ?: 0.0)
+                        DetailRatingRow("Directing", movieReviewID["Directing"] ?: 0.0)
+                        DetailRatingRow("Plot", movieReviewID["Plot"] ?: 0.0)
+                        DetailRatingRow("Music", movieReviewID["Music"] ?: 0.0)
+                    }
                 }
             }
         }
     }
 }
+@Composable
+fun OverallRating(rating: Double){
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        for (i in 1..5) {
+            val isFilled = i <= rating
+            val starIcon =
+                if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
+            Image(
+                imageVector = starIcon,
+                modifier = Modifier.requiredSize(18.dp),
+                colorFilter = ColorFilter.tint(
+                    if (isFilled) Color.Yellow else Color.Gray
+                ),
+                contentDescription = "Star icon"
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "$rating/5",
+            fontSize = 16.sp
+        )
+    }
+}
 
 @Composable
-fun RatingRow(detailRatingName: String, rating: Double) {
+fun DetailRatingRow(detailRatingName: String, rating: Double) {
     Row(
         modifier = Modifier
             .padding(horizontal = 30.dp, vertical = 10.dp)
@@ -156,4 +189,13 @@ fun RatingRow(detailRatingName: String, rating: Double) {
         color = Color.Gray
     )
     Spacer(modifier = Modifier.height(12.dp))
+}
+
+@Composable
+fun ReviewButton(movieState: MovieState.Data, onNavigateToReview: (MovieDetailObject) -> Unit){
+    Button(
+        onClick = { onNavigateToReview(movieState.mediaDetailObject) }
+    ) {
+
+    }
 }
