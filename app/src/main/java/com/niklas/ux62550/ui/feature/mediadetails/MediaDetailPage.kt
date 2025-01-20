@@ -26,6 +26,7 @@ import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.PlayCircleOutline
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,12 +62,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.CreditState
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.common.MediaItemBackdropIntercept
+import com.niklas.ux62550.ui.feature.common.ShadowIcon
 import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.feature.watchlist.MovieIds
 import com.niklas.ux62550.ui.feature.watchlist.WatchlistViewModel
@@ -86,7 +89,7 @@ fun MediaDetailPagePreview() {
 
     UX62550Theme {
         Surface {
-            MediaDetailsScreen(movieViewModel, creditsViewModel, onNavigateToOtherMedia = {}, onNavigateToReview = {})
+            MediaDetailsScreen(movieViewModel, creditsViewModel, navigateBack = {}, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
     }
 }
@@ -95,6 +98,7 @@ fun MediaDetailPagePreview() {
 fun MediaDetailsScreen(
     movieViewModel: MovieViewModel,
     creditsViewModel: CreditViewModel,
+    navigateBack: () -> Unit,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (MovieDetailObject) -> Unit,
     watchlistViewModel: WatchlistViewModel = viewModel()
@@ -108,19 +112,27 @@ fun MediaDetailsScreen(
 
     when {
         movieState is MovieState.Empty || creditState is CreditState.Empty -> {
-            LoadingScreen()
+            Box {
+                LoadingScreen()
+                GeneralTopBar(navigateBack = navigateBack)
+            }
         }
 
         movieState is MovieState.Data && creditState is CreditState.Data -> {
-            Column(Modifier.verticalScroll(rememberScrollState())) {
-                Header(movieState = movieState, trailerState = trailerState, movieViewModel = movieViewModel, watchlistState = watchListState)
-                InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
-                Genres(genres = movieState, providerState = providerState)
-                DescriptionText(description = movieState.mediaDetailObject.Description)
+            Box {
+                Column(Modifier.verticalScroll(rememberScrollState())) {
+                    Header(movieState = movieState, trailerState = trailerState, movieViewModel = movieViewModel, watchlistState = watchListState)
+                    InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
+                    Genres(genres = movieState, providerState = providerState)
+                    DescriptionText(description = movieState.mediaDetailObject.Description)
 
-                ActorsAndDirectors(creditState = creditState)
-                DetailedRating(movieViewModel = movieViewModel, movieID = movieState)
-                SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
+                    ActorsAndDirectors(creditState = creditState)
+                    DetailedRating(movieViewModel = movieViewModel, movieID = movieState)
+                    SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
+                }
+                GeneralTopBar(navigateBack = navigateBack) {
+                    BookmarkButton(movieState.mediaDetailObject.toMediaObject(), movieViewModel, watchListState)
+                }
             }
         }
     }
@@ -213,11 +225,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
             is TrailerState.Error -> {
                 Text(text = "Network error")
             }
-
         }
-
-        // Bookmark Button
-        BookmarkButton(movieState.mediaDetailObject.toMediaObject(), movieViewModel, watchlistState)
     }
 }
 
@@ -318,24 +326,22 @@ fun DescriptionText(description: String) {
         )
     }
 }
-//TODO fix bookmark position
+
 @Composable
-fun BookmarkButton(media: MediaObject, movieViewModel: MovieViewModel, watchlistState: MovieIds){
+fun BookmarkButton(media: MediaObject, movieViewModel: MovieViewModel, watchlistState: MovieIds) {
     var isBookmarked by remember { mutableStateOf(false) }
 
     if (watchlistState is MovieIds.Data) {
         isBookmarked = watchlistState.movies?.contains(media.id) ?: false
     }
 
-    Image(
-        imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-        modifier = Modifier
-            .padding(100.dp)
-            .clickable {
-                movieViewModel.updateToDatabase(media, isBookmarked)
-                isBookmarked = !isBookmarked
-            },
-        colorFilter = ColorFilter.tint(Color.White),
-        contentDescription = "Bookmark"
-    )
+    IconButton(onClick = {
+        movieViewModel.updateToDatabase(media, isBookmarked)
+        isBookmarked = !isBookmarked
+    }) {
+        ShadowIcon(
+            imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+            contentDescription = "Bookmark"
+        )
+    }
 }
