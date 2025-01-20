@@ -143,7 +143,7 @@ fun Header(
             size = ImageSize.BACKDROP
         )
         ReviewText()
-        TitleText(media.Originaltitle)
+        TitleText(media.title)
     }
         Row(
             modifier = Modifier
