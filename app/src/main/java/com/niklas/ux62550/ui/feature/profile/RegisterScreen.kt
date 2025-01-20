@@ -82,10 +82,6 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
     }
 }
 
-
-private val Email = ""
-private val Password = ""
-
 @Composable
 fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: MutableState<String>, passValue: MutableState<String>, onNavigateToProfile: (String) -> Unit) {
     Column {
