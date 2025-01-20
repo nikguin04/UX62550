@@ -69,7 +69,7 @@ fun DetailedRating(
             ),
             textAlign = TextAlign.Center
         )
-        OverallRating(modifier, movieReviewID["MainRating"] ?: 0.0, )
+        OverallRating(modifier, movieReviewID["MainRating"] ?: 0.0)
         ReviewButton(movieID, onNavigateToReview)
         Row(
             modifier = modifier.padding(),
@@ -201,7 +201,11 @@ fun ReviewButton(movieState: MovieState.Data, onNavigateToReview: (MovieDetailOb
     ) {
         Text(
             "Give Rating",
-            color = Color.White
+            color = Color.White,
+            style = TextStyle(
+                shadow = Shadow(
+                    color = Color.Black, blurRadius = 10f
+                ),)
         )
     }
 }
