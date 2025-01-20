@@ -210,6 +210,9 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                     TitleText(movieState.mediaDetailObject.Originaltitle)
                 }
             }
+            is TrailerState.Error -> {
+                Text(text = "Network error")
+            }
 
         }
 

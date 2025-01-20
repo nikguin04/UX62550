@@ -38,5 +38,8 @@ fun SimilarMedia(
                 fetchEnBackdrop = true
             )
         }
+        is SimilarMovieState.Error -> {
+            Text("Network error")
+        }
     }
 }
