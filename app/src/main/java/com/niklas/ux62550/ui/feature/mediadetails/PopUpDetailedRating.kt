@@ -1,7 +1,6 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +16,7 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.ui.theme.ReviewColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,20 +57,22 @@ fun DetailedRating(
     LaunchedEffect(movieID) {
         movieViewModel.getDetailReviews(movieID.mediaDetailObject.id)
     }
-    Column {
+    Column(
+        modifier.padding(20.dp, 25.dp, 20.dp, 5.dp)
+    ) {
         Text(
             "User Rating",
             style = TextStyle(
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 color = Color.White,
                 shadow = Shadow(color = Color.Black, blurRadius = 5f)
             ),
             textAlign = TextAlign.Center
         )
-        OverallRating(movieReviewID["MainRating"] ?: 0.0)
+        OverallRating(modifier, movieReviewID["MainRating"] ?: 0.0, )
         ReviewButton(movieID, onNavigateToReview)
         Row(
-            modifier = modifier.padding(20.dp, 10.dp, 20.dp, 5.dp),
+            modifier = modifier.padding(),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -100,13 +103,6 @@ fun DetailedRating(
                     sheetState = sheetState
                 ) {
                     Column {
-
-                        HorizontalDivider(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 5.dp),
-                            color = Color.Gray
-                        )
                         DetailRatingRow("Acting", movieReviewID["Acting"] ?: 0.0)
                         DetailRatingRow("Directing", movieReviewID["Directing"] ?: 0.0)
                         DetailRatingRow("Plot", movieReviewID["Plot"] ?: 0.0)
@@ -118,8 +114,9 @@ fun DetailedRating(
     }
 }
 @Composable
-fun OverallRating(rating: Double){
+fun OverallRating(modifier: Modifier, rating: Double){
     Row(
+        modifier = modifier.padding(vertical = 5.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -129,17 +126,17 @@ fun OverallRating(rating: Double){
                 if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
             Image(
                 imageVector = starIcon,
-                modifier = Modifier.requiredSize(18.dp),
+                modifier = Modifier.requiredSize(20.dp),
                 colorFilter = ColorFilter.tint(
                     if (isFilled) Color.Yellow else Color.Gray
                 ),
                 contentDescription = "Star icon"
             )
         }
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = "$rating/5",
-            fontSize = 16.sp
+            fontSize = 18.sp
         )
     }
 }
@@ -194,8 +191,17 @@ fun DetailRatingRow(detailRatingName: String, rating: Double) {
 @Composable
 fun ReviewButton(movieState: MovieState.Data, onNavigateToReview: (MovieDetailObject) -> Unit){
     Button(
-        onClick = { onNavigateToReview(movieState.mediaDetailObject) }
+        onClick = { onNavigateToReview(movieState.mediaDetailObject) },
+        colors = ButtonColors(
+            contentColor = ReviewColor,
+            containerColor = ReviewColor,
+            disabledContentColor = ReviewColor,
+            disabledContainerColor = ReviewColor,
+        ),
     ) {
-
+        Text(
+            "Give Rating",
+            color = Color.White
+        )
     }
 }
