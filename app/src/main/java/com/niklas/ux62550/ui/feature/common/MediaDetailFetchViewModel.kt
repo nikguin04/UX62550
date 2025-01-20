@@ -1,38 +1,38 @@
 package com.niklas.ux62550.ui.feature.common
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.niklas.ux62550.data.model.GenreObject
-import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
-import com.niklas.ux62550.data.model.WatchListDataObject
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.domain.DiscoverRepository
-import com.niklas.ux62550.domain.MediaDetailsRepository
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
-import com.niklas.ux62550.ui.feature.watchlist.MovieIdsRow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MediaDetailFetchViewModel(movieId: Int): ViewModel() {
-    private val mediaDetailsRepository = DataModule.mediaDetailsRepository
+    private val mediaDetailsRepository = DataModule.mediaDetailRepository
 
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
     val movieState: StateFlow<MovieState> = mutableMovieState
 
         init {
             viewModelScope.launch {
-                mediaDetailsRepository.detailFlow.collect { movieDetailObject ->
-                    mutableMovieState.update {
-                        if (movieDetailObject.isSuccess) { MovieState.Data(movieDetailObject.getOrThrow()) }
-                        else { MovieState.Error }
+                mediaDetailsRepository.getWithKey(
+                    itemKey = movieId,
+                    getUnit = { (mediaDetailsRepository::getMoviesDetails)(movieId) },
+                    scope = viewModelScope
+                ).collect { movieDetailObjectResult ->
+                    if (movieDetailObjectResult.isSuccess) {
+                        mutableMovieState.update { MovieState.Data(movieDetailObjectResult.getOrThrow()) }
+                    } else {
+                        mutableMovieState.update { MovieState.Error }
                     }
+
                 }
             }
-            getDetails(movieId)
         }
 
     private fun getDetails(MovieID: Int) = viewModelScope.launch {

@@ -1,6 +1,5 @@
 package com.niklas.ux62550.domain
 
-import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
@@ -10,17 +9,10 @@ import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-class MediaDetailsRepository(
+class MediaExtendedDetailsRepository(
     private val remoteDataSource: RemoteMediaDataSource,
     private val firebaseDataSource: RemoteFirebase
 ) {
-    private val mutableDetailFlow = MutableSharedFlow<Result<MovieDetailObject>>()
-    val detailFlow = mutableDetailFlow.asSharedFlow()
-    suspend fun getMoviesDetails(movie_id: Int)  = mutableDetailFlow.emit(
-        try { Result.success( remoteDataSource.getMoviesDetails(movie_id) ) }
-        catch (e: Exception) { Result.failure(e)  }
-    )
-
     private val mutableSimilarMoviesFlow = MutableSharedFlow<Result<SearchDataObject>>()
     val similarFlow = mutableSimilarMoviesFlow.asSharedFlow()
     suspend fun getSimilarsMovies(movie_id: Int)  = mutableSimilarMoviesFlow.emit(
