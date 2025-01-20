@@ -40,11 +40,11 @@ class MainActivity : ComponentActivity() {
             )
         )
 
+        DataModule.initialize()
         super.onCreate(savedInstanceState)
 
         setContent {
             UX62550Theme {
-                DataModule.initialize()
                 val navController = rememberNavController()
 
                 val snackbarHostState = remember { SnackbarHostState() }

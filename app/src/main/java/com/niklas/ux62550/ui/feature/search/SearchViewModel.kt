@@ -6,21 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.domain.MediaDetailsRepository
-import com.niklas.ux62550.domain.SearchRepository
-import com.niklas.ux62550.models.Movie
 import com.niklas.ux62550.models.NonMovieBox
-import com.niklas.ux62550.ui.feature.home.MediaItemsUIState
-import com.niklas.ux62550.ui.feature.mediadetails.MovieState
-import com.niklas.ux62550.ui.feature.mediadetails.ProviderState
-import com.niklas.ux62550.ui.feature.mediadetails.TrailerState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.minutes
 
 class SearchViewModel : ViewModel() {
     private val nonMovies = listOf(
