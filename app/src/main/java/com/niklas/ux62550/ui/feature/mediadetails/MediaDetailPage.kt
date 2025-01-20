@@ -219,7 +219,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                         }
                     }
                     Spacer(modifier = Modifier.height(12.dp))
-                    TitleText(movieState.mediaDetailObject.Originaltitle)
+                    TitleText(movieState.mediaDetailObject.title)
                 }
             }
             is TrailerState.Error -> {
