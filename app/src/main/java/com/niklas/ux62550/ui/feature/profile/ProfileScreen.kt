@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.remote.FirebaseAuthController
 import com.niklas.ux62550.models.Profile
 
 import com.niklas.ux62550.ui.theme.LoginButtonGray

@@ -1,17 +1,12 @@
-package com.niklas.ux62550.ui.feature.profile
+package com.niklas.ux62550.data.remote
 
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.data.remote.RemoteFirebase
-import kotlinx.coroutines.launch
 
 class FirebaseAuthController: Activity() {
     // taken from firebase documentation
@@ -21,8 +16,6 @@ class FirebaseAuthController: Activity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
         auth = Firebase.auth
 
     }

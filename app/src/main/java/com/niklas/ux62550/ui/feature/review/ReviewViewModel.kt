@@ -1,12 +1,6 @@
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
-import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
-import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
-import com.niklas.ux62550.ui.feature.profile.FirebaseAuthController
-import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
-import com.niklas.ux62550.ui.feature.watchlist.MovieIds
+import com.niklas.ux62550.data.remote.FirebaseAuthController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
