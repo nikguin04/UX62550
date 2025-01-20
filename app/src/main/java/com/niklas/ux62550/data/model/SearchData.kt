@@ -69,7 +69,7 @@ data class MediaObject(
 	val popularity: Float? = null,
 
     @SerialName("release_date")
-	val release_date: String? = null,
+	val release_date: String,
 
     @SerialName("vote_average")
 	val vote_average: Float? = null,

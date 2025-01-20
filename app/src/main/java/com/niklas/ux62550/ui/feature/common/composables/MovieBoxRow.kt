@@ -107,20 +107,15 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
 
                         Spacer(modifier = Modifier.width(62.dp))
 
-                        if(movie.release_date.toString().count() >= 5){
-                            Text(
-                                text = movie.release_date.toString().substring(0, 4),
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                        else {
-                            Text(
-                                text = "N/A",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
+                        Text(
+                            text = if (movie.release_date.count() > 4) {
+                                movie.release_date.toString().substring(0, 4)
+                            } else {
+                                "N/A"
+                            },
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
 
                     }
                 }

@@ -34,7 +34,7 @@ data class MovieDetailObject(
     val posterPath : String?,
 
     @SerialName("release_date")
-    val relaseDate : String = "0",
+    val relaseDate : String,
 
     @SerialName("title")
     val title: String = "",
