@@ -51,6 +51,7 @@ fun MainNavHost(
         composable<Route.SearchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.SearchScreen>()) }
             SearchScreen(
+                modifier = Modifier.statusBarsPadding(),
                 onNavigateToMedia = { media ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
                     navController.navigate(Route.MediaDetailsScreen)
@@ -64,6 +65,7 @@ fun MainNavHost(
             val media = getRelevantBackstackMedia<MediaObject>(navController, "media") ?: SearchDataExamples.MediaObjectExample // Default to media object example if no media as placeholder
             LaunchedEffect(Unit) { /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/ }
             MediaDetailsScreen(
+                modifier = Modifier.statusBarsPadding(),
                 movieViewModel = viewModel(factory = MovieViewModelFactory(media = media)),
                 creditsViewModel = viewModel(factory = CreditsViewModelFactory(media = media)),
                 onNavigateToReview = { mediaDetails ->
@@ -79,6 +81,7 @@ fun MainNavHost(
             val media = getRelevantBackstackMedia<MovieDetailObject>(navController, "reviewMedia")
             LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
             ScreenReviewAndRating(
+                modifier = Modifier.statusBarsPadding(),
                 media = media?: MediaDetailExample.MediaDetailObjectExample,
                 navBack = navController::popBackStack
             )
@@ -87,6 +90,7 @@ fun MainNavHost(
         composable<Route.LoginRegisterScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginRegisterScreen>()) }
             LoginRegisterScreen(
+                modifier = Modifier.statusBarsPadding(),
                 onNavigateToLoginScreen = { navController.navigate(Route.LoginScreen) },
                 onNavigateToRegisterScreen = { navController.navigate(Route.RegisterScreen) }
             )
@@ -94,25 +98,37 @@ fun MainNavHost(
 
         composable<Route.LoginScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginScreen>()) }
-            LoginScreen(onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) })
+            LoginScreen(
+                modifier = Modifier.statusBarsPadding(),
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen)}
+            )
         }
 
         composable<Route.RegisterScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
-            RegisterScreen(onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) })
+            RegisterScreen(
+                modifier = Modifier.statusBarsPadding(),
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+            )
         }
 
         composable<Route.ProfileScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ProfileScreen>()) }
-            ProfileScreen(onNavigateToLoginRegister = { navController.navigateAndClearBackStack(Route.LoginRegisterScreen) })
+            ProfileScreen(
+                modifier = Modifier.statusBarsPadding(),
+                onNavigateToLoginRegister = { navController.navigateAndClearBackStack(Route.LoginRegisterScreen) }
+            )
         }
 
         composable<Route.WatchScreen> {
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.WatchScreen>()) }
-            WatchlistContent( onNavigateToMedia = { media ->
-                navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
-                navController.navigate(Route.MediaDetailsScreen)
-            })
+            WatchlistContent(
+                modifier = Modifier.statusBarsPadding(),
+                onNavigateToMedia = { media ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
+                    navController.navigate(Route.MediaDetailsScreen)
+                }
+            )
         }
     }
 }

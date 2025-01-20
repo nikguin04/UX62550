@@ -75,14 +75,13 @@ fun ScreenReviewAndRating(
     media: MovieDetailObject,
     navBack: () -> Unit,
     reviewViewModel: ReviewViewModel = viewModel()
-)
-{
+) {
     val reviewState by reviewViewModel.reviewState.collectAsState()
 
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-        Header(media = media, reviewViewModel)
+        Header(modifier = modifier, media = media, reviewViewModel)
 
         PublishReview(stars = reviewState.rating,
             reviewText = reviewState.reviewText,
@@ -101,6 +100,7 @@ fun ScreenReviewAndRating(
 
 @Composable
 fun Header(
+    modifier: Modifier = Modifier,
     media: MovieDetailObject,
     reviewViewModel: ReviewViewModel
 ) {
@@ -115,7 +115,7 @@ fun Header(
                     drawRect( // Draw the fade
                         brush = Brush.verticalGradient(
                             0f to Color.Black,
-                            1/3f to Color.Black,
+                            1 / 3f to Color.Black,
                             1f to Color.Transparent,
                         ),
                         blendMode = BlendMode.DstIn
@@ -123,35 +123,39 @@ fun Header(
                 },
             size = ImageSize.BACKDROP
         )
-        ReviewText()
-        TitleText(media.Originaltitle)
-    }
-        Row(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+        Column(modifier = modifier) {
+            ReviewText()
+            TitleText(media.Originaltitle)
 
-        ) {
-            RatingStars(
-                rating = reviewViewModel.reviewState.collectAsState().value.rating,
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp, 40.dp, 0.dp, 0.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
 
-                onRatingSelected = { reviewViewModel.updateRating(it) },
-                starSize = 40.dp
-            )
-            val currentRating = reviewViewModel.reviewState.collectAsState().value.rating
-            Text(
-                text = "${currentRating}/5",
-                style = TextStyle(
-                    fontSize = 34.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-                color = Color.White,
-                modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
-            )
+            ) {
+                RatingStars(
+                    rating = reviewViewModel.reviewState.collectAsState().value.rating,
 
+                    onRatingSelected = { reviewViewModel.updateRating(it) },
+                    starSize = 40.dp
+                )
+                val currentRating = reviewViewModel.reviewState.collectAsState().value.rating
+                Text(
+                    text = "${currentRating}/5",
+                    style = TextStyle(
+                        fontSize = 34.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = Color.White,
+                    modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
+                )
+
+            }
         }
     }
+}
 
 
 @Composable
@@ -252,7 +256,7 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(0.dp, 90.dp)
+                .padding(0.dp, 120.dp, 0.dp, 0.dp)
         )
     }
 
@@ -270,7 +274,7 @@ fun TitleText(movieTitle: String) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 120.dp)
+            .padding(0.dp, 5.dp, 0.dp, 0.dp)
     )
 }
 

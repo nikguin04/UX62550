@@ -60,10 +60,10 @@ fun SearchPreview() {
 }
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
+fun SearchScreen(modifier: Modifier = Modifier, viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
     val nonMoviesState = viewModel.nonMoviesState.collectAsState().value
     val moviesState = viewModel.movieItemsUIState.collectAsState().value
-    SearchContent(viewModel = viewModel, movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
+    SearchContent(modifier = modifier, viewModel = viewModel, movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,8 +80,8 @@ fun SearchContent(
     LazyColumn(modifier = modifier.padding()) {
         item {
             Row(
-                modifier = Modifier
-                    .padding(20.dp, 45.dp, 20.dp, 20.dp)
+                modifier = modifier
+                    .padding(20.dp, 20.dp, 20.dp, 20.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center

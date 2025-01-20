@@ -86,13 +86,14 @@ fun MediaDetailPagePreview() {
 
     UX62550Theme {
         Surface {
-            MediaDetailsScreen(movieViewModel, creditsViewModel, onNavigateToOtherMedia = {}, onNavigateToReview = {})
+            MediaDetailsScreen(Modifier, movieViewModel, creditsViewModel, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
     }
 }
 
 @Composable
 fun MediaDetailsScreen(
+    modifier: Modifier = Modifier,
     movieViewModel: MovieViewModel,
     creditsViewModel: CreditViewModel,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
@@ -114,13 +115,15 @@ fun MediaDetailsScreen(
         movieState is MovieState.Data && creditState is CreditState.Data -> {
             Column(Modifier.verticalScroll(rememberScrollState())) {
                 Header(movieState = movieState, trailerState = trailerState, movieViewModel = movieViewModel, watchlistState = watchListState)
-                InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
-                Genres(genres = movieState, providerState = providerState)
-                DescriptionText(description = movieState.mediaDetailObject.Description)
+                Column (modifier = modifier) {
+                    InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
+                    Genres(genres = movieState, providerState = providerState)
+                    DescriptionText(description = movieState.mediaDetailObject.Description)
 
-                ActorsAndDirectors(creditState = creditState)
-                DetailedRating()
-                SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
+                    ActorsAndDirectors(creditState = creditState)
+                    DetailedRating()
+                    SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
+                }
             }
         }
     }

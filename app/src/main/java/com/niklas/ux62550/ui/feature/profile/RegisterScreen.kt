@@ -42,40 +42,39 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun RegisterPreview() {
     UX62550Theme {
         Surface {
-            RegisterScreen({})
+            RegisterScreen(Modifier, {})
         }
     }
 }
 
 @Composable
-fun RegisterScreen(onNavigateToProfile: (String) -> Unit) {
+fun RegisterScreen(modifier: Modifier = Modifier, onNavigateToProfile: (String) -> Unit) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
 
-    Surface(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        Box {
-            Box(
-                modifier = Modifier
-                    .size(
-                        LocalConfiguration.current.screenWidthDp.dp,
-                        LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                    )
-                    .background(Brush.verticalGradient(colorStops = RedColorGradient))
-            )
-        }
-
-
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Row(
-                modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
-            }
-            RegisterInputHolder(usernameValue, emailValue, passValue, onNavigateToProfile)
-        }
+    Box {
+        Box(
+            modifier = Modifier
+                .size(
+                    LocalConfiguration.current.screenWidthDp.dp,
+                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
+                )
+                .background(Brush.verticalGradient(colorStops = RedColorGradient))
+        )
     }
+
+
+    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(
+            modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
+        }
+        RegisterInputHolder(usernameValue, emailValue, passValue, onNavigateToProfile)
+    }
+
 }
 
 @Composable
