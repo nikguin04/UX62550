@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
@@ -38,20 +39,21 @@ import kotlin.math.absoluteValue
 @Composable
 fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia: (MediaObject) -> Unit) {
     val pagerState = rememberPagerState(pageCount = { items.size }, initialPage = items.size / 2)
-    val w = 350.dp
-    val h = w / 16 * 9
     val gap = 10.dp
+    val peek = 20.dp
+    val pageWidth = LocalConfiguration.current.screenWidthDp.dp - (gap + peek) * 2
     HorizontalPager(
         state = pagerState,
-        contentPadding = PaddingValues(start = Dp((LocalConfiguration.current.screenWidthDp - w.value) / 2)),
+        contentPadding = PaddingValues(horizontal = gap + peek),
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        pageSize = PageSize.Fixed(w),
+        pageSize = PageSize.Fixed(pageWidth),
         pageSpacing = gap
     ) { page ->
         Card(
             Modifier
-                .size(w, h)
+                .fillMaxWidth()
+                .aspectRatio(16f / 9f)
                 .graphicsLayer {
                     // Calculate the absolute offset for the current page from the
                     // scroll position. We use the absolute value which allows us to mirror
@@ -72,9 +74,10 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
             // Card content
             MediaItemBackdropIntercept(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(16f / 9f)
                     .clickable { onNavigateToMedia(items[page]) }
                     .align(Alignment.CenterHorizontally)
-                    .size(w, h)
                     .clip(RoundedCornerShape(6.dp)),
                 mediaItem = items[page],
                 fetchEnBackdrop = true
