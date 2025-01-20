@@ -32,8 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.remote.FirebaseAuthController
+import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.LogoBox
-
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.TextFieldDescColor
@@ -44,18 +44,18 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun RegisterPreview() {
     UX62550Theme {
         Surface {
-            RegisterScreen({})
+            RegisterScreen(navigateBack = {}, onNavigateToProfile = {})
         }
     }
 }
 
 @Composable
-fun RegisterScreen(onNavigateToProfile: (String) -> Unit) {
+fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
 
-    Surface(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+    Box(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box {
             Box(
                 modifier = Modifier
@@ -77,6 +77,8 @@ fun RegisterScreen(onNavigateToProfile: (String) -> Unit) {
             }
             RegisterInputHolder(usernameValue, emailValue, passValue, onNavigateToProfile)
         }
+
+        GeneralTopBar(navigateBack = navigateBack)
     }
 }
 

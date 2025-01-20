@@ -25,47 +25,8 @@ import javax.inject.Singleton
 import kotlin.concurrent.Volatile
 
 
-val loggingInterceptor = HttpLoggingInterceptor().apply {
-    level = HttpLoggingInterceptor.Level.NONE //HttpLoggingInterceptor.Level.BODY // Logs request and response body
-}
-
-object RemoteMediaDataSource {
-
-    private const val BASE_URL = "https://api.themoviedb.org/3/"
-    const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/"
-    private const val CONTENT_TYPE = "application/json; charset=UTF8"
-
-    private val json = Json {
-        ignoreUnknownKeys = true
-    }
-
-    private val cacheSize = 25L * 1024 * 1024 // 25 MB
-    private val cache = Cache(File("http_cache"), cacheSize)
-    private val CacheInterceptor = Interceptor { chain ->
-        val response = chain.proceed(chain.request())
-        // Cache data for 1 hour
-        val maxAge = 60 * 60
-        response.newBuilder()
-            .header("Cache-Control", "public, max-age=$maxAge")
-            .build()
-    }
-
-    private val okHttpClient = OkHttpClient.Builder()
-        .cache(cache)
-        .addInterceptor(ApiKeyInterceptor("cf1263628c618a27a88c8cec3f0b1d1f")) // Add the interceptor
-        .addInterceptor(loggingInterceptor)
-        .addInterceptor(CacheInterceptor)
-        .build()
-
-    private val retrofit = Retrofit.Builder()
-        .addConverterFactory(
-            json.asConverterFactory(CONTENT_TYPE.toMediaType())
-        )
-        .baseUrl(BASE_URL)
-        .client(okHttpClient)
-        .build()
-
-    private val mediaApi: TMDBApiService = retrofit.create(TMDBApiService::class.java)
+class RemoteMediaDataSource(private val retrofit: Retrofit) {
+    private val mediaApi: RemoteApiService = retrofit.create(RemoteApiService::class.java)
 
     suspend fun getSearch(search_mode: String, query: String) = mediaApi.getSearch(search_mode, query)
     suspend fun getTrending(time_window: String = "day") = mediaApi.getTrending(time_window)
@@ -81,70 +42,4 @@ object RemoteMediaDataSource {
     suspend fun getUserSearch(search_query: String) = mediaApi.getUserSearch(search_query)
     suspend fun getTrailer(movie_id: Int) = mediaApi.getTrailer(movie_id)
     suspend fun getImages(media_type: String, media_id: Int,  include_image_language: String = "en") = mediaApi.getImages(media_type, media_id, include_image_language)
-}
-
-interface TMDBApiService {
-
-    @GET("search/{search_mode}?&page=1&language=en-US")
-    suspend fun getSearch(@Path("search_mode") search_mode: String, @Query("query") query: String): SearchDataObject
-
-    @GET("trending/movie/{time_window}") // Note: Does not support "people" as search mode
-    suspend fun getTrending(@Path("time_window") time_window: String): SearchDataObject
-
-
-    @GET("search/multi")
-    suspend fun getUserSearch(@Query("query") query: String): SearchDataObject
-
-
-	@GET("keyword/{keyword_id}/movies")
-    suspend fun getKeywordMovies(@Path("keyword_id") keyword_id: String, @Query("page") page: Int = 1): SearchDataObject
-
-    @GET("discover/movie")
-    suspend fun getDiscoverMovies(@Query("with_genres") genres: String, @Query("page") page: Int = 1): SearchDataObject
-
-    @GET("movie/{movie_id}")
-    suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): MovieDetailObject
-
-    @GET("movie/{movie_id}")
-    suspend fun getMovieForRow(@Path("movie_id") movie_id: Int): WatchListDataObject
-
-    @GET("movie/{movie_id}/similar")
-    suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SearchDataObject
-
-    @GET("movie/{movie_id}/credits")
-    suspend fun getCredit(@Path("movie_id") movie_id: Int): CreditObject
-
-    @GET("movie/{movie_id}/watch/providers")
-    suspend fun getProvider(@Path("movie_id") movie_id: Int): ProviderDataObject
-
-    @GET("{media_type}/{media_id}/images")
-    suspend fun getImages(@Path("media_type") media_type: String, @Path("media_id") media_id: Int, @Query("include_image_language") include_image_language: String): ImagesDataObject
-
-    @GET("genre/movie/list")
-    suspend fun getMovieGenres(): GenreDataObject
-    @GET("genre/tv/list")
-    suspend fun getTvGenres(): GenreDataObject
-
-    @GET("movie/{movie_id}/videos")
-    suspend fun getTrailer(@Path("movie_id") movie_id: Int): TrailerObject
-}
-
-
-class ApiKeyInterceptor(private val apiKey: String) : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val originalRequest = chain.request()
-        val originalUrl = originalRequest.url
-
-        // Add API key as a query parameter
-        val newUrl = originalUrl.newBuilder()
-            .addQueryParameter("api_key", apiKey)
-            .build()
-
-        // Create a new request with the updated URL
-        val newRequest = originalRequest.newBuilder()
-            .url(newUrl)
-            .build()
-
-        return chain.proceed(newRequest)
-    }
 }

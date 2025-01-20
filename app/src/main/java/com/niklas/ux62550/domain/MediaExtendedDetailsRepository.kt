@@ -1,6 +1,5 @@
 package com.niklas.ux62550.domain
 
-import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
@@ -10,34 +9,31 @@ import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-class MediaDetailsRepository {
-
-    private val firebaseDataSource = RemoteFirebase
-    private val remoteDataSource = RemoteMediaDataSource
-
-    private val mutableDetailFlow = MutableSharedFlow<MovieDetailObject>()
-    val detailFlow = mutableDetailFlow.asSharedFlow()
-    suspend fun getMoviesDetails(movie_id: Int)  = mutableDetailFlow.emit(
-        remoteDataSource.getMoviesDetails(movie_id)
-    )
-
-    private val mutableSimilarMoviesFlow = MutableSharedFlow<SearchDataObject>()
+class MediaExtendedDetailsRepository(
+    private val remoteDataSource: RemoteMediaDataSource,
+    private val firebaseDataSource: RemoteFirebase
+) {
+    private val mutableSimilarMoviesFlow = MutableSharedFlow<Result<SearchDataObject>>()
     val similarFlow = mutableSimilarMoviesFlow.asSharedFlow()
     suspend fun getSimilarsMovies(movie_id: Int)  = mutableSimilarMoviesFlow.emit(
-        remoteDataSource.getSimilarMoviesDetail(movie_id)
+        try { Result.success( remoteDataSource.getSimilarMoviesDetail(movie_id) ) }
+        catch (e: Exception) { Result.failure(e)  }
 
     )
 
-    private val mutableProviderFlow = MutableSharedFlow<ProviderDataObject>()
+    private val mutableProviderFlow = MutableSharedFlow<Result<ProviderDataObject>>()
     val providerFlow = mutableProviderFlow.asSharedFlow()
     suspend fun getProvider(movie_id: Int)  = mutableProviderFlow.emit(
-        remoteDataSource.getProviders(movie_id)
+        try { Result.success( remoteDataSource.getProviders(movie_id) ) }
+        catch (e: Exception) { Result.failure(e)  }
 
     )
-    private val mutableTrailerFlow = MutableSharedFlow<TrailerObject>()
+    
+    private val mutableTrailerFlow = MutableSharedFlow<Result<TrailerObject>>()
     val trailerFlow = mutableTrailerFlow.asSharedFlow()
     suspend fun getTrailer(movie_id: Int)  = mutableTrailerFlow.emit(
-        remoteDataSource.getTrailer(movie_id)
+        try { Result.success( remoteDataSource.getTrailer(movie_id) ) }
+        catch (e: Exception) { Result.failure(e)  }
 
     )
 

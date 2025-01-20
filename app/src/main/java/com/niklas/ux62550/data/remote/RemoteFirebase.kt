@@ -56,6 +56,7 @@ object RemoteFirebase {
     }
     //Help from chat
     suspend fun getReview(movieId: Int): Map<String, Double> {
+        var totalMainRating = 0
         var totalActorRating = 0
         var totalDirectingRating = 0
         var totalMusicRating = 0
@@ -66,8 +67,11 @@ object RemoteFirebase {
             val document = FirebaseInstance.getDB()!!.collection("UserReviews").document("Movies").collection(movieId.toString()).get().await()
             if (document != null && document.isEmpty.not()) {
                 for (documents in document.documents) {
+                    val mainRating = documents.get("MainRating") as Double
                     val ratings = documents.get("CategoryRatings") as Map<String, Double>
 
+
+                    totalMainRating += mainRating.toInt()
                     totalActorRating += (ratings["Acting"] ?: 0).toInt()
                     totalDirectingRating += (ratings["Directing"] ?: 0).toInt()
                     totalMusicRating += (ratings["Music"] ?: 0).toInt()
@@ -81,12 +85,14 @@ object RemoteFirebase {
             Log.w("Firebase_info", "Error getting documents for movieId: $movieId", e)
         }
 
+        val averageMainRating = if (reviewCount > 0) totalMainRating.toDouble() / reviewCount else 0.0
         val averageActorRating = if (reviewCount > 0) totalActorRating.toDouble() / reviewCount else 0.0
         val averageDirectingRating = if (reviewCount > 0) totalDirectingRating.toDouble() / reviewCount else 0.0
         val averageMusicRating = if (reviewCount > 0) totalMusicRating.toDouble() / reviewCount else 0.0
         val averagePlotRating = if (reviewCount > 0) totalPlotRating.toDouble() / reviewCount else 0.0
 
         return mapOf(
+            "MainRating" to averageMainRating,
             "Acting" to averageActorRating,
             "Directing" to averageDirectingRating,
             "Music" to averageMusicRating,
