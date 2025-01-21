@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CreditViewModel(media: MediaObject) : ViewModel() {
+class CreditViewModel() : ViewModel() {
     private val creditDetailsRepository = DataModule.castDetailsRepository
 
     private fun getCredit(movieID: Int) = viewModelScope.launch {
@@ -39,7 +39,7 @@ class CreditViewModel(media: MediaObject) : ViewModel() {
         }
     }
 
-    init {
+    fun init(media: MediaObject) {
         viewModelScope.launch {
             creditDetailsRepository.creditFlow.collect { creditDetailObject ->
                 mutableCreditState.update {
@@ -52,9 +52,9 @@ class CreditViewModel(media: MediaObject) : ViewModel() {
     }
 }
 // TODO: change all names from cast to credits
-class CreditsViewModelFactory(private val media: MediaObject) : ViewModelProvider.Factory {
+/*class CreditsViewModelFactory(private val media: MediaObject) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T { return CreditViewModel(media) as T }
-}
+}*/
 
 sealed class CreditState {
     data object Empty : CreditState()

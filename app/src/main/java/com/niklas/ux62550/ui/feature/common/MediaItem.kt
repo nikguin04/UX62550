@@ -157,7 +157,7 @@ fun MediaItemBackdropIntercept(
     fetchEnBackdrop: Boolean,
     mediaItem: MediaObject,
     backdropFallback: Boolean = true,
-    imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + mediaItem.id)
+    imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = mediaItem.getUniqueStringIdentifier())
 ) {
     if (fetchEnBackdrop) {
         //if (mediaItem.media_type == null) {throw Exception("Media type unknown, cant fetch english backdrop")}

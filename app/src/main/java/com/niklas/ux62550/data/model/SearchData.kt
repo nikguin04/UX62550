@@ -79,7 +79,14 @@ data class MediaObject(
 
     @SerialName("vote_count")
 	val vote_count: Int? = null,
-    ): Parcelable
+
+
+) : Parcelable {
+    fun getUniqueStringIdentifier(): String {
+        return (media_type ?: "") + id
+    }
+
+}
 
 
 
