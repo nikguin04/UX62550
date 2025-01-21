@@ -30,7 +30,6 @@ class RemoteMediaDataSource(private val retrofit: Retrofit) {
 
     suspend fun getSearch(search_mode: String, query: String) = mediaApi.getSearch(search_mode, query)
     suspend fun getTrending(time_window: String = "day") = mediaApi.getTrending(time_window)
-    suspend fun getKeywordMovies(keyword_id: String, page: Int) = mediaApi.getKeywordMovies(keyword_id,page)
     suspend fun getDiscoverMovies(genres: String, page: Int) = mediaApi.getDiscoverMovies(genres,page)
 	suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
     suspend fun getMovieForRow(movie_id: Int) = mediaApi.getMovieForRow(movie_id)

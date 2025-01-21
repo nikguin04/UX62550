@@ -2,6 +2,7 @@ package com.niklas.ux62550.ui.feature.watchlist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -43,11 +44,15 @@ import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.niklas.ux62550.data.model.WatchListDataObject
+import com.niklas.ux62550.ui.theme.SearchColorForText
 
 @Composable
 @Preview(showBackground = true)
@@ -70,7 +75,8 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(0.dp, 20.dp, 0.dp, 20.dp), // ConvertPxToDp(29.5f)
+                .padding(top = 45.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -108,14 +114,14 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                 onExpandedChange = {},
                 content = {},
                 modifier = Modifier
-                    .padding(0.dp, 0.dp, 0.dp, 20.dp)
+                    .padding(bottom = 20.dp)
                     .widthIn(max = 360.dp)
             )
             LogoBox(size = 200.dp)
             Row(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(0.dp, 24.dp, 0.dp),
+                    .padding(top= 24.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
@@ -145,9 +151,24 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                 is MovieIds.Data -> {
                     // Display list of movie items in LazyColumn
                     val movieIDList: List<Int> = watchListState.movies?:emptyList()
-                    LazyColumn {
-                        items(movieIDList) {id ->
-                            MovieBoxRowFromId(id, onNavigateToMedia = onNavigateToMedia)
+                    Column {
+                        movieIDList.forEachIndexed { index, id ->
+                            if (index != 0 && index != movieIDList.size-1) {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    HorizontalDivider(
+                                        color = SearchColorForText,
+                                        thickness = 1.dp,
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp)
+                                            .fillMaxWidth(0.7f)
+                                    )
+                                }
+
+                            }
+                            MovieBoxRowFromId(Modifier.padding(16.dp), id, onNavigateToMedia = onNavigateToMedia, Modifier.padding(start = 16.dp))
                         }
                     }
                 }

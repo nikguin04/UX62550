@@ -130,7 +130,7 @@ fun MediaDetailsScreen(
 
                         ActorsAndDirectors(creditState = creditState)
                         DetailedRating(movieViewModel = movieViewModel, movieID = movieState, onNavigateToReview = onNavigateToReview)
-                        SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
+                        SimilarMedia(modifier = Modifier.padding(vertical = 20.dp), similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
                     }
 
                 }
@@ -270,7 +270,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data) {
             )
         }
         Text(
-            movieState.mediaDetailObject.relaseDate.substring(0, 4),
+            text = if(movieState.mediaDetailObject.releaseDate.count() > 4){ movieState.mediaDetailObject.releaseDate.substring(0, 4) } else "N/A",
             style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,

@@ -112,6 +112,8 @@ fun HorizontalLazyRowMovies(
     modifier: Modifier = Modifier,
     width: Dp,
     height: Dp,
+    edgeGap: Dp,
+    betweenGap: Dp,
     items: List<MediaObject>,
     onNavigateToMedia: (MediaObject) -> Unit,
     rowListState: LazyListState? = null,

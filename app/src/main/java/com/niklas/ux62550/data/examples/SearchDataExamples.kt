@@ -13,6 +13,7 @@ public class SearchDataExamples {
                 poster_path = "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
                 genre_ids = listOf(),
                 popularity = 0f,
+                release_date = "2024-10-10"
             )
     }
 }
