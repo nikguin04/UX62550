@@ -44,15 +44,16 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun LoginPreview() {
     UX62550Theme {
         Surface {
-            LoginScreen(navigateBack = {}, onNavigateToProfile = {})
+            LoginScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow =  {})
         }
     }
 }
 
 @Composable
-fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit) {
+fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit) {
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
+
 
     Box(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box {
@@ -73,15 +74,22 @@ fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit)
             ) {
                 LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
             }
-            LoginInputHolder(emailValue, passValue, onNavigateToProfile)
-        }
+            LoginInputHolder(
+                emailValue, passValue, onNavigateToProfile,
+                snackbarShow = snackbarShow
+            )
 
+        }
         GeneralTopBar(navigateBack = navigateBack)
     }
 }
 
 @Composable
-fun LoginInputHolder(emailValue: MutableState<String>, passValue: MutableState<String>, onNavigateToProfile: (String) -> Unit) {
+fun LoginInputHolder(
+    emailValue: MutableState<String>,
+    passValue: MutableState<String>,
+    onNavigateToProfile: (String) -> Unit,
+    snackbarShow: (String) -> Unit) {
     Column {
         TextField(
             modifier = Modifier
@@ -116,7 +124,10 @@ fun LoginInputHolder(emailValue: MutableState<String>, passValue: MutableState<S
         )
 
             Button(
-                onClick = { FirebaseAuthController().signIn(emailValue.value.toString(), passValue.value.toString()); onNavigateToProfile("Login")},
+                onClick = {
+                    FirebaseAuthController().signIn(emailValue.value.toString(), passValue.value.toString());
+                    onNavigateToProfile("Login");
+                    snackbarShow("Successfully Login")},
                 colors = ButtonDefaults.buttonColors(
                     containerColor = RegisterButtonBlue
                 ),

@@ -1,6 +1,7 @@
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niklas.ux62550.data.remote.FirebaseAuthController
+import com.niklas.ux62550.data.remote.RemoteFirebase.addReivewToFirebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -35,29 +36,7 @@ class ReviewViewModel : ViewModel() {
             "timestamp" to System.currentTimeMillis()
         )
 
-        // shoud this be move to the firebase repository
-        // if true then use the user that is sigent ind else the defult user will be used
-        // in the real app there will be no defult user you need to sign in to used this function
-        if(FirebaseAuthController().getAuth().currentUser?.uid != null){
-            if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document(FirebaseAuthController().getAuth().currentUser?.uid.toString()).get().isSuccessful){
-                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document(FirebaseAuthController().getAuth().currentUser?.uid.toString()).update(review)
-            } else {
-                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document(FirebaseAuthController().getAuth().currentUser?.uid.toString())
-                    .set(review)
-                    .addOnSuccessListener { println("Review submitted successfully!") }
-                    .addOnFailureListener { println("Error submitting review: ${it.message}") }
-
-            }
-        } else {
-            if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User1").get().isSuccessful){
-                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User1").update(review)
-            } else {
-                FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User1")
-                    .set(review)
-                    .addOnSuccessListener { println("Review submitted successfully!") }
-                    .addOnFailureListener { println("Error submitting review: ${it.message}") }
-            }
-        }
+        addReivewToFirebase(review)
     }
 
     // Update the review text

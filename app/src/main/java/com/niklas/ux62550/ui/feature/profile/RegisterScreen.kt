@@ -44,13 +44,13 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun RegisterPreview() {
     UX62550Theme {
         Surface {
-            RegisterScreen(navigateBack = {}, onNavigateToProfile = {})
+            RegisterScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow =  {})
         }
     }
 }
 
 @Composable
-fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit) {
+fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
@@ -75,7 +75,11 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
             ) {
                 LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
             }
-            RegisterInputHolder(usernameValue, emailValue, passValue, onNavigateToProfile)
+            RegisterInputHolder(
+                usernameValue, emailValue, passValue, onNavigateToProfile,
+                snackbarShow = snackbarShow
+            )
+
         }
 
         GeneralTopBar(navigateBack = navigateBack)
@@ -83,7 +87,12 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
 }
 
 @Composable
-fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: MutableState<String>, passValue: MutableState<String>, onNavigateToProfile: (String) -> Unit) {
+fun RegisterInputHolder(
+    usernameValue: MutableState<String>,
+    emailValue: MutableState<String>,
+    passValue: MutableState<String>,
+    onNavigateToProfile: (String) -> Unit,
+    snackbarShow: (String) -> Unit) {
     Column {
         TextField(
             modifier = Modifier
@@ -135,7 +144,11 @@ fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: Mutable
         )
 
         Button(
-            onClick = { FirebaseAuthController().createAccount(emailValue.value.toString(), passValue.value.toString());onNavigateToProfile("Login") },
+            onClick = {
+                FirebaseAuthController().createAccount(emailValue.value.toString(), passValue.value.toString());
+                onNavigateToProfile("Login");
+                snackbarShow("Successfully register and signed in")
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = RegisterButtonBlue
             ),

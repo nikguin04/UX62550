@@ -114,6 +114,3 @@ fun LoginRegisterScreen(
         }
     }
 }
-
-
-

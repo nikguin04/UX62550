@@ -1,12 +1,9 @@
 package com.niklas.ux62550.ui.feature.watchlist
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.WatchListDataObject
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.domain.WatchListRepository
-import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -45,7 +42,7 @@ class WatchlistViewModel() : ViewModel() {
                 }
             }
         }
-// TODO make work
+
         getWatchList()
     }
 }
