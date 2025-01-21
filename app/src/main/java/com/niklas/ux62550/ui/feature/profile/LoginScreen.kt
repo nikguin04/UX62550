@@ -43,7 +43,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun LoginPreview() {
     UX62550Theme {
         Surface {
-            LoginScreen(modifier = Modifier, navigateBack = {}, onNavigateToProfile = {})
+            LoginScreen(navigateBack = {}, onNavigateToProfile = {})
         }
     }
 }

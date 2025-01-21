@@ -189,7 +189,6 @@ fun ProfileContent(
     }
 }
 
-
 @Composable
 fun ProfileAttribute(label: String, value: MutableState<String>) {
     Row(Modifier.fillMaxWidth(), Arrangement.Start, Alignment.CenterVertically) {

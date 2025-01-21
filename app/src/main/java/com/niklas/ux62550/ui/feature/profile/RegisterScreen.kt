@@ -49,7 +49,7 @@ fun RegisterPreview() {
 }
 
 @Composable
-fun RegisterScreen(modifier: Modifier = Modifier, navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit) {
+fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, modifier: Modifier = Modifier, ) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
