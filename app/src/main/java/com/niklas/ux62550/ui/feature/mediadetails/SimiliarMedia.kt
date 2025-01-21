@@ -28,9 +28,9 @@ fun SimilarMedia(
             color = Color.White,
             shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
         ),
-        modifier = modifier.padding(0.dp, 0.dp, 0.dp, 10.dp)
+        modifier = modifier.padding(bottom = 10.dp)
     )
-    Box(modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp,)) {
+    Box(modifier = Modifier.padding(bottom = 20.dp,)) {
         when (similarMediaState) {
             SimilarMovieState.Empty -> {
                 Text("NO PIC")

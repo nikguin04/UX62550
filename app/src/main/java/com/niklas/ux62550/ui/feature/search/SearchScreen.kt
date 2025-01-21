@@ -164,7 +164,7 @@ fun SearchContent(
                         movie = movieBoxItem,
                         modifier = Modifier.clickable(
                             onClick = { onNavigateToMedia(movieBoxItem) }
-                        ).padding(16.dp, 16.dp, 16.dp, 16.dp),
+                        ).padding(16.dp),
                         infoRowModifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp)
                     )
                 }

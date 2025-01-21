@@ -75,7 +75,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(0.dp, 45.dp, 0.dp, 0.dp) // ConvertPxToDp(29.5f)
+                .padding(top = 45.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -114,14 +114,14 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                 onExpandedChange = {},
                 content = {},
                 modifier = Modifier
-                    .padding(0.dp, 0.dp, 0.dp, 20.dp)
+                    .padding(bottom = 20.dp)
                     .widthIn(max = 360.dp)
             )
             LogoBox(size = 200.dp)
             Row(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(0.dp, 24.dp, 0.dp, 0.dp),
+                    .padding(top= 24.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
@@ -168,7 +168,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                                 }
 
                             }
-                            MovieBoxRowFromId(Modifier.padding(16.dp, 16.dp, 16.dp, 16.dp), id, onNavigateToMedia = onNavigateToMedia, Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp))
+                            MovieBoxRowFromId(Modifier.padding(16.dp), id, onNavigateToMedia = onNavigateToMedia, Modifier.padding(start = 16.dp))
                         }
                     }
                 }
