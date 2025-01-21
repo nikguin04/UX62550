@@ -80,7 +80,7 @@ import kotlin.time.Duration.Companion.minutes
 @Preview(showBackground = true)
 fun MediaDetailPagePreview() {
     val media = SearchDataExamples.MediaObjectExample
-    val movieViewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
+    val movieViewModel: MovieViewModel = viewModel()
     movieViewModel.initPreview()
 
     val creditsViewModel: CreditViewModel = viewModel()

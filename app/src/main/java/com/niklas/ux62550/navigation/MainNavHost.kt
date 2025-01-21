@@ -17,7 +17,7 @@ import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.home.HomeScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsScreen
-import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModelFactory
+import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
 import com.niklas.ux62550.ui.feature.profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.feature.profile.LoginScreen
 import com.niklas.ux62550.ui.feature.profile.ProfileScreen
@@ -66,15 +66,16 @@ fun MainNavHost(
             //val mediaRoute: Route.MediaDetailsScreen = backStackEntry.toRoute()
             //val media = mediaRoute.media
             val media = getRelevantBackstackMedia<MediaObject>(navController, "media") ?: SearchDataExamples.MediaObjectExample // Default to media object example if no media as placeholder
-            val creditsViewModel: CreditViewModel = viewModel(viewModelStoreOwner = backStackEntry)
+            val creditsViewModel: CreditViewModel = viewModel()
+            val movieViewModel: MovieViewModel = viewModel()
             LaunchedEffect(Unit) {
                 /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/
-                Log.w("launch", "Launched")
                 creditsViewModel.init(media)
+                movieViewModel.init(media)
             }
             MediaDetailsScreen(
                 modifier = Modifier.statusBarsPadding(),
-                movieViewModel = viewModel(factory = MovieViewModelFactory(media = media)),
+                movieViewModel = movieViewModel,
                 creditsViewModel = creditsViewModel,
                 navigateBack = navController::popBackStack,
                 onNavigateToReview = { mediaDetails ->
