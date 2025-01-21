@@ -60,18 +60,29 @@ fun ProfilePreview() {
 }
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit) {
-    val profile = viewModel.profileState.collectAsState().value
-    ProfileContent(profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
+    when(val profile = viewModel.profileState.collectAsState().value){
+        UserName.Empty -> {
+
+        }
+        is UserName.Data -> {
+            ProfileContent(profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
+        }
+        UserName.Error -> {
+
+        }
+    }
 }
 @Composable
 fun ProfileContent(
     onNavigateToLoginRegister: (String) -> Unit,
-    profile: Profile
+    profile: UserName.Data
 ) {
-    val emailValueTemp = remember { mutableStateOf(profile.Email) }
+    val emailValueTemp = remember { mutableStateOf(profile.userData.Email) }
     val passwordValueTemp = remember { mutableStateOf("**********") }
 
-    Surface(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+    Surface(modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState())) {
         Box {
             Box(
                 modifier = Modifier
@@ -104,7 +115,8 @@ fun ProfileContent(
                             Icon(
                                 imageVector = Icons.Outlined.AddCircleOutline,
                                 contentDescription = null,
-                                Modifier.size(26.dp)
+                                Modifier
+                                    .size(26.dp)
                                     .align(Alignment.Center),
                                 Color.Black
                             )
@@ -113,7 +125,7 @@ fun ProfileContent(
                     }
 
                     Text(
-                        text = profile.name,
+                        text = profile.userData.name,
                         style = TextStyle(fontSize = 12.sp, shadow = textShadow),
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
@@ -223,7 +235,8 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
                         color = Color.White,
                         shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
                     ),
-                    modifier = Modifier.padding(start = 10.dp, top = 10.dp)
+                    modifier = Modifier
+                        .padding(start = 10.dp, top = 10.dp)
                         .align(Alignment.CenterStart)
                 )
             }

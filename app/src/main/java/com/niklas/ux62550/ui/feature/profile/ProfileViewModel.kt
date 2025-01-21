@@ -5,9 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.domain.ProfileRepository
 import com.niklas.ux62550.models.Profile
-import com.niklas.ux62550.ui.feature.watchlist.MovieIds
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -17,33 +15,33 @@ import kotlinx.coroutines.launch
 class ProfileViewModel : ViewModel() {
     private val profileRepository = DataModule.profileRepository
 
-    private val profile = Profile(
-        name = "Simone",
-        Email = "simonrolsen@gmail.com",
-        FacvritMovieID = 1,
-        tempColor = Color.Red
+    private val mutableProfileState = MutableStateFlow<UserName>(UserName.Empty)
+    val profileState: StateFlow<UserName> = mutableProfileState
 
-    )
-
-    private fun getUserName() = viewModelScope.launch {
-        profileRepository.getUserData()
-    }
     init {
         viewModelScope.launch {
-            profileRepository.userFlow.collect { UserName ->
+            profileRepository.userFlow.collect { userName ->
                 mutableProfileState.update {
-                    UserName
+                    val profile = Profile(
+                        name = userName,
+                        Email = "default@gmail.com",
+                        FavoriteMovieID = 1,
+                        tempColor = Color.Gray
+                    )
+                    UserName.Data(profile)
                 }
             }
         }
         getUserName()
     }
-
-    private val mutableProfileState = MutableStateFlow<Profile>(profile)
-    val profileState: StateFlow<Profile> = mutableProfileState
+    private fun getUserName() = viewModelScope.launch {
+        profileRepository.getUserData()
+    }
 }
+
+
 sealed class UserName {
     data object Empty : UserName()
-    data class Data(val username: String) : UserName()
+    data class Data(val userData: Profile) : UserName()
     data object Error : UserName()
 }

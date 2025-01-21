@@ -110,5 +110,6 @@ object DataModule {
         reviewRepository = ReviewRepository(firebaseDataSource = remoteFirebaseDataSource)
         searchRepository = SearchRepository(remoteDataSource = remoteMediaDataSource)
         watchListRepository = WatchListRepository(remoteDataSource = remoteMediaDataSource, firebaseDataSource = remoteFirebaseDataSource)
+        profileRepository = ProfileRepository(remoteFirebaseDataSource)
     }
 }
