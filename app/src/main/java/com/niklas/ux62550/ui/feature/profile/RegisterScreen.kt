@@ -43,7 +43,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun RegisterPreview() {
     UX62550Theme {
         Surface {
-            RegisterScreen(modifier = Modifier, navigateBack = {}, onNavigateToProfile = {})
+            RegisterScreen(navigateBack = {}, onNavigateToProfile = {})
         }
     }
 }

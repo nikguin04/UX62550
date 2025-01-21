@@ -55,9 +55,9 @@ fun LoginRegisterPreviewSmall() {
 
 @Composable
 fun LoginRegisterScreen(
-    modifier: Modifier = Modifier,
     onNavigateToLoginScreen: (String) -> Unit,
     onNavigateToRegisterScreen: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     Box {

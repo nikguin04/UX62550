@@ -58,15 +58,15 @@ fun ProfilePreview() {
     }
 }
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier, viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit) {
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, modifier: Modifier = Modifier) {
     val profile = viewModel.profileState.collectAsState().value
     ProfileContent(modifier = modifier, profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
 }
 @Composable
 fun ProfileContent(
-    modifier: Modifier = Modifier,
     onNavigateToLoginRegister: (String) -> Unit,
-    profile: Profile
+    profile: Profile,
+    modifier: Modifier = Modifier,
 ) {
     var nameValueTemp = remember { mutableStateOf(profile.name) }
     var emailValueTemp = remember { mutableStateOf(profile.Email) }

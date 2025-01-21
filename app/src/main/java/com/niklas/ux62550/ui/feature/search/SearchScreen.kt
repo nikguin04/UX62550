@@ -60,7 +60,7 @@ fun SearchPreview() {
 }
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier, viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
+fun SearchScreen(onNavigateToMedia: (MediaObject) -> Unit, modifier: Modifier = Modifier, viewModel: SearchViewModel = viewModel()) {
     val nonMoviesState = viewModel.nonMoviesState.collectAsState().value
     val moviesState = viewModel.movieItemsUIState.collectAsState().value
     SearchContent(modifier = modifier, viewModel = viewModel, movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
@@ -70,10 +70,10 @@ fun SearchScreen(modifier: Modifier = Modifier, viewModel: SearchViewModel = vie
 @Composable
 fun SearchContent(
     viewModel: SearchViewModel,
-    modifier: Modifier = Modifier,
     movieItemsUIState: MovieItemsUIState,
     nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
-    onNavigateToMedia: (MediaObject) -> Unit
+    onNavigateToMedia: (MediaObject) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     var expanded by rememberSaveable { mutableStateOf(false) }

@@ -89,19 +89,19 @@ fun MediaDetailPagePreview() {
 
     UX62550Theme {
         Surface {
-            MediaDetailsScreen(Modifier, movieViewModel, creditsViewModel, navigateBack = {}, onNavigateToOtherMedia = {}, onNavigateToReview = {})
+            MediaDetailsScreen(movieViewModel = movieViewModel, creditsViewModel = creditsViewModel, navigateBack = {}, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
     }
 }
 
 @Composable
 fun MediaDetailsScreen(
-    modifier: Modifier = Modifier,
     movieViewModel: MovieViewModel,
     creditsViewModel: CreditViewModel,
     navigateBack: () -> Unit,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (MovieDetailObject) -> Unit,
+    modifier: Modifier = Modifier,
     watchlistViewModel: WatchlistViewModel = viewModel()
 ) {
     val movieState = movieViewModel.movieState.collectAsState().value

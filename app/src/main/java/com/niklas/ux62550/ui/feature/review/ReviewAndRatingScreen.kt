@@ -95,7 +95,7 @@ fun ScreenReviewAndRating(
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
-            Header(modifier = modifier, media = media, reviewViewModel)
+            Header(modifier = modifier, media = media, reviewViewModel = reviewViewModel)
 
             PublishReview(stars = reviewState.rating,
                 reviewText = reviewState.reviewText,
@@ -119,9 +119,9 @@ fun ScreenReviewAndRating(
 
 @Composable
 fun Header(
-    modifier: Modifier = Modifier,
     media: MovieDetailObject,
-    reviewViewModel: ReviewViewModel
+    reviewViewModel: ReviewViewModel,
+    modifier: Modifier = Modifier,
 ) {
     Box {
         MediaItem(

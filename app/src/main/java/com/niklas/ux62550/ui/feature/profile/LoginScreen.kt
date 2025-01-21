@@ -49,7 +49,7 @@ fun LoginPreview() {
 }
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier, navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit) {
+fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, modifier: Modifier = Modifier) {
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
 
