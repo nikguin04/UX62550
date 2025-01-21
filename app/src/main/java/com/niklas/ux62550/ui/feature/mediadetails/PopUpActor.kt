@@ -74,7 +74,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
             Modifier
                 .padding(0.dp, 15.dp, 0.dp, 0.dp),
             style = TextStyle(
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 color = Color.White,
                 shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
 

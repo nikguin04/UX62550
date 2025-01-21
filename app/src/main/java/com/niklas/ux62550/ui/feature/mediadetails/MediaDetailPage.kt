@@ -121,16 +121,16 @@ fun MediaDetailsScreen(
         movieState is MovieState.Data && creditState is CreditState.Data -> {
             Box {
                 Column(Modifier.verticalScroll(rememberScrollState())) {
-                    Header(movieState = movieState, trailerState = trailerState, movieViewModel = movieViewModel, watchlistState = watchListState)
-                    InfoRow(movieState = movieState, onNavigateToReview = onNavigateToReview)
+                    Header(movieState = movieState, trailerState = trailerState)
+                    InfoRow(movieState = movieState)
                     Genres(genres = movieState, providerState = providerState)
                     DescriptionText(description = movieState.mediaDetailObject.Description)
 
                     ActorsAndDirectors(creditState = creditState)
-                    DetailedRating(movieViewModel = movieViewModel, movieID = movieState)
+                    DetailedRating(movieViewModel = movieViewModel, movieID = movieState, onNavigateToReview = onNavigateToReview)
                     SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
                 }
-                GeneralTopBar(navigateBack = navigateBack) {
+                    GeneralTopBar(navigateBack = navigateBack) {
                     BookmarkButton(movieState.mediaDetailObject.toMediaObject(), movieViewModel, watchListState)
                 }
             }
@@ -139,7 +139,7 @@ fun MediaDetailsScreen(
 }
 
 @Composable
-fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState, movieViewModel: MovieViewModel, watchlistState: MovieIds) {
+fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState) {
     val context = LocalContext.current
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
@@ -230,7 +230,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
 }
 
 @Composable
-fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNavigateToReview: (MovieDetailObject) -> Unit) {
+fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -238,7 +238,6 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
     ) {
         // Row for the stars so that we can use spaced evenly
         Row(
-            modifier = Modifier.clickable { onNavigateToReview(movieState.mediaDetailObject) },
             verticalAlignment = Alignment.CenterVertically
         ) {
             val rating = movieState.mediaDetailObject.vote_average / 2
