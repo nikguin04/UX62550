@@ -10,5 +10,5 @@ class ProfileRepository(
 
     private val mutableUserFlow = MutableSharedFlow<String>()
     val userFlow = mutableUserFlow.asSharedFlow()
-    suspend fun getUserData()  = firebaseDataSource.getUserData()
+    suspend fun getUserData()  = firebaseDataSource.getUserData(mutableUserFlow)
 }

@@ -152,7 +152,7 @@ object RemoteFirebase {
                 .addOnFailureListener { println("Error submitting review: ${it.message}") }
         }
     }
-    suspend fun getUserData() {
+    suspend fun getUserData(mutableUserFlow: MutableSharedFlow<String>) {
         try {
             var userIdPath = "1NhBN640YoUdZq848o3C"
             if (FirebaseAuthController().getAuth().currentUser != null) {
@@ -163,10 +163,11 @@ object RemoteFirebase {
                 .collection("UserData").document(userIdPath).get().await()
             Log.d("Firebase_info", "${document.id} => ${document.data}")
             val userName = document.data?.get("Name") as? String ?: "Default Name"
+            mutableUserFlow.emit(userName)
 
         } catch (e: Exception) {
             Log.w("Firebase_info", "Error getting documents.", e)
-            // Emit an error indicator
+            mutableUserFlow.emit("Error with Username")
         }
     }
 }
