@@ -5,13 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -21,7 +21,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -29,9 +28,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -42,7 +43,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.models.Profile
 import com.niklas.ux62550.ui.feature.mediadetails.ProfileViewModel
 import com.niklas.ux62550.ui.theme.LoginButtonGray
-import com.niklas.ux62550.ui.theme.ProfileBtnRed
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import com.niklas.ux62550.ui.theme.placeholderIconColor
@@ -69,7 +69,7 @@ fun ProfileContent(
 ) {
     var nameValueTemp = remember { mutableStateOf(profile.name) }
     var emailValueTemp = remember { mutableStateOf(profile.Email) }
-    var passwordValueTemp = remember { mutableStateOf("**********") }
+    val passwordValueTemp = remember { mutableStateOf("**********") }
 
     Surface(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box {
@@ -99,12 +99,14 @@ fun ProfileContent(
                 Column {
                     Box {
                         DrawCircle(Modifier.size(105.dp), color = placeholderIconColor)
+                        //LogoBox(modifier = Modifier.clip(RoundedCornerShape(100)), size = 100.dp)
 
                         Box(Modifier.padding(((105 - 26) / 2).dp)) {
                             Icon(
                                 imageVector = Icons.Outlined.AddCircleOutline,
                                 contentDescription = null,
-                                Modifier.size(26.dp),
+                                Modifier.size(26.dp)
+                                    .align(Alignment.Center),
                                 Color.Black
                             )
                         }
@@ -163,15 +165,11 @@ fun ProfileContent(
                 )
             }
 
-            // Profile data
             Box(Modifier.size(0.dp, 30.dp))
-            ProfileAttribute("Display Name", nameValueTemp)
-            Box(Modifier.size(0.dp, 17.dp))
             ProfileAttribute("Email", emailValueTemp)
-            Box(Modifier.size(0.dp, 110.dp))
+            Box(Modifier.size(0.dp, 30.dp))
             ProfileAttribute("Password", passwordValueTemp)
-
-            Box(Modifier.size(0.dp, 20.dp))
+            Box(Modifier.size(0.dp, 180.dp))
             Button  (
                 onClick = { onNavigateToLoginRegister("Sign out") },
                 colors = ButtonDefaults.buttonColors(
@@ -180,6 +178,7 @@ fun ProfileContent(
                 modifier = Modifier
                     .size(145.dp, 45.dp)
                     .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+                    .align(Alignment.CenterHorizontally)
             ) {
                 Text(
                     text = "Sign out",
@@ -187,7 +186,6 @@ fun ProfileContent(
                     style = TextStyle(fontSize = 20.sp, shadow = textShadow)
                 )
             }
-
         }
     }
 }
@@ -195,32 +193,41 @@ fun ProfileContent(
 @Composable
 fun ProfileAttribute(label: String, value: MutableState<String>) {
     Row(Modifier.fillMaxWidth(), Arrangement.Start, Alignment.CenterVertically) {
-        TextField(
-            value = value.value,
-            modifier = Modifier
-                .size(260.dp, 55.dp)
-                .padding(16.dp, 0.dp, 0.dp, 0.dp),
-            onValueChange = { value.value = it },
-            label = { Text(text = label) },
-            textStyle = TextStyle(fontSize = 15.sp)
-        )
-        Box(Modifier.size(22.dp, 0.dp))
-        Button(
-            onClick = {},
-            colors = ButtonDefaults.buttonColors(
-                containerColor = ProfileBtnRed
-            ),
-            modifier = Modifier
-                .size(70.dp, 23.dp)
-                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape),
-            contentPadding = PaddingValues(0.dp)
-        ) {
-            Text(
-                text = "Edit",
-                color = Color.White,
-                style = TextStyle(fontSize = 15.sp, shadow = textShadow),
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
+        Column(Modifier.padding(horizontal = 20.dp)) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.Gray)
+                    .padding(6.dp)
+                    .shadow(
+                        elevation = 15.dp,
+                        shape = RoundedCornerShape(8.dp),
+                        ambientColor = Color.Black.copy(alpha = 255f),
+                        spotColor = Color.Black.copy(alpha = 255f)
+                    )
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    label,
+                    style =TextStyle(
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                    ),
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Text(
+                    text = value.value,
+                    style =TextStyle(
+                        fontSize = 18.sp,
+                        color = Color.White,
+                        shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                    ),
+                    modifier = Modifier.padding(start = 10.dp, top = 10.dp)
+                        .align(Alignment.CenterStart)
+                )
+            }
         }
     }
 }

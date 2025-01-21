@@ -13,7 +13,7 @@ import kotlin.time.Duration.Companion.minutes
 class ProfileViewModel : ViewModel() {
     private val profile = Profile(
         name = "Simone",
-        Email = "*****@gmail.com",
+        Email = "simonrolsen@gmail.com",
         FacvritMovieID = 1,
         tempColor = Color.Red
 
