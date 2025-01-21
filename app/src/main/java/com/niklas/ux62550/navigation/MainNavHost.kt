@@ -68,10 +68,12 @@ fun MainNavHost(
             val media = getRelevantBackstackMedia<MediaObject>(navController, "media") ?: SearchDataExamples.MediaObjectExample // Default to media object example if no media as placeholder
             val creditsViewModel: CreditViewModel = viewModel()
             val movieViewModel: MovieViewModel = viewModel()
+            val watchlistViewModel: WatchlistViewModel = viewModel()
             LaunchedEffect(Unit) {
                 onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())
                 creditsViewModel.init(media)
                 movieViewModel.init(media)
+                watchlistViewModel.init()
             }
             MediaDetailsScreen(
                 modifier = Modifier.statusBarsPadding(),
@@ -84,7 +86,7 @@ fun MainNavHost(
                 onNavigateToOtherMedia = { newmedia ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("media", newmedia)
                     navController.navigate(Route.MediaDetailsScreen) },
-                watchlistViewModel = viewModel()
+                watchlistViewModel = watchlistViewModel
             )
         }
 
