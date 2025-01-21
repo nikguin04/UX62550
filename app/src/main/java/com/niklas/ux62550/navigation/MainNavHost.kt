@@ -69,7 +69,7 @@ fun MainNavHost(
             val creditsViewModel: CreditViewModel = viewModel()
             val movieViewModel: MovieViewModel = viewModel()
             LaunchedEffect(Unit) {
-                /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/
+                onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())
                 creditsViewModel.init(media)
                 movieViewModel.init(media)
             }
@@ -88,9 +88,9 @@ fun MainNavHost(
             )
         }
 
-        composable<Route.ReviewScreen> { backStackEntry ->
+        composable<Route.ReviewScreen> {
             val media = getRelevantBackstackMedia<MovieDetailObject>(navController, "reviewMedia")
-            LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ReviewScreen>()) }
             ScreenReviewAndRating(
                 modifier = Modifier.statusBarsPadding(),
                 media = media?: MediaDetailExample.MediaDetailObjectExample,
@@ -135,13 +135,18 @@ fun MainNavHost(
         }
 
         composable<Route.WatchScreen> {
-            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.WatchScreen>()) }
+            val watchlistViewModel: WatchlistViewModel = viewModel()
+            LaunchedEffect(Unit) {
+                onRouteChanged(it.toRoute<Route.WatchScreen>())
+                watchlistViewModel.init()
+            }
             WatchlistContent(
                 modifier = Modifier.statusBarsPadding(),
                 onNavigateToMedia = { media ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
                     navController.navigate(Route.MediaDetailsScreen)
-                }
+                },
+                watchlistViewModel = watchlistViewModel
             )
         }
     }
