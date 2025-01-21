@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -19,7 +20,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
@@ -50,10 +50,12 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
         pageSize = PageSize.Fixed(pageWidth),
         pageSpacing = gap
     ) { page ->
-        Card(
-            Modifier
+        MediaItemBackdropIntercept(
+            modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
+                .clip(RoundedCornerShape(12.dp))
+                .clickable { onNavigateToMedia(items[page]) }
                 .graphicsLayer {
                     // Calculate the absolute offset for the current page from the
                     // scroll position. We use the absolute value which allows us to mirror
@@ -69,26 +71,16 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
                         stop = 1f,
                         fraction = 1f - pageOffset.coerceIn(0f, 1f)
                     )
-                }
-        ) {
-            // Card content
-            MediaItemBackdropIntercept(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(16f / 9f)
-                    .clickable { onNavigateToMedia(items[page]) }
-                    .align(Alignment.CenterHorizontally)
-                    .clip(RoundedCornerShape(6.dp)),
-                mediaItem = items[page],
-                fetchEnBackdrop = true
-            )
-        }
+                },
+            mediaItem = items[page],
+            fetchEnBackdrop = true
+        )
     }
-    Spacer(Modifier.size(4.dp))
+    Spacer(Modifier.height(4.dp))
     HorizontalDotIndexer(
-        Modifier.size(LocalConfiguration.current.screenWidthDp.dp, 12.dp),
-        items,
-        pagerState
+        modifier = Modifier.fillMaxWidth(),
+        items = items,
+        pagerState = pagerState
     )
 }
 
@@ -136,9 +128,9 @@ fun HorizontalLazyRowMovies(
             item {
                 MediaItemBackdropIntercept(
                     modifier = Modifier
-                        .clickable { onNavigateToMedia(mediaItem) }
                         .size(width, height)
-                        .clip(RoundedCornerShape(6.dp)),
+                        .clip(RoundedCornerShape(6.dp))
+                        .clickable { onNavigateToMedia(mediaItem) },
                     fetchEnBackdrop, mediaItem
                 )
             }
