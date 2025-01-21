@@ -1,7 +1,5 @@
 package com.niklas.ux62550.di
 
-import android.content.Context
-import android.media.Image
 import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import com.niklas.ux62550.domain.CastDetailsRepository
@@ -9,7 +7,8 @@ import com.niklas.ux62550.domain.DiscoverRepository
 import com.niklas.ux62550.domain.HomeRepository
 import com.niklas.ux62550.domain.ImageRepository
 import com.niklas.ux62550.domain.KeywordRepository
-import com.niklas.ux62550.domain.MediaDetailsRepository
+import com.niklas.ux62550.domain.MediaDetailRepository
+import com.niklas.ux62550.domain.MediaExtendedDetailsRepository
 import com.niklas.ux62550.domain.ReviewRepository
 import com.niklas.ux62550.domain.SearchRepository
 import com.niklas.ux62550.domain.WatchListRepository
@@ -92,7 +91,8 @@ object DataModule {
     lateinit var homeRepository: HomeRepository
     lateinit var imageRepository: ImageRepository
     lateinit var keywordRepository: KeywordRepository
-    lateinit var mediaDetailsRepository: MediaDetailsRepository
+    lateinit var mediaExtendedDetailsRepository: MediaExtendedDetailsRepository
+    lateinit var mediaDetailRepository: MediaDetailRepository
     lateinit var reviewRepository: ReviewRepository
     lateinit var searchRepository: SearchRepository
     lateinit var watchListRepository: WatchListRepository
@@ -103,7 +103,8 @@ object DataModule {
         homeRepository = HomeRepository(remoteDataSource = remoteMediaDataSource)
         imageRepository = ImageRepository(remoteDataSource = remoteMediaDataSource)
         keywordRepository = KeywordRepository(remoteDataSource = remoteMediaDataSource)
-        mediaDetailsRepository = MediaDetailsRepository(remoteDataSource = remoteMediaDataSource, firebaseDataSource = remoteFirebaseDataSource)
+        mediaExtendedDetailsRepository = MediaExtendedDetailsRepository(remoteDataSource = remoteMediaDataSource, firebaseDataSource = remoteFirebaseDataSource)
+        mediaDetailRepository = MediaDetailRepository(remoteDataSource = remoteMediaDataSource)
         reviewRepository = ReviewRepository(firebaseDataSource = remoteFirebaseDataSource)
         searchRepository = SearchRepository(remoteDataSource = remoteMediaDataSource)
         watchListRepository = WatchListRepository(remoteDataSource = remoteMediaDataSource, firebaseDataSource = remoteFirebaseDataSource)

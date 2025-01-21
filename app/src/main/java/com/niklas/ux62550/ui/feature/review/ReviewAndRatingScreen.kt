@@ -144,7 +144,7 @@ fun Header(
         )
         Column(modifier = modifier) {
             ReviewText()
-            TitleText(media.Originaltitle)
+            TitleText(media.title)
 
             Row(
                 modifier = Modifier
@@ -175,6 +175,7 @@ fun Header(
         }
     }
 }
+
 
 
 @Composable
@@ -222,7 +223,12 @@ fun PublishReview(
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
             ) {
-                Text("Publish", color = Color.White)
+                Text("Publish",
+                    style = TextStyle(
+                        shadow = Shadow(
+                            color = Color.Black, blurRadius = 10f
+                        ),),
+                    color = Color.White)
             }
         }
     }

@@ -8,6 +8,8 @@ import com.google.firebase.firestore.firestore
 import com.niklas.ux62550.data.model.MediaObject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.tasks.await
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class FirebaseInstance { // We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
     private val db = Firebase.firestore
@@ -37,6 +39,7 @@ object RemoteFirebase {
     }
     //Help from chat
     suspend fun getReview(movieId: Int): Map<String, Double> {
+        var totalMainRating = 0
         var totalActorRating = 0
         var totalDirectingRating = 0
         var totalMusicRating = 0
@@ -47,8 +50,11 @@ object RemoteFirebase {
             val document = FirebaseInstance.getDB()!!.collection("UserReviews").document("Movies").collection(movieId.toString()).get().await()
             if (document != null && document.isEmpty.not()) {
                 for (documents in document.documents) {
+                    val mainRating = documents.get("MainRating") as Double
                     val ratings = documents.get("CategoryRatings") as Map<String, Double>
 
+
+                    totalMainRating += mainRating.toInt()
                     totalActorRating += (ratings["Acting"] ?: 0).toInt()
                     totalDirectingRating += (ratings["Directing"] ?: 0).toInt()
                     totalMusicRating += (ratings["Music"] ?: 0).toInt()
@@ -62,16 +68,18 @@ object RemoteFirebase {
             Log.w("Firebase_info", "Error getting documents for movieId: $movieId", e)
         }
 
+        val averageMainRating = if (reviewCount > 0) totalMainRating.toDouble() / reviewCount else 0.0
         val averageActorRating = if (reviewCount > 0) totalActorRating.toDouble() / reviewCount else 0.0
         val averageDirectingRating = if (reviewCount > 0) totalDirectingRating.toDouble() / reviewCount else 0.0
         val averageMusicRating = if (reviewCount > 0) totalMusicRating.toDouble() / reviewCount else 0.0
         val averagePlotRating = if (reviewCount > 0) totalPlotRating.toDouble() / reviewCount else 0.0
 
         return mapOf(
-            "Acting" to averageActorRating,
-            "Directing" to averageDirectingRating,
-            "Music" to averageMusicRating,
-            "Plot" to averagePlotRating
+            "MainRating" to BigDecimal(averageMainRating).setScale(1, RoundingMode.DOWN).toDouble(),
+            "Acting" to BigDecimal(averageActorRating).setScale(1, RoundingMode.DOWN).toDouble(),
+            "Directing" to BigDecimal(averageDirectingRating).setScale(1, RoundingMode.DOWN).toDouble(),
+            "Music" to BigDecimal(averageMusicRating).setScale(1, RoundingMode.DOWN).toDouble(),
+            "Plot" to BigDecimal(averagePlotRating).setScale(1, RoundingMode.DOWN).toDouble()
         )
     }
 

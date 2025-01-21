@@ -18,7 +18,7 @@ abstract class KeyRepository <K, T> (
         if (itemsFlow.containsKey(itemKey)) {
             return itemsFlow[itemKey]!!
         }
-        mutableItemsFlow[itemKey] = MutableSharedFlow()
+        mutableItemsFlow[itemKey] = MutableSharedFlow(replay = 1)
         itemsFlow[itemKey] = mutableItemsFlow[itemKey]!!.asSharedFlow()
 
         scope.launch {
