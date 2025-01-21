@@ -87,36 +87,6 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
             var text by rememberSaveable { mutableStateOf("") }
             var expanded by rememberSaveable { mutableStateOf(false) }
 
-            SearchBar(
-                inputField = {
-
-                    SearchBarDefaults.InputField(
-                        query = text,
-                        onQueryChange = { text = it },
-                        onSearch = { expanded = false },
-                        expanded = expanded,
-                        onExpandedChange = { expanded = it },
-                        placeholder = {
-                            Text(text = "Search in Favorites", color = Color(0xFF707070), fontSize = 12.sp, overflow = TextOverflow.Visible)
-                        },
-                        leadingIcon = {
-                            Image( // Needs to be made button
-                                imageVector = Icons.Filled.Search,
-                                modifier = Modifier.requiredSize(24.dp),
-                                colorFilter = ColorFilter.tint(Color.Black),
-                                contentDescription = "Star icon"
-                            )
-                        }
-                    )
-                },
-                colors = SearchBarDefaults.colors(containerColor = Color(0xFFACACAC)),
-                expanded = false,
-                onExpandedChange = {},
-                content = {},
-                modifier = Modifier
-                    .padding(bottom = 20.dp)
-                    .widthIn(max = 360.dp)
-            )
             LogoBox(size = 200.dp)
             Row(
                 modifier = modifier
@@ -126,22 +96,6 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(text = "Watch List", fontSize = 36.sp)
-                Button(
-                    onClick = { /* Do something! */ },
-                    shape = RoundedCornerShape(7.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFFACACAC)),
-                    contentPadding = PaddingValues(horizontal = 5.dp, vertical = 0.dp),
-                    modifier = modifier
-                        .height(25.dp)
-                        .width(90.dp)
-                ) {
-                    Text("Sort by")
-                    Spacer(modifier = Modifier.weight(0.1f))
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Dropdown Icon",
-                    )
-                }
             }
             when (watchListState) {
                 MovieIds.Empty -> {
