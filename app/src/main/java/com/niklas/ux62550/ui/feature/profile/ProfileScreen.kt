@@ -40,8 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.remote.FirebaseAuthController
 import com.niklas.ux62550.models.Profile
-import com.niklas.ux62550.ui.feature.mediadetails.ProfileViewModel
+
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.UX62550Theme
@@ -99,7 +100,6 @@ fun ProfileContent(
                 Column {
                     Box {
                         DrawCircle(Modifier.size(105.dp), color = placeholderIconColor)
-                        //LogoBox(modifier = Modifier.clip(RoundedCornerShape(100)), size = 100.dp)
 
                         Box(Modifier.padding(((105 - 26) / 2).dp)) {
                             Icon(
@@ -171,7 +171,7 @@ fun ProfileContent(
             ProfileAttribute("Password", passwordValueTemp)
             Box(Modifier.size(0.dp, 180.dp))
             Button  (
-                onClick = { onNavigateToLoginRegister("Sign out") },
+                onClick = { FirebaseAuthController().logout(); onNavigateToLoginRegister("Sign out")},
                 colors = ButtonDefaults.buttonColors(
                     containerColor = LoginButtonGray
                 ),

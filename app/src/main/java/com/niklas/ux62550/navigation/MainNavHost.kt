@@ -98,7 +98,8 @@ fun MainNavHost(
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.LoginScreen>()) }
             LoginScreen(
                 navigateBack = navController::popBackStack,
-                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) },
+                snackbarShow = snackbarShow
             )
         }
 
@@ -106,7 +107,8 @@ fun MainNavHost(
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.RegisterScreen>()) }
             RegisterScreen(
                 navigateBack = navController::popBackStack,
-                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) },
+                snackbarShow = snackbarShow
             )
         }
 

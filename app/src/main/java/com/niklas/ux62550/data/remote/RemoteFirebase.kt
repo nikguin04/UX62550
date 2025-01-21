@@ -11,12 +11,14 @@ import kotlinx.coroutines.tasks.await
 
 class FirebaseInstance { // We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
     private val db = Firebase.firestore
+
     companion object {
         private var instance: FirebaseInstance? = null
         fun getDB(): FirebaseFirestore? {
             if (instance == null) { instance = FirebaseInstance() }
             return instance.let { fb -> fb?.db }
         }
+
     }
 }
 
@@ -25,11 +27,23 @@ object RemoteFirebase {
     suspend fun getWatchList(mutableWatchListFlow: MutableSharedFlow<List<Int>?>){
 
         try {
-            val document = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C").get().await()
+            // if true then use the  defult user will be used else it will use the user that is signed in
+            // in the real app there will be no defult user you need to sign in to used this function
+            if(FirebaseAuthController().getAuth().currentUser == null){
+                var document = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C").get().await()
+                Log.d("Firebase_info", "${document.id} => ${document.data}")
+                val arrayData = document.data?.get("MovieIds") as List<*>
+                val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
+                mutableWatchListFlow.emit(intData)
+                return
+            }
+
+            var document = FirebaseInstance.getDB()!!.collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString()).get().await()
             Log.d("Firebase_info", "${document.id} => ${document.data}")
             val arrayData = document.data?.get("MovieIds") as List<*>
             val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
             mutableWatchListFlow.emit(intData)
+
         } catch (e: Exception){
             Log.w("Firebase_info", "Error getting documents.", e)
             mutableWatchListFlow.emit(null)
@@ -82,14 +96,61 @@ object RemoteFirebase {
     }
 
     suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean){
+        val Watchlistlist = mapOf(
+            "MovieIds" to listOf(data.id)
+        )
+
+        // if true then use the user that is sigent ind else the defult user will be used
+        // in the real app there will be no defult user you need to sign in to used this function
+        if(FirebaseAuthController().getAuth().currentUser != null){
+            val document = FirebaseFirestore.getInstance().collection("Watchlist").document(FirebaseAuthController().getAuth().uid.toString())
+
+            if(document.get().await().data != null){
+                document.update(
+                    "MovieIds",
+                    if (remove) {FieldValue.arrayRemove(data.id)}
+                    else {FieldValue.arrayUnion(data.id)}
+                )
+            } else{
+                document.set(Watchlistlist)
+            }
+            return
+        }
+
         val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C")
-        // Set the the movieID
-        // Atomically add or remove a new region to the "MovieIds" array field.
         watchlist.update(
             "MovieIds",
             if (remove) {FieldValue.arrayRemove(data.id)}
             else {FieldValue.arrayUnion(data.id)}
         )
+    }
+
+    fun addReivewToFirebase(review: Map<String, Any>){
+        // shoud this be move to the firebase repository
+        // if true then use the user that is sigent ind else the defult user will be used
+        // in the real app there will be no defult user you need to sign in to used this function
+        if(FirebaseAuthController().getAuth().currentUser?.uid != null) {
+            val document = FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document(FirebaseAuthController().getAuth().currentUser?.uid.toString())
+            if (document.get().isSuccessful) {
+                document.update(review)
+            } else {
+                document
+                    .set(review)
+                    .addOnSuccessListener { println("Review submitted successfully!") }
+                    .addOnFailureListener { println("Error submitting review: ${it.message}") }
+            }
+            return
+        }
+
+        val document = FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User1")
+        if(document.get().isSuccessful){
+            document.update(review)
+        } else {
+            document
+                .set(review)
+                .addOnSuccessListener { println("Review submitted successfully!") }
+                .addOnFailureListener { println("Error submitting review: ${it.message}") }
+        }
     }
 }
 

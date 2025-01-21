@@ -1,11 +1,7 @@
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
-import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
-import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
-import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
-import com.niklas.ux62550.ui.feature.watchlist.MovieIds
+import com.niklas.ux62550.data.remote.FirebaseAuthController
+import com.niklas.ux62550.data.remote.RemoteFirebase.addReivewToFirebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -40,17 +36,7 @@ class ReviewViewModel : ViewModel() {
             "timestamp" to System.currentTimeMillis()
         )
 
-        // shoud this be move to the firebase repository
-        // TODO now the user id is hard coded this needs to be changed
-        if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").get().isSuccessful){
-            FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").update(review)
-        } else {
-            FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2")
-                .set(review)
-                .addOnSuccessListener { println("Review submitted successfully!") }
-                .addOnFailureListener { println("Error submitting review: ${it.message}") }
-
-        }
+        addReivewToFirebase(review)
     }
 
     // Update the review text
