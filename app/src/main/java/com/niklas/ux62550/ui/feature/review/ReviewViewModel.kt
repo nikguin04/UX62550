@@ -1,10 +1,10 @@
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.FirebaseFirestore
-import com.niklas.ux62550.data.remote.FirebaseAuthController
-import com.niklas.ux62550.data.remote.RemoteFirebase.addReivewToFirebase
+import androidx.lifecycle.viewModelScope
+import com.niklas.ux62550.di.DataModule
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-
+import kotlinx.coroutines.launch
 
 
 data class ReviewStateDataClass(
@@ -18,6 +18,7 @@ class ReviewViewModel : ViewModel() {
     companion object {
         val ReviewCategoryList = listOf("Music", "Plot", "Acting", "Directing")
     }
+    private val reviewRepository = DataModule.reviewRepository
 
     private val reviewStateFlow = MutableStateFlow(ReviewStateDataClass())
     val reviewState: StateFlow<ReviewStateDataClass> = reviewStateFlow
@@ -27,7 +28,7 @@ class ReviewViewModel : ViewModel() {
         reviewStateFlow.value = reviewStateFlow.value.copy(rating = rating)
     }
 
-    fun submitReview(mediaId: Int) {
+    fun submitReview(mediaId: Int, onSuccess: () -> Unit, onError: () -> Unit) {
         val review = mapOf(
             "MovieIDs" to mediaId,
             "MainRating" to reviewStateFlow.value.rating,
@@ -36,7 +37,19 @@ class ReviewViewModel : ViewModel() {
             "timestamp" to System.currentTimeMillis()
         )
 
-        addReivewToFirebase(review)
+        viewModelScope.launch {reviewRepository.addReivewToFirebase(review)}
+
+        viewModelScope.launch {
+            reviewRepository.reviewResult.collect { result ->
+                if (result) {
+                    onSuccess()
+                } else {
+                    onError()
+                }
+            }
+        }
+
+
     }
 
     // Update the review text

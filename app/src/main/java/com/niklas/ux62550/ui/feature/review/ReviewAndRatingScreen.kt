@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -98,10 +99,9 @@ fun ScreenReviewAndRating(
                 onRatingChange = { newRating -> reviewViewModel.updateRating(newRating) },
                 onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
                 onSubmit = {
-                    reviewViewModel.submitReview(mediaId = media.id)
+                    reviewViewModel.submitReview(mediaId = media.id, onSuccess = { snackbarShow("Successfully submitted review") }, onError = { snackbarShow("Failed to submit review") })
                     navBack()
                 },
-                snackbarShow = snackbarShow
             )
 
             MoreDetailedReview(reviewViewModel)
@@ -129,7 +129,7 @@ fun Header(
                     drawRect( // Draw the fade
                         brush = Brush.verticalGradient(
                             0f to Color.Black,
-                            1/3f to Color.Black,
+                            1 / 3f to Color.Black,
                             1f to Color.Transparent,
                         ),
                         blendMode = BlendMode.DstIn
@@ -175,7 +175,6 @@ fun PublishReview(
     onRatingChange: (Float) -> Unit,
     onReviewChange: (String) -> Unit,
     onSubmit: () -> Unit,
-    snackbarShow: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -208,7 +207,6 @@ fun PublishReview(
             Button(
                 onClick =  {
                     onSubmit()
-                    snackbarShow("Successfully submitted review")
                 },
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),

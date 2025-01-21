@@ -29,18 +29,41 @@ class FirebaseAuthController: Activity() {
     public fun signIn(email: String, password: String){
         auth = Firebase.auth
         auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val user = auth.currentUser
+
+
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+
+                }
+            }
+
     }
 
     public fun createAccount(email: String, password: String){
         auth = Firebase.auth
 
         auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+
+
+                } else {
+
+                }
+            }
     }
 
     public fun getAuth() : FirebaseAuth{
         auth = Firebase.auth
         return auth
     }
+
 
     public fun logout() {
         auth = Firebase.auth
