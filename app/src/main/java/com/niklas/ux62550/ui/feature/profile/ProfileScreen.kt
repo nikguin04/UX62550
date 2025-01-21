@@ -68,8 +68,7 @@ fun ProfileContent(
     onNavigateToLoginRegister: (String) -> Unit,
     profile: Profile
 ) {
-    var nameValueTemp = remember { mutableStateOf(profile.name) }
-    var emailValueTemp = remember { mutableStateOf(profile.Email) }
+    val emailValueTemp = remember { mutableStateOf(profile.Email) }
     val passwordValueTemp = remember { mutableStateOf("**********") }
 
     Surface(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {

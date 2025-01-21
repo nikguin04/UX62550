@@ -1,9 +1,7 @@
 package com.niklas.ux62550.data.remote
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -31,10 +29,14 @@ class FirebaseAuthController: Activity() {
         auth.signInWithEmailAndPassword(email, password)
     }
 
-    public fun createAccount(email: String, password: String){
+    public fun createAccount(email: String, password: String, name: String){
         auth = Firebase.auth
+        auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener { addUsername(name) }
+    }
 
-        auth.createUserWithEmailAndPassword(email, password)
+    private fun addUsername(nameID: String){
+        val userName = mapOf("Name" to nameID)
+        FirebaseInstance.getDB()!!.collection("UserData").document(getAuth().currentUser?.uid.toString()).set(userName)
     }
 
     public fun getAuth() : FirebaseAuth{

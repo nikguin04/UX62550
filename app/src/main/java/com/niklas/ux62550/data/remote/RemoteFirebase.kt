@@ -152,6 +152,21 @@ object RemoteFirebase {
                 .addOnFailureListener { println("Error submitting review: ${it.message}") }
         }
     }
+    suspend fun getUserData(){
+        try {
+            var UserIdPath = "1NhBN640YoUdZq848o3C"
+            if(FirebaseAuthController().getAuth().currentUser != null){
+                UserIdPath = FirebaseAuthController().getAuth().uid.toString()
+            }
+                var document = FirebaseInstance.getDB()!!.collection("UserData").document(UserIdPath).get().await()
+                Log.d("Firebase_info", "${document.id} => ${document.data}")
+                val userName = document.data?.get("Name") as String
+
+        } catch (e: Exception){
+            Log.w("Firebase_info", "Error getting documents.", e)
+
+        }
+    }
 }
 
 

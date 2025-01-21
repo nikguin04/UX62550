@@ -9,6 +9,7 @@ import com.niklas.ux62550.domain.ImageRepository
 import com.niklas.ux62550.domain.KeywordRepository
 import com.niklas.ux62550.domain.MediaDetailRepository
 import com.niklas.ux62550.domain.MediaExtendedDetailsRepository
+import com.niklas.ux62550.domain.ProfileRepository
 import com.niklas.ux62550.domain.ReviewRepository
 import com.niklas.ux62550.domain.SearchRepository
 import com.niklas.ux62550.domain.WatchListRepository
@@ -96,6 +97,7 @@ object DataModule {
     lateinit var reviewRepository: ReviewRepository
     lateinit var searchRepository: SearchRepository
     lateinit var watchListRepository: WatchListRepository
+    lateinit var profileRepository: ProfileRepository
     
     fun initialize() {
         castDetailsRepository = CastDetailsRepository(remoteDataSource = remoteMediaDataSource)
