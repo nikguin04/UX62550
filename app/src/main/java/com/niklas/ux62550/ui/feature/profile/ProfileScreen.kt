@@ -58,137 +58,134 @@ fun ProfilePreview() {
     }
 }
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit) {
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, modifier: Modifier = Modifier) {
     val profile = viewModel.profileState.collectAsState().value
-    ProfileContent(profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
+    ProfileContent(modifier = modifier, profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
 }
 @Composable
 fun ProfileContent(
     onNavigateToLoginRegister: (String) -> Unit,
-    profile: Profile
+    profile: Profile,
+    modifier: Modifier = Modifier,
 ) {
     var nameValueTemp = remember { mutableStateOf(profile.name) }
     var emailValueTemp = remember { mutableStateOf(profile.Email) }
     var passwordValueTemp = remember { mutableStateOf("**********") }
 
-    Surface(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        Box {
-            Box(
-                modifier = Modifier
-                    .size(
-                        LocalConfiguration.current.screenWidthDp.dp,
-                        LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                    )
-                    .background(Brush.verticalGradient(colorStops = RedColorGradient))
+    Box(
+        modifier = Modifier
+            .size(
+                LocalConfiguration.current.screenWidthDp.dp,
+                LocalConfiguration.current.screenWidthDp.dp / 3 * 2
             )
-        }
+            .background(Brush.verticalGradient(colorStops = RedColorGradient))
+    )
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(modifier = Modifier.size(0.dp, 70.dp))
+
+        // Profile name and picture
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp, 0.dp),
+            horizontalArrangement = Arrangement.End
         ) {
-            Box(modifier = Modifier.size(0.dp, 70.dp))
+            Column {
+                Box {
+                    DrawCircle(Modifier.size(105.dp), color = placeholderIconColor)
 
-            // Profile name and picture
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp, 0.dp),
-                horizontalArrangement = Arrangement.End
-            ) {
-                Column {
-                    Box {
-                        DrawCircle(Modifier.size(105.dp), color = placeholderIconColor)
-
-                        Box(Modifier.padding(((105 - 26) / 2).dp)) {
-                            Icon(
-                                imageVector = Icons.Outlined.AddCircleOutline,
-                                contentDescription = null,
-                                Modifier.size(26.dp),
-                                Color.Black
-                            )
-                        }
-
+                    Box(Modifier.padding(((105 - 26) / 2).dp)) {
+                        Icon(
+                            imageVector = Icons.Outlined.AddCircleOutline,
+                            contentDescription = null,
+                            Modifier.size(26.dp),
+                            Color.Black
+                        )
                     }
 
-                    Text(
-                        text = profile.name,
-                        style = TextStyle(fontSize = 12.sp, shadow = textShadow),
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(0.dp, 4.dp, 0.dp, 0.dp)
-                    )
                 }
-            }
 
-            // Your top rated movies??
-            Box(Modifier.size(0.dp, 30.dp))
-            Text(
-                text = "Your Top Rated Movies",
-                style = TextStyle(fontSize = 20.sp, shadow = textShadow),
-                modifier = Modifier
-                    .padding(18.dp, 0.dp, 0.dp, 0.dp)
-                    .align(Alignment.Start)
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, 12.dp, 0.dp, 0.dp),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
                 Text(
-                    text = "Red: The Movie",
+                    text = profile.name,
                     style = TextStyle(fontSize = 12.sp, shadow = textShadow),
-                    modifier = Modifier.padding(18.dp, 0.dp, 0.dp, 0.dp)
-                )
-                Box(Modifier.size(13.dp, 0.dp))
-                for (i in 0..4) {
-                    Icon(
-                        modifier = Modifier.size(26.dp),
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = null,
-                        tint = starYellow
-                    )
-                }
-                Text(
-                    text = "5/5",
-                    style = TextStyle(
-                        fontSize = 13.sp,
-                        shadow = textShadow,
-                        fontWeight = FontWeight.Bold
-                    ),
-                    modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(0.dp, 4.dp, 0.dp, 0.dp)
                 )
             }
-
-            // Profile data
-            Box(Modifier.size(0.dp, 30.dp))
-            ProfileAttribute("Display Name", nameValueTemp)
-            Box(Modifier.size(0.dp, 17.dp))
-            ProfileAttribute("Email", emailValueTemp)
-            Box(Modifier.size(0.dp, 110.dp))
-            ProfileAttribute("Password", passwordValueTemp)
-
-            Box(Modifier.size(0.dp, 20.dp))
-            Button  (
-                onClick = { onNavigateToLoginRegister("Sign out") },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = LoginButtonGray
-                ),
-                modifier = Modifier
-                    .size(145.dp, 45.dp)
-                    .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-            ) {
-                Text(
-                    text = "Sign out",
-                    color = Color.White,
-                    style = TextStyle(fontSize = 20.sp, shadow = textShadow)
-                )
-            }
-
         }
+
+        // Your top rated movies??
+        Box(Modifier.size(0.dp, 30.dp))
+        Text(
+            text = "Your Top Rated Movies",
+            style = TextStyle(fontSize = 20.sp, shadow = textShadow),
+            modifier = Modifier
+                .padding(18.dp, 0.dp, 0.dp, 0.dp)
+                .align(Alignment.Start)
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp, 12.dp, 0.dp, 0.dp),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Red: The Movie",
+                style = TextStyle(fontSize = 12.sp, shadow = textShadow),
+                modifier = Modifier.padding(18.dp, 0.dp, 0.dp, 0.dp)
+            )
+            Box(Modifier.size(13.dp, 0.dp))
+            for (i in 0..4) {
+                Icon(
+                    modifier = Modifier.size(26.dp),
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = null,
+                    tint = starYellow
+                )
+            }
+            Text(
+                text = "5/5",
+                style = TextStyle(
+                    fontSize = 13.sp,
+                    shadow = textShadow,
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
+            )
+        }
+
+        // Profile data
+        Box(Modifier.size(0.dp, 30.dp))
+        ProfileAttribute("Display Name", nameValueTemp)
+        Box(Modifier.size(0.dp, 17.dp))
+        ProfileAttribute("Email", emailValueTemp)
+        Box(Modifier.size(0.dp, 110.dp))
+        ProfileAttribute("Password", passwordValueTemp)
+
+        Box(Modifier.size(0.dp, 20.dp))
+        Button(
+            onClick = { onNavigateToLoginRegister("Sign out") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = LoginButtonGray
+            ),
+            modifier = Modifier
+                .size(145.dp, 45.dp)
+                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+        ) {
+            Text(
+                text = "Sign out",
+                color = Color.White,
+                style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+            )
+        }
+
     }
 }
 

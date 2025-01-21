@@ -49,25 +49,23 @@ fun RegisterPreview() {
 }
 
 @Composable
-fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit) {
+fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, modifier: Modifier = Modifier, ) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        Box {
-            Box(
-                modifier = Modifier
-                    .size(
-                        LocalConfiguration.current.screenWidthDp.dp,
-                        LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                    )
-                    .background(Brush.verticalGradient(colorStops = RedColorGradient))
-            )
-        }
+        Box(
+            modifier = Modifier
+            .size(
+                    LocalConfiguration.current.screenWidthDp.dp,
+                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
+                )
+                .background(Brush.verticalGradient(colorStops = RedColorGradient))
+        )
 
 
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Row(
                 modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center

@@ -66,11 +66,11 @@ fun WatchlistPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObject) -> Unit, watchlistViewModel: WatchlistViewModel = viewModel()) {
-    Column(modifier.padding()) {
+    Column(Modifier.padding()) {
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(0.dp, 45.dp, 0.dp, 20.dp), // ConvertPxToDp(29.5f)
+                .padding(0.dp, 20.dp, 0.dp, 20.dp), // ConvertPxToDp(29.5f)
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

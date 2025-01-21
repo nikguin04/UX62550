@@ -89,7 +89,7 @@ fun MediaDetailPagePreview() {
 
     UX62550Theme {
         Surface {
-            MediaDetailsScreen(movieViewModel, creditsViewModel, navigateBack = {}, onNavigateToOtherMedia = {}, onNavigateToReview = {})
+            MediaDetailsScreen(movieViewModel = movieViewModel, creditsViewModel = creditsViewModel, navigateBack = {}, onNavigateToOtherMedia = {}, onNavigateToReview = {})
         }
     }
 }
@@ -101,6 +101,7 @@ fun MediaDetailsScreen(
     navigateBack: () -> Unit,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (MovieDetailObject) -> Unit,
+    modifier: Modifier = Modifier,
     watchlistViewModel: WatchlistViewModel = viewModel()
 ) {
     val movieState = movieViewModel.movieState.collectAsState().value
@@ -122,13 +123,16 @@ fun MediaDetailsScreen(
             Box {
                 Column(Modifier.verticalScroll(rememberScrollState())) {
                     Header(movieState = movieState, trailerState = trailerState)
-                    InfoRow(movieState = movieState)
-                    Genres(genres = movieState, providerState = providerState)
-                    DescriptionText(description = movieState.mediaDetailObject.Description)
+                    Column(modifier = modifier) {
+                        InfoRow(movieState = movieState)
+                        Genres(genres = movieState, providerState = providerState)
+                        DescriptionText(description = movieState.mediaDetailObject.Description)
 
-                    ActorsAndDirectors(creditState = creditState)
-                    DetailedRating(movieViewModel = movieViewModel, movieID = movieState, onNavigateToReview = onNavigateToReview)
-                    SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
+                        ActorsAndDirectors(creditState = creditState)
+                        DetailedRating(movieViewModel = movieViewModel, movieID = movieState, onNavigateToReview = onNavigateToReview)
+                        SimilarMedia(similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
+                    }
+
                 }
                     GeneralTopBar(navigateBack = navigateBack) {
                     BookmarkButton(movieState.mediaDetailObject.toMediaObject(), movieViewModel, watchListState)

@@ -194,7 +194,9 @@ fun MediaItemBackdropIntercept(
                 }
             }
 
-            else -> {}
+            is ImagesDataUIState.Error -> {
+                Text(text = "Network error")
+            }
         }
     } else {
         MediaItem (
