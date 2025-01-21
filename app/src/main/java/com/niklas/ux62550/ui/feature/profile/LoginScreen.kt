@@ -125,7 +125,7 @@ fun LoginInputHolder(
 
             Button(
                 onClick = {
-                    FirebaseAuthController().signIn(emailValue.value.toString(), passValue.value.toString());
+                    FirebaseAuthController().signIn(emailValue.value.toString(), passValue.value.toString())
                     onNavigateToProfile("Login");
                     snackbarShow("Successfully logged in")},
                 colors = ButtonDefaults.buttonColors(

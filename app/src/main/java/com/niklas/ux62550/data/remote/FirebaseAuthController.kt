@@ -26,36 +26,26 @@ class FirebaseAuthController: Activity() {
     }
 
 
-    public fun signIn(email: String, password: String){
+    public fun signIn(email: String, password: String , onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
         auth = Firebase.auth
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
-
-
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-
-                }
+            .addOnSuccessListener {
+                onSuccess()
             }
-
+            .addOnFailureListener{
+                onError()
+            }
     }
 
-    public fun createAccount(email: String, password: String){
+    public fun createAccount(email: String, password: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
         auth = Firebase.auth
 
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-
-
-                } else {
-
-                }
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener{
+                onError()
             }
     }
 
@@ -69,4 +59,10 @@ class FirebaseAuthController: Activity() {
         auth = Firebase.auth
         return auth.signOut()
     }
+}
+
+
+sealed class BoolFetchStatus {
+    data object Working : BoolFetchStatus()
+    data class Result(val result: Boolean) : BoolFetchStatus()
 }

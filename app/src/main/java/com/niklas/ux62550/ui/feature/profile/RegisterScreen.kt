@@ -145,9 +145,9 @@ fun RegisterInputHolder(
 
         Button(
             onClick = {
-                FirebaseAuthController().createAccount(emailValue.value.toString(), passValue.value.toString());
+                FirebaseAuthController().createAccount(emailValue.value.toString(), passValue.value.toString()) ;
                 onNavigateToProfile("Login");
-                snackbarShow("Successfully registered")
+
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = RegisterButtonBlue
