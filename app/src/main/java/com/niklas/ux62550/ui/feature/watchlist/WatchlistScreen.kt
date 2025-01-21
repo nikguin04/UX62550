@@ -43,6 +43,8 @@ import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -70,7 +72,8 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(0.dp, 45.dp, 0.dp, 20.dp), // ConvertPxToDp(29.5f)
+                .padding(0.dp, 45.dp, 0.dp, 0.dp) // ConvertPxToDp(29.5f)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -115,7 +118,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
             Row(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(0.dp, 24.dp, 0.dp),
+                    .padding(0.dp, 24.dp, 0.dp, 0.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
@@ -145,9 +148,9 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                 is MovieIds.Data -> {
                     // Display list of movie items in LazyColumn
                     val movieIDList: List<Int> = watchListState.movies?:emptyList()
-                    LazyColumn {
-                        items(movieIDList) {id ->
-                            MovieBoxRowFromId(id, onNavigateToMedia = onNavigateToMedia)
+                    Column {
+                        movieIDList.forEach { id ->
+                            MovieBoxRowFromId(Modifier.padding(16.dp, 8.dp, 16.dp, 8.dp), id, onNavigateToMedia = onNavigateToMedia, Modifier.padding(10.dp, 0.dp, 0.dp, 0.dp))
                         }
                     }
                 }
