@@ -267,7 +267,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data, onNaviga
             )
         }
         Text(
-            text = if(movieState.mediaDetailObject.relaseDate.count() > 4){ movieState.mediaDetailObject.relaseDate.substring(0, 4) } else "N/A",
+            text = if(movieState.mediaDetailObject.releaseDate.count() > 4){ movieState.mediaDetailObject.releaseDate.substring(0, 4) } else "N/A",
             style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,

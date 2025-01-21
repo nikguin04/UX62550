@@ -2,7 +2,6 @@ package com.niklas.ux62550.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -34,7 +33,7 @@ data class MovieDetailObject(
     val posterPath : String?,
 
     @SerialName("release_date")
-    val relaseDate : String,
+    val releaseDate : String = "",
 
     @SerialName("title")
     val title: String = "",
@@ -48,7 +47,7 @@ data class MovieDetailObject(
     @SerialName("id")
     val id : Int,
 
-): Parcelable {
+    ): Parcelable {
     fun toMediaObject(): MediaObject {
         return MediaObject(
             adult = this.adult,
@@ -57,7 +56,7 @@ data class MovieDetailObject(
             title = this.title,
             poster_path = this.posterPath,
             genre_ids = this.genre.map { it.genreID }, // TODO: check this mapping is right
-            release_date = this.relaseDate,
+            release_date = this.releaseDate,
             media_type = "movie", // This is hardcoded because the MovieDetailObject is called "movie", for fetching tv shows this should be changed
             vote_average = this.vote_average.toFloat()
         )
