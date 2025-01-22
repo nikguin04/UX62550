@@ -43,8 +43,8 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                     .shadow(
                         elevation = 15.dp,
                         shape = RoundedCornerShape(40.dp),
-                        ambientColor = Color.Black.copy(alpha = 255f), // Slightly less opaque for a softer effect
-                        spotColor = Color.Black.copy(alpha = 255f)
+                        ambientColor = Color.Black, // Slightly less opaque for a softer effect
+                        spotColor = Color.Black
                     )
             ) {
                 Text(

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.outlined.StarHalf
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
@@ -33,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shadow
@@ -121,16 +123,21 @@ fun OverallRating(modifier: Modifier, rating: Double){
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in 1..5) {
-            val isFilled = i <= rating
-            val starIcon =
-                if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
+            val starIcon = when {
+                i <= rating -> Icons.Outlined.Star
+                i <= rating + 0.5 -> Icons.AutoMirrored.Outlined.StarHalf
+                else -> Icons.Outlined.StarOutline
+            }
             Image(
                 imageVector = starIcon,
-                modifier = Modifier.requiredSize(20.dp),
-                colorFilter = ColorFilter.tint(
-                    if (isFilled) Color.Yellow else Color.Gray
-                ),
-                contentDescription = "Star icon"
+                modifier = Modifier
+                    .requiredSize(18.dp)
+                    .shadow(
+                        elevation = 15.dp,
+                        ambientColor = Color.Black, // Slightly less opaque for a softer effect
+                    ),
+                colorFilter = ColorFilter.tint(Color.Yellow),
+                contentDescription = "Rating star"
             )
         }
         Spacer(modifier = Modifier.width(4.dp))
