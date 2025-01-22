@@ -51,12 +51,12 @@ object RemoteFirebase {
     }
     //Help from chat
     suspend fun getReview(movieId: Int): Map<String, Double> {
-        var totalMainRating = 0
-        var totalActorRating = 0
-        var totalDirectingRating = 0
-        var totalMusicRating = 0
-        var totalPlotRating = 0
-        var reviewCount = 0
+        var totalMainRating = 0.0
+        var totalActorRating = 0.0
+        var totalDirectingRating = 0.0
+        var totalMusicRating = 0.0
+        var totalPlotRating = 0.0
+        var reviewCount = 0.0
 
         try {
             val document = FirebaseInstance.getDB()!!.collection("UserReviews").document("Movies").collection(movieId.toString()).get().await()
@@ -66,11 +66,11 @@ object RemoteFirebase {
                     val ratings = documents.get("CategoryRatings") as Map<String, Double>
 
 
-                    totalMainRating += mainRating.toInt()
-                    totalActorRating += (ratings["Acting"] ?: 0).toInt()
-                    totalDirectingRating += (ratings["Directing"] ?: 0).toInt()
-                    totalMusicRating += (ratings["Music"] ?: 0).toInt()
-                    totalPlotRating += (ratings["Plot"] ?: 0).toInt()
+                    totalMainRating += mainRating
+                    totalActorRating += (ratings["Acting"] ?: 0).toDouble()
+                    totalDirectingRating += (ratings["Directing"] ?: 0).toDouble()
+                    totalMusicRating += (ratings["Music"] ?: 0).toDouble()
+                    totalPlotRating += (ratings["Plot"] ?: 0).toDouble()
                     reviewCount++
                 }
             } else {
