@@ -4,11 +4,19 @@ package com.niklas.ux62550.ui.feature.profile
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.niklas.ux62550.data.remote.FirebaseAuthController
 import com.niklas.ux62550.models.Profile
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
+
+
+
+data class ReviewStateDataClass(
+    val User: FirebaseAuth
+)
 
 
 class ProfileViewModel : ViewModel() {

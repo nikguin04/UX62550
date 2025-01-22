@@ -145,7 +145,7 @@ fun RegisterInputHolder(
 
         Button(
             onClick = {
-                FirebaseAuthController().createAccount(emailValue.value.toString(), passValue.value.toString()) ;
+                FirebaseAuthController().createAccount(emailValue.value, passValue.value)
                 onNavigateToProfile("Login");
 
             },
