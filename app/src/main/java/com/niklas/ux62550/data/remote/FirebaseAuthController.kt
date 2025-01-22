@@ -26,7 +26,7 @@ class FirebaseAuthController: Activity() {
     }
 
 
-    public fun signIn(email: String, password: String , onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
+     fun signIn(email: String, password: String , onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
         auth = Firebase.auth
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
@@ -37,7 +37,7 @@ class FirebaseAuthController: Activity() {
             }
     }
 
-    public fun createAccount(email: String, password: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
+     fun createAccount(email: String, password: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
         auth = Firebase.auth
 
         auth.createUserWithEmailAndPassword(email, password)
