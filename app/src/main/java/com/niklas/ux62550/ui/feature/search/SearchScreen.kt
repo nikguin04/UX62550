@@ -176,7 +176,7 @@ fun SearchContent(
                 }
 
                 item {
-                    SectionHeader(title = "Actors and Genres")
+                    SectionHeader(title = "Actors")
                 }
                 itemsIndexed(actorList) { index, movieBoxItem ->
                     if(index != 0){
