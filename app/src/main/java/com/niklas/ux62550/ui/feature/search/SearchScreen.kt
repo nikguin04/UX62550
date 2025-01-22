@@ -129,12 +129,18 @@ fun SearchContent(
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
                 item {
-                    Text(
-                        text = "No search data yet",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = SearchColorForText
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                        .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "No movies found",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = SearchColorForText
+                        )
+                    }
                 }
             }
             is MovieItemsUIState.Data -> {
