@@ -28,7 +28,7 @@ fun SimilarMedia(
             color = Color.White,
             shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
         ),
-        modifier = modifier.padding(bottom = 0.dp, start=20.dp)
+        modifier = modifier.padding(start = 20.dp)
     )
     Box(modifier = Modifier.padding(bottom = 20.dp,)) {
         when (similarMediaState) {
