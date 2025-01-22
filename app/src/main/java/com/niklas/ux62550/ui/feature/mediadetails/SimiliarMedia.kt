@@ -28,7 +28,7 @@ fun SimilarMedia(
             color = Color.White,
             shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
         ),
-        modifier = modifier.padding(bottom = 10.dp)
+        modifier = modifier.padding(start = 20.dp)
     )
     Box(modifier = Modifier.padding(bottom = 20.dp,)) {
         when (similarMediaState) {
@@ -40,7 +40,7 @@ fun SimilarMedia(
                     width = Dp(255f),
                     height = Dp(255f / 16 * 9),
                     edgeGap = 20.dp,
-                    betweenGap = 6.dp,
+                    betweenGap = 12.dp,
                     items = similarMediaState.similarMoviesObject,
                     onNavigateToMedia = onNavigateToOtherMedia,
                     fetchEnBackdrop = true
