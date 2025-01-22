@@ -50,7 +50,7 @@ fun LoginPreview() {
 }
 
 @Composable
-fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit) {
+fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit, modifier: Modifier = Modifier) {
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
 
@@ -66,7 +66,7 @@ fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit,
         )
     }
 
-    Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier.fillMaxWidth().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(
             modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
