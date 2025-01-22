@@ -320,20 +320,6 @@ fun RatingStars(
         Row(
             modifier = Modifier
                 .wrapContentWidth()
-//            .pointerInput(Unit) {
-//                detectHorizontalDragGestures { _, dragAmount ->
-//                    val totalStarsWidthPx = starSize.toPx() * 5
-//                    val dragPosition = (dragAmount + (currentRating * starSize.toPx())).coerceIn(0f, totalStarsWidthPx)
-//
-//                    val newRating = (dragPosition / totalStarsWidthPx * 5).coerceIn(0f, 5f)
-//                    val roundedRating = (newRating * 2).roundToInt() / 2f  // Round to nearest 0.5
-//
-//                    if (roundedRating != currentRating) {
-//                        currentRating = roundedRating
-//                        onRatingSelected(roundedRating)
-//                    }
-//                }
-//            }
         ) {
             for (i in 0..4) {
                 val isFilled = i + 1 <= currentRating.toInt()
