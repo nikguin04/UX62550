@@ -145,7 +145,6 @@ class MovieViewModel() : ViewModel() {
 
 }
 
-
 sealed class MovieState {
     data object Empty : MovieState()
     data class Data(val mediaDetailObject: MovieDetailObject) : MovieState()

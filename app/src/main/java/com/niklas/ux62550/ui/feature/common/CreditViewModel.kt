@@ -51,10 +51,6 @@ class CreditViewModel() : ViewModel() {
         getCredit(movieID = media.id)
     }
 }
-// TODO: change all names from cast to credits
-/*class CreditsViewModelFactory(private val media: MediaObject) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T { return CreditViewModel(media) as T }
-}*/
 
 sealed class CreditState {
     data object Empty : CreditState()
