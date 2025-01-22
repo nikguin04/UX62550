@@ -67,10 +67,10 @@ object RemoteFirebase {
 
 
                     totalMainRating += mainRating
-                    totalActorRating += (ratings["Acting"] ?: 0).toDouble()
-                    totalDirectingRating += (ratings["Directing"] ?: 0).toDouble()
-                    totalMusicRating += (ratings["Music"] ?: 0).toDouble()
-                    totalPlotRating += (ratings["Plot"] ?: 0).toDouble()
+                    totalActorRating += ratings["Acting"] ?: 0.0
+                    totalDirectingRating += ratings["Directing"] ?: 0.0
+                    totalMusicRating += ratings["Music"] ?: 0.0
+                    totalPlotRating += ratings["Plot"] ?: 0.0
                     reviewCount++
                 }
             } else {
@@ -80,11 +80,11 @@ object RemoteFirebase {
             Log.w("Firebase_info", "Error getting documents for movieId: $movieId", e)
         }
 
-        val averageMainRating = if (reviewCount > 0) totalMainRating.toDouble() / reviewCount else 0.0
-        val averageActorRating = if (reviewCount > 0) totalActorRating.toDouble() / reviewCount else 0.0
-        val averageDirectingRating = if (reviewCount > 0) totalDirectingRating.toDouble() / reviewCount else 0.0
-        val averageMusicRating = if (reviewCount > 0) totalMusicRating.toDouble() / reviewCount else 0.0
-        val averagePlotRating = if (reviewCount > 0) totalPlotRating.toDouble() / reviewCount else 0.0
+        val averageMainRating = if (reviewCount > 0) totalMainRating / reviewCount else 0.0
+        val averageActorRating = if (reviewCount > 0) totalActorRating / reviewCount else 0.0
+        val averageDirectingRating = if (reviewCount > 0) totalDirectingRating / reviewCount else 0.0
+        val averageMusicRating = if (reviewCount > 0) totalMusicRating / reviewCount else 0.0
+        val averagePlotRating = if (reviewCount > 0) totalPlotRating / reviewCount else 0.0
 
         return mapOf(
             "MainRating" to BigDecimal(averageMainRating).setScale(1, RoundingMode.DOWN).toDouble(),
