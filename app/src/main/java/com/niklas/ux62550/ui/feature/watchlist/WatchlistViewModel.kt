@@ -25,7 +25,7 @@ class WatchlistViewModel() : ViewModel() {
     val watchListRowState: StateFlow<MovieIdsRow> = mutableWatchListRowState
 
 
-    init {
+    fun init() {
         viewModelScope.launch {
             watchListRepository.watchListFlow.collect { movieIdArray ->
                 mutableWatchListState.update {

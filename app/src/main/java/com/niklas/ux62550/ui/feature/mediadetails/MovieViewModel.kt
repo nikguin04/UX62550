@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MovieViewModel(media: MediaObject) : ViewModel() {
+class MovieViewModel() : ViewModel() {
     private val mediaExtendedDetailsRepository = DataModule.mediaExtendedDetailsRepository
     private val mediaDetailsRepository = DataModule.mediaDetailRepository
     private val _movieReviewID = MutableStateFlow<Map<String, Double>>(emptyMap())
@@ -62,7 +62,7 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
     val watchlistState: StateFlow<WatchlistState> = mutableWatchlistState
 
 
-    init {
+    fun init(media: MediaObject) {
         viewModelScope.launch {
             mediaDetailsRepository.getWithKey(
                 itemKey = media.id,
@@ -141,10 +141,8 @@ class MovieViewModel(media: MediaObject) : ViewModel() {
         }
 
     }
-}
 
-class MovieViewModelFactory(private val media: MediaObject) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T { return MovieViewModel(media) as T }
+
 }
 
 sealed class MovieState {
