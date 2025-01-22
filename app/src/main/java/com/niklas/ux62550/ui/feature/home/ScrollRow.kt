@@ -39,7 +39,7 @@ import kotlin.math.absoluteValue
 @Composable
 fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia: (MediaObject) -> Unit) {
     val pagerState = rememberPagerState(pageCount = { items.size }, initialPage = items.size / 2)
-    val gap = 10.dp
+    val gap = 12.dp
     val peek = 20.dp
     val pageWidth = LocalConfiguration.current.screenWidthDp.dp - (gap + peek) * 2
     HorizontalPager(
@@ -123,8 +123,8 @@ fun HorizontalLazyRowMovies(
     LazyRow(
         modifier = modifier.fillMaxWidth(),
         state = rowListState ?: rememberLazyListState(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(12.dp, 0.dp)
+        horizontalArrangement = Arrangement.spacedBy(betweenGap),
+        contentPadding = PaddingValues(edgeGap, 0.dp)
     ) {
         items.forEachIndexed { index, mediaItem ->
             item {

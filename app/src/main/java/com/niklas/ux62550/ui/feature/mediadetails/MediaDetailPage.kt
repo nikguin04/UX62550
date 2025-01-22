@@ -65,7 +65,6 @@ import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.CreditState
 import com.niklas.ux62550.ui.feature.common.CreditViewModel
-import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.common.MediaItemBackdropIntercept
@@ -81,10 +80,10 @@ import kotlin.time.Duration.Companion.minutes
 @Preview(showBackground = true)
 fun MediaDetailPagePreview() {
     val media = SearchDataExamples.MediaObjectExample
-    val movieViewModel: MovieViewModel = viewModel(factory = MovieViewModelFactory(media = media))
+    val movieViewModel: MovieViewModel = viewModel()
     movieViewModel.initPreview()
 
-    val creditsViewModel: CreditViewModel = viewModel(factory = CreditsViewModelFactory(media = media))
+    val creditsViewModel: CreditViewModel = viewModel()
     creditsViewModel.initPreview()
 
     UX62550Theme {

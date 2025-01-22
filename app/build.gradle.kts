@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebaseui.firebase.ui.auth)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

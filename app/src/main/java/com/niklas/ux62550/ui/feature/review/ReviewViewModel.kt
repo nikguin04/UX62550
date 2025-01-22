@@ -1,14 +1,11 @@
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.FirebaseFirestore
-import com.niklas.ux62550.ui.feature.common.composables.MovieBoxRowFromId
-import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
-import com.niklas.ux62550.ui.feature.search.MovieItemsUIState
-import com.niklas.ux62550.ui.feature.watchlist.MovieIds
+import androidx.lifecycle.viewModelScope
+import com.niklas.ux62550.di.DataModule
+import com.niklas.ux62550.domain.BoolFetchStatus
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-
+import kotlinx.coroutines.launch
 
 
 data class ReviewStateDataClass(
@@ -22,6 +19,7 @@ class ReviewViewModel : ViewModel() {
     companion object {
         val ReviewCategoryList = listOf("Music", "Plot", "Acting", "Directing")
     }
+    private val reviewRepository = DataModule.reviewRepository
 
     private val reviewStateFlow = MutableStateFlow(ReviewStateDataClass())
     val reviewState: StateFlow<ReviewStateDataClass> = reviewStateFlow
@@ -31,7 +29,7 @@ class ReviewViewModel : ViewModel() {
         reviewStateFlow.value = reviewStateFlow.value.copy(rating = rating)
     }
 
-    fun submitReview(mediaId: Int) {
+    fun submitReview(mediaId: Int, onSuccess: () -> Unit, onError: () -> Unit) {
         val review = mapOf(
             "MovieIDs" to mediaId,
             "MainRating" to reviewStateFlow.value.rating,
@@ -40,17 +38,9 @@ class ReviewViewModel : ViewModel() {
             "timestamp" to System.currentTimeMillis()
         )
 
-        // shoud this be move to the firebase repository
-        // TODO now the user id is hard coded this needs to be changed
-        if(FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").get().isSuccessful){
-            FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2").update(review)
-        } else {
-            FirebaseFirestore.getInstance().collection("UserReviews").document("Movies").collection(review.getValue("MovieIDs").toString()).document("User2")
-                .set(review)
-                .addOnSuccessListener { println("Review submitted successfully!") }
-                .addOnFailureListener { println("Error submitting review: ${it.message}") }
+        viewModelScope.launch {reviewRepository.addReivewToFirebase(review = review, onSuccess = onSuccess, onError = onError)}
 
-        }
+
     }
 
     // Update the review text

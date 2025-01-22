@@ -1,5 +1,6 @@
 package com.niklas.ux62550.navigation
 
+import android.util.Log
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,11 +13,11 @@ import androidx.navigation.toRoute
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.ui.feature.common.CreditsViewModelFactory
 import com.niklas.ux62550.data.model.MovieDetailObject
+import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.home.HomeScreen
 import com.niklas.ux62550.ui.feature.mediadetails.MediaDetailsScreen
-import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModelFactory
+import com.niklas.ux62550.ui.feature.mediadetails.MovieViewModel
 import com.niklas.ux62550.ui.feature.profile.LoginRegisterScreen
 import com.niklas.ux62550.ui.feature.profile.LoginScreen
 import com.niklas.ux62550.ui.feature.profile.ProfileScreen
@@ -24,6 +25,7 @@ import com.niklas.ux62550.ui.feature.profile.RegisterScreen
 import com.niklas.ux62550.ui.feature.review.ScreenReviewAndRating
 import com.niklas.ux62550.ui.feature.search.SearchScreen
 import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
+import com.niklas.ux62550.ui.feature.watchlist.WatchlistViewModel
 
 
 @Composable
@@ -64,24 +66,33 @@ fun MainNavHost(
             //val mediaRoute: Route.MediaDetailsScreen = backStackEntry.toRoute()
             //val media = mediaRoute.media
             val media = getRelevantBackstackMedia<MediaObject>(navController, "media") ?: SearchDataExamples.MediaObjectExample // Default to media object example if no media as placeholder
-            LaunchedEffect(Unit) { /*onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())*/ }
+            val creditsViewModel: CreditViewModel = viewModel()
+            val movieViewModel: MovieViewModel = viewModel()
+            val watchlistViewModel: WatchlistViewModel = viewModel()
+            LaunchedEffect(Unit) {
+                onRouteChanged(backStackEntry.toRoute<Route.MediaDetailsScreen>())
+                creditsViewModel.init(media)
+                movieViewModel.init(media)
+                watchlistViewModel.init()
+            }
             MediaDetailsScreen(
                 modifier = Modifier.statusBarsPadding(),
-                movieViewModel = viewModel(factory = MovieViewModelFactory(media = media)),
-                creditsViewModel = viewModel(factory = CreditsViewModelFactory(media = media)),
+                movieViewModel = movieViewModel,
+                creditsViewModel = creditsViewModel,
                 navigateBack = navController::popBackStack,
                 onNavigateToReview = { mediaDetails ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
                     navController.navigate(Route.ReviewScreen) },
                 onNavigateToOtherMedia = { newmedia ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("media", newmedia)
-                    navController.navigate(Route.MediaDetailsScreen) }
+                    navController.navigate(Route.MediaDetailsScreen) },
+                watchlistViewModel = watchlistViewModel
             )
         }
 
-        composable<Route.ReviewScreen> { backStackEntry ->
+        composable<Route.ReviewScreen> {
             val media = getRelevantBackstackMedia<MovieDetailObject>(navController, "reviewMedia")
-            LaunchedEffect(Unit) { onRouteChanged(backStackEntry.toRoute<Route.ReviewScreen>()) }
+            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ReviewScreen>()) }
             ScreenReviewAndRating(
                 modifier = Modifier.statusBarsPadding(),
                 media = media?: MediaDetailExample.MediaDetailObjectExample,
@@ -104,7 +115,8 @@ fun MainNavHost(
             LoginScreen(
             	modifier = Modifier.statusBarsPadding(),
                 navigateBack = navController::popBackStack,
-                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) },
+                snackbarShow = snackbarShow
             )
         }
 
@@ -113,7 +125,8 @@ fun MainNavHost(
             RegisterScreen(
                 modifier = Modifier.statusBarsPadding(),
                 navigateBack = navController::popBackStack,
-                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) },
+                snackbarShow = snackbarShow
             )
         }
 
@@ -126,13 +139,18 @@ fun MainNavHost(
         }
 
         composable<Route.WatchScreen> {
-            LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.WatchScreen>()) }
+            val watchlistViewModel: WatchlistViewModel = viewModel()
+            LaunchedEffect(Unit) {
+                onRouteChanged(it.toRoute<Route.WatchScreen>())
+                watchlistViewModel.init()
+            }
             WatchlistContent(
                 modifier = Modifier.statusBarsPadding(),
                 onNavigateToMedia = { media ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("media", media)
                     navController.navigate(Route.MediaDetailsScreen)
-                }
+                },
+                watchlistViewModel = watchlistViewModel
             )
         }
     }
