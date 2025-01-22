@@ -84,7 +84,7 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
                     val movieIDList: List<Int> = watchListState.movies?:emptyList()
                     Column {
                         movieIDList.forEachIndexed { index, id ->
-                            if (index != 0 && index != movieIDList.size-1) {
+                            if (index != 0) {
                                 Box(
                                     modifier = Modifier.fillMaxWidth(),
                                     contentAlignment = Alignment.Center
