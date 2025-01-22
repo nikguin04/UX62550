@@ -26,6 +26,8 @@ import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -314,49 +316,46 @@ fun RatingStars(
 ) {
     var currentRating by remember { mutableFloatStateOf(rating) }
 
-    Row(
-        modifier = Modifier
-            .wrapContentWidth()
-            .pointerInput(Unit) {
-                detectHorizontalDragGestures { _, dragAmount ->
-                    val totalStarsWidthPx = starSize.toPx() * 5
-                    val dragPosition = (dragAmount + (currentRating * starSize.toPx())).coerceIn(0f, totalStarsWidthPx)
+    Box {
+        Row(
+            modifier = Modifier
+                .wrapContentWidth()
+        ) {
+            for (i in 0..4) {
+                val isFilled = i + 1 <= currentRating.toInt()
+                val isHalfFilled = (currentRating - i) >= 0.5f
 
-                    val newRating = (dragPosition / totalStarsWidthPx * 5).coerceIn(0f, 5f)
-                    val roundedRating = (newRating * 2).roundToInt() / 2f  // Round to nearest 0.5
-
-                    if (roundedRating != currentRating) {
-                        currentRating = roundedRating
-                        onRatingSelected(roundedRating)
-                    }
-                }
-            }
-    ) {
-        for (i in 0..4) {
-            val isFilled = i + 1 <= currentRating.toInt()
-            val isHalfFilled = (currentRating - i) in 0.5..0.99
-
-            Image(
-                imageVector = when {
-                    isFilled -> Icons.Filled.Star
-                    isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
-                    else -> Icons.Outlined.StarOutline
-                },
-                modifier = Modifier
-                    .requiredSize(starSize)
-                    .clickable {
-                        val clickedPosition = i + 1
-                        val newRating = if (currentRating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
-                        currentRating = newRating
-                        onRatingSelected(newRating)
+                Image(
+                    imageVector = when {
+                        isFilled -> Icons.Filled.Star
+                        isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
+                        else -> Icons.Outlined.StarOutline
                     },
-                colorFilter = ColorFilter.tint(
-                    if (isFilled || isHalfFilled) Color.Yellow else Color.Gray
-                ),
-                contentDescription = "Star icon",
-            )
-            Spacer(modifier = Modifier.width(4.dp))
+                    modifier = Modifier
+                        .requiredSize(starSize),
+                    colorFilter = ColorFilter.tint(
+                        if (isFilled || isHalfFilled) Color.Yellow else Color.Gray
+                    ),
+                    contentDescription = "Star icon",
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
         }
+
+        Slider(
+            modifier = Modifier.requiredSize(starSize*5, starSize),
+            value = 5f,
+            onValueChange = { currentRating = it.roundToInt().toFloat()/2; onRatingSelected(currentRating) },
+            colors = SliderDefaults.colors(
+                thumbColor = Color.Transparent,
+                activeTrackColor = Color.Transparent,
+                inactiveTrackColor = Color.Transparent,
+                activeTickColor = Color.Transparent,
+                inactiveTickColor = Color.Transparent,
+            ),
+            steps = 10,
+            valueRange = 0f..10f
+        )
     }
 }
 
