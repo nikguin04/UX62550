@@ -143,7 +143,12 @@ fun RegisterInputHolder(
 
         Button(
             onClick = {
-                FirebaseAuthController().createAccount(emailValue.value, passValue.value,onSuccess = { snackbarShow("Successfully registered") }, onError = {snackbarShow("Failed to register")})
+                FirebaseAuthController().createAccount(
+                    emailValue.value,
+                    passValue.value,
+                    onSuccess = { snackbarShow("Successfully registered") },
+                    onError = {snackbarShow("Failed to register")}
+                )
                 onNavigateToProfile("Register");
 
             },

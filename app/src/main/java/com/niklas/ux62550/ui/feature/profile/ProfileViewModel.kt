@@ -12,20 +12,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
-
-
-data class ReviewStateDataClass(
-    val User: FirebaseAuth
-)
-
-
 class ProfileViewModel : ViewModel() {
     private val profile = Profile(
         name = "Simone",
         Email = "*****@gmail.com",
         FacvritMovieID = 1,
         tempColor = Color.Red
-
     )
 
     private val mutableProfileState = MutableStateFlow<Profile>(profile)

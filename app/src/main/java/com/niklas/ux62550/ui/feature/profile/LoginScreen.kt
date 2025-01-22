@@ -50,7 +50,7 @@ fun LoginPreview() {
 }
 
 @Composable
-fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit, modifier: Modifier = Modifier) {
+fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit) {
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
 
@@ -123,7 +123,12 @@ fun LoginInputHolder(
 
             Button(
                 onClick = {
-                    FirebaseAuthController().signIn(emailValue.value, passValue.value, onSuccess = { snackbarShow("Successfully logged in") }, onError = {snackbarShow("Failed to sign in")})
+                    FirebaseAuthController().signIn(
+                        emailValue.value,
+                        passValue.value,
+                        onSuccess = { snackbarShow("Successfully logged in") },
+                        onError = {snackbarShow("Failed to sign in")}
+                    )
                     onNavigateToProfile("Login") },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = RegisterButtonBlue
