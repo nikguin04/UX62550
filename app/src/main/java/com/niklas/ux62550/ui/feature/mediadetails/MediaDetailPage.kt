@@ -256,7 +256,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data) {
                         .requiredSize(18.dp)
                         .shadow(
                             elevation = 15.dp,
-                            ambientColor = Color.Black.copy(alpha = 255f), // Slightly less opaque for a softer effect
+                            ambientColor = Color.Black, // Slightly less opaque for a softer effect
                         ),
                     colorFilter = ColorFilter.tint(Color.Yellow),
                     contentDescription = "Rating star"
