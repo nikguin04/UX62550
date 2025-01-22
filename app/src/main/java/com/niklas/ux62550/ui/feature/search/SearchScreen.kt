@@ -60,28 +60,28 @@ fun SearchPreview() {
 }
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = viewModel(), onNavigateToMedia: (MediaObject) -> Unit) {
+fun SearchScreen(onNavigateToMedia: (MediaObject) -> Unit, modifier: Modifier = Modifier, viewModel: SearchViewModel = viewModel()) {
     val nonMoviesState = viewModel.nonMoviesState.collectAsState().value
     val moviesState = viewModel.movieItemsUIState.collectAsState().value
-    SearchContent(viewModel = viewModel, movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
+    SearchContent(modifier = modifier, viewModel = viewModel, movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchContent(
     viewModel: SearchViewModel,
-    modifier: Modifier = Modifier,
     movieItemsUIState: MovieItemsUIState,
     nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
-    onNavigateToMedia: (MediaObject) -> Unit
+    onNavigateToMedia: (MediaObject) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     var expanded by rememberSaveable { mutableStateOf(false) }
     LazyColumn(modifier = modifier.padding()) {
         item {
             Row(
-                modifier = Modifier
-                    .padding(20.dp, 45.dp, 20.dp, 20.dp)
+                modifier = modifier
+                    .padding(20.dp, 20.dp, 20.dp, 20.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -129,12 +129,18 @@ fun SearchContent(
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
                 item {
-                    Text(
-                        text = "No search data yet",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = SearchColorForText
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                        .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "No movies found",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = SearchColorForText
+                        )
+                    }
                 }
             }
             is MovieItemsUIState.Data -> {
@@ -164,7 +170,8 @@ fun SearchContent(
                         movie = movieBoxItem,
                         modifier = Modifier.clickable(
                             onClick = { onNavigateToMedia(movieBoxItem) }
-                        )
+                        ).padding(16.dp),
+                        infoRowModifier = Modifier.padding(start= 16.dp)
                     )
                 }
 

@@ -6,7 +6,6 @@ import com.niklas.ux62550.domain.CastDetailsRepository
 import com.niklas.ux62550.domain.DiscoverRepository
 import com.niklas.ux62550.domain.HomeRepository
 import com.niklas.ux62550.domain.ImageRepository
-import com.niklas.ux62550.domain.KeywordRepository
 import com.niklas.ux62550.domain.MediaDetailRepository
 import com.niklas.ux62550.domain.MediaExtendedDetailsRepository
 import com.niklas.ux62550.domain.ReviewRepository
@@ -90,7 +89,6 @@ object DataModule {
     lateinit var discoverRepository: DiscoverRepository
     lateinit var homeRepository: HomeRepository
     lateinit var imageRepository: ImageRepository
-    lateinit var keywordRepository: KeywordRepository
     lateinit var mediaExtendedDetailsRepository: MediaExtendedDetailsRepository
     lateinit var mediaDetailRepository: MediaDetailRepository
     lateinit var reviewRepository: ReviewRepository
@@ -102,7 +100,6 @@ object DataModule {
         discoverRepository = DiscoverRepository(remoteDataSource = remoteMediaDataSource)
         homeRepository = HomeRepository(remoteDataSource = remoteMediaDataSource)
         imageRepository = ImageRepository(remoteDataSource = remoteMediaDataSource)
-        keywordRepository = KeywordRepository(remoteDataSource = remoteMediaDataSource)
         mediaExtendedDetailsRepository = MediaExtendedDetailsRepository(remoteDataSource = remoteMediaDataSource, firebaseDataSource = remoteFirebaseDataSource)
         mediaDetailRepository = MediaDetailRepository(remoteDataSource = remoteMediaDataSource)
         reviewRepository = ReviewRepository(firebaseDataSource = remoteFirebaseDataSource)

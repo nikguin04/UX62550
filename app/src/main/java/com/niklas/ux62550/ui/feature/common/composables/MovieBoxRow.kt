@@ -60,11 +60,10 @@ fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, text: S
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
+fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
     ) {
 
         MediaItem(
@@ -73,9 +72,8 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
             size = ImageSize.BACKDROP
         )
         Column(
-            modifier = Modifier
+            modifier = infoRowModifier
                 .align(Alignment.CenterVertically)
-                .padding(start = 16.dp)
         ) {
             Row {
                 Column {
@@ -105,22 +103,17 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
                             fontWeight = FontWeight.Bold
                         )
 
-                        Spacer(modifier = Modifier.width(62.dp))
+                        Spacer(modifier = Modifier.width(62.dp)) // TODO: Fix this, why is it hardcoded
 
-                        if(movie.release_date.toString().count() >= 5){
-                            Text(
-                                text = movie.release_date.toString().substring(0, 4),
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                        else {
-                            Text(
-                                text = "N/A",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
+                        Text(
+                            text = if (movie.release_date.count() > 4) {
+                                movie.release_date.toString().substring(0, 4)
+                            } else {
+                                "N/A"
+                            },
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
 
                     }
                 }
@@ -132,11 +125,11 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun MovieBoxRowFromIdErrorPreview() {
-    MovieBoxRowFromId(0, {} )
+    MovieBoxRowFromId(Modifier, 0, {})
 }
 
 @Composable
-fun MovieBoxRowFromId(movieId: Int,  onNavigateToMedia: (MediaObject) -> Unit) {
+fun MovieBoxRowFromId(modifier: Modifier = Modifier, movieId: Int,  onNavigateToMedia: (MediaObject) -> Unit, infoRowModifier: Modifier = Modifier) {
 
     val mediaDetailFetchViewModel: MediaDetailFetchViewModel = viewModel(
         factory = MediaDetailFetchViewModel.MediaDetailFetchViewModelFactory(movieId),
@@ -149,9 +142,12 @@ fun MovieBoxRowFromId(movieId: Int,  onNavigateToMedia: (MediaObject) -> Unit) {
             Text(text = "Loading")
         }
         is MovieState.Data -> {
-            MovieBoxRow(mediaState.mediaDetailObject.toMediaObject(), modifier = Modifier.clickable(
-                onClick = { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject())}
-            ))
+            MovieBoxRow(
+                movie = mediaState.mediaDetailObject.toMediaObject(),
+                modifier = modifier.clickable(
+                onClick = { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject())}),
+                infoRowModifier = infoRowModifier
+            )
         }
         is MovieState.Error -> {
             Text(text = "Network error")

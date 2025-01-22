@@ -26,6 +26,10 @@ import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -84,15 +88,14 @@ fun ScreenReviewAndRating(
     navBack: () -> Unit,
     snackbarShow: (String) -> Unit,
     reviewViewModel: ReviewViewModel = viewModel()
-)
-{
+) {
     val reviewState by reviewViewModel.reviewState.collectAsState()
 
     Box {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
-            Header(media = media, reviewViewModel)
+            Header(modifier = modifier, media = media, reviewViewModel = reviewViewModel)
 
             PublishReview(stars = reviewState.rating,
                 reviewText = reviewState.reviewText,
@@ -116,7 +119,8 @@ fun ScreenReviewAndRating(
 @Composable
 fun Header(
     media: MovieDetailObject,
-    reviewViewModel: ReviewViewModel
+    reviewViewModel: ReviewViewModel,
+    modifier: Modifier = Modifier,
 ) {
     Box {
         MediaItem(
@@ -137,35 +141,40 @@ fun Header(
                 },
             size = ImageSize.BACKDROP
         )
-        ReviewText()
-        TitleText(media.Originaltitle)
-    }
-        Row(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+        Column(modifier = modifier) {
+            ReviewText()
+            TitleText(media.title)
 
-        ) {
-            RatingStars(
-                rating = reviewViewModel.reviewState.collectAsState().value.rating,
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp, 40.dp, 0.dp, 0.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
 
-                onRatingSelected = { reviewViewModel.updateRating(it) },
-                starSize = 40.dp
-            )
-            val currentRating = reviewViewModel.reviewState.collectAsState().value.rating
-            Text(
-                text = "${currentRating}/5",
-                style = TextStyle(
-                    fontSize = 34.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-                color = Color.White,
-                modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
-            )
+            ) {
+                RatingStars(
+                    rating = reviewViewModel.reviewState.collectAsState().value.rating,
 
+                    onRatingSelected = { reviewViewModel.updateRating(it) },
+                    starSize = 40.dp
+                )
+                val currentRating = reviewViewModel.reviewState.collectAsState().value.rating
+                Text(
+                    text = "${currentRating}/5",
+                    style = TextStyle(
+                        fontSize = 34.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = Color.White,
+                    modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
+                )
+
+            }
         }
     }
+}
+
 
 
 @Composable
@@ -211,7 +220,12 @@ fun PublishReview(
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
             ) {
-                Text("Publish", color = Color.White)
+                Text("Publish",
+                    style = TextStyle(
+                        shadow = Shadow(
+                            color = Color.Black, blurRadius = 10f
+                        ),),
+                    color = Color.White)
             }
         }
     }
@@ -268,7 +282,7 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(0.dp, 90.dp)
+                .padding(0.dp, 120.dp, 0.dp, 0.dp)
         )
     }
 
@@ -286,7 +300,7 @@ fun TitleText(movieTitle: String) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 120.dp)
+            .padding(0.dp, 5.dp, 0.dp, 0.dp)
     )
 }
 @Composable
@@ -297,49 +311,46 @@ fun RatingStars(
 ) {
     var currentRating by remember { mutableFloatStateOf(rating) }
 
-    Row(
-        modifier = Modifier
-            .wrapContentWidth()
-            .pointerInput(Unit) {
-                detectHorizontalDragGestures { _, dragAmount ->
-                    val totalStarsWidthPx = starSize.toPx() * 5
-                    val dragPosition = (dragAmount + (currentRating * starSize.toPx())).coerceIn(0f, totalStarsWidthPx)
+    Box {
+        Row(
+            modifier = Modifier
+                .wrapContentWidth()
+        ) {
+            for (i in 0..4) {
+                val isFilled = i + 1 <= currentRating.toInt()
+                val isHalfFilled = (currentRating - i) >= 0.5f
 
-                    val newRating = (dragPosition / totalStarsWidthPx * 5).coerceIn(0f, 5f)
-                    val roundedRating = (newRating * 2).roundToInt() / 2f  // Round to nearest 0.5
-
-                    if (roundedRating != currentRating) {
-                        currentRating = roundedRating
-                        onRatingSelected(roundedRating)
-                    }
-                }
-            }
-    ) {
-        for (i in 0..4) {
-            val isFilled = i + 1 <= currentRating.toInt()
-            val isHalfFilled = (currentRating - i) in 0.5..0.99
-
-            Image(
-                imageVector = when {
-                    isFilled -> Icons.Filled.Star
-                    isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
-                    else -> Icons.Outlined.StarOutline
-                },
-                modifier = Modifier
-                    .requiredSize(starSize)
-                    .clickable {
-                        val clickedPosition = i + 1
-                        val newRating = if (currentRating == clickedPosition.toFloat()) i + 0.5f else clickedPosition.toFloat()
-                        currentRating = newRating
-                        onRatingSelected(newRating)
+                Image(
+                    imageVector = when {
+                        isFilled -> Icons.Filled.Star
+                        isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
+                        else -> Icons.Outlined.StarOutline
                     },
-                colorFilter = ColorFilter.tint(
-                    if (isFilled || isHalfFilled) Color.Yellow else Color.Gray
-                ),
-                contentDescription = "Star icon",
-            )
-            Spacer(modifier = Modifier.width(4.dp))
+                    modifier = Modifier
+                        .requiredSize(starSize),
+                    colorFilter = ColorFilter.tint(
+                        if (isFilled || isHalfFilled) Color.Yellow else Color.Gray
+                    ),
+                    contentDescription = "Star icon",
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
         }
+
+        Slider(
+            modifier = Modifier.requiredSize(starSize*5, starSize),
+            value = 5f,
+            onValueChange = { currentRating = it.roundToInt().toFloat()/2; onRatingSelected(currentRating) },
+            colors = SliderDefaults.colors(
+                thumbColor = Color.Transparent,
+                activeTrackColor = Color.Transparent,
+                inactiveTrackColor = Color.Transparent,
+                activeTickColor = Color.Transparent,
+                inactiveTickColor = Color.Transparent,
+            ),
+            steps = 10,
+            valueRange = 0f..10f
+        )
     }
 }
 

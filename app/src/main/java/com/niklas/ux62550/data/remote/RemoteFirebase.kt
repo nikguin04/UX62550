@@ -8,6 +8,8 @@ import com.google.firebase.firestore.firestore
 import com.niklas.ux62550.data.model.MediaObject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.tasks.await
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class FirebaseInstance { // We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
     private val db = Firebase.firestore
@@ -85,11 +87,11 @@ object RemoteFirebase {
         val averagePlotRating = if (reviewCount > 0) totalPlotRating.toDouble() / reviewCount else 0.0
 
         return mapOf(
-            "MainRating" to averageMainRating,
-            "Acting" to averageActorRating,
-            "Directing" to averageDirectingRating,
-            "Music" to averageMusicRating,
-            "Plot" to averagePlotRating
+            "MainRating" to BigDecimal(averageMainRating).setScale(1, RoundingMode.DOWN).toDouble(),
+            "Acting" to BigDecimal(averageActorRating).setScale(1, RoundingMode.DOWN).toDouble(),
+            "Directing" to BigDecimal(averageDirectingRating).setScale(1, RoundingMode.DOWN).toDouble(),
+            "Music" to BigDecimal(averageMusicRating).setScale(1, RoundingMode.DOWN).toDouble(),
+            "Plot" to BigDecimal(averagePlotRating).setScale(1, RoundingMode.DOWN).toDouble()
         )
     }
 

@@ -50,38 +50,36 @@ fun LoginPreview() {
 }
 
 @Composable
-fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit) {
+fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit, modifier: Modifier = Modifier) {
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
 
 
     Box(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        Box {
-            Box(
-                modifier = Modifier
-                    .size(
-                        LocalConfiguration.current.screenWidthDp.dp,
-                        LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                    )
-                    .background(Brush.verticalGradient(colorStops = RedColorGradient))
-            )
-        }
-
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Row(
-                modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
-            }
-            LoginInputHolder(
-                emailValue, passValue, onNavigateToProfile,
-                snackbarShow = snackbarShow
-            )
-
-        }
-        GeneralTopBar(navigateBack = navigateBack)
+        Box(
+            modifier = Modifier
+                .size(
+                    LocalConfiguration.current.screenWidthDp.dp,
+                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
+                )
+                .background(Brush.verticalGradient(colorStops = RedColorGradient))
+        )
     }
+
+    Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(
+            modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
+        }
+        LoginInputHolder(
+            emailValue, passValue, onNavigateToProfile,
+            snackbarShow = snackbarShow
+        )
+
+    }
+    GeneralTopBar(navigateBack = navigateBack)
 }
 
 @Composable

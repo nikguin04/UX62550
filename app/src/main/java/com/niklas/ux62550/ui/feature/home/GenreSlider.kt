@@ -75,6 +75,8 @@ fun DiscoverSliderContent(discoverUiState: DiscoverItemsUIState, headerTitle: St
                 HorizontalLazyRowMovies(
                     width = w,
                     height = h,
+                    edgeGap = 12.dp,
+                    betweenGap = 6.dp,
                     items = discoverUiState.mediaObjects,
                     onNavigateToMedia = onNavigateToMedia,
                     rowListState = listState,
