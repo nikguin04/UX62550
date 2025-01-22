@@ -39,8 +39,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.niklas.ux62550.data.remote.FirebaseAuthController
 import com.niklas.ux62550.models.Profile
-import com.niklas.ux62550.ui.feature.mediadetails.ProfileViewModel
+
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.ProfileBtnRed
 import com.niklas.ux62550.ui.theme.RedColorGradient
@@ -169,22 +170,22 @@ fun ProfileContent(
         Box(Modifier.size(0.dp, 110.dp))
         ProfileAttribute("Password", passwordValueTemp)
 
-        Box(Modifier.size(0.dp, 20.dp))
-        Button(
-            onClick = { onNavigateToLoginRegister("Sign out") },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = LoginButtonGray
-            ),
-            modifier = Modifier
-                .size(145.dp, 45.dp)
-                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-        ) {
-            Text(
-                text = "Sign out",
-                color = Color.White,
-                style = TextStyle(fontSize = 20.sp, shadow = textShadow)
-            )
-        }
+            Box(Modifier.size(0.dp, 20.dp))
+            Button(
+                onClick = { FirebaseAuthController().logout(); onNavigateToLoginRegister("Sign out") },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = LoginButtonGray
+                ),
+                modifier = Modifier
+                    .size(145.dp, 45.dp)
+                    .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+            ) {
+                Text(
+                    text = "Sign out",
+                    color = Color.White,
+                    style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+                )
+            }
 
     }
 }
@@ -193,7 +194,7 @@ fun ProfileContent(
 fun ProfileAttribute(label: String, value: MutableState<String>) {
     Row(Modifier.fillMaxWidth(), Arrangement.Start, Alignment.CenterVertically) {
         TextField(
-            value = value.value,
+            value = FirebaseAuthController().getAuth().currentUser?.email.toString(),
             modifier = Modifier
                 .size(260.dp, 55.dp)
                 .padding(16.dp, 0.dp, 0.dp, 0.dp),

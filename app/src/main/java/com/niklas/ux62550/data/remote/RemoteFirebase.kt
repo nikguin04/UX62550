@@ -13,12 +13,14 @@ import java.math.RoundingMode
 
 class FirebaseInstance { // We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
     private val db = Firebase.firestore
+
     companion object {
         private var instance: FirebaseInstance? = null
         fun getDB(): FirebaseFirestore? {
             if (instance == null) { instance = FirebaseInstance() }
             return instance.let { fb -> fb?.db }
         }
+
     }
 }
 
@@ -27,11 +29,21 @@ object RemoteFirebase {
     suspend fun getWatchList(mutableWatchListFlow: MutableSharedFlow<List<Int>?>){
 
         try {
-            val document = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C").get().await()
+            // if true then use the userId will be used else it will use the defult user
+            // in the real app there will be no defult user you need to sign in to used this function
+            var UserIdPath = "1NhBN640YoUdZq848o3C"
+            if(FirebaseAuthController().getAuth().currentUser != null){
+                UserIdPath = FirebaseAuthController().getAuth().uid.toString()
+            }
+
+
+            var document = FirebaseInstance.getDB()!!.collection("Watchlist").document(UserIdPath).get().await()
             Log.d("Firebase_info", "${document.id} => ${document.data}")
             val arrayData = document.data?.get("MovieIds") as List<*>
             val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
             mutableWatchListFlow.emit(intData)
+
+
         } catch (e: Exception){
             Log.w("Firebase_info", "Error getting documents.", e)
             mutableWatchListFlow.emit(null)
@@ -84,16 +96,28 @@ object RemoteFirebase {
     }
 
     suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean){
-        val watchlist = FirebaseInstance.getDB()!!.collection("Watchlist").document("1NhBN640YoUdZq848o3C")
-        // Set the the movieID
-        // Atomically add or remove a new region to the "MovieIds" array field.
-        watchlist.update(
-            "MovieIds",
-            if (remove) {FieldValue.arrayRemove(data.id)}
-            else {FieldValue.arrayUnion(data.id)}
+        val Watchlistlist = mapOf(
+            "MovieIds" to listOf(data.id)
         )
+        // if true then use the userId will be used else it will use the defult user
+        // in the real app there will be no defult user you need to sign in to used this function
+        var UserIdPath = "1NhBN640YoUdZq848o3C"
+        if(FirebaseAuthController().getAuth().currentUser != null){
+            UserIdPath = FirebaseAuthController().getAuth().uid.toString()
+        }
+
+        val document = FirebaseFirestore.getInstance().collection("Watchlist").document(UserIdPath)
+
+        if(document.get().await().data != null){
+            document.update(
+                "MovieIds",
+                if (remove) {FieldValue.arrayRemove(data.id)}
+                else {FieldValue.arrayUnion(data.id)}
+            )
+        } else{
+            document.set(Watchlistlist)
+        }
+
+
     }
 }
-
-
-

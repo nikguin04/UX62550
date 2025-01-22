@@ -3,8 +3,6 @@ package com.niklas.ux62550.ui.feature.review
 
 import ReviewViewModel
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,10 +23,8 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -36,10 +32,8 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +45,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -69,7 +62,6 @@ import com.niklas.ux62550.ui.theme.ReviewColor
 import com.niklas.ux62550.ui.theme.TextFieldColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.math.roundToInt
-import kotlinx.coroutines.launch
 
 @Composable
 @Preview(showBackground = true)
@@ -104,10 +96,9 @@ fun ScreenReviewAndRating(
                 onRatingChange = { newRating -> reviewViewModel.updateRating(newRating) },
                 onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
                 onSubmit = {
-                    reviewViewModel.submitReview(mediaId = media.id)
+                    reviewViewModel.submitReview(mediaId = media.id, onSuccess = { snackbarShow("Successfully submitted review") }, onError = { snackbarShow("Failed to submit review") })
                     navBack()
                 },
-                snackbarShow = snackbarShow
             )
 
             MoreDetailedReview(reviewViewModel)
@@ -187,7 +178,6 @@ fun PublishReview(
     onRatingChange: (Float) -> Unit,
     onReviewChange: (String) -> Unit,
     onSubmit: () -> Unit,
-    snackbarShow: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -220,7 +210,6 @@ fun PublishReview(
             Button(
                 onClick =  {
                     onSubmit()
-                    snackbarShow("Successfully submitted review")
                 },
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),

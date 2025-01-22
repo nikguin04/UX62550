@@ -31,6 +31,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niklas.ux62550.data.remote.FirebaseAuthController
 import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.LogoBox
 import com.niklas.ux62550.ui.theme.RedColorGradient
@@ -43,13 +44,13 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun RegisterPreview() {
     UX62550Theme {
         Surface {
-            RegisterScreen(navigateBack = {}, onNavigateToProfile = {})
+            RegisterScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow =  {})
         }
     }
 }
 
 @Composable
-fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, modifier: Modifier = Modifier, ) {
+fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, modifier: Modifier = Modifier, snackbarShow: (String) -> Unit ) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
@@ -72,7 +73,11 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
             ) {
                 LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
             }
-            RegisterInputHolder(usernameValue, emailValue, passValue, onNavigateToProfile)
+            RegisterInputHolder(
+                usernameValue, emailValue, passValue, onNavigateToProfile,
+                snackbarShow = snackbarShow
+            )
+
         }
 
         GeneralTopBar(navigateBack = navigateBack)
@@ -80,7 +85,12 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
 }
 
 @Composable
-fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: MutableState<String>, passValue: MutableState<String>, onNavigateToProfile: (String) -> Unit) {
+fun RegisterInputHolder(
+    usernameValue: MutableState<String>,
+    emailValue: MutableState<String>,
+    passValue: MutableState<String>,
+    onNavigateToProfile: (String) -> Unit,
+    snackbarShow: (String) -> Unit) {
     Column {
         TextField(
             modifier = Modifier
@@ -132,7 +142,16 @@ fun RegisterInputHolder(usernameValue: MutableState<String>, emailValue: Mutable
         )
 
         Button(
-            onClick = { onNavigateToProfile("Register") },
+            onClick = {
+                FirebaseAuthController().createAccount(
+                    emailValue.value,
+                    passValue.value,
+                    onSuccess = { snackbarShow("Successfully registered") },
+                    onError = {snackbarShow("Failed to register")}
+                )
+                onNavigateToProfile("Register");
+
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = RegisterButtonBlue
             ),

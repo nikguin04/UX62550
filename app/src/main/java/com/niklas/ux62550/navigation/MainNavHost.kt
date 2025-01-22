@@ -104,7 +104,8 @@ fun MainNavHost(
             LoginScreen(
             	modifier = Modifier.statusBarsPadding(),
                 navigateBack = navController::popBackStack,
-                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) },
+                snackbarShow = snackbarShow
             )
         }
 
@@ -113,7 +114,8 @@ fun MainNavHost(
             RegisterScreen(
                 modifier = Modifier.statusBarsPadding(),
                 navigateBack = navController::popBackStack,
-                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) }
+                onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) },
+                snackbarShow = snackbarShow
             )
         }
 
