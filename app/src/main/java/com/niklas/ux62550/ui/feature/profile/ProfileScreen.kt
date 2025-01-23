@@ -57,13 +57,13 @@ fun ProfilePreview() {
     }
 }
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, modifier: Modifier = Modifier) {
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, topModifier: Modifier = Modifier) {
     when(val profile = viewModel.profileState.collectAsState().value){
         UserData.Empty -> {
 
         }
         is UserData.Data -> {
-            ProfileContent(profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
+            ProfileContent(profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister, topModifier = topModifier)
         }
         UserData.Error -> {
 
@@ -73,9 +73,8 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRe
 @Composable
 fun ProfileContent(
     onNavigateToLoginRegister: (String) -> Unit,
-    topModifier: Modifier = Modifier,
     profile: UserData.Data,
-    modifier: Modifier = Modifier,
+    topModifier: Modifier = Modifier,
 ) {
     val nameValueTemp = remember { mutableStateOf(profile.userData.name) }
     val emailValueTemp = remember { mutableStateOf(profile.userData.email) }
