@@ -37,6 +37,9 @@ class ProfileViewModel : ViewModel() {
     private fun getUserName() = viewModelScope.launch {
         profileRepository.getUserData()
     }
+    private fun getUSerTopRated() = viewModelScope.launch {
+        profileRepository.getRatedData()
+    }
 }
 
 

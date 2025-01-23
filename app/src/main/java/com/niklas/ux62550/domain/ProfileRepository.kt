@@ -11,4 +11,5 @@ class ProfileRepository(
     private val mutableUserFlow = MutableSharedFlow<List<String>>()
     val userFlow = mutableUserFlow.asSharedFlow()
     suspend fun getUserData()  = firebaseDataSource.getUserData(mutableUserFlow)
+    suspend fun getRatedData() = firebaseDataSource.getTopRatedMovie()
 }

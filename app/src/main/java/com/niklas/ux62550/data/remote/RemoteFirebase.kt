@@ -132,11 +132,25 @@ object RemoteFirebase {
             Log.d("Firebase_info", "${document.id} => ${document.data}")
             val userName = document.data?.get("Name") as? String ?: "Default Name"
             val emailAddress = FirebaseAuthController().getAuth().currentUser?.email ?: "default@gmail.com"
+
+            val reviewDocument = FirebaseInstance.getDB()!!
+                .collection("UserReviews")
+                .document("Movies")
+                .collection(movieId.toString()).get().await()
+
             mutableUserFlow.emit(listOf(userName, emailAddress))
 
 
         } catch (e: Exception) {
             Log.w("Firebase_info", "Error getting documents.", e)
         }
+    }
+    suspend fun getTopRatedMovie(){
+        try{
+
+        } catch (e: Exception) {
+            Log.w("Firebase_info", "Error getting documents.", e)
+        }
+
     }
 }
