@@ -17,7 +17,9 @@ class FirebaseInstance { // We need to make this an absolute singleton and not a
     companion object {
         private var instance: FirebaseInstance? = null
         fun getDB(): FirebaseFirestore? {
-            if (instance == null) { instance = FirebaseInstance() }
+            if (instance == null) {
+                instance = FirebaseInstance()
+            }
             return instance.let { fb -> fb?.db }
         }
 
@@ -26,13 +28,13 @@ class FirebaseInstance { // We need to make this an absolute singleton and not a
 
 object RemoteFirebase {
 
-    suspend fun getWatchList(mutableWatchListFlow: MutableSharedFlow<List<Int>?>){
+    suspend fun getWatchList(mutableWatchListFlow: MutableSharedFlow<List<Int>?>) {
 
         try {
             // if true then use the userId will be used else it will use the defult user
             // in the real app there will be no defult user you need to sign in to used this function
             var UserIdPath = "1NhBN640YoUdZq848o3C"
-            if(FirebaseAuthController().getAuth().currentUser != null){
+            if (FirebaseAuthController().getAuth().currentUser != null) {
                 UserIdPath = FirebaseAuthController().getAuth().uid.toString()
             }
 
@@ -44,11 +46,12 @@ object RemoteFirebase {
             mutableWatchListFlow.emit(intData)
 
 
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Log.w("Firebase_info", "Error getting documents.", e)
             mutableWatchListFlow.emit(null)
         }
     }
+
     //Help from chat
     suspend fun getReview(movieId: Int): Map<String, Double> {
         var totalMainRating = 0.0
@@ -95,29 +98,53 @@ object RemoteFirebase {
         )
     }
 
-    suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean){
+    suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean) {
         val Watchlistlist = mapOf(
             "MovieIds" to listOf(data.id)
         )
         // if true then use the userId will be used else it will use the defult user
         // in the real app there will be no defult user you need to sign in to used this function
         var UserIdPath = "1NhBN640YoUdZq848o3C"
-        if(FirebaseAuthController().getAuth().currentUser != null){
+        if (FirebaseAuthController().getAuth().currentUser != null) {
             UserIdPath = FirebaseAuthController().getAuth().uid.toString()
         }
 
         val document = FirebaseFirestore.getInstance().collection("Watchlist").document(UserIdPath)
 
-        if(document.get().await().data != null){
+        if (document.get().await().data != null) {
             document.update(
                 "MovieIds",
-                if (remove) {FieldValue.arrayRemove(data.id)}
-                else {FieldValue.arrayUnion(data.id)}
+                if (remove) {
+                    FieldValue.arrayRemove(data.id)
+                } else {
+                    FieldValue.arrayUnion(data.id)
+                }
             )
-        } else{
+        } else {
             document.set(Watchlistlist)
         }
 
 
+    }
+
+    suspend fun getUserData(mutableUserFlow: MutableSharedFlow<List<String>>) {
+        try {
+            var userIdPath = "1NhBN640YoUdZq848o3C"
+            if (FirebaseAuthController().getAuth().currentUser != null) {
+                userIdPath = FirebaseAuthController().getAuth().uid.toString()
+            }
+
+            val document = FirebaseInstance.getDB()!!
+                .collection("UserData").document(userIdPath).get().await()
+            Log.d("Firebase_info", "${document.id} => ${document.data}")
+            val userName = document.data?.get("Name") as? String ?: "Default Name"
+            val emailAddress = FirebaseAuthController().getAuth().currentUser?.email ?: "default@gmail.com"
+
+            mutableUserFlow.emit(listOf(userName, emailAddress))
+
+
+        } catch (e: Exception) {
+            Log.w("Firebase_info", "Error getting documents.", e)
+        }
     }
 }
