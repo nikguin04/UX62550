@@ -77,7 +77,7 @@ fun ProfileContent(
     modifier: Modifier = Modifier,
 ) {
     val nameValueTemp = remember { mutableStateOf(profile.userData.name) }
-    val emailValueTemp = remember { mutableStateOf(profile.userData.Email) }
+    val emailValueTemp = remember { mutableStateOf(profile.userData.email) }
     val passwordValueTemp = remember { mutableStateOf("**********") }
 
     Box(
@@ -152,7 +152,7 @@ fun ProfileContent(
             Box(Modifier.size(13.dp, 0.dp))
             for (i in 0..4) {
                 Icon(
-                    modifier = Modifier.size(26.dp),
+                    modifier = Modifier.size(18.dp),
                     imageVector = Icons.Filled.Star,
                     contentDescription = null,
                     tint = starYellow

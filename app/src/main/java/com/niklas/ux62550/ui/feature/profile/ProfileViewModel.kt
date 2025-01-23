@@ -24,8 +24,8 @@ class ProfileViewModel : ViewModel() {
                 mutableProfileState.update {
                     val profile = Profile(
                         name = user[0],
-                        Email = user[1],
-                        FavoriteMovieID = 1,
+                        email = user[1],
+                        favoriteMovieID = 1,
                         tempColor = Color.Gray
                     )
                     UserData.Data(profile)
@@ -36,9 +36,6 @@ class ProfileViewModel : ViewModel() {
     }
     private fun getUserName() = viewModelScope.launch {
         profileRepository.getUserData()
-    }
-    private fun getUSerTopRated() = viewModelScope.launch {
-        profileRepository.getRatedData()
     }
 }
 
