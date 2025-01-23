@@ -49,6 +49,7 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
 
 class ImageViewModelFactory(private val media: MediaObject) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
         return ImageViewModel(media) as T
     }
 }

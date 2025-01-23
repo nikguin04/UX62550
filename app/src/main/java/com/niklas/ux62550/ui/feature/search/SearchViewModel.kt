@@ -5,12 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.di.DataModule
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@OptIn(FlowPreview::class)
 class SearchViewModel : ViewModel() {
     private val searchRepository = DataModule.searchRepository
 

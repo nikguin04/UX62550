@@ -62,6 +62,7 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
 
 class DiscoverViewModelFactory(private val genreObject: GenreObject) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
         return DiscoverViewModel(genreObject) as T
     }
 }

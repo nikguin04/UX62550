@@ -58,6 +58,7 @@ class MainActivity : ComponentActivity() {
                         snackbarHostState.showSnackbar(message)
                     }
                 }
+                @Suppress("KotlinConstantConditions")
                 if (BuildConfig.API_KEY == "") {
                     Log.e("API_KEY_MISSING", "No API key for TMDB has been provided, network errors will occur\nPlease defined the API key in the 'local.properties' file with following line:\nAPI_KEY=.....")
                     LaunchedEffect(Unit) { scope.launch { snackbarHostState.showSnackbar(message = "Missing API key, app will not work", duration = SnackbarDuration.Indefinite) } }

@@ -61,6 +61,7 @@ object RemoteFirebase {
             if (document != null && document.isEmpty.not()) {
                 for (documents in document.documents) {
                     val mainRating = documents.get("MainRating") as Double
+                    @Suppress("UNCHECKED_CAST")
                     val ratings = documents.get("CategoryRatings") as Map<String, Double>
 
                     totalMainRating += mainRating
