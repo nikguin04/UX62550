@@ -47,12 +47,11 @@ fun WatchlistPreview() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObject) -> Unit, watchlistViewModel: WatchlistViewModel = viewModel()) {
+fun WatchlistContent(topModifier: Modifier = Modifier, onNavigateToMedia: (MediaObject) -> Unit, watchlistViewModel: WatchlistViewModel = viewModel()) {
     Column(Modifier.padding()) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 45.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -64,9 +63,10 @@ fun WatchlistContent(modifier: Modifier = Modifier, onNavigateToMedia: (MediaObj
             var text by rememberSaveable { mutableStateOf("") }
             var expanded by rememberSaveable { mutableStateOf(false) }
 
+            Box(modifier=topModifier.padding(25.dp))
             LogoBox(size = 200.dp)
             Row(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(top= 24.dp),
                 verticalAlignment = Alignment.CenterVertically,

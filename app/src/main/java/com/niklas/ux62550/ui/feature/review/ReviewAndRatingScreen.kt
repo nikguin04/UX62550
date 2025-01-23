@@ -77,7 +77,7 @@ fun ReviewAndRatingPreview() {
 
 @Composable
 fun ScreenReviewAndRating(
-    modifier: Modifier = Modifier,
+    topModifier: Modifier = Modifier,
     media: MovieDetailObject,
     navBack: () -> Unit,
     snackbarShow: (String) -> Unit,
@@ -89,7 +89,7 @@ fun ScreenReviewAndRating(
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
-            Header(modifier = modifier, media = media, reviewViewModel = reviewViewModel)
+            Header(modifier = topModifier, media = media, reviewViewModel = reviewViewModel)
 
             PublishReview(stars = reviewState.rating,
                 reviewText = reviewState.reviewText,
