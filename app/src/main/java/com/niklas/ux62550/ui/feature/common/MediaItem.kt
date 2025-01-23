@@ -338,6 +338,8 @@ fun MediaItemPreview(round: Dp = 0.dp, modifier: Modifier = Modifier) {
     )
 }
 
+
+// ChatGPT: Animation generated partially and expended on by ourselves
 @Composable
 fun AnimatedImagePlaceholder(modifier: Modifier = Modifier, animationProgress: State<Float>) {
 

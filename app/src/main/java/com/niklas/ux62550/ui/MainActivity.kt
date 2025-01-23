@@ -47,6 +47,7 @@ class MainActivity : ComponentActivity() {
                     //android.graphics.Color.TRANSPARENT,
                     Color(0.1f, 0.1f, 0.1f, 0.4f).toArgb()
                 ),
+                // ChatGPT: Recommended (SystemBarStyle.dark)
                 navigationBarStyle = SystemBarStyle.dark(
                     Color.Transparent.toArgb()
                 )
