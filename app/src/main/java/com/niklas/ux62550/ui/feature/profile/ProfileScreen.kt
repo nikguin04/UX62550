@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.profile
 
-import DrawCircle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.remote.FirebaseAuthController
+import com.niklas.ux62550.ui.feature.common.DrawCircle
 import com.niklas.ux62550.ui.theme.LoginButtonGray
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.UX62550Theme

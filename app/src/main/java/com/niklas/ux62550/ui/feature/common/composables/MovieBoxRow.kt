@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaDetailFetchViewModel
+import com.niklas.ux62550.ui.feature.common.MediaDetailFetchViewModelFactory
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 
@@ -101,7 +102,7 @@ fun MovieBoxRowFromIdErrorPreview() {
 @Composable
 fun MovieBoxRowFromId(modifier: Modifier = Modifier, movieId: Int, onNavigateToMedia: (MediaObject) -> Unit, infoRowModifier: Modifier = Modifier) {
     val mediaDetailFetchViewModel: MediaDetailFetchViewModel = viewModel(
-        factory = MediaDetailFetchViewModel.MediaDetailFetchViewModelFactory(movieId),
+        factory = MediaDetailFetchViewModelFactory(movieId),
         key = movieId.toString()
     )
 

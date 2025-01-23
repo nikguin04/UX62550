@@ -1,3 +1,5 @@
+package com.niklas.ux62550.ui.feature.review
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.di.DataModule

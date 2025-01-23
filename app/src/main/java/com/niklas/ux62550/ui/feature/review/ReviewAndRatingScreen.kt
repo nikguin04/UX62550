@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.review
 
-import ReviewViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

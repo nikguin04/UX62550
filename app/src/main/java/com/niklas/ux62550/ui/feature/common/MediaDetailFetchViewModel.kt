@@ -31,10 +31,10 @@ class MediaDetailFetchViewModel(movieId: Int) : ViewModel() {
             }
         }
     }
+}
 
-    class MediaDetailFetchViewModelFactory(private val movieId: Int) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MediaDetailFetchViewModel(movieId) as T
-        }
+class MediaDetailFetchViewModelFactory(private val movieId: Int) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return MediaDetailFetchViewModel(movieId) as T
     }
 }

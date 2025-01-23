@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
-import DrawCircle
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +38,7 @@ import com.niklas.ux62550.data.model.Cast
 import com.niklas.ux62550.data.model.CreditObject
 import com.niklas.ux62550.data.model.Crew
 import com.niklas.ux62550.ui.feature.common.CreditState
+import com.niklas.ux62550.ui.feature.common.DrawCircle
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 
