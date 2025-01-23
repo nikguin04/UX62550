@@ -18,13 +18,10 @@ abstract class KeyRepository<K, T> {
         itemsFlow[itemKey] = mutableItemsFlow[itemKey]!!.asSharedFlow()
 
         scope.launch {
-            try {
-                Result.success(getUnit())
-            } catch (e: Exception) {
-                Result.failure(e)
-            }.let {
-                mutableItemsFlow[itemKey]!!.emit(it)
-            }
+            mutableItemsFlow[itemKey]!!.emit(
+                try { Result.success(getUnit()) }
+                catch (e: Exception) { Result.failure(e) }
+            )
         }
 
         return itemsFlow[itemKey]!!

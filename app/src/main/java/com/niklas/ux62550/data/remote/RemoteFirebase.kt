@@ -21,7 +21,7 @@ class FirebaseInstance {
             if (instance == null) {
                 instance = FirebaseInstance()
             }
-            return instance.let { fb -> fb?.db }
+            return instance?.db
         }
     }
 }
@@ -29,8 +29,8 @@ class FirebaseInstance {
 object RemoteFirebase {
     suspend fun getWatchList(mutableWatchListFlow: MutableSharedFlow<List<Int>?>) {
         try {
-            // if true then use the userId will be used else it will use the defult user
-            // in the real app there will be no defult user you need to sign in to used this function
+            // if true then use the userId will be used else it will use the default user
+            // in the real app there will be no default user you need to sign in to used this function
             var UserIdPath = "1NhBN640YoUdZq848o3C"
             if (FirebaseAuthController().getAuth().currentUser != null) {
                 UserIdPath = FirebaseAuthController().getAuth().uid.toString()
@@ -96,8 +96,8 @@ object RemoteFirebase {
         val Watchlistlist = mapOf(
             "MovieIds" to listOf(data.id)
         )
-        // if true then use the userId will be used else it will use the defult user
-        // in the real app there will be no defult user you need to sign in to used this function
+        // if true then use the userId will be used else it will use the default user
+        // in the real app there will be no default user you need to sign in to used this function
         var UserIdPath = "1NhBN640YoUdZq848o3C"
         if (FirebaseAuthController().getAuth().currentUser != null) {
             UserIdPath = FirebaseAuthController().getAuth().uid.toString()

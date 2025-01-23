@@ -50,7 +50,7 @@ fun WatchlistContent(topModifier: Modifier = Modifier, onNavigateToMedia: (Media
         ) {
             val watchListState = watchlistViewModel.watchListState.collectAsState().value
 
-            Box(modifier = topModifier.padding(25.dp))
+            Box(topModifier.padding(25.dp))
             LogoBox(size = 200.dp)
             Row(
                 modifier = Modifier
@@ -62,7 +62,7 @@ fun WatchlistContent(topModifier: Modifier = Modifier, onNavigateToMedia: (Media
                 Text(text = "Watch List", fontSize = 36.sp)
             }
             when (watchListState) {
-                MovieIds.Empty -> {
+                is MovieIds.Empty -> {
                     Text("No data yet")
                 }
                 is MovieIds.Data -> {

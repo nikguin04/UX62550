@@ -119,6 +119,6 @@ fun LoginRegisterScreen(
             Text(text = "Sign in", color = Color.White, style = TextStyle(fontSize = 20.sp, shadow = textShadow))
         }
 
-        Box(modifier = Modifier.size(0.dp, 140.dp))
+        Box(Modifier.size(0.dp, 140.dp))
     }
 }

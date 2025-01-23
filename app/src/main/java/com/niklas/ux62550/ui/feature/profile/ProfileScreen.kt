@@ -92,7 +92,7 @@ fun ProfileContent(
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(modifier = topModifier.size(0.dp, 70.dp))
+        Box(topModifier.size(0.dp, 70.dp))
 
         // Profile name and picture
         Row(
@@ -109,8 +109,8 @@ fun ProfileContent(
                         Icon(
                             imageVector = Icons.Outlined.AddCircleOutline,
                             contentDescription = null,
-                            Modifier.size(26.dp),
-                            Color.Black
+                            modifier = Modifier.size(26.dp),
+                            tint = Color.Black
                         )
                     }
                 }
@@ -148,7 +148,7 @@ fun ProfileContent(
                 modifier = Modifier.padding(18.dp, 0.dp, 0.dp, 0.dp)
             )
             Box(Modifier.size(13.dp, 0.dp))
-            for (i in 0..4) {
+            repeat (5) {
                 Icon(
                     modifier = Modifier.size(18.dp),
                     imageVector = Icons.Filled.Star,
@@ -201,6 +201,7 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
         Column(Modifier.padding(horizontal = 20.dp)) {
             Box(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color.Gray)
                     .padding(6.dp)
@@ -210,15 +211,14 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
                         ambientColor = Color.Black.copy(alpha = 255f),
                         spotColor = Color.Black.copy(alpha = 255f)
                     )
-                    .fillMaxWidth()
             ) {
                 Text(
-                    label,
+                    text = label,
                     style = TextStyle(
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
-                        shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                        shadow = Shadow(color = Color.Black, blurRadius = 5f)
                     ),
                     modifier = Modifier.padding(start = 10.dp)
                 )
@@ -227,7 +227,7 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
                     style = TextStyle(
                         fontSize = 18.sp,
                         color = Color.White,
-                        shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                        shadow = Shadow(color = Color.Black, blurRadius = 5f)
                     ),
                     modifier = Modifier
                         .padding(start = 10.dp, top = 10.dp)

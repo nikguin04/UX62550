@@ -61,7 +61,7 @@ fun DiscoverSliderContent(discoverUiState: DiscoverItemsUIState, headerTitle: St
         val w = 155.dp
         val h = 155.dp / 16 * 9
         when (discoverUiState) {
-            DiscoverItemsUIState.Empty -> {
+            is DiscoverItemsUIState.Empty -> {
                 // Size placeholder
                 Box(Modifier.fillMaxWidth().height(h))
             }
@@ -79,7 +79,7 @@ fun DiscoverSliderContent(discoverUiState: DiscoverItemsUIState, headerTitle: St
             }
             is DiscoverItemsUIState.Error -> {
                 Box(Modifier.fillMaxWidth().height(h)) {
-                    Text(text = "Error fetching data")
+                    Text("Error fetching data")
                 }
             }
         }

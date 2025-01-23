@@ -25,13 +25,13 @@ fun SimilarMedia(
         style = TextStyle(
             fontSize = 18.sp,
             color = Color.White,
-            shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+            shadow = Shadow(color = Color.Black, blurRadius = 5f)
         ),
         modifier = modifier.padding(start = 20.dp)
     )
-    Box(modifier = Modifier.padding(bottom = 20.dp)) {
+    Box(Modifier.padding(bottom = 20.dp)) {
         when (similarMediaState) {
-            SimilarMovieState.Empty -> {
+            is SimilarMovieState.Empty -> {
                 Text("NO PIC")
             }
             is SimilarMovieState.Data -> {

@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.common.composables
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,14 +34,13 @@ import com.niklas.ux62550.ui.feature.common.MediaDetailFetchViewModelFactory
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 
-@SuppressLint("DefaultLocale")
 @Composable
 fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifier: Modifier = Modifier) {
-    Row(modifier = modifier.fillMaxWidth()) {
+    Row(modifier.fillMaxWidth()) {
         MediaItem(
             uri = movie.backdrop_path,
-            modifier = Modifier.width(110.dp).height(110.dp/16*9).clip(RoundedCornerShape(6.dp)),
-            size = ImageSize.BACKDROP
+            size = ImageSize.BACKDROP,
+            modifier = Modifier.width(110.dp).height(110.dp/16*9).clip(RoundedCornerShape(6.dp))
         )
         Column(
             modifier = infoRowModifier
@@ -75,7 +73,7 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifi
                             fontWeight = FontWeight.Bold
                         )
 
-                        Spacer(modifier = Modifier.width(62.dp)) // TODO: Fix this, why is it hardcoded
+                        Spacer(Modifier.width(62.dp)) // TODO: Fix this, why is it hardcoded
 
                         Text(
                             text = if (movie.release_date.count() > 4) {
@@ -108,8 +106,8 @@ fun MovieBoxRowFromId(modifier: Modifier = Modifier, movieId: Int, onNavigateToM
 
     val mediaState = mediaDetailFetchViewModel.movieState.collectAsState().value
     when (mediaState) {
-        MovieState.Empty -> {
-            Text(text = "Loading")
+        is MovieState.Empty -> {
+            Text("Loading")
         }
         is MovieState.Data -> {
             MovieBoxRow(
@@ -120,7 +118,7 @@ fun MovieBoxRowFromId(modifier: Modifier = Modifier, movieId: Int, onNavigateToM
             )
         }
         is MovieState.Error -> {
-            Text(text = "Network error")
+            Text("Network error")
         }
     }
 }

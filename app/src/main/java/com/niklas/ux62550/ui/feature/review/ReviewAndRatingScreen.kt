@@ -82,9 +82,7 @@ fun ScreenReviewAndRating(
     val reviewState by reviewViewModel.reviewState.collectAsState()
 
     Box {
-        Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
-        ) {
+        Column(Modifier.verticalScroll(rememberScrollState())) {
             Header(modifier = topModifier, media = media, reviewViewModel = reviewViewModel)
 
             PublishReview(
@@ -112,6 +110,7 @@ fun Header(
     Box {
         MediaItem(
             uri = media.backDropPath,
+            size = ImageSize.BACKDROP,
             modifier = Modifier
                 .fillMaxWidth()
                 .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
@@ -125,8 +124,7 @@ fun Header(
                         ),
                         blendMode = BlendMode.DstIn
                     )
-                },
-            size = ImageSize.BACKDROP
+                }
         )
         Column(modifier = modifier) {
             ReviewText()
@@ -196,9 +194,7 @@ fun PublishReview(
             contentAlignment = Alignment.Center
         ) {
             Button(
-                onClick =  {
-                    onSubmit()
-                },
+                onClick = onSubmit,
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
             ) {
@@ -317,7 +313,7 @@ fun RatingStars(
                     ),
                     contentDescription = "Star icon",
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(Modifier.width(4.dp))
             }
         }
 

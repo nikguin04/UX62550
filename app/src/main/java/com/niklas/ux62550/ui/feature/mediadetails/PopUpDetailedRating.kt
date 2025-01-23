@@ -80,7 +80,7 @@ fun DetailedRating(
                 style = TextStyle(
                     fontSize = 18.sp,
                     color = Color.White,
-                    shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                    shadow = Shadow(color = Color.Black, blurRadius = 5f)
                 )
             )
             val sheetState = rememberModalBottomSheetState()
@@ -138,7 +138,7 @@ fun OverallRating(modifier: Modifier, rating: Double) {
                 contentDescription = "Rating star"
             )
         }
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(Modifier.width(4.dp))
         Text(
             text = "$rating/5",
             fontSize = 18.sp

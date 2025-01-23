@@ -71,7 +71,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
             style = TextStyle(
                 fontSize = 20.sp,
                 color = Color.White,
-                shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                shadow = Shadow(color = Color.Black, blurRadius = 5f)
             )
         )
         val sheetState = rememberModalBottomSheetState()
@@ -86,18 +86,18 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
         ) {
             for (i in 0 until minOf(maxActors, creditState.creditObject.cast.size)) {
                 MediaItem(
-                    creditState.creditObject.cast[i].castProfilePath,
-                    modifier
+                    uri = creditState.creditObject.cast[i].castProfilePath,
+                    size = ImageSize.PROFILE,
+                    modifier = modifier
                         .clip(RoundedCornerShape(25))
-                        .size(width = 60.dp, height = 90.dp),
-                    size = ImageSize.PROFILE
+                        .size(60.dp, 90.dp)
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(Modifier.width(12.dp))
             }
 
-            for (i in 0..2) { // Create clickable circles
-                Spacer(modifier = Modifier.width(4.dp))
-                DrawCircle(Modifier.size(10.dp), Color.LightGray) // Circle inside the button
+            repeat(3) { i ->
+                Spacer(Modifier.width(4.dp))
+                DrawCircle(Modifier.size(10.dp), Color.LightGray)
                 if (showBottomSheet) {
                     ModalBottomSheet(
                         onDismissRequest = { showBottomSheet = false },
@@ -126,12 +126,13 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
 fun CastRow(modifier: Modifier, cast: Cast) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         MediaItem(
-            cast.castProfilePath,
-            modifier
+            uri = cast.castProfilePath,
+            size = ImageSize.PROFILE,
+            modifier = modifier
                 .clip(RoundedCornerShape(25))
-                .size(width = 60.dp, height = 90.dp),
-            size = ImageSize.PROFILE)
-        Spacer(modifier = Modifier.width(12.dp))
+                .size(60.dp, 90.dp)
+        )
+        Spacer(Modifier.width(12.dp))
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -141,9 +142,9 @@ fun CastRow(modifier: Modifier, cast: Cast) {
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(Modifier.width(4.dp))
                 DrawCircle(Modifier.size(6.dp), Color.LightGray)
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(Modifier.width(4.dp))
                 Text(
                     text = cast.character,
                     fontSize = 14.sp,
@@ -159,13 +160,13 @@ fun CastRow(modifier: Modifier, cast: Cast) {
 fun CrewRow(modifier: Modifier, crew: Crew) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         MediaItem(
-            crew.profilePath,
-            modifier
+            uri = crew.castProfilePath,
+            size = ImageSize.PROFILE,
+            modifier = modifier
                 .clip(RoundedCornerShape(25))
-                .size(width = 60.dp, height = 90.dp),
-            size = ImageSize.PROFILE
+                .size(60.dp, 90.dp)
         )
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(Modifier.width(12.dp))
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -175,9 +176,9 @@ fun CrewRow(modifier: Modifier, crew: Crew) {
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(Modifier.width(4.dp))
                 DrawCircle(Modifier.size(6.dp), Color.LightGray)
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(Modifier.width(4.dp))
                 Text(
                     text = crew.job,
                     fontSize = 14.sp,

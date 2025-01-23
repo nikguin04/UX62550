@@ -44,7 +44,7 @@ fun AwardPopUp() {
             colorFilter = ColorFilter.tint(Color.Yellow),
             contentDescription = "Star icon"
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(Modifier.width(8.dp))
 
         Text("Awards...", color = AwardAndDetailRating)
         val sheetState = rememberModalBottomSheetState()
@@ -80,7 +80,7 @@ fun AwardPopUp() {
                             color = Color.White
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(Modifier.height(4.dp))
                     HorizontalDivider(
                         modifier = Modifier
                             .width(300.dp)

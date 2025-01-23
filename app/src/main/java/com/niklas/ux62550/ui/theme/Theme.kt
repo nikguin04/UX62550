@@ -16,6 +16,6 @@ fun UX62550Theme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = DarkColorScheme,
         typography = Typography,
-        content = content,
+        content = content
     )
 }

@@ -35,7 +35,7 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
                     }
                 }
             }
-        } ?: Log.w("No media_type", "Media passed to ImageViewModel contained no media_type, so we can not fetch images, Please note that this sometimes need to be set manually when fetching data since endpoints for specific media will not include the media_type")
+        } ?: Log.w("NO_MEDIA_TYPE", "Media passed to ImageViewModel contained no media_type, so we can not fetch images, Please note that this sometimes need to be set manually when fetching data since endpoints for specific media will not include the media_type")
     }
 
     fun initPreview_NoFetch() {

@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             enableEdgeToEdge(
                 statusBarStyle = SystemBarStyle.dark(
-                    //android.graphics.Color.TRANSPARENT,
                     Color(0.1f, 0.1f, 0.1f, 0.4f).toArgb()
                 ),
                 navigationBarStyle = SystemBarStyle.dark(

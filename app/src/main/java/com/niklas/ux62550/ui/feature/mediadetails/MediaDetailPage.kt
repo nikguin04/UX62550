@@ -147,6 +147,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
         Box(modifier = Modifier.alpha(0.5f)) {
             MediaItem(
                 uri = movieState.mediaDetailObject.backDropPath,
+                size = ImageSize.BACKDROP,
                 modifier = Modifier
                     .fillMaxWidth()
                     .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
@@ -158,12 +159,11 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                             ),
                             blendMode = BlendMode.DstIn
                         )
-                    },
-                size = ImageSize.BACKDROP
+                    }
             )
         }
         when (trailerState) {
-            TrailerState.Empty -> {}
+            is TrailerState.Empty -> {}
             is TrailerState.Data -> {
                 var youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
                     "https://www.youtube.com/watch?v=${it.key}"
@@ -197,8 +197,8 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                         }
                     Box( // Playable Trailer Box
                         modifier = playModifier
-                            .aspectRatio(16f / 9f)
                             .fillMaxWidth()
+                            .aspectRatio(16f / 9f)
                     ) {
                         MediaItemBackdropIntercept(
                             modifier = Modifier
@@ -220,12 +220,12 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                             )
                         }
                     }
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(Modifier.height(12.dp))
                     TitleText(movieState.mediaDetailObject.title)
                 }
             }
             is TrailerState.Error -> {
-                Text(text = "Network error")
+                Text("Network error")
             }
         }
     }
@@ -261,7 +261,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data) {
                     contentDescription = "Rating star"
                 )
             }
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(Modifier.width(4.dp))
             Text(
                 String.format(Locale.ENGLISH, "%.1f", rating),
                 fontSize = 18.sp

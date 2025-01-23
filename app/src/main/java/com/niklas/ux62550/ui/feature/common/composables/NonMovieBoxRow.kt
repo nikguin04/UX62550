@@ -26,10 +26,11 @@ fun NonMovieBoxRow(person: MediaObject, modifier: Modifier = Modifier) {
     ) {
         MediaItem(
             uri = person.profile_path,
-            modifier
+            size = ImageSize.BACKDROP,
+            modifier = modifier
+                .size(50.dp, 80.dp)
                 .clip(RoundedCornerShape(25))
-                .size(width = 50.dp, height = 80.dp),
-            size = ImageSize.BACKDROP)
+        )
         Row(
             modifier = Modifier
                 .align(Alignment.CenterVertically)

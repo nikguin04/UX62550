@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class WatchlistViewModel() : ViewModel() {
+class WatchlistViewModel : ViewModel() {
     private val watchListRepository = DataModule.watchListRepository
 
     private fun getWatchList() = viewModelScope.launch {

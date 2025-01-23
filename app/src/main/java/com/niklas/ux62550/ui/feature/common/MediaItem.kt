@@ -57,7 +57,7 @@ enum class ImageSize {
     BACKDROP, LOGO, POSTER, PROFILE, STILL
 }
 
-val CrossfadeDuration: Int = 200
+const val CrossfadeDuration = 200
 
 @Composable
 @Preview
@@ -79,7 +79,7 @@ fun NoMediaPreview() {
             fetchEnBackdrop = true,
             imageViewModel = imageViewModel
         )
-        Box(modifier = Modifier.size(10.dp))
+        Box(Modifier.size(10.dp))
         MediaItemBackdropIntercept(
             modifier = Modifier
                 .size(w, h)
@@ -89,7 +89,7 @@ fun NoMediaPreview() {
             fetchEnBackdrop = true,
             imageViewModel = imageViewModel
         )
-        Box(modifier = Modifier.size(10.dp))
+        Box(Modifier.size(10.dp))
         MediaItemBackdropIntercept(
             modifier = Modifier
                 .size(w, h)
@@ -99,7 +99,7 @@ fun NoMediaPreview() {
             fetchEnBackdrop = true,
             imageViewModel = imageViewModel
         )
-        Box(modifier = Modifier.size(10.dp))
+        Box(Modifier.size(10.dp))
         MediaItemBackdropIntercept(
             modifier = Modifier
                 .size(w, h)
@@ -131,7 +131,7 @@ fun MediaPreview() {
             fetchEnBackdrop = true,
             imageViewModel = imageViewModel
         )
-        Box(modifier = Modifier.size(10.dp))
+        Box(Modifier.size(10.dp))
         val imageViewModelData: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + "2")
         imageViewModelData.initPreview()
         MediaItemBackdropIntercept(
@@ -161,18 +161,21 @@ fun MediaItemBackdropIntercept(
         val animationProgress = getMediaItemAnimationProgress()
 
         when (imagesDataUIState) {
-            ImagesDataUIState.Empty -> {
+            is ImagesDataUIState.Empty -> {
                 // TODO: CWL loading page?
-                AnimatedImagePlaceholder(modifier.clip(RoundedCornerShape(6.dp)), animationProgress)
+                AnimatedImagePlaceholder(
+                    modifier = modifier.clip(RoundedCornerShape(6.dp)),
+                    animationProgress = animationProgress
+                )
             }
             is ImagesDataUIState.Data -> {
                 val enBackdrop = imagesDataUIState.media.getFirstEnBackdrop()
                 enBackdrop?.let {
                     MediaItem(
                         uri = it.file_path,
-                        modifier = modifier,
                         size = ImageSize.BACKDROP,
-                        animationProgress = animationProgress
+                        animationProgress = animationProgress,
+                        modifier = modifier
                     )
                 } ?: // ELSE
                 Box(modifier = modifier) // Red color is to indicate that the media has no english backdrop, this box is TEMPORARY! and for later debugging purposes when making title over media with no english backdrop
@@ -189,14 +192,14 @@ fun MediaItemBackdropIntercept(
                 }
             }
             is ImagesDataUIState.Error -> {
-                Text(text = "Network error")
+                Text("Network error")
             }
         }
     } else {
         MediaItem(
             uri = mediaItem.backdrop_path,
-            modifier = modifier.clip(RoundedCornerShape(6.dp)),
-            size = ImageSize.BACKDROP
+            size = ImageSize.BACKDROP,
+            modifier = modifier.clip(RoundedCornerShape(6.dp))
         )
     }
 }
@@ -226,9 +229,9 @@ fun MediaItemBackdropFallback(
     Box(modifier = modifier) {
         MediaItem(
             uri = media.backdrop_path,
-            modifier = modifier,
             size = size,
-            animationProgress = animationProgress
+            animationProgress = animationProgress,
+            modifier = modifier
         )
 
         if (backdropFallback) {
@@ -316,14 +319,13 @@ fun MediaItem(
 }
 
 @Composable
-fun debugPlaceholder(@DrawableRes debugPreview: Int) =
+fun debugPlaceholder(@DrawableRes debugPreview: Int) = painterResource(
     if (LocalInspectionMode.current) {
-        painterResource(id = debugPreview) // Source for preview
+        debugPreview // Source for preview
     } else {
-        painterResource(id = R.drawable.networkerror)
-        //null // Source for build application
+        R.drawable.networkerror // Source for build application
     }
-
+)
 
 @Composable
 fun AnimatedImagePlaceholder(modifier: Modifier = Modifier, animationProgress: State<Float>) {

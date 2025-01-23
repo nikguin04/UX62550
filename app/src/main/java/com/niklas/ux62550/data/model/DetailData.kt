@@ -49,15 +49,15 @@ data class MovieDetailObject(
 ) : Parcelable {
     fun toMediaObject(): MediaObject {
         return MediaObject(
-            adult = this.adult,
-            backdrop_path = this.backDropPath,
-            id = this.id,
-            title = this.title,
-            poster_path = this.posterPath,
-            genre_ids = this.genre.map { it.genreID }, // TODO: check this mapping is right
-            release_date = this.releaseDate,
+            adult = adult,
+            backdrop_path = backDropPath,
+            id = id,
+            title = title,
+            poster_path = posterPath,
+            genre_ids = genre.map { it.genreID }, // TODO: check this mapping is right
+            release_date = releaseDate,
             media_type = "movie", // This is hardcoded because the MovieDetailObject is called "movie", for fetching tv shows this should be changed
-            vote_average = this.vote_average.toFloat()
+            vote_average = vote_average.toFloat()
         )
     }
 }

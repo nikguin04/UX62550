@@ -2,7 +2,7 @@ package com.niklas.ux62550.data.remote
 
 import retrofit2.Retrofit
 
-class RemoteMediaDataSource(private val retrofit: Retrofit) {
+class RemoteMediaDataSource(retrofit: Retrofit) {
     private val mediaApi: RemoteApiService = retrofit.create(RemoteApiService::class.java)
 
     suspend fun getSearch(search_mode: String, query: String) = mediaApi.getSearch(search_mode, query)

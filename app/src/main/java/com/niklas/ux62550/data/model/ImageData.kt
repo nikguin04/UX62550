@@ -15,7 +15,7 @@ data class ImageDataObject(
     val height: Int,
 
     @SerialName("iso_639_1")
-    // Internationally accepted 2 letter country codes - https://en.wikipedia.org/wiki/ISO_639-1
+    // Internationally accepted 2 letter language codes - https://en.wikipedia.org/wiki/ISO_639-1
     val iso_639_1: String,
 
     @SerialName("file_path")
@@ -57,10 +57,7 @@ data class ImagesDataObject(
     @SerialName("posters")
     val posters: List<ImageDataObject>,
 ) {
-    fun getFirstEnBackdrop(): ImageDataObject? {
-        backdrops.forEach { backdrop -> if (backdrop.iso_639_1 == "en") { return backdrop } }
-        return null
-    }
+    fun getFirstEnBackdrop() = backdrops.find { it.iso_639_1 == "en" }
 
     companion object {
         val EmptyExample = ImagesDataObject(

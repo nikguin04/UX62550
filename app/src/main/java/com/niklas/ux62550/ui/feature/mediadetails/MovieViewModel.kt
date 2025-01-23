@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MovieViewModel() : ViewModel() {
+class MovieViewModel : ViewModel() {
     private val mediaExtendedDetailsRepository = DataModule.mediaExtendedDetailsRepository
     private val mediaDetailsRepository = DataModule.mediaDetailRepository
     private val _movieReviewID = MutableStateFlow<Map<String, Double>>(emptyMap())
@@ -121,7 +121,7 @@ class MovieViewModel() : ViewModel() {
 
         mutableProviderState.update {
             ProviderState.Data(
-                providerDataObject = mapOf<String, Result>(
+                providerDataObject = mapOf(
                     "DK" to Result(link = "", flatrate = listOf(Provider(logoPath = "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg", providerId = 0, providerName = "Netflix")))
                 )
             )
@@ -142,19 +142,19 @@ sealed class MovieState {
 }
 
 sealed class SimilarMovieState {
-    object Empty : SimilarMovieState()
+    data object Empty : SimilarMovieState()
     data class Data(val similarMoviesObject: List<MediaObject>) : SimilarMovieState()
     data object Error : SimilarMovieState()
 }
 
 sealed class ProviderState {
-    object Empty : ProviderState()
+    data object Empty : ProviderState()
     data class Data(val providerDataObject: Map<String, Result>) : ProviderState()
     data object Error : ProviderState()
 }
 
 sealed class TrailerState {
-    object Empty : TrailerState()
+    data object Empty : TrailerState()
     data class Data(val trailerObject: TrailerObject) : TrailerState()
     data object Error : TrailerState()
 }

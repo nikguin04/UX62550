@@ -121,7 +121,7 @@ fun SearchContent(
         }
 
         when (movieItemsUIState) {
-            MovieItemsUIState.Empty -> {
+            is MovieItemsUIState.Empty -> {
                 item {
                     Box(
                         contentAlignment = Alignment.Center,

@@ -55,34 +55,34 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                 )
             }
             if (index < firstGenres.lastIndex) {
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(Modifier.width(4.dp))
                 DrawCircle(
                     color = Color.LightGray,
                     modifier = Modifier
                         .size(10.dp)
                         .shadow(10.dp, RoundedCornerShape(40.dp), false, Color.Black)
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(Modifier.width(4.dp))
             }
         }
 
-        Spacer(modifier = Modifier.weight(0.5f))
+        Spacer(Modifier.weight(0.5f))
 
         when (providerState) {
-            ProviderState.Empty -> {
+            is ProviderState.Empty -> {
                 Text("NO PIC")
             }
             is ProviderState.Data -> {
                 providerState.providerDataObject["DK"]?.run {
                     val providers = (flatrate + rent + buy).map { it.logoPath }
                     for (provider in providers.take(3)) {
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(Modifier.width(4.dp))
                         MediaItem(
                             uri = provider,
+                            size = ImageSize.LOGO,
                             modifier = modifier
                                 .clip(CircleShape)
-                                .size(32.dp),
-                            size = ImageSize.LOGO
+                                .size(32.dp)
                         )
                     }
                 }
@@ -91,6 +91,6 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                 Text("Network error")
             }
         }
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(Modifier.width(4.dp))
     }
 }

@@ -45,10 +45,10 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
                                 )
                             }
                         }
-                        DiscoverItemsUIState.Empty -> {
+                        is DiscoverItemsUIState.Empty -> {
                             mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
                         }
-                        DiscoverItemsUIState.Error -> {
+                        is DiscoverItemsUIState.Error -> {
                             mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
                         }
                     }

@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 
 class FirebaseAuthController : Activity() {
-    // taken from firebase documentation
+    // Taken from Firebase documentation
 
     private lateinit var auth: FirebaseAuth
 
@@ -36,12 +36,12 @@ class FirebaseAuthController : Activity() {
         FirebaseInstance.getDB()!!.collection("UserData").document(getAuth().currentUser?.uid.toString()).set(userName)
     }
 
-    public fun getAuth(): FirebaseAuth {
+    fun getAuth(): FirebaseAuth {
         auth = Firebase.auth
         return auth
     }
 
-    public fun logout() {
+    fun logout() {
         auth = Firebase.auth
         return auth.signOut()
     }

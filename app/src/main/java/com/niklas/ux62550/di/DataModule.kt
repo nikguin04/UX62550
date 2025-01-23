@@ -50,7 +50,7 @@ object DataModule {
 
     private val okHttpClient = OkHttpClient.Builder()
         .cache(cache)
-        .addInterceptor(ApiKeyInterceptor(BuildConfig.API_KEY)) // Add the interceptor
+        .addInterceptor(ApiKeyInterceptor(BuildConfig.API_KEY))
         .addInterceptor(loggingInterceptor)
         .addInterceptor(CacheInterceptor)
         .build()
@@ -104,6 +104,6 @@ object DataModule {
         reviewRepository = ReviewRepository()
         searchRepository = SearchRepository(remoteDataSource = remoteMediaDataSource)
         watchListRepository = WatchListRepository(firebaseDataSource = remoteFirebaseDataSource)
-        profileRepository = ProfileRepository(remoteFirebaseDataSource)
+        profileRepository = ProfileRepository(firebaseDataSource = remoteFirebaseDataSource)
     }
 }

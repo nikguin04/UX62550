@@ -2,7 +2,7 @@ package com.niklas.ux62550.data.examples
 
 import com.niklas.ux62550.data.model.MediaObject
 
-public class SearchDataExamples {
+class SearchDataExamples {
     companion object {
         val MediaObjectExample: MediaObject =
             MediaObject(

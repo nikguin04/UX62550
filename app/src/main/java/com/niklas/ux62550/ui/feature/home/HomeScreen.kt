@@ -58,7 +58,7 @@ fun HomeScreen(
     val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
     val movieGenresDataState: GenresDataState = homeViewModel.movieGenresState.collectAsState().value
     when (mediaItemsUIState) {
-        MediaItemsUIState.Empty -> {
+        is MediaItemsUIState.Empty -> {
             LoadingScreen()
         }
         is MediaItemsUIState.Data -> {
@@ -70,7 +70,7 @@ fun HomeScreen(
             }
         }
         is MediaItemsUIState.Error -> {
-            Text(text = "Network error")
+            Text("Network error")
         }
     }
 }
@@ -105,7 +105,7 @@ fun FeaturedMediaScroller(featuredMedia: List<MediaObject>, onNavigateToMedia: (
 @Composable
 fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (MediaObject) -> Unit) {
     when (movieGenresDataState) {
-        GenresDataState.Empty -> {
+        is GenresDataState.Empty -> {
             // TODO: We should make a loading screen for all the genres, so that they are only displayed when ALL genre fetching is done. Async image loading may be neglected from said fetching
         }
         is GenresDataState.Data -> {
@@ -119,7 +119,7 @@ fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (M
             Spacer(Modifier.height(20.dp))
         }
         is GenresDataState.Error -> {
-            Text(text = "Network error")
+            Text("Network error")
         }
     }
 }
