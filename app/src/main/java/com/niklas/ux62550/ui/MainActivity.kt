@@ -1,6 +1,7 @@
 package com.niklas.ux62550.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -9,9 +10,11 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -22,6 +25,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
+import com.niklas.ux62550.BuildConfig
 import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.navigation.GeneralNavBar
 import com.niklas.ux62550.navigation.MainNavHost
@@ -57,6 +61,10 @@ class MainActivity : ComponentActivity() {
                     scope.launch {
                         snackbarHostState.showSnackbar(message)
                     }
+                }
+                if (BuildConfig.API_KEY == "") {
+                    Log.e("API_KEY_MISSING", "No API key for TMDB has been provided, network errors will occur\nPlease defined the API key in the 'local.properties' file with following line:\nAPI_KEY=.....")
+                    LaunchedEffect(Unit) { scope.launch { snackbarHostState.showSnackbar(message = "Missing API key, app will not work", duration = SnackbarDuration.Indefinite) } }
                 }
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
