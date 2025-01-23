@@ -7,7 +7,6 @@ import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.data.model.TrailerObject
-import com.niklas.ux62550.data.model.WatchListDataObject
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -33,9 +32,6 @@ interface RemoteApiService {
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(@Path("movie_id") movie_id: Int): MovieDetailObject
-
-    @GET("movie/{movie_id}")
-    suspend fun getMovieForRow(@Path("movie_id") movie_id: Int): WatchListDataObject
 
     @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies(@Path("movie_id") movie_id: Int): SearchDataObject

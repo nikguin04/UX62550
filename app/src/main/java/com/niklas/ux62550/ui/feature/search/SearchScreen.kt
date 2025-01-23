@@ -61,9 +61,8 @@ fun SearchPreview() {
 
 @Composable
 fun SearchScreen(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modifier = Modifier, viewModel: SearchViewModel = viewModel()) {
-    val nonMoviesState = viewModel.nonMoviesState.collectAsState().value
     val moviesState = viewModel.movieItemsUIState.collectAsState().value
-    SearchContent(topModifier = topModifier, viewModel = viewModel, movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
+    SearchContent(topModifier = topModifier, viewModel = viewModel, movieItemsUIState = moviesState, onNavigateToMedia = onNavigateToMedia)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,7 +70,6 @@ fun SearchScreen(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modifier
 fun SearchContent(
     viewModel: SearchViewModel,
     movieItemsUIState: MovieItemsUIState,
-    nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
     onNavigateToMedia: (MediaObject) -> Unit,
     topModifier: Modifier = Modifier
 ) {

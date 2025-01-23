@@ -58,10 +58,6 @@ fun WatchlistContent(topModifier: Modifier = Modifier, onNavigateToMedia: (Media
         ) {
 
             val watchListState = watchlistViewModel.watchListState.collectAsState().value
-            val watchListRowState = watchlistViewModel.watchListRowState.collectAsState().value
-
-            var text by rememberSaveable { mutableStateOf("") }
-            var expanded by rememberSaveable { mutableStateOf(false) }
 
             Box(modifier=topModifier.padding(25.dp))
             LogoBox(size = 200.dp)

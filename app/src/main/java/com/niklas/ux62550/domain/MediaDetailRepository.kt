@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class MediaDetailRepository (
     private val remoteDataSource: RemoteMediaDataSource
-) : KeyRepository<Int, MovieDetailObject>(remoteDataSource) {
+) : KeyRepository<Int, MovieDetailObject>() {
 
     suspend fun getMoviesDetails(movie_id: Int): MovieDetailObject {
         return remoteDataSource.getMoviesDetails(movie_id)

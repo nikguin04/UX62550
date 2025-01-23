@@ -13,12 +13,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-    /*private val mediaItems: List<MediaItem> = listOf(
-        MediaItem("Name 1", R.drawable.logo, Color.Blue),
-        MediaItem("Name 2", R.drawable.logo, Color.Red),
-        MediaItem("Name 3", R.drawable.logo, Color.Green),
-    )*/
-
     private val homeRepository = DataModule.homeRepository
 
     private val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)

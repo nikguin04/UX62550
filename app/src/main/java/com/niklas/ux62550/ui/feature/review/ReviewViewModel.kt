@@ -1,7 +1,6 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.domain.BoolFetchStatus
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

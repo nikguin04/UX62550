@@ -91,9 +91,8 @@ fun ScreenReviewAndRating(
         ) {
             Header(modifier = topModifier, media = media, reviewViewModel = reviewViewModel)
 
-            PublishReview(stars = reviewState.rating,
+            PublishReview(
                 reviewText = reviewState.reviewText,
-                onRatingChange = { newRating -> reviewViewModel.updateRating(newRating) },
                 onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
                 onSubmit = {
                     reviewViewModel.submitReview(mediaId = media.id, onSuccess = { snackbarShow("Successfully submitted review") }, onError = { snackbarShow("Failed to submit review") })
@@ -173,9 +172,7 @@ fun Header(
 
 @Composable
 fun PublishReview(
-    stars: Float,
     reviewText: String,
-    onRatingChange: (Float) -> Unit,
     onReviewChange: (String) -> Unit,
     onSubmit: () -> Unit,
 ) {

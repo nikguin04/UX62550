@@ -18,9 +18,6 @@ data class SearchDataObject(
     val total_pages: Int,
     @SerialName("total_results")
     val total_results: Int,
-
-//    @SerialName("known_for")
-//    val known_for: List<MediaObject>
 )
 /*
  NOTE: EASY SEARCH AND REPLACE:

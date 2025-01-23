@@ -103,11 +103,11 @@ object DataModule {
         discoverRepository = DiscoverRepository(remoteDataSource = remoteMediaDataSource)
         homeRepository = HomeRepository(remoteDataSource = remoteMediaDataSource)
         imageRepository = ImageRepository(remoteDataSource = remoteMediaDataSource)
-        mediaExtendedDetailsRepository = MediaExtendedDetailsRepository(remoteDataSource = remoteMediaDataSource, firebaseDataSource = remoteFirebaseDataSource)
+        mediaExtendedDetailsRepository = MediaExtendedDetailsRepository(remoteDataSource = remoteMediaDataSource)
         mediaDetailRepository = MediaDetailRepository(remoteDataSource = remoteMediaDataSource)
-        reviewRepository = ReviewRepository(firebaseDataSource = remoteFirebaseDataSource)
+        reviewRepository = ReviewRepository()
         searchRepository = SearchRepository(remoteDataSource = remoteMediaDataSource)
-        watchListRepository = WatchListRepository(remoteDataSource = remoteMediaDataSource, firebaseDataSource = remoteFirebaseDataSource)
+        watchListRepository = WatchListRepository(firebaseDataSource = remoteFirebaseDataSource)
         profileRepository = ProfileRepository(remoteFirebaseDataSource)
     }
 }

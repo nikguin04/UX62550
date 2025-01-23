@@ -59,7 +59,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.navigation.GeneralTopBar
@@ -79,7 +78,6 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 @Preview(showBackground = true)
 fun MediaDetailPagePreview() {
-    val media = SearchDataExamples.MediaObjectExample
     val movieViewModel: MovieViewModel = viewModel()
     movieViewModel.initPreview()
 

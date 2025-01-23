@@ -20,12 +20,6 @@ class FirebaseAuthController: Activity() {
     }
 
 
-    public override fun onStart() {
-        super.onStart()
-        val currentUser = auth.currentUser
-    }
-
-
      fun signIn(email: String, password: String , onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
         auth = Firebase.auth
         auth.signInWithEmailAndPassword(email, password)
@@ -64,10 +58,4 @@ class FirebaseAuthController: Activity() {
         auth = Firebase.auth
         return auth.signOut()
     }
-}
-
-
-sealed class BoolFetchStatus {
-    data object Working : BoolFetchStatus()
-    data class Result(val result: Boolean) : BoolFetchStatus()
 }

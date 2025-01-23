@@ -1,7 +1,6 @@
 package com.niklas.ux62550.ui.feature.profile
 
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.di.DataModule
@@ -24,9 +23,7 @@ class ProfileViewModel : ViewModel() {
                 mutableProfileState.update {
                     val profile = Profile(
                         name = user[0],
-                        email = user[1],
-                        favoriteMovieID = 1,
-                        tempColor = Color.Gray
+                        email = user[1]
                     )
                     UserData.Data(profile)
                 }

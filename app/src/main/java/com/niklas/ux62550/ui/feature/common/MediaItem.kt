@@ -44,7 +44,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -190,7 +189,6 @@ fun MediaItemBackdropIntercept(
                         backdropFallback = backdropFallback,
                         animationProgress = animationProgress
                     )
-                    //Box(modifier = Modifier.size(8.dp).background(Color.Red))
                 }
             }
 
@@ -328,15 +326,6 @@ fun debugPlaceholder(@DrawableRes debugPreview: Int) =
         //null // Source for build application
     }
 
-
-@Composable
-fun MediaItemPreview(round: Dp = 0.dp, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(round))
-            .background(Color.Gray)
-    )
-}
 
 @Composable
 fun AnimatedImagePlaceholder(modifier: Modifier = Modifier, animationProgress: State<Float>) {

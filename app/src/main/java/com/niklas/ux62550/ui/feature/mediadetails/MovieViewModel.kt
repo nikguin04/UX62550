@@ -58,10 +58,6 @@ class MovieViewModel() : ViewModel() {
     private val mutableTrailerState = MutableStateFlow<TrailerState>(TrailerState.Empty)
     val trailerState: StateFlow<TrailerState> = mutableTrailerState
 
-    private val mutableWatchlistState = MutableStateFlow<WatchlistState>(WatchlistState.Empty)
-    val watchlistState: StateFlow<WatchlistState> = mutableWatchlistState
-
-
     fun init(media: MediaObject) {
         viewModelScope.launch {
             mediaDetailsRepository.getWithKey(
@@ -165,9 +161,4 @@ sealed class TrailerState {
     object Empty : TrailerState()
     data class Data(val trailerObject: TrailerObject) : TrailerState()
     data object Error : TrailerState()
-}
-sealed class WatchlistState {
-    data object Empty : WatchlistState()
-    data class Data(val mediaDetailObjects: MediaObject) : WatchlistState()
-    data object Error : WatchlistState()
 }

@@ -2,18 +2,14 @@ package com.niklas.ux62550.ui.feature.common.composables
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -29,7 +25,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,25 +33,6 @@ import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaDetailFetchViewModel
 import com.niklas.ux62550.ui.feature.common.MediaItem
 import com.niklas.ux62550.ui.feature.mediadetails.MovieState
-
-@Composable
-fun MovieBoxMoviePicture(width: Dp, height: Dp, round: Dp, color: Color, text: String, textColor: Color, modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .clip(RoundedCornerShape(round))
-            .background(color)
-            .size(width, height)
-            .padding()
-    ) {
-        Text(
-            text = text,
-            color = textColor,
-            modifier = Modifier
-                .padding(18.dp, 0.dp)
-        )
-    }
-}
 
 @SuppressLint("DefaultLocale")
 @Composable

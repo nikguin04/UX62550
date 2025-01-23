@@ -1,12 +1,10 @@
 package com.niklas.ux62550.ui.feature.search
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.models.NonMovieBox
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
@@ -14,17 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
-    private val nonMovies = listOf(
-        NonMovieBox("Western", Color.Yellow, "Genre"),
-        NonMovieBox("John Doe", Color.Green, "Actor"),
-    )
-
-
-
     private val searchRepository = DataModule.searchRepository
-
-    private val mutableNonMoviesState = MutableStateFlow<NonMovieBoxItemsUIState>(NonMovieBoxItemsUIState.Data(nonMovies))
-    val nonMoviesState: StateFlow<NonMovieBoxItemsUIState> = mutableNonMoviesState
 
     private val mutableMovieItemsUIState = MutableStateFlow<MovieItemsUIState>(MovieItemsUIState.Empty)
     val movieItemsUIState: StateFlow<MovieItemsUIState> = mutableMovieItemsUIState
@@ -77,10 +65,4 @@ sealed class MovieItemsUIState {
     data object Empty : MovieItemsUIState()
     data class Data(val movies: SearchDataObject) : MovieItemsUIState()
     data object Error : MovieItemsUIState()
-}
-
-sealed class NonMovieBoxItemsUIState {
-    data object Empty : NonMovieBoxItemsUIState()
-    data class Data(val nonMovieBoxes: List<NonMovieBox>) : NonMovieBoxItemsUIState()
-    data object Error : NonMovieBoxItemsUIState()
 }
