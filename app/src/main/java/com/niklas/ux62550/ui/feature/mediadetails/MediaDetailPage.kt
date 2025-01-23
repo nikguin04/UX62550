@@ -131,7 +131,7 @@ fun MediaDetailsScreen(
                     }
 
                 }
-                    GeneralTopBar(navigateBack = navigateBack) {
+                GeneralTopBar(navigateBack = navigateBack) {
                     BookmarkButton(movieState.mediaDetailObject.toMediaObject(), movieViewModel, watchListState)
                 }
             }
@@ -178,8 +178,9 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                         .fillMaxWidth()
                 ) {
                     val playModifier =
-                        if (youtubeUrl == null) { Modifier }
-                        else {
+                        if (youtubeUrl == null) {
+                            Modifier
+                        } else {
                             Modifier.clickable {
                                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl)).apply {
                                     setPackage("com.google.android.youtube")
@@ -267,7 +268,9 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data) {
             )
         }
         Text(
-            text = if(movieState.mediaDetailObject.releaseDate.count() > 4){ movieState.mediaDetailObject.releaseDate.substring(0, 4) } else "N/A",
+            text = if (movieState.mediaDetailObject.releaseDate.count() > 4) {
+                movieState.mediaDetailObject.releaseDate.substring(0, 4)
+            } else "N/A",
             style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,

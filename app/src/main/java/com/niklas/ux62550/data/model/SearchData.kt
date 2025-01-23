@@ -16,9 +16,11 @@ data class SearchDataObject(
 
     @SerialName("total_pages")
     val total_pages: Int,
+
     @SerialName("total_results")
     val total_results: Int,
 )
+
 /*
  NOTE: EASY SEARCH AND REPLACE:
  Just write top like "SerialName("adult")"
@@ -30,60 +32,54 @@ $1
 \tval $2: ,
 ----------------------
 And just write the type (this could be made so you don't even need to type @SerialName but i cant be arsed)
- */
+*/
 
 @Parcelize
 @Serializable
 data class MediaObject(
     @SerialName("adult")
-	val adult: Boolean = true,
+    val adult: Boolean = true,
 
     @SerialName("backdrop_path")
-	val backdrop_path: String? = null,
+    val backdrop_path: String? = null,
 
     @SerialName("id")
-	val id: Int,
+    val id: Int,
 
     @SerialName("profile_path")
     val profile_path: String? = null,
 
     @SerialName("title")
-	val title: String = "",
+    val title: String = "",
 
     @SerialName("overview")
-	val overview: String = "",
+    val overview: String = "",
 
     @SerialName("poster_path")
-	val poster_path: String? = null,
+    val poster_path: String? = null,
 
     @SerialName("media_type")
-	var media_type: String? = null,
+    var media_type: String? = null,
 
     @SerialName("genre_ids")
-	val genre_ids: List<Int> = listOf(),
+    val genre_ids: List<Int> = listOf(),
 
     @SerialName("popularity")
-	val popularity: Float? = null,
+    val popularity: Float? = null,
 
     @SerialName("release_date")
-	val release_date: String = "",
+    val release_date: String = "",
 
     @SerialName("vote_average")
-	val vote_average: Float? = null,
+    val vote_average: Float? = null,
 
     @SerialName("name")
     val name: String? = null,
 
     @SerialName("vote_count")
 	val vote_count: Int? = null,
-
-
-) : Parcelable {
+): Parcelable {
     fun getUniqueStringIdentifier(): String {
         return (media_type ?: "") + id
     }
-
 }
-
-
-

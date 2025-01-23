@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.review
 
-
 import ReviewViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -68,10 +67,8 @@ import kotlin.math.roundToInt
 fun ReviewAndRatingPreview() {
     UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {}, snackbarShow =  {})
-
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {}, snackbarShow = {})
         }
-
     }
 }
 
@@ -97,7 +94,7 @@ fun ScreenReviewAndRating(
                 onSubmit = {
                     reviewViewModel.submitReview(mediaId = media.id, onSuccess = { snackbarShow("Successfully submitted review") }, onError = { snackbarShow("Failed to submit review") })
                     navBack()
-                },
+                }
             )
 
             MoreDetailedReview(reviewViewModel)
@@ -106,8 +103,6 @@ fun ScreenReviewAndRating(
         GeneralTopBar(navigateBack = navBack)
     }
 }
-
-
 
 @Composable
 fun Header(
@@ -162,13 +157,10 @@ fun Header(
                     color = Color.White,
                     modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
                 )
-
             }
         }
     }
 }
-
-
 
 @Composable
 fun PublishReview(
@@ -211,12 +203,16 @@ fun PublishReview(
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
             ) {
-                Text("Publish",
+                Text(
+                    text = "Publish",
                     style = TextStyle(
                         shadow = Shadow(
-                            color = Color.Black, blurRadius = 10f
-                        ),),
-                    color = Color.White)
+                            color = Color.Black,
+                            blurRadius = 10f
+                        )
+                    ),
+                    color = Color.White
+                )
             }
         }
     }
@@ -255,27 +251,24 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
     }
 }
 
-
-
-
 @Composable
-    fun ReviewText() {
-        Text(
-            text = "Write a review for",
-            style = TextStyle(
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                shadow = Shadow(
-                    color = Color.Black, blurRadius = 2f
-                ),
-                textAlign = TextAlign.Center,
-                color = ReviewColor
+fun ReviewText() {
+    Text(
+        text = "Write a review for",
+        style = TextStyle(
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            shadow = Shadow(
+                color = Color.Black, blurRadius = 2f
             ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 120.dp, 0.dp, 0.dp)
-        )
-    }
+            textAlign = TextAlign.Center,
+            color = ReviewColor
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 120.dp, 0.dp, 0.dp)
+    )
+}
 
 @Composable
 fun TitleText(movieTitle: String) {
@@ -285,15 +278,17 @@ fun TitleText(movieTitle: String) {
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold,
             shadow = Shadow(
-                color = Color.Black, blurRadius = 10f
+                color = Color.Black,
+                blurRadius = 10f
             ),
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Center
         ),
         modifier = Modifier
             .fillMaxWidth()
             .padding(0.dp, 5.dp, 0.dp, 0.dp)
     )
 }
+
 @Composable
 fun RatingStars(
     rating: Float,
@@ -317,8 +312,7 @@ fun RatingStars(
                         isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
                         else -> Icons.Outlined.StarOutline
                     },
-                    modifier = Modifier
-                        .requiredSize(starSize),
+                    modifier = Modifier.requiredSize(starSize),
                     colorFilter = ColorFilter.tint(
                         if (isFilled || isHalfFilled) Color.Yellow else Color.Gray
                     ),
@@ -329,9 +323,9 @@ fun RatingStars(
         }
 
         Slider(
-            modifier = Modifier.requiredSize(starSize*5, starSize),
+            modifier = Modifier.requiredSize(starSize * 5, starSize),
             value = 5f,
-            onValueChange = { currentRating = it.roundToInt().toFloat()/2; onRatingSelected(currentRating) },
+            onValueChange = { currentRating = it.roundToInt().toFloat() / 2; onRatingSelected(currentRating) },
             colors = SliderDefaults.colors(
                 thumbColor = Color.Transparent,
                 activeTrackColor = Color.Transparent,
@@ -344,8 +338,3 @@ fun RatingStars(
         )
     }
 }
-
-
-
-
-

@@ -58,18 +58,15 @@ fun ProfilePreview() {
 }
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, topModifier: Modifier = Modifier) {
-    when(val profile = viewModel.profileState.collectAsState().value){
-        UserData.Empty -> {
-
-        }
+    when (val profile = viewModel.profileState.collectAsState().value) {
+        UserData.Empty -> {}
         is UserData.Data -> {
             ProfileContent(profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister, topModifier = topModifier)
         }
-        UserData.Error -> {
-
-        }
+        UserData.Error -> {}
     }
 }
+
 @Composable
 fun ProfileContent(
     onNavigateToLoginRegister: (String) -> Unit,
@@ -90,7 +87,9 @@ fun ProfileContent(
     )
 
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(modifier = topModifier.size(0.dp, 70.dp))
@@ -114,7 +113,6 @@ fun ProfileContent(
                             Color.Black
                         )
                     }
-
                 }
 
                 Text(
@@ -177,23 +175,23 @@ fun ProfileContent(
         Box(Modifier.size(0.dp, 110.dp))
         ProfileAttribute("Password", passwordValueTemp)
 
-            Box(Modifier.size(0.dp, 20.dp))
-            Button(
-                onClick = { FirebaseAuthController().logout(); onNavigateToLoginRegister("Sign out") },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = LoginButtonGray
-                ),
-                modifier = Modifier
-                    .size(145.dp, 45.dp)
-                    .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-            ) {
-                Text(
-                    text = "Sign out",
-                    color = Color.White,
-                    style = TextStyle(fontSize = 20.sp, shadow = textShadow)
-                )
-            }
+        Box(Modifier.size(0.dp, 20.dp))
 
+        Button(
+            onClick = { FirebaseAuthController().logout(); onNavigateToLoginRegister("Sign out") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = LoginButtonGray
+            ),
+            modifier = Modifier
+                .size(145.dp, 45.dp)
+                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+        ) {
+            Text(
+                text = "Sign out",
+                color = Color.White,
+                style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+            )
+        }
     }
 }
 
@@ -216,7 +214,7 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
             ) {
                 Text(
                     label,
-                    style =TextStyle(
+                    style = TextStyle(
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -226,7 +224,7 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
                 )
                 Text(
                     text = value.value,
-                    style =TextStyle(
+                    style = TextStyle(
                         fontSize = 18.sp,
                         color = Color.White,
                         shadow = Shadow(color = Color.Black, blurRadius = 5.0f)

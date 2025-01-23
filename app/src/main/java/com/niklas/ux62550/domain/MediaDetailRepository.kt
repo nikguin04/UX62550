@@ -11,12 +11,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class MediaDetailRepository (
+class MediaDetailRepository(
     private val remoteDataSource: RemoteMediaDataSource
 ) : KeyRepository<Int, MovieDetailObject>() {
-
     suspend fun getMoviesDetails(movie_id: Int): MovieDetailObject {
         return remoteDataSource.getMoviesDetails(movie_id)
     }
-
 }

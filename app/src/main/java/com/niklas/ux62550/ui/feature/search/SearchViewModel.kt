@@ -48,10 +48,10 @@ class SearchViewModel : ViewModel() {
     }
 
     fun initPreview() {
-         val movies = listOf(
-             MediaObject(title="RED: The Movie", release_date="2022", vote_average=3.5f, id=1, popularity=1f, backdrop_path = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
-             MediaObject(title="Where's the Blue?", release_date="2014", vote_average=3.5f, id=1, popularity=1f/*, backdrop_path = "/8UOAYjhwSF3aPZhm6wgLuyHRyrR.jpg"*/),
-             MediaObject(title="Green Man", release_date="1998", vote_average=3.5f, id=1, popularity=1f, backdrop_path = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
+        val movies = listOf(
+            MediaObject(title = "RED: The Movie", release_date = "2022", vote_average = 3.5f, id = 1, popularity = 1f, backdrop_path = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
+            MediaObject(title = "Where's the Blue?", release_date = "2014", vote_average = 3.5f, id = 1, popularity = 1f/*, backdrop_path = "/8UOAYjhwSF3aPZhm6wgLuyHRyrR.jpg"*/),
+            MediaObject(title = "Green Man", release_date = "1998", vote_average = 3.5f, id = 1, popularity = 1f, backdrop_path = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
         )
         mutableMovieItemsUIState.update {
             MovieItemsUIState.Data(

@@ -7,8 +7,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 class ProfileRepository(
     private val firebaseDataSource: RemoteFirebase
 ) {
-
     private val mutableUserFlow = MutableSharedFlow<List<String>>()
     val userFlow = mutableUserFlow.asSharedFlow()
-    suspend fun getUserData()  = firebaseDataSource.getUserData(mutableUserFlow)
+    suspend fun getUserData() = firebaseDataSource.getUserData(mutableUserFlow)
 }

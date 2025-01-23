@@ -70,7 +70,6 @@ fun AwardPopUp() {
                     Row(
                         modifier = Modifier.padding(50.dp, 0.dp),
                         verticalAlignment = Alignment.CenterVertically
-
                     ) {
                         Text(
                             text = "Emmy ${2020 + i}",
@@ -81,7 +80,9 @@ fun AwardPopUp() {
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     HorizontalDivider(
-                        modifier = Modifier.width(300.dp).padding(50.dp, 0.dp),
+                        modifier = Modifier
+                            .width(300.dp)
+                            .padding(50.dp, 0.dp),
                         thickness = 0.5.dp,
                         color = Color.Gray
                     )

@@ -34,7 +34,7 @@ import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true, device="spec:width=411dp,height=700dp")
+@Preview(showBackground = true, device = "spec:width=411dp,height=700dp")
 fun LoginRegisterPreview() {
     UX62550Theme {
         Surface {
@@ -44,7 +44,7 @@ fun LoginRegisterPreview() {
 }
 
 @Composable
-@Preview(showBackground = true, device="spec:width=300dp,height=500dp")
+@Preview(showBackground = true, device = "spec:width=300dp,height=500dp")
 fun LoginRegisterPreviewSmall() {
     UX62550Theme {
         Surface {
@@ -59,7 +59,6 @@ fun LoginRegisterScreen(
     onNavigateToRegisterScreen: (String) -> Unit,
     topModifier: Modifier = Modifier
 ) {
-
     Box {
         Box(
             modifier = Modifier
@@ -71,11 +70,15 @@ fun LoginRegisterScreen(
         )
     }
 
-
-    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
-        Box (modifier=topModifier)
+    Column(
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(modifier = topModifier)
         Row(
-            modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
             LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
@@ -90,7 +93,9 @@ fun LoginRegisterScreen(
             colors = ButtonDefaults.buttonColors(
                 containerColor = RegisterButtonBlue
             ),
-            modifier = Modifier.size(140.dp, 45.dp).shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+            modifier = Modifier
+                .size(140.dp, 45.dp)
+                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
         ) {
             Text(text = "Register", color = Color.White, style = TextStyle(fontSize = 20.sp, shadow = textShadow))
         }
@@ -107,7 +112,9 @@ fun LoginRegisterScreen(
             colors = ButtonDefaults.buttonColors(
                 containerColor = LoginButtonGray
             ),
-            modifier = Modifier.size(140.dp, 45.dp).shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+            modifier = Modifier
+                .size(140.dp, 45.dp)
+                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
         ) {
             Text(text = "Sign in", color = Color.White, style = TextStyle(fontSize = 20.sp, shadow = textShadow))
         }
@@ -115,4 +122,3 @@ fun LoginRegisterScreen(
         Box(modifier = Modifier.size(0.dp, 140.dp))
     }
 }
-

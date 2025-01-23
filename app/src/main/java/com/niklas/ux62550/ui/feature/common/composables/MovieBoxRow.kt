@@ -37,11 +37,7 @@ import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 @SuppressLint("DefaultLocale")
 @Composable
 fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-    ) {
-
+    Row(modifier = modifier.fillMaxWidth()) {
         MediaItem(
             uri = movie.backdrop_path,
             modifier = Modifier.width(110.dp).height(110.dp/16*9).clip(RoundedCornerShape(6.dp)),
@@ -53,7 +49,6 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifi
         ) {
             Row {
                 Column {
-
                     Text(
                         text = movie.title,
                         modifier = Modifier.width(210.dp),
@@ -90,7 +85,6 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifi
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
-
                     }
                 }
             }
@@ -105,8 +99,7 @@ fun MovieBoxRowFromIdErrorPreview() {
 }
 
 @Composable
-fun MovieBoxRowFromId(modifier: Modifier = Modifier, movieId: Int,  onNavigateToMedia: (MediaObject) -> Unit, infoRowModifier: Modifier = Modifier) {
-
+fun MovieBoxRowFromId(modifier: Modifier = Modifier, movieId: Int, onNavigateToMedia: (MediaObject) -> Unit, infoRowModifier: Modifier = Modifier) {
     val mediaDetailFetchViewModel: MediaDetailFetchViewModel = viewModel(
         factory = MediaDetailFetchViewModel.MediaDetailFetchViewModelFactory(movieId),
         key = movieId.toString()
@@ -121,7 +114,7 @@ fun MovieBoxRowFromId(modifier: Modifier = Modifier, movieId: Int,  onNavigateTo
             MovieBoxRow(
                 movie = mediaState.mediaDetailObject.toMediaObject(),
                 modifier = modifier.clickable(
-                onClick = { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject())}),
+                onClick = { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject()) }),
                 infoRowModifier = infoRowModifier
             )
         }
@@ -129,5 +122,4 @@ fun MovieBoxRowFromId(modifier: Modifier = Modifier, movieId: Int,  onNavigateTo
             Text(text = "Network error")
         }
     }
-
 }

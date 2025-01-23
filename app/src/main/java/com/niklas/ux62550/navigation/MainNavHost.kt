@@ -27,7 +27,6 @@ import com.niklas.ux62550.ui.feature.search.SearchScreen
 import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
 import com.niklas.ux62550.ui.feature.watchlist.WatchlistViewModel
 
-
 @Composable
 fun MainNavHost(
     navController: NavHostController,
@@ -82,10 +81,12 @@ fun MainNavHost(
                 navigateBack = navController::popBackStack,
                 onNavigateToReview = { mediaDetails ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
-                    navController.navigate(Route.ReviewScreen) },
+                    navController.navigate(Route.ReviewScreen)
+                },
                 onNavigateToOtherMedia = { newmedia ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("media", newmedia)
-                    navController.navigate(Route.MediaDetailsScreen) },
+                    navController.navigate(Route.MediaDetailsScreen)
+                },
                 watchlistViewModel = watchlistViewModel
             )
         }
@@ -95,7 +96,7 @@ fun MainNavHost(
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ReviewScreen>()) }
             ScreenReviewAndRating(
                 topModifier = Modifier.statusBarsPadding(),
-                media = media?: MediaDetailExample.MediaDetailObjectExample,
+                media = media ?: MediaDetailExample.MediaDetailObjectExample,
                 navBack = navController::popBackStack,
                 snackbarShow = snackbarShow
             )
@@ -168,7 +169,7 @@ fun NavHostController.navigateAndClearBackStack(route: Route) {
 
 private fun <T> getRelevantBackstackMedia(navController: NavHostController, name: String): T? {
     val toReturn =
-        navController.previousBackStackEntry?.savedStateHandle?.get<T>(name)?: // Current media when on screen
+        navController.previousBackStackEntry?.savedStateHandle?.get<T>(name) ?: // Current media when on screen
         navController.currentBackStackEntry?.savedStateHandle?.get<T>(name) // Current media when navigating back
     return toReturn
 }

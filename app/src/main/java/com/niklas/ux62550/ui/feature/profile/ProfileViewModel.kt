@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.profile
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.di.DataModule
@@ -9,7 +8,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
 
 class ProfileViewModel : ViewModel() {
     private val profileRepository = DataModule.profileRepository
@@ -31,11 +29,11 @@ class ProfileViewModel : ViewModel() {
         }
         getUserName()
     }
+
     private fun getUserName() = viewModelScope.launch {
         profileRepository.getUserData()
     }
 }
-
 
 sealed class UserData {
     data object Empty : UserData()

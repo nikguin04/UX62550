@@ -68,6 +68,7 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
         }
 
         Spacer(modifier = Modifier.weight(0.5f))
+
         when (providerState) {
             ProviderState.Empty -> {
                 Text("NO PIC")

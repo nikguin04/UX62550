@@ -27,7 +27,7 @@ public class MediaDetailExample {
             TrailerObject(
                 movieTrailerID = 0,
                 resultsTrailerLinks = listOf(
-                    TrailerLink(type="idk", key = "some link maybe")
+                    TrailerLink(type = "idk", key = "some link maybe")
                 )
             )
     }

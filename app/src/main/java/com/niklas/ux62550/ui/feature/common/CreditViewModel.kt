@@ -26,8 +26,6 @@ class CreditViewModel() : ViewModel() {
         creditDetailsRepository.getCredits(movieID) // TODO: Don't hardcore this, get some proper featured films
     }
 
-
-
     private val mutableCreditState = MutableStateFlow<CreditState>(CreditState.Empty)
     val creditState: StateFlow<CreditState> = mutableCreditState
 

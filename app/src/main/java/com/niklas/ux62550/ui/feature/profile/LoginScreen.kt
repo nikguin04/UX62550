@@ -44,7 +44,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun LoginPreview() {
     UX62550Theme {
         Surface {
-            LoginScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow =  {})
+            LoginScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow = {})
         }
     }
 }
@@ -53,7 +53,6 @@ fun LoginPreview() {
 fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit, topModifier: Modifier = Modifier) {
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
-
 
     Box(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box(
@@ -66,10 +65,15 @@ fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit,
         )
     }
 
-    Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
-        Box (modifier=topModifier)
+    Column(
+        modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(modifier = topModifier)
         Row(
-            modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
             LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
@@ -78,8 +82,8 @@ fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit,
             emailValue, passValue, onNavigateToProfile,
             snackbarShow = snackbarShow
         )
-
     }
+
     GeneralTopBar(navigateBack = navigateBack)
 }
 
@@ -88,7 +92,8 @@ fun LoginInputHolder(
     emailValue: MutableState<String>,
     passValue: MutableState<String>,
     onNavigateToProfile: (String) -> Unit,
-    snackbarShow: (String) -> Unit) {
+    snackbarShow: (String) -> Unit
+) {
     Column {
         TextField(
             modifier = Modifier
@@ -101,7 +106,9 @@ fun LoginInputHolder(
         Text(
             text = "Input your username or email",
             color = TextFieldDescColor,
-            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            modifier = Modifier
+                .padding(10.dp, 4.dp)
+                .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
 
@@ -118,34 +125,36 @@ fun LoginInputHolder(
         Text(
             text = "Input your password",
             color = TextFieldDescColor,
-            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            modifier = Modifier
+                .padding(10.dp, 4.dp)
+                .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
 
-            Button(
-                onClick = {
-                    FirebaseAuthController().signIn(
-                        emailValue.value,
-                        passValue.value,
-                        onSuccess = { snackbarShow("Successfully logged in") },
-                        onError = {snackbarShow("Failed to sign in")}
-                    )
-                    onNavigateToProfile("Login") },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = RegisterButtonBlue
-                ),
-                modifier = Modifier
-                    .size(145.dp, 45.dp)
-                    .padding(10.dp, 0.dp)
-                    .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-                    .align(Alignment.End)
-            ) {
-                Text(
-                    text = "Sign in",
-                    color = Color.White,
-                    style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+        Button(
+            onClick = {
+                FirebaseAuthController().signIn(
+                    emailValue.value,
+                    passValue.value,
+                    onSuccess = { snackbarShow("Successfully logged in") },
+                    onError = { snackbarShow("Failed to sign in") }
                 )
-
+                onNavigateToProfile("Login")
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RegisterButtonBlue
+            ),
+            modifier = Modifier
+                .size(145.dp, 45.dp)
+                .padding(10.dp, 0.dp)
+                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+                .align(Alignment.End)
+        ) {
+            Text(
+                text = "Sign in",
+                color = Color.White,
+                style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+            )
         }
     }
 }

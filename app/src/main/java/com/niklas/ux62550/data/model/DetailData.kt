@@ -18,36 +18,35 @@ data class MovieDetailObject(
     val adult: Boolean = false,
 
     @SerialName("backdrop_path")
-    val backDropPath : String?,
+    val backDropPath: String?,
 
     @SerialName("homepage")
-    val homePage : String = "",
+    val homePage: String = "",
 
     @SerialName("original_title")
-    val Originaltitle : String,
+    val Originaltitle: String,
 
     @SerialName("overview")
-    val Description : String = "",
+    val Description: String = "",
 
     @SerialName("poster_path")
-    val posterPath : String?,
+    val posterPath: String?,
 
     @SerialName("release_date")
-    val releaseDate : String = "",
+    val releaseDate: String = "",
 
     @SerialName("title")
     val title: String = "",
 
     @SerialName("vote_average")
-    val vote_average : Double,
+    val vote_average: Double,
 
     @SerialName("runtime")
-    val runTime : Int = 0,
+    val runTime: Int = 0,
 
     @SerialName("id")
-    val id : Int,
-
-    ): Parcelable {
+    val id: Int,
+) : Parcelable {
     fun toMediaObject(): MediaObject {
         return MediaObject(
             adult = this.adult,
@@ -62,6 +61,7 @@ data class MovieDetailObject(
         )
     }
 }
+
 @Parcelize
 @Serializable
 data class Genre(
@@ -70,19 +70,17 @@ data class Genre(
 
     @SerialName("name")
     val genreName: String = ""
-): Parcelable
+) : Parcelable
 
 @Parcelize
 @Serializable
 data class SpokenLanguages(
     @SerialName("english_name")
-    val languageName : String = "",
+    val languageName: String = "",
 
     @SerialName("iso_639_1")
     val isoNumber: String = "",
 
     @SerialName("name")
-    val spokenName : String = ""
-): Parcelable
-
-
+    val spokenName: String = ""
+) : Parcelable

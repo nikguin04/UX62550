@@ -19,8 +19,8 @@ import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
 fun SimilarMedia(
     modifier: Modifier = Modifier,
     similarMediaState: SimilarMovieState,
-    onNavigateToOtherMedia: (MediaObject) -> Unit) {
-
+    onNavigateToOtherMedia: (MediaObject) -> Unit
+) {
     Text(
         "Movies similar to this one",
         style = TextStyle(
@@ -30,7 +30,7 @@ fun SimilarMedia(
         ),
         modifier = modifier.padding(start = 20.dp)
     )
-    Box(modifier = Modifier.padding(bottom = 20.dp,)) {
+    Box(modifier = Modifier.padding(bottom = 20.dp)) {
         when (similarMediaState) {
             SimilarMovieState.Empty -> {
                 Text("NO PIC")

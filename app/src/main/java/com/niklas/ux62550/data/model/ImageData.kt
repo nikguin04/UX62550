@@ -9,30 +9,29 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ImageDataObject(
     @SerialName("aspect_ratio")
-    val aspect_ratio : Float,
+    val aspect_ratio: Float,
 
     @SerialName("height")
-    val height : Int,
+    val height: Int,
 
     @SerialName("iso_639_1")
     // Internationally accepted 2 letter country codes - https://en.wikipedia.org/wiki/ISO_639-1
-    val iso_639_1 : String,
+    val iso_639_1: String,
 
     @SerialName("file_path")
-    val file_path : String,
+    val file_path: String,
 
     @SerialName("vote_average")
-    val vote_average : Float,
+    val vote_average: Float,
 
     @SerialName("vote_count")
-    val vote_count : Int,
+    val vote_count: Int,
 
     @SerialName("width")
-    val width : Int
-
+    val width: Int
 ) {
     companion object {
-        val EmptyExample = ImageDataObject (
+        val EmptyExample = ImageDataObject(
             aspect_ratio = 0f,
             height = 0,
             iso_639_1 = "en",
@@ -48,10 +47,13 @@ data class ImageDataObject(
 data class ImagesDataObject(
     @SerialName("id")
     val id: Int,
+
     @SerialName("backdrops")
     val backdrops: List<ImageDataObject>,
+
     @SerialName("logos")
     val logos: List<ImageDataObject>,
+
     @SerialName("posters")
     val posters: List<ImageDataObject>,
 ) {
@@ -68,5 +70,4 @@ data class ImagesDataObject(
             posters = listOf()
         )
     }
-
 }

@@ -44,7 +44,7 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 fun RegisterPreview() {
     UX62550Theme {
         Surface {
-            RegisterScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow =  {})
+            RegisterScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow = {})
         }
     }
 }
@@ -58,18 +58,22 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
     Box(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box(
             modifier = Modifier
-            .size(
+                .size(
                     LocalConfiguration.current.screenWidthDp.dp,
                     LocalConfiguration.current.screenWidthDp.dp / 3 * 2
                 )
                 .background(Brush.verticalGradient(colorStops = RedColorGradient))
         )
 
-
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Box (modifier=topModifier)
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(modifier = topModifier)
             Row(
-                modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
                 LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
@@ -78,7 +82,6 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
                 usernameValue, emailValue, passValue, onNavigateToProfile,
                 snackbarShow = snackbarShow
             )
-
         }
 
         GeneralTopBar(navigateBack = navigateBack)
@@ -91,7 +94,8 @@ fun RegisterInputHolder(
     emailValue: MutableState<String>,
     passValue: MutableState<String>,
     onNavigateToProfile: (String) -> Unit,
-    snackbarShow: (String) -> Unit) {
+    snackbarShow: (String) -> Unit
+) {
     Column {
         TextField(
             modifier = Modifier
@@ -104,7 +108,9 @@ fun RegisterInputHolder(
         Text(
             text = "Please choose an appropriate username",
             color = TextFieldDescColor,
-            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            modifier = Modifier
+                .padding(10.dp, 4.dp)
+                .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
 
@@ -121,7 +127,9 @@ fun RegisterInputHolder(
         Text(
             text = "Please choose your own email",
             color = TextFieldDescColor,
-            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            modifier = Modifier
+                .padding(10.dp, 4.dp)
+                .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
 
@@ -138,7 +146,9 @@ fun RegisterInputHolder(
         Text(
             text = "Please choose a safe password",
             color = TextFieldDescColor,
-            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            modifier = Modifier
+                .padding(10.dp, 4.dp)
+                .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
 
@@ -149,10 +159,9 @@ fun RegisterInputHolder(
                     passValue.value,
                     usernameValue.value,
                     onSuccess = { snackbarShow("Successfully registered") },
-                    onError = {snackbarShow("Failed to register")}
+                    onError = { snackbarShow("Failed to register") }
                 )
-                onNavigateToProfile("Register");
-
+                onNavigateToProfile("Register")
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = RegisterButtonBlue
@@ -168,7 +177,6 @@ fun RegisterInputHolder(
                 color = Color.White,
                 style = TextStyle(fontSize = 20.sp, shadow = textShadow)
             )
-
         }
     }
 }

@@ -6,18 +6,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-
 data class ReviewStateDataClass(
     val rating: Float = 0f,
     val reviewText: String = "",
     val categoryRatings: Map<String, Float> =
-        ReviewViewModel.ReviewCategoryList.map { it to 0f}.toMap()
+        ReviewViewModel.ReviewCategoryList.map { it to 0f }.toMap()
 )
 
 class ReviewViewModel : ViewModel() {
     companion object {
         val ReviewCategoryList = listOf("Music", "Plot", "Acting", "Directing")
     }
+
     private val reviewRepository = DataModule.reviewRepository
 
     private val reviewStateFlow = MutableStateFlow(ReviewStateDataClass())
@@ -37,9 +37,9 @@ class ReviewViewModel : ViewModel() {
             "timestamp" to System.currentTimeMillis()
         )
 
-        viewModelScope.launch {reviewRepository.addReivewToFirebase(review = review, onSuccess = onSuccess, onError = onError)}
-
-
+        viewModelScope.launch {
+            reviewRepository.addReviewToFirebase(review = review, onSuccess = onSuccess, onError = onError)
+        }
     }
 
     // Update the review text
@@ -51,7 +51,6 @@ class ReviewViewModel : ViewModel() {
     fun getCategoryRating(category: String): Float {
         return reviewStateFlow.value.categoryRatings[category] ?: 0f
     }
-
 
     // Update a specific category rating
     fun updateCategoryRating(category: String, rating: Float) {

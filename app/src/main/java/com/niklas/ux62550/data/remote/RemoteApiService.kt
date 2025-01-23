@@ -12,17 +12,14 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RemoteApiService {
-
     @GET("search/{search_mode}?&page=1&language=en-US")
     suspend fun getSearch(@Path("search_mode") search_mode: String, @Query("query") query: String): SearchDataObject
 
     @GET("trending/movie/{time_window}") // Note: Does not support "people" as search mode
     suspend fun getTrending(@Path("time_window") time_window: String): SearchDataObject
 
-
     @GET("search/multi")
     suspend fun getUserSearch(@Query("query") query: String): SearchDataObject
-
 
     @GET("keyword/{keyword_id}/movies")
     suspend fun getKeywordMovies(@Path("keyword_id") keyword_id: String, @Query("page") page: Int = 1): SearchDataObject
@@ -47,6 +44,7 @@ interface RemoteApiService {
 
     @GET("genre/movie/list")
     suspend fun getMovieGenres(): GenreDataObject
+
     @GET("genre/tv/list")
     suspend fun getTvGenres(): GenreDataObject
 

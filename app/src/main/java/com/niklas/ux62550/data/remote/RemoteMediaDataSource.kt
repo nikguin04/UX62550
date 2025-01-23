@@ -23,14 +23,13 @@ import java.io.File
 import javax.inject.Singleton
 import kotlin.concurrent.Volatile
 
-
 class RemoteMediaDataSource(private val retrofit: Retrofit) {
     private val mediaApi: RemoteApiService = retrofit.create(RemoteApiService::class.java)
 
     suspend fun getSearch(search_mode: String, query: String) = mediaApi.getSearch(search_mode, query)
     suspend fun getTrending(time_window: String = "day") = mediaApi.getTrending(time_window)
-    suspend fun getDiscoverMovies(genres: String, page: Int) = mediaApi.getDiscoverMovies(genres,page)
-	suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
+    suspend fun getDiscoverMovies(genres: String, page: Int) = mediaApi.getDiscoverMovies(genres, page)
+    suspend fun getMoviesDetails(movie_id: Int) = mediaApi.getMovieDetails(movie_id)
     suspend fun getSimilarMoviesDetail(movie_id: Int) = mediaApi.getSimilarMovies(movie_id)
     suspend fun getCreditDetails(movie_id: Int) = mediaApi.getCredit(movie_id)
     suspend fun getProviders(movie_id: Int) = mediaApi.getProvider(movie_id)

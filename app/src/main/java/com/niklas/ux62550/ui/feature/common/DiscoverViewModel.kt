@@ -29,7 +29,6 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
         getDiscover(page = 1)
     }
 
-
     fun getDiscover(page: Int) {
         viewModelScope.launch {
             discoverRepository.getWithKey(
@@ -77,4 +76,3 @@ sealed class DiscoverItemsUIState {
     data class Data(val mediaObjects: List<MediaObject>) : DiscoverItemsUIState()
     data object Error : DiscoverItemsUIState()
 }
-

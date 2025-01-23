@@ -37,10 +37,12 @@ class MovieViewModel() : ViewModel() {
     private fun getProviderForMovies(MovieID: Int) = viewModelScope.launch {
         mediaExtendedDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
-    private fun getTrailerForMovies(MovieID : Int) = viewModelScope.launch {
+
+    private fun getTrailerForMovies(MovieID: Int) = viewModelScope.launch {
         mediaExtendedDetailsRepository.getTrailer(MovieID) // TODO: Don't hardcore this, get some proper featured films
     }
-    fun updateToDatabase(media: MediaObject, remove: Boolean = false){
+
+    fun updateToDatabase(media: MediaObject, remove: Boolean = false) {
         viewModelScope.launch {
             RemoteFirebase.UpdateToWatchList(media, remove)
         }
@@ -70,7 +72,6 @@ class MovieViewModel() : ViewModel() {
                 } else {
                     mutableMovieState.update { MovieState.Error }
                 }
-
             }
         }
         viewModelScope.launch {
@@ -80,11 +81,8 @@ class MovieViewModel() : ViewModel() {
                         if (searchDataObject.isSuccess) {
                             searchDataObject.getOrThrow().results.forEach { res -> res.media_type = "movie" } // TODO: Movies are hardcoded in discover, make this change smoothly when fetching TV
                             SimilarMovieState.Data(searchDataObject.getOrThrow().results)
-                        }
-                        else { SimilarMovieState.Error }
-
+                        } else { SimilarMovieState.Error }
                     }
-
                 }
             }
         }
@@ -124,8 +122,8 @@ class MovieViewModel() : ViewModel() {
 
         mutableProviderState.update {
             ProviderState.Data(
-                providerDataObject = mapOf<String,Result>(
-                    "DK" to Result(link = "", flatrate = listOf(Provider(logoPath = "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg", providerId=0, providerName = "Netflix")) )
+                providerDataObject = mapOf<String, Result>(
+                    "DK" to Result(link = "", flatrate = listOf(Provider(logoPath = "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg", providerId = 0, providerName = "Netflix")))
                 )
             )
         }
@@ -135,10 +133,7 @@ class MovieViewModel() : ViewModel() {
                 trailerObject = MediaDetailExample.TrailerObjectExample
             )
         }
-
     }
-
-
 }
 
 sealed class MovieState {
@@ -146,6 +141,7 @@ sealed class MovieState {
     data class Data(val mediaDetailObject: MovieDetailObject) : MovieState()
     data object Error : MovieState()
 }
+
 sealed class SimilarMovieState {
     object Empty : SimilarMovieState()
     data class Data(val similarMoviesObject: List<MediaObject>) : SimilarMovieState()
@@ -154,9 +150,10 @@ sealed class SimilarMovieState {
 
 sealed class ProviderState {
     object Empty : ProviderState()
-    data class Data(val providerDataObject: Map<String,Result>) : ProviderState()
+    data class Data(val providerDataObject: Map<String, Result>) : ProviderState()
     data object Error : ProviderState()
 }
+
 sealed class TrailerState {
     object Empty : TrailerState()
     data class Data(val trailerObject: TrailerObject) : TrailerState()

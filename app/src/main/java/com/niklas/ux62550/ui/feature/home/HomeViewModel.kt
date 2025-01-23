@@ -21,7 +21,6 @@ class HomeViewModel : ViewModel() {
     private val mutableMovieGenresState = MutableStateFlow<GenresDataState>(GenresDataState.Empty)
     val movieGenresState: StateFlow<GenresDataState> = mutableMovieGenresState
 
-
     init {
         viewModelScope.launch {
             homeRepository.featuredMediaFlow.collect { searchDataObject ->
@@ -40,9 +39,11 @@ class HomeViewModel : ViewModel() {
         getFeaturedMedia()
         getMovieGenres()
     }
+
     private fun getFeaturedMedia() = viewModelScope.launch {
-        homeRepository.getTrending( "day")
+        homeRepository.getTrending("day")
     }
+
     private fun getMovieGenres() = viewModelScope.launch {
         homeRepository.getGenres()
     }
@@ -79,17 +80,12 @@ class HomeViewModel : ViewModel() {
 
 sealed class MediaItemsUIState {
     data object Empty : MediaItemsUIState()
-    data class Data(
-        val mediaObjects: List<MediaObject>
-    ) : MediaItemsUIState()
+    data class Data(val mediaObjects: List<MediaObject>) : MediaItemsUIState()
     data object Error : MediaItemsUIState()
 }
 
 sealed class GenresDataState {
     data object Empty : GenresDataState()
-    data class Data(
-        val genres: List<GenreObject>
-    ) : GenresDataState()
+    data class Data(val genres: List<GenreObject>) : GenresDataState()
     data object Error : GenresDataState()
 }
-

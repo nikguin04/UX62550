@@ -47,11 +47,8 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 @Preview(showBackground = true)
 fun SearchPreview() {
     UX62550Theme {
-
         val viewModel: SearchViewModel = viewModel()
         viewModel.initPreview()
-
-
 
         Surface(modifier = Modifier.fillMaxSize()) {
             SearchScreen(viewModel = viewModel, onNavigateToMedia = {})
@@ -75,8 +72,8 @@ fun SearchContent(
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     var expanded by rememberSaveable { mutableStateOf(false) }
-    LazyColumn() {
-        item { Box (modifier=topModifier) }
+    LazyColumn {
+        item { Box(modifier = topModifier) }
         item {
             Row(
                 modifier = Modifier
@@ -108,7 +105,7 @@ fun SearchContent(
                                     contentDescription = "Search icon"
                                 )
                             },
-                                modifier = Modifier
+                            modifier = Modifier
                         )
                     },
 
@@ -123,15 +120,12 @@ fun SearchContent(
             }
         }
 
-
-
         when (movieItemsUIState) {
             MovieItemsUIState.Empty -> {
                 item {
                     Box(
                         contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                        .fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
                             text = "No movies found",
@@ -163,14 +157,13 @@ fun SearchContent(
                                     .fillMaxWidth(0.7f)
                             )
                         }
-
                     }
                     MovieBoxRow(
                         movie = movieBoxItem,
                         modifier = Modifier.clickable(
                             onClick = { onNavigateToMedia(movieBoxItem) }
                         ).padding(16.dp),
-                        infoRowModifier = Modifier.padding(start= 16.dp)
+                        infoRowModifier = Modifier.padding(start = 16.dp)
                     )
                 }
 
@@ -178,7 +171,7 @@ fun SearchContent(
                     SectionHeader(title = "Actors")
                 }
                 itemsIndexed(actorList) { index, movieBoxItem ->
-                    if(index != 0){
+                    if (index != 0) {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.Center
@@ -197,12 +190,9 @@ fun SearchContent(
                 }
             }
             is MovieItemsUIState.Error -> {
-                item {
-                    Text("Network error")
-                }
+                item { Text("Network error") }
             }
         }
-
     }
 }
 

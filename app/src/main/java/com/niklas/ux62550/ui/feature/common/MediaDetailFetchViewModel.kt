@@ -11,29 +11,27 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MediaDetailFetchViewModel(movieId: Int): ViewModel() {
+class MediaDetailFetchViewModel(movieId: Int) : ViewModel() {
     private val mediaDetailsRepository = DataModule.mediaDetailRepository
 
     private val mutableMovieState = MutableStateFlow<MovieState>(MovieState.Empty)
     val movieState: StateFlow<MovieState> = mutableMovieState
 
-        init {
-            viewModelScope.launch {
-                mediaDetailsRepository.getWithKey(
-                    itemKey = movieId,
-                    getUnit = { (mediaDetailsRepository::getMoviesDetails)(movieId) },
-                    scope = viewModelScope
-                ).collect { movieDetailObjectResult ->
-                    if (movieDetailObjectResult.isSuccess) {
-                        mutableMovieState.update { MovieState.Data(movieDetailObjectResult.getOrThrow()) }
-                    } else {
-                        mutableMovieState.update { MovieState.Error }
-                    }
-
+    init {
+        viewModelScope.launch {
+            mediaDetailsRepository.getWithKey(
+                itemKey = movieId,
+                getUnit = { (mediaDetailsRepository::getMoviesDetails)(movieId) },
+                scope = viewModelScope
+            ).collect { movieDetailObjectResult ->
+                if (movieDetailObjectResult.isSuccess) {
+                    mutableMovieState.update { MovieState.Data(movieDetailObjectResult.getOrThrow()) }
+                } else {
+                    mutableMovieState.update { MovieState.Error }
                 }
             }
         }
-
+    }
 
     class MediaDetailFetchViewModelFactory(private val movieId: Int) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

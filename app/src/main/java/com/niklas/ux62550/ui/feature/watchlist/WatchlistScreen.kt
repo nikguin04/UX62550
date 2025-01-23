@@ -41,10 +41,6 @@ fun WatchlistPreview() {
     }
 }
 
-
-
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WatchlistContent(topModifier: Modifier = Modifier, onNavigateToMedia: (MediaObject) -> Unit, watchlistViewModel: WatchlistViewModel = viewModel()) {
@@ -56,15 +52,14 @@ fun WatchlistContent(topModifier: Modifier = Modifier, onNavigateToMedia: (Media
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             val watchListState = watchlistViewModel.watchListState.collectAsState().value
 
-            Box(modifier=topModifier.padding(25.dp))
+            Box(modifier = topModifier.padding(25.dp))
             LogoBox(size = 200.dp)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top= 24.dp),
+                    .padding(top = 24.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
@@ -74,10 +69,9 @@ fun WatchlistContent(topModifier: Modifier = Modifier, onNavigateToMedia: (Media
                 MovieIds.Empty -> {
                     Text("No data yet")
                 }
-
                 is MovieIds.Data -> {
                     // Display list of movie items in LazyColumn
-                    val movieIDList: List<Int> = watchListState.movies?:emptyList()
+                    val movieIDList: List<Int> = watchListState.movies ?: emptyList()
                     Column {
                         movieIDList.forEachIndexed { index, id ->
                             if (index != 0) {
@@ -93,7 +87,6 @@ fun WatchlistContent(topModifier: Modifier = Modifier, onNavigateToMedia: (Media
                                             .fillMaxWidth(0.7f)
                                     )
                                 }
-
                             }
                             MovieBoxRowFromId(Modifier.padding(16.dp), id, onNavigateToMedia = onNavigateToMedia, Modifier.padding(start = 16.dp))
                         }

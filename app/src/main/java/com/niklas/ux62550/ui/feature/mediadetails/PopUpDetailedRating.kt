@@ -55,13 +55,11 @@ fun DetailedRating(
 ) {
     val movieReviewID by movieViewModel.movieReviewID.collectAsState()
 
-    //Help from chat
+    // Help from chat
     LaunchedEffect(movieID) {
         movieViewModel.getDetailReviews(movieID.mediaDetailObject.id)
     }
-    Column(
-        modifier.padding(20.dp, 25.dp, 20.dp, 5.dp)
-    ) {
+    Column(modifier.padding(20.dp, 25.dp, 20.dp, 5.dp)) {
         Text(
             "User Rating",
             style = TextStyle(
@@ -77,7 +75,6 @@ fun DetailedRating(
             modifier = modifier.padding(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Text(
                 "Detailed Rating",
                 style = TextStyle(
@@ -115,8 +112,9 @@ fun DetailedRating(
         }
     }
 }
+
 @Composable
-fun OverallRating(modifier: Modifier, rating: Double){
+fun OverallRating(modifier: Modifier, rating: Double) {
     Row(
         modifier = modifier.padding(vertical = 5.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -168,8 +166,7 @@ fun DetailRatingRow(detailRatingName: String, rating: Double) {
         ) {
             for (i in 1..5) {
                 val isFilled = i <= rating
-                val starIcon =
-                    if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
+                val starIcon = if (isFilled) Icons.Outlined.Star else Icons.Outlined.StarOutline
                 Image(
                     imageVector = starIcon,
                     modifier = Modifier.requiredSize(18.dp),
@@ -196,7 +193,7 @@ fun DetailRatingRow(detailRatingName: String, rating: Double) {
 }
 
 @Composable
-fun ReviewButton(movieState: MovieState.Data, onNavigateToReview: (MovieDetailObject) -> Unit){
+fun ReviewButton(movieState: MovieState.Data, onNavigateToReview: (MovieDetailObject) -> Unit) {
     Button(
         onClick = { onNavigateToReview(movieState.mediaDetailObject) },
         colors = ButtonColors(
@@ -211,8 +208,10 @@ fun ReviewButton(movieState: MovieState.Data, onNavigateToReview: (MovieDetailOb
             color = Color.White,
             style = TextStyle(
                 shadow = Shadow(
-                    color = Color.Black, blurRadius = 10f
-                ),)
+                    color = Color.Black,
+                    blurRadius = 10f
+                )
+            )
         )
     }
 }

@@ -68,27 +68,24 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
     val actorItemWidth = 60.dp + 12.dp
     val maxActors = ((screenWidth - 80.dp) / actorItemWidth).toInt()
 
-    Column (Modifier.padding(20.dp, 0.dp, 20.dp, 0.dp)) {
+    Column(Modifier.padding(20.dp, 0.dp, 20.dp, 0.dp)) {
         Text(
             "Actors and Directors",
-            Modifier
-                .padding(0.dp, 15.dp, 0.dp, 0.dp),
+            Modifier.padding(0.dp, 15.dp, 0.dp, 0.dp),
             style = TextStyle(
                 fontSize = 20.sp,
                 color = Color.White,
                 shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
-
             )
         )
         val sheetState = rememberModalBottomSheetState()
         var showBottomSheet by remember { mutableStateOf(false) }
         Row(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
                 .padding(0.dp, 10.dp, 0.dp, 0.dp)
                 .size(width = 60.dp, height = 90.dp)
-                .clickable {
-                    showBottomSheet = true
-                },
+                .clickable { showBottomSheet = true },
             verticalAlignment = Alignment.CenterVertically
         ) {
             for (i in 0 until minOf(maxActors, creditState.creditObject.cast.size)) {
@@ -99,7 +96,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
                         .size(width = 60.dp, height = 90.dp),
                     size = ImageSize.PROFILE
                 )
-                Spacer(modifier = Modifier.width((12.dp)))
+                Spacer(modifier = Modifier.width(12.dp))
             }
 
             for (i in 0..2) { // Create clickable circles
@@ -130,20 +127,17 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
 }
 
 @Composable
-fun CastRow(modifier: Modifier, cast: Cast){
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        MediaItem(cast.castProfilePath,
+fun CastRow(modifier: Modifier, cast: Cast) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        MediaItem(
+            cast.castProfilePath,
             modifier
                 .clip(RoundedCornerShape(25))
                 .size(width = 60.dp, height = 90.dp),
             size = ImageSize.PROFILE)
         Spacer(modifier = Modifier.width(12.dp))
         Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = cast.castName,
                     fontSize = 14.sp,
@@ -161,16 +155,15 @@ fun CastRow(modifier: Modifier, cast: Cast){
                     color = Color.White
                 )
             }
-
         }
     }
 }
+
 @Composable
-fun CrewRow(modifier: Modifier, crew: Crew){
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        MediaItem(crew.castProfilePath,
+fun CrewRow(modifier: Modifier, crew: Crew) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        MediaItem(
+            crew.profilePath,
             modifier
                 .clip(RoundedCornerShape(25))
                 .size(width = 60.dp, height = 90.dp),
@@ -178,9 +171,7 @@ fun CrewRow(modifier: Modifier, crew: Crew){
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = crew.castName,
                     fontSize = 14.sp,
@@ -198,7 +189,6 @@ fun CrewRow(modifier: Modifier, crew: Crew){
                     color = Color.White
                 )
             }
-
         }
     }
 }

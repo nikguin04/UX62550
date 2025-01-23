@@ -46,7 +46,7 @@ fun HomeScreenErrorPreview() {
     val homeViewModel: HomeViewModel = viewModel()
     homeViewModel.initErrorPreview()
 
-    HomeScreen( homeViewModel = viewModel(), onNavigateToMedia = {} )
+    HomeScreen(homeViewModel = viewModel(), onNavigateToMedia = {})
 }
 
 @Composable
@@ -63,7 +63,7 @@ fun HomeScreen(
         }
         is MediaItemsUIState.Data -> {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-                Box(modifier=topModifier)
+                Box(modifier = topModifier)
                 HomeWelcomeTopBar()
                 FeaturedMediaScroller(mediaItemsUIState.mediaObjects, onNavigateToMedia)
                 GenreMediaStack(movieGenresDataState, onNavigateToMedia)
@@ -79,7 +79,9 @@ fun HomeScreen(
 fun HomeWelcomeTopBar(modifier: Modifier = Modifier) {
     Row(
         // TODO: nicer padding values? what about 30 all-around?
-        modifier.fillMaxWidth().padding(32.dp, 32.dp, 0.dp, 38.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(32.dp, 32.dp, 0.dp, 38.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -106,7 +108,6 @@ fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (M
         GenresDataState.Empty -> {
             // TODO: We should make a loading screen for all the genres, so that they are only displayed when ALL genre fetching is done. Async image loading may be neglected from said fetching
         }
-
         is GenresDataState.Data -> {
             for (genre in movieGenresDataState.genres) {
                 DiscoverSlider(

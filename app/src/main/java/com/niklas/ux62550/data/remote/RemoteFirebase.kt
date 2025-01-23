@@ -11,7 +11,8 @@ import kotlinx.coroutines.tasks.await
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class FirebaseInstance { // We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
+// We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
+class FirebaseInstance {
     private val db = Firebase.firestore
 
     companion object {
@@ -22,14 +23,11 @@ class FirebaseInstance { // We need to make this an absolute singleton and not a
             }
             return instance.let { fb -> fb?.db }
         }
-
     }
 }
 
 object RemoteFirebase {
-
     suspend fun getWatchList(mutableWatchListFlow: MutableSharedFlow<List<Int>?>) {
-
         try {
             // if true then use the userId will be used else it will use the defult user
             // in the real app there will be no defult user you need to sign in to used this function
@@ -38,21 +36,18 @@ object RemoteFirebase {
                 UserIdPath = FirebaseAuthController().getAuth().uid.toString()
             }
 
-
             var document = FirebaseInstance.getDB()!!.collection("Watchlist").document(UserIdPath).get().await()
             Log.d("Firebase_info", "${document.id} => ${document.data}")
             val arrayData = document.data?.get("MovieIds") as List<*>
             val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
             mutableWatchListFlow.emit(intData)
-
-
         } catch (e: Exception) {
             Log.w("Firebase_info", "Error getting documents.", e)
             mutableWatchListFlow.emit(null)
         }
     }
 
-    //Help from chat
+    // Help from chat
     suspend fun getReview(movieId: Int): Map<String, Double> {
         var totalMainRating = 0.0
         var totalActorRating = 0.0
@@ -67,7 +62,6 @@ object RemoteFirebase {
                 for (documents in document.documents) {
                     val mainRating = documents.get("MainRating") as Double
                     val ratings = documents.get("CategoryRatings") as Map<String, Double>
-
 
                     totalMainRating += mainRating
                     totalActorRating += ratings["Acting"] ?: 0.0
@@ -123,8 +117,6 @@ object RemoteFirebase {
         } else {
             document.set(Watchlistlist)
         }
-
-
     }
 
     suspend fun getUserData(mutableUserFlow: MutableSharedFlow<List<String>>) {
@@ -141,8 +133,6 @@ object RemoteFirebase {
             val emailAddress = FirebaseAuthController().getAuth().currentUser?.email ?: "default@gmail.com"
 
             mutableUserFlow.emit(listOf(userName, emailAddress))
-
-
         } catch (e: Exception) {
             Log.w("Firebase_info", "Error getting documents.", e)
         }

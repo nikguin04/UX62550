@@ -37,16 +37,15 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
                     } else {
                         mutableImagesDataState.update { ImagesDataUIState.Error }
                     }
-
                 }
             }
         } ?: Log.w("No media_type", "Media passed to ImageViewModel contained no media_type, so we can not fetch images, Please note that this sometimes need to be set manually when fetching data since endpoints for specific media will not include the media_type")
     }
 
-
     fun initPreview_NoFetch() {
         mutableImagesDataState.update { ImagesDataUIState.Data(ImagesDataObject.EmptyExample) }
     }
+
     fun initPreview() {
         mutableImagesDataState.update { ImagesDataUIState.Data(ImagesDataObject.EmptyExample.copy(backdrops = listOf(ImageDataObject.EmptyExample))) }
     }

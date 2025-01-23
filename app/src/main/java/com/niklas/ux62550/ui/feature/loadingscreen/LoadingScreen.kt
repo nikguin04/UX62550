@@ -24,27 +24,24 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
             .padding(16.dp), // Optional: padding for the entire layout
         contentAlignment = Alignment.Center // Centers the content in the Box
     ) {
-        Column(modifier = Modifier,
+        Column(
+            modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Logo",
+                modifier = Modifier.size(200.dp), // Adjust size as needed
+                contentScale = ContentScale.Fit
+            )
 
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo",
-            modifier = Modifier.size(200.dp), // Adjust size as needed
-            contentScale = ContentScale.Fit
-        )
-
-
-        Text(
-            text = "LOADING",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.padding(top = 8.dp)
-
-        )
-
+            Text(
+                text = "LOADING",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
     }
 }

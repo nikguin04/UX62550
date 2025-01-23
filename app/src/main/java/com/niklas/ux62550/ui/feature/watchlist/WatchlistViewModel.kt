@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WatchlistViewModel() : ViewModel() {
-
     private val watchListRepository = DataModule.watchListRepository
 
     private fun getWatchList() = viewModelScope.launch {
@@ -18,7 +17,6 @@ class WatchlistViewModel() : ViewModel() {
 
     private val mutableWatchListState = MutableStateFlow<MovieIds>(MovieIds.Empty)
     val watchListState: StateFlow<MovieIds> = mutableWatchListState
-
 
     fun init() {
         viewModelScope.launch {

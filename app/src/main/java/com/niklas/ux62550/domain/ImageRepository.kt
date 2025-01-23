@@ -10,12 +10,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class ImageRepository (
+class ImageRepository(
     private val remoteDataSource: RemoteMediaDataSource
 ) : KeyRepository<Int, ImagesDataObject>() {
-
     suspend fun getImages(media_type: String, media_id: Int, include_image_language: String = "en"): ImagesDataObject {
         return remoteDataSource.getImages(media_type, media_id, include_image_language)
     }
-
 }

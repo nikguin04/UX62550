@@ -61,7 +61,8 @@ import kotlinx.coroutines.delay
 enum class ImageSize {
     BACKDROP, LOGO, POSTER, PROFILE, STILL
 }
-val CrossfadeDuration: Int = 200;
+
+val CrossfadeDuration: Int = 200
 
 @Composable
 @Preview
@@ -169,7 +170,6 @@ fun MediaItemBackdropIntercept(
                 // TODO: CWL loading page?
                 AnimatedImagePlaceholder(modifier.clip(RoundedCornerShape(6.dp)), animationProgress)
             }
-
             is ImagesDataUIState.Data -> {
                 val enBackdrop = imagesDataUIState.media.getFirstEnBackdrop()
                 enBackdrop?.let {
@@ -184,27 +184,26 @@ fun MediaItemBackdropIntercept(
                 {
                     MediaItemBackdropFallback(
                         media = mediaItem,
-                        modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(6.dp)),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(6.dp)),
                         size = ImageSize.BACKDROP,
                         backdropFallback = backdropFallback,
                         animationProgress = animationProgress
                     )
                 }
             }
-
             is ImagesDataUIState.Error -> {
                 Text(text = "Network error")
             }
         }
     } else {
-        MediaItem (
+        MediaItem(
             uri = mediaItem.backdrop_path,
             modifier = modifier.clip(RoundedCornerShape(6.dp)),
             size = ImageSize.BACKDROP
         )
     }
-
-
 }
 
 @Composable
@@ -216,7 +215,8 @@ fun getMediaItemAnimationProgress(): State<Float> {
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 2000, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
-        ), label = "PlaceholderAnimationProgress"
+        ),
+        label = "PlaceholderAnimationProgress"
     )
 }
 
@@ -228,7 +228,7 @@ fun MediaItemBackdropFallback(
     backdropFallback: Boolean,
     animationProgress: State<Float> = getMediaItemAnimationProgress()
 ) {
-    Box (modifier = modifier) {
+    Box(modifier = modifier) {
         MediaItem(
             uri = media.backdrop_path,
             modifier = modifier,
@@ -238,7 +238,7 @@ fun MediaItemBackdropFallback(
 
         if (backdropFallback) {
             Box(modifier = modifier.background(Color(0.5f, 0.5f, 0.5f, 0.5f)))
-            Box (
+            Box(
                 modifier = Modifier
                     .fillMaxSize(0.9f)
                     .align(Alignment.Center)
@@ -307,9 +307,11 @@ fun MediaItem(
             }
         }
     } ?: run { // If uri is null
-        Box (modifier = modifier.background(Color.Gray)) {
+        Box(modifier = modifier.background(Color.Gray)) {
             Icon(
-                modifier = Modifier.align(Alignment.Center).fillMaxSize(fraction = 0.75f),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxSize(fraction = 0.75f),
                 tint = Color.Black.copy(alpha = 0.25f),
                 imageVector = Icons.Outlined.ImageNotSupported,
                 contentDescription = "Image unavailable"
@@ -317,6 +319,7 @@ fun MediaItem(
         }
     }
 }
+
 @Composable
 fun debugPlaceholder(@DrawableRes debugPreview: Int) =
     if (LocalInspectionMode.current) {
@@ -329,7 +332,6 @@ fun debugPlaceholder(@DrawableRes debugPreview: Int) =
 
 @Composable
 fun AnimatedImagePlaceholder(modifier: Modifier = Modifier, animationProgress: State<Float>) {
-
     // Placeholder with animated cross-fading gradients
     Canvas(modifier = modifier) {
         // Background color
