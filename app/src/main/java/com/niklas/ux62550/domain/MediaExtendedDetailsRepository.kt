@@ -1,6 +1,5 @@
 package com.niklas.ux62550.domain
 
-import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.data.model.ProviderDataObject
 import com.niklas.ux62550.data.model.SearchDataObject
 import com.niklas.ux62550.data.model.TrailerObject

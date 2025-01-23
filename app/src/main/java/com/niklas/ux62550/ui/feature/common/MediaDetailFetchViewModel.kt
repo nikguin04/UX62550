@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.common
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope

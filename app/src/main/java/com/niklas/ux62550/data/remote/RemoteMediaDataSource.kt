@@ -1,27 +1,6 @@
 package com.niklas.ux62550.data.remote
 
-import com.niklas.ux62550.data.model.CreditObject
-import com.niklas.ux62550.data.model.GenreDataObject
-import com.niklas.ux62550.data.model.ImagesDataObject
-import com.niklas.ux62550.data.model.MovieDetailObject
-import com.niklas.ux62550.data.model.ProviderDataObject
-import com.niklas.ux62550.data.model.SearchDataObject
-import com.niklas.ux62550.data.model.TrailerObject
-import kotlinx.serialization.json.Json
-import okhttp3.Cache
-import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import java.io.File
-import javax.inject.Singleton
-import kotlin.concurrent.Volatile
 
 class RemoteMediaDataSource(private val retrofit: Retrofit) {
     private val mediaApi: RemoteApiService = retrofit.create(RemoteApiService::class.java)

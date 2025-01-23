@@ -1,6 +1,5 @@
 package com.niklas.ux62550.ui.feature.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,14 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.niklas.ux62550.data.examples.SearchDataExamples
-import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.DiscoverItemsUIState
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
-import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 
 private const val buffer = 2
 

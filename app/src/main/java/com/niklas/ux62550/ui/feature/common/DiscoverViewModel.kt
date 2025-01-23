@@ -4,18 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.GenreObject
-import com.niklas.ux62550.data.model.ImagesDataObject
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.DiscoverKey
-import com.niklas.ux62550.domain.DiscoverRepository
-import com.niklas.ux62550.domain.common.KeyRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 
 class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
     private val discoverRepository = DataModule.discoverRepository

@@ -1,6 +1,5 @@
 package com.niklas.ux62550.navigation
 
-import com.niklas.ux62550.data.model.MediaObject
 import kotlinx.serialization.Serializable
 
 @Serializable

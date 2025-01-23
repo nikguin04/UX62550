@@ -6,7 +6,6 @@ import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.domain.HomeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

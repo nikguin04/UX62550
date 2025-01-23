@@ -1,19 +1,10 @@
 package com.niklas.ux62550.ui.feature.common
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.niklas.ux62550.data.examples.MediaDetailExample
-import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.CreditObject
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.data.model.Provider
-import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.domain.CastDetailsRepository
-import com.niklas.ux62550.ui.feature.mediadetails.MovieState
-import com.niklas.ux62550.ui.feature.mediadetails.ProviderState
-import com.niklas.ux62550.ui.feature.mediadetails.SimilarMovieState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

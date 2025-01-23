@@ -2,10 +2,6 @@ package com.niklas.ux62550.domain
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niklas.ux62550.data.remote.FirebaseAuthController
-import com.niklas.ux62550.data.remote.RemoteMediaDataSource
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 
 class ReviewRepository {
     fun addReivewToFirebase(review: Map<String, Any>, onSuccess: () -> Unit = {}, onError: () -> Unit = {}) {

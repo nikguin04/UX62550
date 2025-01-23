@@ -1,9 +1,7 @@
 package com.niklas.ux62550.data.remote
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth

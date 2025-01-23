@@ -1,7 +1,6 @@
 package com.niklas.ux62550.data.model
 
 import android.os.Parcelable
-import android.provider.MediaStore.Audio.Media
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

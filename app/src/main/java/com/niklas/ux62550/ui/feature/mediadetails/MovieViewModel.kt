@@ -1,7 +1,6 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.examples.SearchDataExamples
