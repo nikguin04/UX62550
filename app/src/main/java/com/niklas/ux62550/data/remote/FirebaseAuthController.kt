@@ -37,16 +37,21 @@ class FirebaseAuthController: Activity() {
             }
     }
 
-     fun createAccount(email: String, password: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
+     fun createAccount(email: String, password: String, name: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
         auth = Firebase.auth
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 onSuccess()
+                addUsername(name)
             }
             .addOnFailureListener{
                 onError()
             }
+    }
+    private fun addUsername(nameID: String){
+        val userName = mapOf("Name" to nameID)
+        FirebaseInstance.getDB()!!.collection("UserData").document(getAuth().currentUser?.uid.toString()).set(userName)
     }
 
     public fun getAuth() : FirebaseAuth{

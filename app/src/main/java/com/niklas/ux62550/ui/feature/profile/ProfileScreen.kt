@@ -5,13 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -21,7 +21,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -29,9 +28,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -40,10 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.remote.FirebaseAuthController
-import com.niklas.ux62550.models.Profile
-
 import com.niklas.ux62550.ui.theme.LoginButtonGray
-import com.niklas.ux62550.ui.theme.ProfileBtnRed
 import com.niklas.ux62550.ui.theme.RedColorGradient
 import com.niklas.ux62550.ui.theme.UX62550Theme
 import com.niklas.ux62550.ui.theme.placeholderIconColor
@@ -60,18 +58,27 @@ fun ProfilePreview() {
 }
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, modifier: Modifier = Modifier) {
-    val profile = viewModel.profileState.collectAsState().value
-    ProfileContent(modifier = modifier, profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
+    when(val profile = viewModel.profileState.collectAsState().value){
+        UserData.Empty -> {
+
+        }
+        is UserData.Data -> {
+            ProfileContent(profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
+        }
+        UserData.Error -> {
+
+        }
+    }
 }
 @Composable
 fun ProfileContent(
     onNavigateToLoginRegister: (String) -> Unit,
-    profile: Profile,
+    profile: UserData.Data,
     modifier: Modifier = Modifier,
 ) {
-    var nameValueTemp = remember { mutableStateOf(profile.name) }
-    var emailValueTemp = remember { mutableStateOf(profile.Email) }
-    var passwordValueTemp = remember { mutableStateOf("**********") }
+    val nameValueTemp = remember { mutableStateOf(profile.userData.name) }
+    val emailValueTemp = remember { mutableStateOf(profile.userData.Email) }
+    val passwordValueTemp = remember { mutableStateOf("**********") }
 
     Box(
         modifier = Modifier
@@ -111,7 +118,7 @@ fun ProfileContent(
                 }
 
                 Text(
-                    text = profile.name,
+                    text = profile.userData.name,
                     style = TextStyle(fontSize = 12.sp, shadow = textShadow),
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
@@ -193,32 +200,42 @@ fun ProfileContent(
 @Composable
 fun ProfileAttribute(label: String, value: MutableState<String>) {
     Row(Modifier.fillMaxWidth(), Arrangement.Start, Alignment.CenterVertically) {
-        TextField(
-            value = FirebaseAuthController().getAuth().currentUser?.email.toString(),
-            modifier = Modifier
-                .size(260.dp, 55.dp)
-                .padding(16.dp, 0.dp, 0.dp, 0.dp),
-            onValueChange = { value.value = it },
-            label = { Text(text = label) },
-            textStyle = TextStyle(fontSize = 15.sp)
-        )
-        Box(Modifier.size(22.dp, 0.dp))
-        Button(
-            onClick = {},
-            colors = ButtonDefaults.buttonColors(
-                containerColor = ProfileBtnRed
-            ),
-            modifier = Modifier
-                .size(70.dp, 23.dp)
-                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape),
-            contentPadding = PaddingValues(0.dp)
-        ) {
-            Text(
-                text = "Edit",
-                color = Color.White,
-                style = TextStyle(fontSize = 15.sp, shadow = textShadow),
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
+        Column(Modifier.padding(horizontal = 20.dp)) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.Gray)
+                    .padding(6.dp)
+                    .shadow(
+                        elevation = 15.dp,
+                        shape = RoundedCornerShape(8.dp),
+                        ambientColor = Color.Black.copy(alpha = 255f),
+                        spotColor = Color.Black.copy(alpha = 255f)
+                    )
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    label,
+                    style =TextStyle(
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                    ),
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Text(
+                    text = value.value,
+                    style =TextStyle(
+                        fontSize = 18.sp,
+                        color = Color.White,
+                        shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                    ),
+                    modifier = Modifier
+                        .padding(start = 10.dp, top = 10.dp)
+                        .align(Alignment.CenterStart)
+                )
+            }
         }
     }
 }

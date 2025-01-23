@@ -115,7 +115,7 @@ fun RegisterInputHolder(
                 .padding(10.dp, 0.dp),
             value = emailValue.value,
             onValueChange = { emailValue.value = it },
-            label = { Text("Email") }
+            label = { Text("Default@gmail.com") }
         )
         Text(
             text = "Please choose your own email",
@@ -146,6 +146,7 @@ fun RegisterInputHolder(
                 FirebaseAuthController().createAccount(
                     emailValue.value,
                     passValue.value,
+                    usernameValue.value,
                     onSuccess = { snackbarShow("Successfully registered") },
                     onError = {snackbarShow("Failed to register")}
                 )

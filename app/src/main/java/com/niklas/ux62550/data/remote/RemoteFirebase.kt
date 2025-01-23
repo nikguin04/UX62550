@@ -120,4 +120,23 @@ object RemoteFirebase {
 
 
     }
+    suspend fun getUserData(mutableUserFlow: MutableSharedFlow<List<String>>) {
+        try {
+            var userIdPath = "1NhBN640YoUdZq848o3C"
+            if (FirebaseAuthController().getAuth().currentUser != null) {
+                userIdPath = FirebaseAuthController().getAuth().uid.toString()
+            }
+
+            val document = FirebaseInstance.getDB()!!
+                .collection("UserData").document(userIdPath).get().await()
+            Log.d("Firebase_info", "${document.id} => ${document.data}")
+            val userName = document.data?.get("Name") as? String ?: "Default Name"
+            val emailAddress = FirebaseAuthController().getAuth().currentUser?.email ?: "default@gmail.com"
+            mutableUserFlow.emit(listOf(userName, emailAddress))
+
+
+        } catch (e: Exception) {
+            Log.w("Firebase_info", "Error getting documents.", e)
+        }
+    }
 }
