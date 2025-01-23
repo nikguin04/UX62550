@@ -100,7 +100,7 @@ fun MediaDetailsScreen(
     navigateBack: () -> Unit,
     onNavigateToOtherMedia: (MediaObject) -> Unit,
     onNavigateToReview: (MovieDetailObject) -> Unit,
-    modifier: Modifier = Modifier,
+    topModifier: Modifier = Modifier,
     watchlistViewModel: WatchlistViewModel = viewModel()
 ) {
     val movieState = movieViewModel.movieState.collectAsState().value
@@ -122,7 +122,7 @@ fun MediaDetailsScreen(
             Box {
                 Column(Modifier.verticalScroll(rememberScrollState())) {
                     Header(movieState = movieState, trailerState = trailerState)
-                    Column(modifier = modifier) {
+                    Column(modifier = topModifier) {
                         InfoRow(movieState = movieState)
                         Genres(genres = movieState, providerState = providerState)
                         DescriptionText(description = movieState.mediaDetailObject.Description)

@@ -73,6 +73,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRe
 @Composable
 fun ProfileContent(
     onNavigateToLoginRegister: (String) -> Unit,
+    topModifier: Modifier = Modifier,
     profile: UserData.Data,
     modifier: Modifier = Modifier,
 ) {
@@ -90,10 +91,10 @@ fun ProfileContent(
     )
 
     Column(
-        modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(modifier = Modifier.size(0.dp, 70.dp))
+        Box(modifier = topModifier.size(0.dp, 70.dp))
 
         // Profile name and picture
         Row(
