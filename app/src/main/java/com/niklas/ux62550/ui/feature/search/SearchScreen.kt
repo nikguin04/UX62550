@@ -62,8 +62,8 @@ fun SearchScreen(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modifier
     SearchContent(topModifier = topModifier, viewModel = viewModel, movieItemsUIState = moviesState, onNavigateToMedia = onNavigateToMedia)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun SearchContent(
     viewModel: SearchViewModel,
     movieItemsUIState: MovieItemsUIState,

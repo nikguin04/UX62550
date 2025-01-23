@@ -56,8 +56,8 @@ fun PreviewActorsAndDirectors() {
     ActorsAndDirectors(creditState = creditState)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.Data) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp

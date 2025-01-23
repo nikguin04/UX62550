@@ -40,8 +40,8 @@ fun HomePreview() {
     }
 }
 
-@Preview
 @Composable
+@Preview
 fun HomeScreenErrorPreview() {
     val homeViewModel: HomeViewModel = viewModel()
     homeViewModel.initErrorPreview()

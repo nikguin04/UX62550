@@ -91,8 +91,8 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifi
     }
 }
 
-@Preview
 @Composable
+@Preview
 fun MovieBoxRowFromIdErrorPreview() {
     MovieBoxRowFromId(Modifier, 0, {})
 }

@@ -24,8 +24,8 @@ import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
 
 private const val buffer = 2
 
-@Preview
 @Composable
+@Preview
 fun PreviewDiscoverSliderError() {
     DiscoverSliderContent(DiscoverItemsUIState.Error, "Action", {}, rememberLazyListState())
 }

@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun AwardPopUp() {
     Row(
         modifier = Modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),

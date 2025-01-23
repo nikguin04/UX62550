@@ -37,8 +37,8 @@ fun WatchlistPreview() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun WatchlistContent(topModifier: Modifier = Modifier, onNavigateToMedia: (MediaObject) -> Unit, watchlistViewModel: WatchlistViewModel = viewModel()) {
     Column(Modifier.padding()) {
         Column(

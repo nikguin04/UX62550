@@ -45,8 +45,8 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.theme.ReviewColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun DetailedRating(
     modifier: Modifier = Modifier,
     movieViewModel: MovieViewModel,
