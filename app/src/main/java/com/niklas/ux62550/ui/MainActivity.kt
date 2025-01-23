@@ -8,13 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -40,17 +33,21 @@ class MainActivity : ComponentActivity() {
 
         // Enable fullscreen and edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(
-                //android.graphics.Color.TRANSPARENT,
-                Color(0.1f, 0.1f, 0.1f, 0.4f).toArgb()
-            )
-        )
 
         DataModule.initialize()
         super.onCreate(savedInstanceState)
 
         setContent {
+            enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.dark(
+                    //android.graphics.Color.TRANSPARENT,
+                    Color(0.1f, 0.1f, 0.1f, 0.4f).toArgb()
+                ),
+                navigationBarStyle = SystemBarStyle.dark(
+                    Color.Transparent.toArgb()
+                )
+            )
+
             UX62550Theme {
                 val navController = rememberNavController()
 
