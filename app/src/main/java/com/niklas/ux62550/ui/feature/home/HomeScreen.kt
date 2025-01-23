@@ -51,7 +51,7 @@ fun HomeScreenErrorPreview() {
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
+    topModifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = viewModel(),
     onNavigateToMedia: (MediaObject) -> Unit
 ) {
@@ -63,7 +63,7 @@ fun HomeScreen(
         }
         is MediaItemsUIState.Data -> {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-                Box(modifier=modifier)
+                Box(modifier=topModifier)
                 HomeWelcomeTopBar()
                 FeaturedMediaScroller(mediaItemsUIState.mediaObjects, onNavigateToMedia)
                 GenreMediaStack(movieGenresDataState, onNavigateToMedia)

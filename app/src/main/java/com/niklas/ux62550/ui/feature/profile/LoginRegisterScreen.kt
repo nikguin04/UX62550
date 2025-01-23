@@ -57,7 +57,7 @@ fun LoginRegisterPreviewSmall() {
 fun LoginRegisterScreen(
     onNavigateToLoginScreen: (String) -> Unit,
     onNavigateToRegisterScreen: (String) -> Unit,
-    modifier: Modifier = Modifier
+    topModifier: Modifier = Modifier
 ) {
 
     Box {
@@ -72,7 +72,8 @@ fun LoginRegisterScreen(
     }
 
 
-    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
+        Box (modifier=topModifier)
         Row(
             modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.Center

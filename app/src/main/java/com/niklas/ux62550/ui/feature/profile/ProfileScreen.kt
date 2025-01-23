@@ -59,15 +59,15 @@ fun ProfilePreview() {
     }
 }
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, modifier: Modifier = Modifier) {
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, topModifier: Modifier = Modifier) {
     val profile = viewModel.profileState.collectAsState().value
-    ProfileContent(modifier = modifier, profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
+    ProfileContent(topModifier = topModifier, profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister)
 }
 @Composable
 fun ProfileContent(
     onNavigateToLoginRegister: (String) -> Unit,
     profile: Profile,
-    modifier: Modifier = Modifier,
+    topModifier: Modifier = Modifier,
 ) {
     var nameValueTemp = remember { mutableStateOf(profile.name) }
     var emailValueTemp = remember { mutableStateOf(profile.Email) }
@@ -83,10 +83,10 @@ fun ProfileContent(
     )
 
     Column(
-        modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(modifier = Modifier.size(0.dp, 70.dp))
+        Box(modifier = topModifier.size(0.dp, 70.dp))
 
         // Profile name and picture
         Row(
