@@ -1,5 +1,6 @@
 package com.niklas.ux62550.di
 
+import com.niklas.ux62550.BuildConfig
 import com.niklas.ux62550.data.remote.RemoteFirebase
 import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import com.niklas.ux62550.domain.CastDetailsRepository
@@ -48,7 +49,7 @@ object DataModule {
 
     private val okHttpClient = OkHttpClient.Builder()
         .cache(cache)
-        .addInterceptor(ApiKeyInterceptor("cf1263628c618a27a88c8cec3f0b1d1f")) // Add the interceptor
+        .addInterceptor(ApiKeyInterceptor(BuildConfig.API_KEY)) // Add the interceptor
         .addInterceptor(loggingInterceptor)
         .addInterceptor(CacheInterceptor)
         .build()
