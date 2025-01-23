@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,9 +11,18 @@ plugins {
 
 }
 
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+// Retrieve the API key
+val apiKey: String = localProperties.getProperty("API_KEY") ?: ""
+
 android {
     namespace = "com.niklas.ux62550"
     compileSdk = 35
+    buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "com.dtu.ux62550"
@@ -33,6 +44,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
+        }
+        debug {
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
         }
     }
     compileOptions {
@@ -50,6 +65,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 dependencies {
@@ -79,6 +95,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebaseui.firebase.ui.auth)
+    implementation(libs.secrets.gradle.plugin)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
