@@ -52,7 +52,7 @@ object RemoteFirebase {
         }
     }
 
-    //Help from chat
+    //Help from chatGPT
     suspend fun getReview(movieId: Int): Map<String, Double> {
         var totalMainRating = 0.0
         var totalActorRating = 0.0
