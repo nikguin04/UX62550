@@ -34,6 +34,9 @@ fun SimilarMedia(
             is SimilarMovieState.Empty -> {
                 Text("NO PIC")
             }
+            is SimilarMovieState.Error -> {
+                Text("Network error")
+            }
             is SimilarMovieState.Data -> {
                 HorizontalLazyRowMovies(
                     width = Dp(255f),
@@ -44,9 +47,6 @@ fun SimilarMedia(
                     onNavigateToMedia = onNavigateToOtherMedia,
                     fetchEnBackdrop = true
                 )
-            }
-            is SimilarMovieState.Error -> {
-                Text("Network error")
             }
         }
     }

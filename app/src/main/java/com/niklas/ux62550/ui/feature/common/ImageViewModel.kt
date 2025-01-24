@@ -56,6 +56,6 @@ class ImageViewModelFactory(private val media: MediaObject) : ViewModelProvider.
 
 sealed class ImagesDataUIState {
     data object Empty : ImagesDataUIState()
-    data class Data(val media: ImagesDataObject) : ImagesDataUIState()
     data object Error : ImagesDataUIState()
+    data class Data(val media: ImagesDataObject) : ImagesDataUIState()
 }

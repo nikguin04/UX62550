@@ -137,24 +137,24 @@ class MovieViewModel : ViewModel() {
 
 sealed class MovieState {
     data object Empty : MovieState()
-    data class Data(val mediaDetailObject: MovieDetailObject) : MovieState()
     data object Error : MovieState()
+    data class Data(val mediaDetailObject: MovieDetailObject) : MovieState()
 }
 
 sealed class SimilarMovieState {
     data object Empty : SimilarMovieState()
-    data class Data(val similarMoviesObject: List<MediaObject>) : SimilarMovieState()
     data object Error : SimilarMovieState()
+    data class Data(val similarMoviesObject: List<MediaObject>) : SimilarMovieState()
 }
 
 sealed class ProviderState {
     data object Empty : ProviderState()
-    data class Data(val providerDataObject: Map<String, Result>) : ProviderState()
     data object Error : ProviderState()
+    data class Data(val providerDataObject: Map<String, Result>) : ProviderState()
 }
 
 sealed class TrailerState {
     data object Empty : TrailerState()
-    data class Data(val trailerObject: TrailerObject) : TrailerState()
     data object Error : TrailerState()
+    data class Data(val trailerObject: TrailerObject) : TrailerState()
 }

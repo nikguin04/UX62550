@@ -124,6 +124,9 @@ fun SearchContent(
                     }
                 }
             }
+            is MovieItemsUIState.Error -> {
+                item { Text("Network error") }
+            }
             is MovieItemsUIState.Data -> {
                 val movieList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.media_type == "movie" }
                 val actorList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.media_type == "person" }
@@ -176,9 +179,6 @@ fun SearchContent(
                     }
                     NonMovieBoxRow(person = movieBoxItem)
                 }
-            }
-            is MovieItemsUIState.Error -> {
-                item { Text("Network error") }
             }
         }
     }

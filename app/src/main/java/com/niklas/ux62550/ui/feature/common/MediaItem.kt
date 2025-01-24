@@ -170,6 +170,9 @@ fun MediaItemBackdropIntercept(
                     modifier = modifier.clip(RoundedCornerShape(6.dp))
                 )
             }
+            is ImagesDataUIState.Error -> {
+                Text("Network error")
+            }
             is ImagesDataUIState.Data -> {
                 val enBackdrop = imagesDataUIState.media.getFirstEnBackdrop()
                 enBackdrop?.let {
@@ -188,9 +191,6 @@ fun MediaItemBackdropIntercept(
                         modifier = modifier.clip(RoundedCornerShape(6.dp))
                     )
                 }
-            }
-            is ImagesDataUIState.Error -> {
-                Text("Network error")
             }
         }
     } else {

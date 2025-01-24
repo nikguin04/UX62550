@@ -43,6 +43,6 @@ class CreditViewModel : ViewModel() {
 
 sealed class CreditState {
     data object Empty : CreditState()
-    data class Data(val creditObject: CreditObject) : CreditState()
     data object Error : CreditState()
+    data class Data(val creditObject: CreditObject) : CreditState()
 }

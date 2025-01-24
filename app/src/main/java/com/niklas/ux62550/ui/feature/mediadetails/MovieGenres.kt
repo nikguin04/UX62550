@@ -74,6 +74,9 @@ fun Genres(genres: MovieState.Data, providerState: ProviderState, modifier: Modi
             is ProviderState.Empty -> {
                 Text("NO PIC")
             }
+            is ProviderState.Error -> {
+                Text("Network error")
+            }
             is ProviderState.Data -> {
                 providerState.providerDataObject["DK"]?.run {
                     val providers = (flatrate + rent + buy).map { it.logoPath }
@@ -88,9 +91,6 @@ fun Genres(genres: MovieState.Data, providerState: ProviderState, modifier: Modi
                         )
                     }
                 }
-            }
-            is ProviderState.Error -> {
-                Text("Network error")
             }
         }
         Spacer(Modifier.width(4.dp))

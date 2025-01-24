@@ -69,6 +69,6 @@ class DiscoverViewModelFactory(private val genreObject: GenreObject) : ViewModel
 
 sealed class DiscoverItemsUIState {
     data object Empty : DiscoverItemsUIState()
-    data class Data(val mediaObjects: List<MediaObject>) : DiscoverItemsUIState()
     data object Error : DiscoverItemsUIState()
+    data class Data(val mediaObjects: List<MediaObject>) : DiscoverItemsUIState()
 }

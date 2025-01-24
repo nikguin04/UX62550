@@ -54,10 +54,10 @@ import com.niklas.ux62550.ui.theme.starYellow
 fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, topModifier: Modifier = Modifier) {
     when (val profile = viewModel.profileState.collectAsState().value) {
         UserData.Empty -> {}
+        UserData.Error -> {}
         is UserData.Data -> {
             ProfileContent(profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister, topModifier = topModifier)
         }
-        UserData.Error -> {}
     }
 }
 

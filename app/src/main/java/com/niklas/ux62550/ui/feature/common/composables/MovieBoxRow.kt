@@ -112,15 +112,15 @@ fun MovieBoxRowFromId(movieId: Int, onNavigateToMedia: (MediaObject) -> Unit, mo
         is MovieState.Empty -> {
             Text("Loading")
         }
+        is MovieState.Error -> {
+            Text("Network error")
+        }
         is MovieState.Data -> {
             MovieBoxRow(
                 movie = mediaState.mediaDetailObject.toMediaObject(),
                 modifier = modifier.clickable { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject()) },
                 infoRowModifier = infoRowModifier
             )
-        }
-        is MovieState.Error -> {
-            Text("Network error")
         }
     }
 }

@@ -66,6 +66,11 @@ fun DiscoverSliderContent(discoverUiState: DiscoverItemsUIState, headerTitle: St
                 // Size placeholder
                 Spacer(Modifier.fillMaxWidth().height(h))
             }
+            is DiscoverItemsUIState.Error -> {
+                Box(Modifier.fillMaxWidth().height(h)) {
+                    Text("Error fetching data")
+                }
+            }
             is DiscoverItemsUIState.Data -> {
                 HorizontalLazyRowMovies(
                     width = w,
@@ -77,11 +82,6 @@ fun DiscoverSliderContent(discoverUiState: DiscoverItemsUIState, headerTitle: St
                     rowListState = listState,
                     fetchEnBackdrop = true
                 )
-            }
-            is DiscoverItemsUIState.Error -> {
-                Box(Modifier.fillMaxWidth().height(h)) {
-                    Text("Error fetching data")
-                }
             }
         }
     }

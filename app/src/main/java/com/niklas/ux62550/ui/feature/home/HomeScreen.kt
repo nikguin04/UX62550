@@ -39,6 +39,9 @@ fun HomeScreen(
         is MediaItemsUIState.Empty -> {
             LoadingScreen()
         }
+        is MediaItemsUIState.Error -> {
+            Text("Network error")
+        }
         is MediaItemsUIState.Data -> {
             Column(Modifier.verticalScroll(rememberScrollState())) {
                 Spacer(modifier = topModifier)
@@ -46,9 +49,6 @@ fun HomeScreen(
                 FeaturedMediaScroller(mediaItemsUIState.mediaObjects, onNavigateToMedia)
                 GenreMediaStack(movieGenresDataState, onNavigateToMedia)
             }
-        }
-        is MediaItemsUIState.Error -> {
-            Text("Network error")
         }
     }
 }
@@ -86,6 +86,9 @@ fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (M
         is GenresDataState.Empty -> {
             // TODO: We should make a loading screen for all the genres, so that they are only displayed when ALL genre fetching is done. Async image loading may be neglected from said fetching
         }
+        is GenresDataState.Error -> {
+            Text("Network error")
+        }
         is GenresDataState.Data -> {
             for (genre in movieGenresDataState.genres) {
                 DiscoverSlider(
@@ -95,9 +98,6 @@ fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (M
                 )
             }
             Spacer(Modifier.height(20.dp))
-        }
-        is GenresDataState.Error -> {
-            Text("Network error")
         }
     }
 }

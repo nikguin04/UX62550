@@ -147,6 +147,9 @@ fun Header(movieState: MovieState.Data, trailerState: TrailerState, modifier: Mo
         )
         when (trailerState) {
             is TrailerState.Empty -> {}
+            is TrailerState.Error -> {
+                Text("Network error")
+            }
             is TrailerState.Data -> {
                 var youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
                     "https://www.youtube.com/watch?v=${it.key}"
@@ -206,9 +209,6 @@ fun Header(movieState: MovieState.Data, trailerState: TrailerState, modifier: Mo
                     Spacer(Modifier.height(12.dp))
                     TitleText(movieState.mediaDetailObject.title)
                 }
-            }
-            is TrailerState.Error -> {
-                Text("Network error")
             }
         }
     }

@@ -56,6 +56,9 @@ fun WatchlistContent(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modi
             is MovieIds.Empty -> {
                 Text("No data yet")
             }
+            is MovieIds.Error -> {
+                Text("Network Error")
+            }
             is MovieIds.Data -> {
                 // Display list of movie items in LazyColumn
                 val movieIDList: List<Int> = watchListState.movies ?: emptyList()
@@ -83,9 +86,6 @@ fun WatchlistContent(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modi
                         )
                     }
                 }
-            }
-            is MovieIds.Error -> {
-                Text("Network Error")
             }
         }
     }

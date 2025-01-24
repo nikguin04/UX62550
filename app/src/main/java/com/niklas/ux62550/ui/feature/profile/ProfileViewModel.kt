@@ -37,6 +37,6 @@ class ProfileViewModel : ViewModel() {
 
 sealed class UserData {
     data object Empty : UserData()
-    data class Data(val userData: Profile) : UserData()
     data object Error : UserData()
+    data class Data(val userData: Profile) : UserData()
 }

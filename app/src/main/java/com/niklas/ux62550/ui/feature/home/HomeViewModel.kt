@@ -79,12 +79,12 @@ class HomeViewModel : ViewModel() {
 
 sealed class MediaItemsUIState {
     data object Empty : MediaItemsUIState()
-    data class Data(val mediaObjects: List<MediaObject>) : MediaItemsUIState()
     data object Error : MediaItemsUIState()
+    data class Data(val mediaObjects: List<MediaObject>) : MediaItemsUIState()
 }
 
 sealed class GenresDataState {
     data object Empty : GenresDataState()
-    data class Data(val genres: List<GenreObject>) : GenresDataState()
     data object Error : GenresDataState()
+    data class Data(val genres: List<GenreObject>) : GenresDataState()
 }
