@@ -266,6 +266,7 @@ fun TitleText(movieTitle: String) {
     )
 }
 
+// Used ChatGPT how to make stars bigger other places as a variable
 @Composable
 fun RatingStars(
     rating: Float,

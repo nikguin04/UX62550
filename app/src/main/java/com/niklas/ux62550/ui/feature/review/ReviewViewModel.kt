@@ -14,6 +14,8 @@ data class ReviewStateDataClass(
         ReviewViewModel.ReviewCategoryList.map { it to 0f }.toMap()
 )
 
+// How I stated using the firebase for Review
+// https://www.youtube.com/watch?v=KiJy5Oi4rRo
 class ReviewViewModel : ViewModel() {
     companion object {
         val ReviewCategoryList = listOf("Music", "Plot", "Acting", "Directing")

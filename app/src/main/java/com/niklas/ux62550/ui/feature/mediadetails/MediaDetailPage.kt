@@ -163,6 +163,7 @@ fun Header(movieState: MovieState.Data, trailerState: TrailerState, modifier: Mo
                         .padding(30.dp, 70.dp, 30.dp, 8.dp)
                         .fillMaxWidth()
                 ) {
+                    // Help from ChatGPT
                     val playModifier =
                         if (youtubeUrl == null) {
                             Modifier
@@ -312,6 +313,7 @@ fun DescriptionText(description: String) {
 fun BookmarkButton(media: MediaObject, movieViewModel: MovieViewModel, watchlistState: MovieIds) {
     var isBookmarked by remember { mutableStateOf(false) }
 
+    // Help from ChatGPT
     if (watchlistState is MovieIds.Data) {
         isBookmarked = watchlistState.movies?.contains(media.id) ?: false
     }

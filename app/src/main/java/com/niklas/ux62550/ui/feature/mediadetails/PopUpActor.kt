@@ -42,9 +42,13 @@ import com.niklas.ux62550.ui.feature.common.DrawCircle
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 
+// Used this website for BottomSheets
+// https://www.geeksforgeeks.org/android-bottomsheet-example-in-kotlin/
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun ActorsAndDirectors(creditState: CreditState.Data, modifier: Modifier = Modifier) {
+    // ChatGPT has been used in the following to figure out how to
+    // get the screen width and adjust the amount of actors shown
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val actorItemWidth = 60.dp + 12.dp
     val maxActors = ((screenWidth - 80.dp) / actorItemWidth).toInt()
