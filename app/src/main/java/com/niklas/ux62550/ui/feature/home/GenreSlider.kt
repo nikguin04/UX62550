@@ -3,6 +3,7 @@ package com.niklas.ux62550.ui.feature.home
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -63,7 +64,7 @@ fun DiscoverSliderContent(discoverUiState: DiscoverItemsUIState, headerTitle: St
         when (discoverUiState) {
             is DiscoverItemsUIState.Empty -> {
                 // Size placeholder
-                Box(Modifier.fillMaxWidth().height(h))
+                Spacer(Modifier.fillMaxWidth().height(h))
             }
             is DiscoverItemsUIState.Data -> {
                 HorizontalLazyRowMovies(

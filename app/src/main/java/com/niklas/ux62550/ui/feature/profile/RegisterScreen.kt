@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -58,10 +61,8 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
     Box(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box(
             modifier = Modifier
-                .size(
-                    LocalConfiguration.current.screenWidthDp.dp,
-                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                )
+                .fillMaxWidth()
+                .aspectRatio(3f / 2f)
                 .background(Brush.verticalGradient(colorStops = RedColorGradient))
         )
 
@@ -69,7 +70,7 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(modifier = topModifier)
+            Spacer(modifier = topModifier)
             Row(
                 modifier = Modifier
                     .padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp)
@@ -96,11 +97,9 @@ fun RegisterInputHolder(
     onNavigateToProfile: (String) -> Unit,
     snackbarShow: (String) -> Unit
 ) {
-    Column {
+    Column(Modifier.padding(horizontal = 10.dp)) {
         TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp, 0.dp),
+            modifier = Modifier.fillMaxWidth(),
             value = usernameValue.value,
             onValueChange = { usernameValue.value = it },
             label = { Text("Username") }
@@ -109,17 +108,15 @@ fun RegisterInputHolder(
             text = "Please choose an appropriate username",
             color = TextFieldDescColor,
             modifier = Modifier
-                .padding(10.dp, 4.dp)
+                .padding(vertical = 4.dp)
                 .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
 
-        Box(Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp))
+        Spacer(Modifier.height(20.dp))
 
         TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp, 0.dp),
+            modifier = Modifier.fillMaxWidth(),
             value = emailValue.value,
             onValueChange = { emailValue.value = it },
             label = { Text("Default@gmail.com") }
@@ -128,17 +125,15 @@ fun RegisterInputHolder(
             text = "Please choose your own email",
             color = TextFieldDescColor,
             modifier = Modifier
-                .padding(10.dp, 4.dp)
+                .padding(vertical = 4.dp)
                 .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
 
-        Box(Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp))
+        Spacer(Modifier.height(20.dp))
 
         TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp, 0.dp),
+            modifier = Modifier.fillMaxWidth(),
             value = passValue.value,
             onValueChange = { passValue.value = it },
             label = { Text("Password") }
@@ -147,7 +142,7 @@ fun RegisterInputHolder(
             text = "Please choose a safe password",
             color = TextFieldDescColor,
             modifier = Modifier
-                .padding(10.dp, 4.dp)
+                .padding(vertical = 4.dp)
                 .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
@@ -168,7 +163,6 @@ fun RegisterInputHolder(
             ),
             modifier = Modifier
                 .size(145.dp, 45.dp)
-                .padding(10.dp, 0.dp)
                 .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
                 .align(Alignment.End)
         ) {

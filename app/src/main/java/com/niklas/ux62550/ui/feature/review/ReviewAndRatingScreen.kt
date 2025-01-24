@@ -133,7 +133,7 @@ fun Header(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(0.dp, 40.dp, 0.dp, 0.dp),
+                    .padding(top = 40.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
 
@@ -152,7 +152,7 @@ fun Header(
                         fontWeight = FontWeight.Bold
                     ),
                     color = Color.White,
-                    modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
+                    modifier = Modifier.padding(start = 4.dp)
                 )
             }
         }
@@ -201,10 +201,7 @@ fun PublishReview(
                 Text(
                     text = "Publish",
                     style = TextStyle(
-                        shadow = Shadow(
-                            color = Color.Black,
-                            blurRadius = 10f
-                        )
+                        shadow = Shadow(blurRadius = 10f)
                     ),
                     color = Color.White
                 )
@@ -253,15 +250,13 @@ fun ReviewText() {
         style = TextStyle(
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
-            shadow = Shadow(
-                color = Color.Black, blurRadius = 2f
-            ),
+            shadow = Shadow(blurRadius = 2f),
             textAlign = TextAlign.Center,
             color = ReviewColor
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 120.dp, 0.dp, 0.dp)
+            .padding(top = 120.dp)
     )
 }
 
@@ -272,15 +267,12 @@ fun TitleText(movieTitle: String) {
         style = TextStyle(
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold,
-            shadow = Shadow(
-                color = Color.Black,
-                blurRadius = 10f
-            ),
+            shadow = Shadow(blurRadius = 10f),
             textAlign = TextAlign.Center
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 5.dp, 0.dp, 0.dp)
+            .padding(top = 5.dp)
     )
 }
 

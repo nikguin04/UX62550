@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -59,22 +62,18 @@ fun LoginRegisterScreen(
     onNavigateToRegisterScreen: (String) -> Unit,
     topModifier: Modifier = Modifier
 ) {
-    Box {
-        Box(
-            modifier = Modifier
-                .size(
-                    LocalConfiguration.current.screenWidthDp.dp,
-                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                )
-                .background(Brush.verticalGradient(colorStops = RedColorGradient))
-        )
-    }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(3f / 2f)
+            .background(Brush.verticalGradient(colorStops = RedColorGradient))
+    )
 
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(modifier = topModifier)
+        Spacer(modifier = topModifier)
         Row(
             modifier = Modifier
                 .padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp)
@@ -85,7 +84,7 @@ fun LoginRegisterScreen(
         }
         Text(
             text = "Not a member yet?",
-            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 12.dp),
+            modifier = Modifier.padding(bottom = 12.dp),
             style = TextStyle(fontSize = 20.sp, shadow = textShadow)
         )
         Button(
@@ -100,11 +99,11 @@ fun LoginRegisterScreen(
             Text(text = "Register", color = Color.White, style = TextStyle(fontSize = 20.sp, shadow = textShadow))
         }
 
-        Box(Modifier.size(0.dp, 50.dp))
+        Spacer(Modifier.height(50.dp))
 
         Text(
             text = "Already a member?",
-            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 12.dp),
+            modifier = Modifier.padding(bottom = 12.dp),
             style = TextStyle(fontSize = 20.sp, shadow = textShadow)
         )
         Button(
@@ -119,6 +118,6 @@ fun LoginRegisterScreen(
             Text(text = "Sign in", color = Color.White, style = TextStyle(fontSize = 20.sp, shadow = textShadow))
         }
 
-        Box(Modifier.size(0.dp, 140.dp))
+        Spacer(Modifier.height(140.dp))
     }
 }

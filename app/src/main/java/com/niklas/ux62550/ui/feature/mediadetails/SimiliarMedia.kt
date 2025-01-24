@@ -25,7 +25,7 @@ fun SimilarMedia(
         style = TextStyle(
             fontSize = 18.sp,
             color = Color.White,
-            shadow = Shadow(color = Color.Black, blurRadius = 5f)
+            shadow = Shadow(blurRadius = 5f)
         ),
         modifier = modifier.padding(start = 20.dp)
     )

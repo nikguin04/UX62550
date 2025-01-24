@@ -41,9 +41,7 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                     .padding(8.dp, 4.dp)
                     .shadow(
                         elevation = 15.dp,
-                        shape = RoundedCornerShape(40.dp),
-                        ambientColor = Color.Black, // Slightly less opaque for a softer effect
-                        spotColor = Color.Black
+                        shape = RoundedCornerShape(40.dp)
                     )
             ) {
                 Text(
@@ -60,7 +58,11 @@ fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState
                     color = Color.LightGray,
                     modifier = Modifier
                         .size(10.dp)
-                        .shadow(10.dp, RoundedCornerShape(40.dp), false, Color.Black)
+                        .shadow(
+                            elevation = 10.dp,
+                            shape = RoundedCornerShape(40.dp),
+                            clip = false
+                        )
                 )
                 Spacer(Modifier.width(4.dp))
             }

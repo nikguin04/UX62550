@@ -11,8 +11,11 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ImageNotSupported
@@ -62,47 +65,50 @@ const val CrossfadeDuration = 200
 @Composable
 @Preview
 fun NoMediaPreview() {
-    val w = 350.dp
-    val h = w/16*9
-
     val mediaItem = SearchDataExamples.MediaObjectExample.copy(backdrop_path = null)
     val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + mediaItem.id)
     imageViewModel.initPreview_NoFetch()
 
+    val width = 350.dp
+
     Column {
         MediaItemBackdropIntercept(
             modifier = Modifier
-                .size(w, h)
+                .width(width)
+                .aspectRatio(16f / 9f)
                 .clip(RoundedCornerShape(6.dp)),
             mediaItem = mediaItem,
             backdropFallback = true,
             fetchEnBackdrop = true,
             imageViewModel = imageViewModel
         )
-        Box(Modifier.size(10.dp))
+        Spacer(Modifier.height(10.dp))
         MediaItemBackdropIntercept(
             modifier = Modifier
-                .size(w, h)
+                .width(width)
+                .aspectRatio(16f / 9f)
                 .clip(RoundedCornerShape(6.dp)),
             mediaItem = mediaItem.copy(title = "Ridiculously long movie title here: and it just continues"),
             backdropFallback = true,
             fetchEnBackdrop = true,
             imageViewModel = imageViewModel
         )
-        Box(Modifier.size(10.dp))
+        Spacer(Modifier.height(10.dp))
         MediaItemBackdropIntercept(
             modifier = Modifier
-                .size(w, h)
+                .width(width)
+                .aspectRatio(16f / 9f)
                 .clip(RoundedCornerShape(6.dp)),
             mediaItem = mediaItem.copy(title = "Ridiculously long movie title here: and it just continues, but this might simply just be too long because some directors choose long titles, lets see if it wraps properly"),
             backdropFallback = true,
             fetchEnBackdrop = true,
             imageViewModel = imageViewModel
         )
-        Box(Modifier.size(10.dp))
+        Spacer(Modifier.height(10.dp))
         MediaItemBackdropIntercept(
             modifier = Modifier
-                .size(w, h)
+                .width(width)
+                .aspectRatio(16f / 9f)
                 .clip(RoundedCornerShape(6.dp)),
             mediaItem = mediaItem,
             backdropFallback = false,
@@ -115,28 +121,29 @@ fun NoMediaPreview() {
 @Composable
 @Preview
 fun MediaPreview() {
-    val w = 350.dp
-    val h = w/16*9
     val mediaItem = SearchDataExamples.MediaObjectExample
+    val width = 350.dp
 
     Column {
         val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + "1")
         imageViewModel.initPreview_NoFetch()
         MediaItemBackdropIntercept(
             modifier = Modifier
-                .size(w, h)
+                .width(width)
+                .aspectRatio(16f / 9f)
                 .clip(RoundedCornerShape(6.dp)),
             mediaItem = mediaItem.copy(title = "Ridiculously long movie title here: Goes over regular backdrop"),
             backdropFallback = true,
             fetchEnBackdrop = true,
             imageViewModel = imageViewModel
         )
-        Box(Modifier.size(10.dp))
+        Spacer(Modifier.height(10.dp))
         val imageViewModelData: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + "2")
         imageViewModelData.initPreview()
         MediaItemBackdropIntercept(
             modifier = Modifier
-                .size(w, h)
+                .width(width)
+                .aspectRatio(16f / 9f)
                 .clip(RoundedCornerShape(6.dp)),
             mediaItem = mediaItem.copy(title = "Howls moving castle :)"),
             backdropFallback = true,
@@ -177,14 +184,10 @@ fun MediaItemBackdropIntercept(
                         animationProgress = animationProgress,
                         modifier = modifier
                     )
-                } ?: // ELSE
-                Box(modifier = modifier) // Red color is to indicate that the media has no english backdrop, this box is TEMPORARY! and for later debugging purposes when making title over media with no english backdrop
-                {
+                } ?: run {
                     MediaItemBackdropFallback(
                         media = mediaItem,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(6.dp)),
+                        modifier = modifier.clip(RoundedCornerShape(6.dp)),
                         size = ImageSize.BACKDROP,
                         backdropFallback = backdropFallback,
                         animationProgress = animationProgress

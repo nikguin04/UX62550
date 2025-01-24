@@ -5,10 +5,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -32,7 +36,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,10 +82,8 @@ fun ProfileContent(
 
     Box(
         modifier = Modifier
-            .size(
-                LocalConfiguration.current.screenWidthDp.dp,
-                LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-            )
+            .fillMaxWidth()
+            .aspectRatio(3f / 2f)
             .background(Brush.verticalGradient(colorStops = RedColorGradient))
     )
 
@@ -92,7 +93,7 @@ fun ProfileContent(
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(topModifier.size(0.dp, 70.dp))
+        Spacer(topModifier.height(70.dp))
 
         // Profile name and picture
         Row(
@@ -120,34 +121,34 @@ fun ProfileContent(
                     style = TextStyle(fontSize = 12.sp, shadow = textShadow),
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .padding(0.dp, 4.dp, 0.dp, 0.dp)
+                        .padding(top = 4.dp)
                 )
             }
         }
 
         // Your top rated movies??
-        Box(Modifier.size(0.dp, 30.dp))
+        Spacer(Modifier.height(30.dp))
         Text(
             text = "Your Top Rated Movies",
             style = TextStyle(fontSize = 20.sp, shadow = textShadow),
             modifier = Modifier
-                .padding(18.dp, 0.dp, 0.dp, 0.dp)
+                .padding(start = 18.dp)
                 .align(Alignment.Start)
         )
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(0.dp, 12.dp, 0.dp, 0.dp),
+                .padding(top = 12.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "Red: The Movie",
                 style = TextStyle(fontSize = 12.sp, shadow = textShadow),
-                modifier = Modifier.padding(18.dp, 0.dp, 0.dp, 0.dp)
+                modifier = Modifier.padding(start = 18.dp)
             )
-            Box(Modifier.size(13.dp, 0.dp))
+            Spacer(Modifier.width(13.dp))
             repeat (5) {
                 Icon(
                     modifier = Modifier.size(18.dp),
@@ -163,19 +164,19 @@ fun ProfileContent(
                     shadow = textShadow,
                     fontWeight = FontWeight.Bold
                 ),
-                modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
+                modifier = Modifier.padding(start = 4.dp)
             )
         }
 
         // Profile data
-        Box(Modifier.size(0.dp, 30.dp))
+        Spacer(Modifier.height(30.dp))
         ProfileAttribute("Display Name", nameValueTemp)
-        Box(Modifier.size(0.dp, 17.dp))
+        Spacer(Modifier.height(17.dp))
         ProfileAttribute("Email", emailValueTemp)
-        Box(Modifier.size(0.dp, 110.dp))
+        Spacer(Modifier.height(110.dp))
         ProfileAttribute("Password", passwordValueTemp)
 
-        Box(Modifier.size(0.dp, 20.dp))
+        Spacer(Modifier.height(20.dp))
 
         Button(
             onClick = { FirebaseAuthController().logout(); onNavigateToLoginRegister("Sign out") },
@@ -207,9 +208,7 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
                     .padding(6.dp)
                     .shadow(
                         elevation = 15.dp,
-                        shape = RoundedCornerShape(8.dp),
-                        ambientColor = Color.Black.copy(alpha = 255f),
-                        spotColor = Color.Black.copy(alpha = 255f)
+                        shape = RoundedCornerShape(8.dp)
                     )
             ) {
                 Text(
@@ -218,7 +217,7 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
-                        shadow = Shadow(color = Color.Black, blurRadius = 5f)
+                        shadow = Shadow(blurRadius = 5f)
                     ),
                     modifier = Modifier.padding(start = 10.dp)
                 )
@@ -227,7 +226,7 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
                     style = TextStyle(
                         fontSize = 18.sp,
                         color = Color.White,
-                        shadow = Shadow(color = Color.Black, blurRadius = 5f)
+                        shadow = Shadow(blurRadius = 5f)
                     ),
                     modifier = Modifier
                         .padding(start = 10.dp, top = 10.dp)

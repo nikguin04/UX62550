@@ -1,7 +1,6 @@
 package com.niklas.ux62550.ui.feature.home
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -63,7 +62,7 @@ fun HomeScreen(
         }
         is MediaItemsUIState.Data -> {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-                Box(modifier = topModifier)
+                Spacer(modifier = topModifier)
                 HomeWelcomeTopBar()
                 FeaturedMediaScroller(mediaItemsUIState.mediaObjects, onNavigateToMedia)
                 GenreMediaStack(movieGenresDataState, onNavigateToMedia)

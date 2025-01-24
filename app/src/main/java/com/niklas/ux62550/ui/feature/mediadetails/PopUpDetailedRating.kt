@@ -65,22 +65,19 @@ fun DetailedRating(
             style = TextStyle(
                 fontSize = 20.sp,
                 color = Color.White,
-                shadow = Shadow(color = Color.Black, blurRadius = 5f)
+                shadow = Shadow(blurRadius = 5f)
             ),
             textAlign = TextAlign.Center
         )
         OverallRating(modifier, movieReviewID["MainRating"] ?: 0.0)
         ReviewButton(movieID, onNavigateToReview)
-        Row(
-            modifier = modifier.padding(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 "Detailed Rating",
                 style = TextStyle(
                     fontSize = 18.sp,
                     color = Color.White,
-                    shadow = Shadow(color = Color.Black, blurRadius = 5f)
+                    shadow = Shadow(blurRadius = 5f)
                 )
             )
             val sheetState = rememberModalBottomSheetState()
@@ -130,10 +127,7 @@ fun OverallRating(modifier: Modifier, rating: Double) {
                 imageVector = starIcon,
                 modifier = Modifier
                     .requiredSize(18.dp)
-                    .shadow(
-                        elevation = 15.dp,
-                        ambientColor = Color.Black, // Slightly less opaque for a softer effect
-                    ),
+                    .shadow(elevation = 15.dp),
                 colorFilter = ColorFilter.tint(Color.Yellow),
                 contentDescription = "Rating star"
             )
@@ -207,10 +201,7 @@ fun ReviewButton(movieState: MovieState.Data, onNavigateToReview: (MovieDetailOb
             "Give Rating",
             color = Color.White,
             style = TextStyle(
-                shadow = Shadow(
-                    color = Color.Black,
-                    blurRadius = 10f
-                )
+                shadow = Shadow(blurRadius = 10f)
             )
         )
     }

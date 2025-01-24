@@ -144,24 +144,23 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
     val context = LocalContext.current
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
-        Box(modifier = Modifier.alpha(0.5f)) {
-            MediaItem(
-                uri = movieState.mediaDetailObject.backDropPath,
-                size = ImageSize.BACKDROP,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
-                    .drawWithContent {
-                        drawContent() // Draw the actual image
-                        drawRect( // Draw the fade
-                            brush = Brush.verticalGradient(
-                                listOf(Color.Black, Color.Transparent)
-                            ),
-                            blendMode = BlendMode.DstIn
-                        )
-                    }
-            )
-        }
+        MediaItem(
+            uri = movieState.mediaDetailObject.backDropPath,
+            size = ImageSize.BACKDROP,
+            modifier = Modifier
+                .alpha(0.5f)
+                .fillMaxWidth()
+                .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
+                .drawWithContent {
+                    drawContent() // Draw the actual image
+                    drawRect( // Draw the fade
+                        brush = Brush.verticalGradient(
+                            listOf(Color.Black, Color.Transparent)
+                        ),
+                        blendMode = BlendMode.DstIn
+                    )
+                }
+        )
         when (trailerState) {
             is TrailerState.Empty -> {}
             is TrailerState.Data -> {
@@ -253,10 +252,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data) {
                     imageVector = starIcon,
                     modifier = Modifier
                         .requiredSize(18.dp)
-                        .shadow(
-                            elevation = 15.dp,
-                            ambientColor = Color.Black, // Slightly less opaque for a softer effect
-                        ),
+                        .shadow(elevation = 15.dp),
                     colorFilter = ColorFilter.tint(Color.Yellow),
                     contentDescription = "Rating star"
                 )
@@ -274,7 +270,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data) {
             style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,
-                shadow = Shadow(color = Color.Black, blurRadius = 5f)
+                shadow = Shadow(blurRadius = 5f)
             )
         )
         Text(
@@ -282,7 +278,7 @@ fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data) {
             style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,
-                shadow = Shadow(color = Color.Black, blurRadius = 5f)
+                shadow = Shadow(blurRadius = 5f)
             )
         )
     }
@@ -296,9 +292,7 @@ fun TitleText(title: String) {
         style = TextStyle(
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
-            shadow = Shadow(
-                color = Color.Black, blurRadius = 10f
-            ),
+            shadow = Shadow(blurRadius = 10f),
             textAlign = TextAlign.Center
         )
     )
@@ -321,7 +315,7 @@ fun DescriptionText(description: String) {
                 fontSize = 18.sp,
                 textAlign = TextAlign.Justify,
                 color = Color.White,
-                shadow = Shadow(color = Color.Black, blurRadius = 7.5f)
+                shadow = Shadow(blurRadius = 7.5f)
             ),
             modifier = Modifier
                 .fillMaxWidth()

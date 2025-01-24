@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,7 +40,10 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifi
         MediaItem(
             uri = movie.backdrop_path,
             size = ImageSize.BACKDROP,
-            modifier = Modifier.width(110.dp).height(110.dp/16*9).clip(RoundedCornerShape(6.dp))
+            modifier = Modifier
+                .width(110.dp)
+                .aspectRatio(16f / 9f)
+                .clip(RoundedCornerShape(6.dp))
         )
         Column(
             modifier = infoRowModifier
@@ -112,8 +115,7 @@ fun MovieBoxRowFromId(modifier: Modifier = Modifier, movieId: Int, onNavigateToM
         is MovieState.Data -> {
             MovieBoxRow(
                 movie = mediaState.mediaDetailObject.toMediaObject(),
-                modifier = modifier.clickable(
-                onClick = { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject()) }),
+                modifier = modifier.clickable { onNavigateToMedia(mediaState.mediaDetailObject.toMediaObject()) },
                 infoRowModifier = infoRowModifier
             )
         }

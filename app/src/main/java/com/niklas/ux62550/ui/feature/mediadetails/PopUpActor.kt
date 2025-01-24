@@ -59,19 +59,18 @@ fun PreviewActorsAndDirectors() {
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.Data) {
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val actorItemWidth = 60.dp + 12.dp
     val maxActors = ((screenWidth - 80.dp) / actorItemWidth).toInt()
 
-    Column(Modifier.padding(20.dp, 0.dp, 20.dp, 0.dp)) {
+    Column(Modifier.padding(horizontal = 20.dp)) {
         Text(
             "Actors and Directors",
-            Modifier.padding(0.dp, 15.dp, 0.dp, 0.dp),
+            Modifier.padding(top = 15.dp),
             style = TextStyle(
                 fontSize = 20.sp,
                 color = Color.White,
-                shadow = Shadow(color = Color.Black, blurRadius = 5f)
+                shadow = Shadow(blurRadius = 5f)
             )
         )
         val sheetState = rememberModalBottomSheetState()
@@ -79,8 +78,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(0.dp, 10.dp, 0.dp, 0.dp)
-                .size(width = 60.dp, height = 90.dp)
+                .padding(top = 10.dp)
                 .clickable { showBottomSheet = true },
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -96,25 +94,25 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
             }
 
             repeat(3) { i ->
-                Spacer(Modifier.width(4.dp))
+                if (i > 0) { Spacer(Modifier.width(4.dp)) }
                 DrawCircle(Modifier.size(10.dp), Color.LightGray)
-                if (showBottomSheet) {
-                    ModalBottomSheet(
-                        onDismissRequest = { showBottomSheet = false },
-                        sheetState = sheetState
-                    ) {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentPadding = PaddingValues(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            items(creditState.creditObject.cast) { cast ->
-                                CastRow(modifier, cast)
-                            }
-                            items(creditState.creditObject.crew) { crew ->
-                                CrewRow(modifier, crew)
-                            }
-                        }
+            }
+        }
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = { showBottomSheet = false },
+                sheetState = sheetState
+            ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(creditState.creditObject.cast) { cast ->
+                        CastRow(modifier, cast)
+                    }
+                    items(creditState.creditObject.crew) { crew ->
+                        CrewRow(modifier, crew)
                     }
                 }
             }

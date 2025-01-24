@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -73,11 +74,11 @@ fun SearchContent(
     var text by rememberSaveable { mutableStateOf("") }
     var expanded by rememberSaveable { mutableStateOf(false) }
     LazyColumn {
-        item { Box(modifier = topModifier) }
+        item { Spacer(modifier = topModifier) }
         item {
             Row(
                 modifier = Modifier
-                    .padding(20.dp, 20.dp, 20.dp, 20.dp)
+                    .padding(20.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -114,7 +115,7 @@ fun SearchContent(
                     onExpandedChange = { expanded = it },
                     content = {},
                     modifier = Modifier
-                        .padding(0.dp, 0.dp, 0.dp, 20.dp)
+                        .padding(bottom = 20.dp)
                         .widthIn(max = 360.dp)
                 )
             }
@@ -160,9 +161,9 @@ fun SearchContent(
                     }
                     MovieBoxRow(
                         movie = movieBoxItem,
-                        modifier = Modifier.clickable(
-                            onClick = { onNavigateToMedia(movieBoxItem) }
-                        ).padding(16.dp),
+                        modifier = Modifier
+                            .clickable { onNavigateToMedia(movieBoxItem) }
+                            .padding(16.dp),
                         infoRowModifier = Modifier.padding(start = 16.dp)
                     )
                 }
