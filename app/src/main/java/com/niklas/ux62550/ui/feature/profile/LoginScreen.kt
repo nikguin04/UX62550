@@ -90,10 +90,12 @@ fun LoginInputHolder(
             modifier = Modifier.fillMaxWidth(),
             value = emailValue.value,
             onValueChange = { emailValue.value = it },
-            label = { Text("Username or Email") }
+            singleLine = true,
+            label = { Text("Email") },
+            placeholder = { Text("johndoe@example.com") }
         )
         Text(
-            text = "Input your username or email",
+            text = "Input your email address",
             color = TextFieldDescColor,
             modifier = Modifier
                 .padding(vertical = 4.dp)
@@ -107,6 +109,7 @@ fun LoginInputHolder(
             modifier = Modifier.fillMaxWidth(),
             value = passValue.value,
             onValueChange = { passValue.value = it },
+            singleLine = true,
             label = { Text("Password") }
         )
         Text(

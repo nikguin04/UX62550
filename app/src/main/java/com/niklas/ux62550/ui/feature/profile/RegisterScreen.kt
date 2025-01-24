@@ -92,7 +92,9 @@ fun RegisterInputHolder(
             modifier = Modifier.fillMaxWidth(),
             value = usernameValue.value,
             onValueChange = { usernameValue.value = it },
-            label = { Text("Username") }
+            singleLine = true,
+            label = { Text("Username") },
+            placeholder = { Text("JohnDoe42") }
         )
         Text(
             text = "Please choose an appropriate username",
@@ -109,7 +111,9 @@ fun RegisterInputHolder(
             modifier = Modifier.fillMaxWidth(),
             value = emailValue.value,
             onValueChange = { emailValue.value = it },
-            label = { Text("Default@gmail.com") }
+            singleLine = true,
+            label = { Text("Email") },
+            placeholder = { Text("johndoe@example.com") }
         )
         Text(
             text = "Please choose your own email",
@@ -126,6 +130,7 @@ fun RegisterInputHolder(
             modifier = Modifier.fillMaxWidth(),
             value = passValue.value,
             onValueChange = { passValue.value = it },
+            singleLine = true,
             label = { Text("Password") }
         )
         Text(
