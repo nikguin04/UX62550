@@ -297,6 +297,8 @@ fun TitleText(movieTitle: String) {
             .padding(0.dp, 5.dp, 0.dp, 0.dp)
     )
 }
+
+//Used chat how to make stars bigger other places as a variable.
 @Composable
 fun RatingStars(
     rating: Float,
