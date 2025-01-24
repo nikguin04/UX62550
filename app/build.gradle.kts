@@ -16,7 +16,7 @@ val localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
     localProperties.load(localPropertiesFile.inputStream())
 }
-// Retrieve the API key
+// Retrieve the API key - taken from https://stackoverflow.com/questions/68340503/how-to-store-maps-api-key-in-local-properties-and-use-it-in-androidmanifest-xml
 val apiKey: String = localProperties.getProperty("API_KEY") ?: ""
 
 android {

@@ -134,6 +134,7 @@ fun Header(movieState: MovieState.Data, trailerState: TrailerState, modifier: Mo
             modifier = Modifier
                 .alpha(0.5f)
                 .fillMaxWidth()
+                // Gradient code partially taken from: https://stackoverflow.com/questions/70108770/how-to-apply-translucent-gradient-on-an-image-in-android-jetpack-compose
                 .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
                 .drawWithContent {
                     drawContent() // Draw the actual image
