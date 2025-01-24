@@ -66,6 +66,8 @@ fun PreviewActorsAndDirectors() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.Data) {
+//    ChatGPT has been used in the following to figure out how to get the screenwidth and adjust
+//    The amount of actors shown
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val actorItemWidth = 60.dp + 12.dp
