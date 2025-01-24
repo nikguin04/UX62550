@@ -73,10 +73,10 @@ fun ReviewAndRatingPreview() {
 
 @Composable
 fun ScreenReviewAndRating(
-    topModifier: Modifier = Modifier,
     media: MovieDetailObject,
     navBack: () -> Unit,
     snackbarShow: (String) -> Unit,
+    topModifier: Modifier = Modifier,
     reviewViewModel: ReviewViewModel = viewModel()
 ) {
     val reviewState by reviewViewModel.reviewState.collectAsState()

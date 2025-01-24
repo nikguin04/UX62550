@@ -80,7 +80,7 @@ fun LoginRegisterScreen(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
+            LogoBox(size = 200.dp, modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)))
         }
         Text(
             text = "Not a member yet?",

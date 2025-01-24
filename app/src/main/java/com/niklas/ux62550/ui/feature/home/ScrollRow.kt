@@ -86,7 +86,7 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
 }
 
 @Composable
-fun HorizontalDotIndexer(modifier: Modifier, items: List<MediaObject>, pagerState: PagerState) {
+fun HorizontalDotIndexer(items: List<MediaObject>, pagerState: PagerState, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterHorizontally),
@@ -110,13 +110,13 @@ fun HorizontalDotIndexer(modifier: Modifier, items: List<MediaObject>, pagerStat
 
 @Composable
 fun HorizontalLazyRowMovies(
-    modifier: Modifier = Modifier,
     width: Dp,
     height: Dp,
     edgeGap: Dp,
     betweenGap: Dp,
     items: List<MediaObject>,
     onNavigateToMedia: (MediaObject) -> Unit,
+    modifier: Modifier = Modifier,
     rowListState: LazyListState? = null,
     fetchEnBackdrop: Boolean = false
 ) {

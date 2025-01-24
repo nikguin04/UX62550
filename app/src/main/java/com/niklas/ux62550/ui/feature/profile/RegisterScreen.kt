@@ -53,7 +53,7 @@ fun RegisterPreview() {
 }
 
 @Composable
-fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, topModifier: Modifier = Modifier, snackbarShow: (String) -> Unit) {
+fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit, topModifier: Modifier = Modifier) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
@@ -77,7 +77,7 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
+                LogoBox(size = 200.dp, modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)))
             }
             RegisterInputHolder(
                 usernameValue, emailValue, passValue, onNavigateToProfile,

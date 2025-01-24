@@ -7,7 +7,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun DrawCircle(modifier: Modifier = Modifier, color: Color) {
+fun DrawCircle(color: Color, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.drawBehind {
             // Set the radius based on the smaller of the box dimensions

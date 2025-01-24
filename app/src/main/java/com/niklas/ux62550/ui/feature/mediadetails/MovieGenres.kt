@@ -25,7 +25,7 @@ import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 
 @Composable
-fun Genres(modifier: Modifier = Modifier, genres: MovieState.Data, providerState: ProviderState) {
+fun Genres(genres: MovieState.Data, providerState: ProviderState, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .padding(20.dp, 10.dp, 20.dp, 8.dp)

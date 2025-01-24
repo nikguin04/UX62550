@@ -41,7 +41,7 @@ fun WatchlistPreview() {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun WatchlistContent(topModifier: Modifier = Modifier, onNavigateToMedia: (MediaObject) -> Unit, watchlistViewModel: WatchlistViewModel = viewModel()) {
+fun WatchlistContent(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modifier = Modifier, watchlistViewModel: WatchlistViewModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

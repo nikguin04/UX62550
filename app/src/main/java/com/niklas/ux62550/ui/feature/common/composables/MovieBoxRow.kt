@@ -97,11 +97,11 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifi
 @Composable
 @Preview
 fun MovieBoxRowFromIdErrorPreview() {
-    MovieBoxRowFromId(Modifier, 0, {})
+    MovieBoxRowFromId(movieId = 0, onNavigateToMedia = {})
 }
 
 @Composable
-fun MovieBoxRowFromId(modifier: Modifier = Modifier, movieId: Int, onNavigateToMedia: (MediaObject) -> Unit, infoRowModifier: Modifier = Modifier) {
+fun MovieBoxRowFromId(movieId: Int, onNavigateToMedia: (MediaObject) -> Unit, modifier: Modifier = Modifier, infoRowModifier: Modifier = Modifier) {
     val mediaDetailFetchViewModel: MediaDetailFetchViewModel = viewModel(
         factory = MediaDetailFetchViewModelFactory(movieId),
         key = movieId.toString()

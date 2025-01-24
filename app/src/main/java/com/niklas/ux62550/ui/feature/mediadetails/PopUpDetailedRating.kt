@@ -48,10 +48,10 @@ import com.niklas.ux62550.ui.theme.ReviewColor
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun DetailedRating(
-    modifier: Modifier = Modifier,
     movieViewModel: MovieViewModel,
     movieID: MovieState.Data,
-    onNavigateToReview: (MovieDetailObject) -> Unit
+    onNavigateToReview: (MovieDetailObject) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val movieReviewID by movieViewModel.movieReviewID.collectAsState()
 
@@ -69,7 +69,7 @@ fun DetailedRating(
             ),
             textAlign = TextAlign.Center
         )
-        OverallRating(modifier, movieReviewID["MainRating"] ?: 0.0)
+        OverallRating(movieReviewID["MainRating"] ?: 0.0, modifier)
         ReviewButton(movieID, onNavigateToReview)
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -111,7 +111,7 @@ fun DetailedRating(
 }
 
 @Composable
-fun OverallRating(modifier: Modifier, rating: Double) {
+fun OverallRating(rating: Double, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.padding(vertical = 5.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),

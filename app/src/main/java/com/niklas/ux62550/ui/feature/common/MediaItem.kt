@@ -73,47 +73,44 @@ fun NoMediaPreview() {
 
     Column {
         MediaItemBackdropIntercept(
-            modifier = Modifier
-                .width(width)
-                .aspectRatio(16f / 9f)
-                .clip(RoundedCornerShape(6.dp)),
+            fetchEnBackdrop = true,
             mediaItem = mediaItem,
-            backdropFallback = true,
-            fetchEnBackdrop = true,
-            imageViewModel = imageViewModel
-        )
-        Spacer(Modifier.height(10.dp))
-        MediaItemBackdropIntercept(
+            imageViewModel = imageViewModel,
             modifier = Modifier
                 .width(width)
                 .aspectRatio(16f / 9f)
-                .clip(RoundedCornerShape(6.dp)),
+                .clip(RoundedCornerShape(6.dp))
+        )
+        Spacer(Modifier.height(10.dp))
+        MediaItemBackdropIntercept(
+            fetchEnBackdrop = true,
             mediaItem = mediaItem.copy(title = "Ridiculously long movie title here: and it just continues"),
-            backdropFallback = true,
-            fetchEnBackdrop = true,
-            imageViewModel = imageViewModel
-        )
-        Spacer(Modifier.height(10.dp))
-        MediaItemBackdropIntercept(
+            imageViewModel = imageViewModel,
             modifier = Modifier
                 .width(width)
                 .aspectRatio(16f / 9f)
-                .clip(RoundedCornerShape(6.dp)),
+                .clip(RoundedCornerShape(6.dp))
+        )
+        Spacer(Modifier.height(10.dp))
+        MediaItemBackdropIntercept(
+            fetchEnBackdrop = true,
             mediaItem = mediaItem.copy(title = "Ridiculously long movie title here: and it just continues, but this might simply just be too long because some directors choose long titles, lets see if it wraps properly"),
-            backdropFallback = true,
-            fetchEnBackdrop = true,
-            imageViewModel = imageViewModel
-        )
-        Spacer(Modifier.height(10.dp))
-        MediaItemBackdropIntercept(
+            imageViewModel = imageViewModel,
             modifier = Modifier
                 .width(width)
                 .aspectRatio(16f / 9f)
-                .clip(RoundedCornerShape(6.dp)),
+                .clip(RoundedCornerShape(6.dp))
+        )
+        Spacer(Modifier.height(10.dp))
+        MediaItemBackdropIntercept(
+            fetchEnBackdrop = true,
             mediaItem = mediaItem,
             backdropFallback = false,
-            fetchEnBackdrop = true,
-            imageViewModel = imageViewModel
+            imageViewModel = imageViewModel,
+            modifier = Modifier
+                .width(width)
+                .aspectRatio(16f / 9f)
+                .clip(RoundedCornerShape(6.dp))
         )
     }
 }
@@ -128,37 +125,35 @@ fun MediaPreview() {
         val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + "1")
         imageViewModel.initPreview_NoFetch()
         MediaItemBackdropIntercept(
+            fetchEnBackdrop = true,
+            mediaItem = mediaItem.copy(title = "Ridiculously long movie title here: Goes over regular backdrop"),
+            imageViewModel = imageViewModel,
             modifier = Modifier
                 .width(width)
                 .aspectRatio(16f / 9f)
-                .clip(RoundedCornerShape(6.dp)),
-            mediaItem = mediaItem.copy(title = "Ridiculously long movie title here: Goes over regular backdrop"),
-            backdropFallback = true,
-            fetchEnBackdrop = true,
-            imageViewModel = imageViewModel
+                .clip(RoundedCornerShape(6.dp))
         )
         Spacer(Modifier.height(10.dp))
         val imageViewModelData: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + "2")
         imageViewModelData.initPreview()
         MediaItemBackdropIntercept(
+            fetchEnBackdrop = true,
+            mediaItem = mediaItem.copy(title = "Howls moving castle :)"),
+            imageViewModel = imageViewModelData,
             modifier = Modifier
                 .width(width)
                 .aspectRatio(16f / 9f)
-                .clip(RoundedCornerShape(6.dp)),
-            mediaItem = mediaItem.copy(title = "Howls moving castle :)"),
-            backdropFallback = true,
-            fetchEnBackdrop = true,
-            imageViewModel = imageViewModelData
+                .clip(RoundedCornerShape(6.dp))
         )
     }
 }
 
 @Composable
 fun MediaItemBackdropIntercept(
-    modifier: Modifier = Modifier,
     fetchEnBackdrop: Boolean,
     mediaItem: MediaObject,
     backdropFallback: Boolean = true,
+    modifier: Modifier = Modifier,
     imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = mediaItem.getUniqueStringIdentifier())
 ) {
     if (fetchEnBackdrop) {
@@ -171,8 +166,8 @@ fun MediaItemBackdropIntercept(
             is ImagesDataUIState.Empty -> {
                 // TODO: CWL loading page?
                 AnimatedImagePlaceholder(
-                    modifier = modifier.clip(RoundedCornerShape(6.dp)),
-                    animationProgress = animationProgress
+                    animationProgress = animationProgress,
+                    modifier = modifier.clip(RoundedCornerShape(6.dp))
                 )
             }
             is ImagesDataUIState.Data -> {
@@ -187,10 +182,10 @@ fun MediaItemBackdropIntercept(
                 } ?: run {
                     MediaItemBackdropFallback(
                         media = mediaItem,
-                        modifier = modifier.clip(RoundedCornerShape(6.dp)),
                         size = ImageSize.BACKDROP,
                         backdropFallback = backdropFallback,
-                        animationProgress = animationProgress
+                        animationProgress = animationProgress,
+                        modifier = modifier.clip(RoundedCornerShape(6.dp))
                     )
                 }
             }
@@ -224,10 +219,10 @@ fun getMediaItemAnimationProgress(): State<Float> {
 @Composable
 fun MediaItemBackdropFallback(
     media: MediaObject,
-    modifier: Modifier = Modifier,
     size: ImageSize,
     backdropFallback: Boolean,
-    animationProgress: State<Float> = getMediaItemAnimationProgress()
+    animationProgress: State<Float> = getMediaItemAnimationProgress(),
+    modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
         MediaItem(
@@ -268,10 +263,10 @@ fun MediaItemBackdropFallback(
 @Composable
 fun MediaItem(
     uri: String?,
-    modifier: Modifier = Modifier,
     size: ImageSize,
-    animationProgress: State<Float> = getMediaItemAnimationProgress()
-) { // TODO: Remove round from here since it basically it a modifier
+    animationProgress: State<Float> = getMediaItemAnimationProgress(),
+    modifier: Modifier = Modifier
+) {
     val sizeStr = when (size) {
         ImageSize.BACKDROP -> "w1280"
         ImageSize.LOGO -> "w500"
@@ -304,7 +299,7 @@ fun MediaItem(
 
             if (!hasCrossFaded) {
                 // Circular progress indicator for loading animation
-                AnimatedImagePlaceholder(modifier, animationProgress)
+                AnimatedImagePlaceholder(animationProgress, modifier)
             }
         }
     } ?: run { // If uri is null
@@ -331,7 +326,7 @@ fun debugPlaceholder(@DrawableRes debugPreview: Int) = painterResource(
 )
 
 @Composable
-fun AnimatedImagePlaceholder(modifier: Modifier = Modifier, animationProgress: State<Float>) {
+fun AnimatedImagePlaceholder(animationProgress: State<Float>, modifier: Modifier = Modifier) {
     // Placeholder with animated cross-fading gradients
     Canvas(modifier = modifier) {
         // Background color

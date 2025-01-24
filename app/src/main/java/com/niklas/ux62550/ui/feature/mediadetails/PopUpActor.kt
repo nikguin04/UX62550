@@ -58,7 +58,7 @@ fun PreviewActorsAndDirectors() {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.Data) {
+fun ActorsAndDirectors(creditState: CreditState.Data, modifier: Modifier = Modifier) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val actorItemWidth = 60.dp + 12.dp
     val maxActors = ((screenWidth - 80.dp) / actorItemWidth).toInt()
@@ -95,7 +95,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
 
             repeat(3) { i ->
                 if (i > 0) { Spacer(Modifier.width(4.dp)) }
-                DrawCircle(Modifier.size(10.dp), Color.LightGray)
+                DrawCircle(Color.LightGray, Modifier.size(10.dp))
             }
         }
         if (showBottomSheet) {
@@ -109,10 +109,10 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(creditState.creditObject.cast) { cast ->
-                        CastRow(modifier, cast)
+                        CastRow(cast)
                     }
                     items(creditState.creditObject.crew) { crew ->
-                        CrewRow(modifier, crew)
+                        CrewRow(crew)
                     }
                 }
             }
@@ -121,7 +121,7 @@ fun ActorsAndDirectors(modifier: Modifier = Modifier, creditState: CreditState.D
 }
 
 @Composable
-fun CastRow(modifier: Modifier, cast: Cast) {
+fun CastRow(cast: Cast, modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         MediaItem(
             uri = cast.castProfilePath,
@@ -141,7 +141,7 @@ fun CastRow(modifier: Modifier, cast: Cast) {
                     color = Color.White
                 )
                 Spacer(Modifier.width(4.dp))
-                DrawCircle(Modifier.size(6.dp), Color.LightGray)
+                DrawCircle(Color.LightGray, Modifier.size(6.dp))
                 Spacer(Modifier.width(4.dp))
                 Text(
                     text = cast.character,
@@ -155,7 +155,7 @@ fun CastRow(modifier: Modifier, cast: Cast) {
 }
 
 @Composable
-fun CrewRow(modifier: Modifier, crew: Crew) {
+fun CrewRow(crew: Crew, modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         MediaItem(
             uri = crew.castProfilePath,
@@ -175,7 +175,7 @@ fun CrewRow(modifier: Modifier, crew: Crew) {
                     color = Color.White
                 )
                 Spacer(Modifier.width(4.dp))
-                DrawCircle(Modifier.size(6.dp), Color.LightGray)
+                DrawCircle(Color.LightGray, Modifier.size(6.dp))
                 Spacer(Modifier.width(4.dp))
                 Text(
                     text = crew.job,

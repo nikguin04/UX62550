@@ -16,9 +16,9 @@ import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
 
 @Composable
 fun SimilarMedia(
-    modifier: Modifier = Modifier,
     similarMediaState: SimilarMovieState,
-    onNavigateToOtherMedia: (MediaObject) -> Unit
+    onNavigateToOtherMedia: (MediaObject) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Text(
         "Movies similar to this one",

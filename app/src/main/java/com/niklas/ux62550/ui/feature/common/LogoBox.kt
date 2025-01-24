@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.Dp
 import com.niklas.ux62550.R
 
 @Composable
-fun LogoBox(modifier: Modifier = Modifier, size: Dp) {
+fun LogoBox(size: Dp, modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = R.drawable.logo),
         contentDescription = "Logo",

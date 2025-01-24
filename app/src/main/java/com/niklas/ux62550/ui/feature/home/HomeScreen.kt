@@ -50,9 +50,9 @@ fun HomeScreenErrorPreview() {
 
 @Composable
 fun HomeScreen(
+    onNavigateToMedia: (MediaObject) -> Unit,
     topModifier: Modifier = Modifier,
-    homeViewModel: HomeViewModel = viewModel(),
-    onNavigateToMedia: (MediaObject) -> Unit
+    homeViewModel: HomeViewModel = viewModel()
 ) {
     val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
     val movieGenresDataState: GenresDataState = homeViewModel.movieGenresState.collectAsState().value

@@ -104,7 +104,7 @@ fun ProfileContent(
         ) {
             Column {
                 Box {
-                    DrawCircle(Modifier.size(105.dp), color = placeholderIconColor)
+                    DrawCircle(placeholderIconColor, Modifier.size(105.dp))
 
                     Box(Modifier.padding(((105 - 26) / 2).dp)) {
                         Icon(

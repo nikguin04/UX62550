@@ -140,7 +140,7 @@ fun MediaDetailsScreen(
 }
 
 @Composable
-fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerState: TrailerState) {
+fun Header(movieState: MovieState.Data, trailerState: TrailerState, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
@@ -200,13 +200,13 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
                             .aspectRatio(16f / 9f)
                     ) {
                         MediaItemBackdropIntercept(
+                            fetchEnBackdrop = true,
+                            mediaItem = movieState.mediaDetailObject.toMediaObject(),
+                            backdropFallback = false,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .aspectRatio(16f / 9f)
-                                .clip(RoundedCornerShape(6.dp)),
-                            fetchEnBackdrop = true,
-                            backdropFallback = false,
-                            mediaItem = movieState.mediaDetailObject.toMediaObject()
+                                .clip(RoundedCornerShape(6.dp))
                         )
                         if (youtubeUrl != null) {
                             Image(
@@ -231,7 +231,7 @@ fun Header(modifier: Modifier = Modifier, movieState: MovieState.Data, trailerSt
 }
 
 @Composable
-fun InfoRow(modifier: Modifier = Modifier, movieState: MovieState.Data) {
+fun InfoRow(movieState: MovieState.Data, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,

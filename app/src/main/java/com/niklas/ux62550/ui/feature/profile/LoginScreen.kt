@@ -77,7 +77,7 @@ fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit,
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
+            LogoBox(size = 200.dp, modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)))
         }
         LoginInputHolder(
             emailValue, passValue, onNavigateToProfile,
