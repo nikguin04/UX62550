@@ -14,7 +14,7 @@ import java.math.RoundingMode
 // Firebase documentation has been used in this file
 // https://firebase.google.com/docs/firestore/query-data/get-data#kotlin_6
 // https://firebase.google.com/docs/firestore/manage-data/add-data
-
+// https://firebase.google.com/docs/firestore/quickstart#kotlin
 // We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
 class FirebaseInstance {
     private val db = Firebase.firestore

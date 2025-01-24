@@ -12,6 +12,7 @@ class FirebaseAuthController : Activity() {
     // With the code example
     // https://github.com/firebase/snippets-android/blob/f8eb9475c84dd5e76a1895773ede2ec1ef8553f9/auth/app/src/main/java/com/google/firebase/quickstart/auth/kotlin/EmailPasswordActivity.kt#L15-L15
     // https://developer.android.com/training/basics/intents/result
+    // https://firebase.google.com/docs/auth/android/manage-users
     private lateinit var auth: FirebaseAuth
 
     public override fun onCreate(savedInstanceState: Bundle?) {
