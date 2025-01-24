@@ -9,80 +9,78 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MovieDetailObject(
     @SerialName("spoken_languages")
-    val spokenLanguages: List<SpokenLanguages>?,
+    val spokenLanguages: List<SpokenLanguage>?,
 
     @SerialName("genres")
-    val genre: List<Genre>,
+    val genres: List<Genre>,
 
     @SerialName("adult")
     val adult: Boolean = false,
 
     @SerialName("backdrop_path")
-    val backDropPath : String?,
+    val backdropPath: String?,
 
     @SerialName("homepage")
-    val homePage : String = "",
+    val homePage: String = "",
 
     @SerialName("original_title")
-    val Originaltitle : String,
+    val originalTitle: String,
 
     @SerialName("overview")
-    val Description : String = "",
+    val description: String = "",
 
     @SerialName("poster_path")
-    val posterPath : String?,
+    val posterPath: String?,
 
     @SerialName("release_date")
-    val releaseDate : String = "",
+    val releaseDate: String = "",
 
     @SerialName("title")
     val title: String = "",
 
     @SerialName("vote_average")
-    val vote_average : Double,
+    val voteAverage: Double,
 
     @SerialName("runtime")
-    val runTime : Int = 0,
+    val runTime: Int = 0,
 
     @SerialName("id")
-    val id : Int,
-
-    ): Parcelable {
+    val id: Int,
+) : Parcelable {
     fun toMediaObject(): MediaObject {
         return MediaObject(
-            adult = this.adult,
-            backdrop_path = this.backDropPath,
-            id = this.id,
-            title = this.title,
-            poster_path = this.posterPath,
-            genre_ids = this.genre.map { it.genreID }, // TODO: check this mapping is right
-            release_date = this.releaseDate,
-            media_type = "movie", // This is hardcoded because the MovieDetailObject is called "movie", for fetching tv shows this should be changed
-            vote_average = this.vote_average.toFloat()
+            adult = adult,
+            backdropPath = backdropPath,
+            id = id,
+            title = title,
+            posterPath = posterPath,
+            genreIds = genres.map { it.id }, // TODO: check this mapping is right
+            releaseDate = releaseDate,
+            mediaType = "movie", // This is hardcoded because the MovieDetailObject is called "movie", for fetching tv shows this should be changed
+            voteAverage = voteAverage.toFloat()
         )
     }
 }
+
 @Parcelize
 @Serializable
 data class Genre(
     @SerialName("id")
-    val genreID: Int = 0,
+    val id: Int = 0,
 
     @SerialName("name")
-    val genreName: String = ""
-): Parcelable
+    val name: String = ""
+) : Parcelable
 
 @Parcelize
 @Serializable
-data class SpokenLanguages(
+data class SpokenLanguage(
     @SerialName("english_name")
-    val languageName : String = "",
+    val name: String = "",
 
     @SerialName("iso_639_1")
-    val isoNumber: String = "",
+    val code: String = "",
 
     @SerialName("name")
-    val spokenName : String = ""
-): Parcelable
-
-
+    val nativeName: String = ""
+) : Parcelable

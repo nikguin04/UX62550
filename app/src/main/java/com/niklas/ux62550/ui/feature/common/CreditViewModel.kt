@@ -1,32 +1,21 @@
 package com.niklas.ux62550.ui.feature.common
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.niklas.ux62550.data.examples.MediaDetailExample
-import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.CreditObject
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.data.model.Provider
-import com.niklas.ux62550.data.model.Result
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.domain.CastDetailsRepository
-import com.niklas.ux62550.ui.feature.mediadetails.MovieState
-import com.niklas.ux62550.ui.feature.mediadetails.ProviderState
-import com.niklas.ux62550.ui.feature.mediadetails.SimilarMovieState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CreditViewModel() : ViewModel() {
+class CreditViewModel : ViewModel() {
     private val creditDetailsRepository = DataModule.castDetailsRepository
 
-    private fun getCredit(movieID: Int) = viewModelScope.launch {
-        creditDetailsRepository.getCredits(movieID) // TODO: Don't hardcore this, get some proper featured films
+    private fun getCredit(movieId: Int) = viewModelScope.launch {
+        creditDetailsRepository.getCredits(movieId) // TODO: Don't hardcore this, get some proper featured films
     }
-
-
 
     private val mutableCreditState = MutableStateFlow<CreditState>(CreditState.Empty)
     val creditState: StateFlow<CreditState> = mutableCreditState
@@ -41,19 +30,19 @@ class CreditViewModel() : ViewModel() {
 
     fun init(media: MediaObject) {
         viewModelScope.launch {
-            creditDetailsRepository.creditFlow.collect { creditDetailObject ->
+            creditDetailsRepository.creditsFlow.collect { creditDetailObject ->
                 mutableCreditState.update {
                     if (creditDetailObject.isSuccess) { CreditState.Data(creditDetailObject.getOrThrow()) }
                     else { CreditState.Error }
                 }
             }
         }
-        getCredit(movieID = media.id)
+        getCredit(movieId = media.id)
     }
 }
 
 sealed class CreditState {
     data object Empty : CreditState()
-    data class Data(val creditObject: CreditObject) : CreditState()
     data object Error : CreditState()
+    data class Data(val creditObject: CreditObject) : CreditState()
 }

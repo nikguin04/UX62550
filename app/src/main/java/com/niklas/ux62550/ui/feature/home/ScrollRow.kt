@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
@@ -51,6 +52,8 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
         pageSpacing = gap
     ) { page ->
         MediaItemBackdropIntercept(
+            fetchEnBackdrop = true,
+            mediaItem = items[page],
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
@@ -71,9 +74,7 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
                         stop = 1f,
                         fraction = 1f - pageOffset.coerceIn(0f, 1f)
                     )
-                },
-            mediaItem = items[page],
-            fetchEnBackdrop = true
+                }
         )
     }
     Spacer(Modifier.height(4.dp))
@@ -85,7 +86,7 @@ fun HomeFeaturedMediaHorizontalPager(items: List<MediaObject>, onNavigateToMedia
 }
 
 @Composable
-fun HorizontalDotIndexer(modifier: Modifier, items: List<MediaObject>, pagerState: PagerState) {
+fun HorizontalDotIndexer(items: List<MediaObject>, pagerState: PagerState, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterHorizontally),
@@ -109,13 +110,13 @@ fun HorizontalDotIndexer(modifier: Modifier, items: List<MediaObject>, pagerStat
 
 @Composable
 fun HorizontalLazyRowMovies(
-    modifier: Modifier = Modifier,
     width: Dp,
     height: Dp,
     edgeGap: Dp,
     betweenGap: Dp,
     items: List<MediaObject>,
     onNavigateToMedia: (MediaObject) -> Unit,
+    modifier: Modifier = Modifier,
     rowListState: LazyListState? = null,
     fetchEnBackdrop: Boolean = false
 ) {
@@ -126,16 +127,15 @@ fun HorizontalLazyRowMovies(
         horizontalArrangement = Arrangement.spacedBy(betweenGap),
         contentPadding = PaddingValues(edgeGap, 0.dp)
     ) {
-        items.forEachIndexed { index, mediaItem ->
-            item {
-                MediaItemBackdropIntercept(
-                    modifier = Modifier
-                        .size(width, height)
-                        .clip(RoundedCornerShape(6.dp))
-                        .clickable { onNavigateToMedia(mediaItem) },
-                    fetchEnBackdrop, mediaItem
-                )
-            }
+        items(items) { mediaItem ->
+            MediaItemBackdropIntercept(
+                fetchEnBackdrop = fetchEnBackdrop,
+                mediaItem = mediaItem,
+                modifier = Modifier
+                    .size(width, height)
+                    .clip(RoundedCornerShape(6.dp))
+                    .clickable { onNavigateToMedia(mediaItem) }
+            )
         }
     }
 }

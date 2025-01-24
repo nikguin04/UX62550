@@ -1,9 +1,9 @@
 package com.niklas.ux62550.ui.feature.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,19 +19,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.niklas.ux62550.data.examples.SearchDataExamples
-import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.ui.feature.common.DiscoverItemsUIState
 import com.niklas.ux62550.ui.feature.common.DiscoverViewModel
-import com.niklas.ux62550.ui.feature.common.DiscoverViewModelFactory
 
 private const val buffer = 2
 
-@Preview
 @Composable
+@Preview
 fun PreviewDiscoverSliderError() {
     DiscoverSliderContent(DiscoverItemsUIState.Error, "Action", {}, rememberLazyListState())
 }
@@ -67,9 +62,14 @@ fun DiscoverSliderContent(discoverUiState: DiscoverItemsUIState, headerTitle: St
         val w = 155.dp
         val h = 155.dp / 16 * 9
         when (discoverUiState) {
-            DiscoverItemsUIState.Empty -> {
+            is DiscoverItemsUIState.Empty -> {
                 // Size placeholder
-                Box(Modifier.fillMaxWidth().height(h))
+                Spacer(Modifier.fillMaxWidth().height(h))
+            }
+            is DiscoverItemsUIState.Error -> {
+                Box(Modifier.fillMaxWidth().height(h)) {
+                    Text("Error fetching data")
+                }
             }
             is DiscoverItemsUIState.Data -> {
                 HorizontalLazyRowMovies(
@@ -82,11 +82,6 @@ fun DiscoverSliderContent(discoverUiState: DiscoverItemsUIState, headerTitle: St
                     rowListState = listState,
                     fetchEnBackdrop = true
                 )
-            }
-            is DiscoverItemsUIState.Error -> {
-                Box(Modifier.fillMaxWidth().height(h)) {
-                    Text(text = "Error fetching data")
-                }
             }
         }
     }

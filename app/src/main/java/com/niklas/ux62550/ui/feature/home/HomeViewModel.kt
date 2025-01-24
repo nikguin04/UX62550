@@ -6,19 +6,12 @@ import com.niklas.ux62550.data.examples.SearchDataExamples
 import com.niklas.ux62550.data.model.GenreObject
 import com.niklas.ux62550.data.model.MediaObject
 import com.niklas.ux62550.di.DataModule
-import com.niklas.ux62550.domain.HomeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-    /*private val mediaItems: List<MediaItem> = listOf(
-        MediaItem("Name 1", R.drawable.logo, Color.Blue),
-        MediaItem("Name 2", R.drawable.logo, Color.Red),
-        MediaItem("Name 3", R.drawable.logo, Color.Green),
-    )*/
-
     private val homeRepository = DataModule.homeRepository
 
     private val mutableMediaItemsState = MutableStateFlow<MediaItemsUIState>(MediaItemsUIState.Empty)
@@ -26,7 +19,6 @@ class HomeViewModel : ViewModel() {
 
     private val mutableMovieGenresState = MutableStateFlow<GenresDataState>(GenresDataState.Empty)
     val movieGenresState: StateFlow<GenresDataState> = mutableMovieGenresState
-
 
     init {
         viewModelScope.launch {
@@ -46,9 +38,11 @@ class HomeViewModel : ViewModel() {
         getFeaturedMedia()
         getMovieGenres()
     }
+
     private fun getFeaturedMedia() = viewModelScope.launch {
-        homeRepository.getTrending( "day")
+        homeRepository.getTrending("day")
     }
+
     private fun getMovieGenres() = viewModelScope.launch {
         homeRepository.getGenres()
     }
@@ -85,17 +79,12 @@ class HomeViewModel : ViewModel() {
 
 sealed class MediaItemsUIState {
     data object Empty : MediaItemsUIState()
-    data class Data(
-        val mediaObjects: List<MediaObject>
-    ) : MediaItemsUIState()
     data object Error : MediaItemsUIState()
+    data class Data(val mediaObjects: List<MediaObject>) : MediaItemsUIState()
 }
 
 sealed class GenresDataState {
     data object Empty : GenresDataState()
-    data class Data(
-        val genres: List<GenreObject>
-    ) : GenresDataState()
     data object Error : GenresDataState()
+    data class Data(val genres: List<GenreObject>) : GenresDataState()
 }
-

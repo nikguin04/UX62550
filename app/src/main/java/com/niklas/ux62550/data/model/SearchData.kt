@@ -1,7 +1,6 @@
 package com.niklas.ux62550.data.model
 
 import android.os.Parcelable
-import android.provider.MediaStore.Audio.Media
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,13 +14,12 @@ data class SearchDataObject(
     val results: List<MediaObject>,
 
     @SerialName("total_pages")
-    val total_pages: Int,
-    @SerialName("total_results")
-    val total_results: Int,
+    val totalPages: Int,
 
-//    @SerialName("known_for")
-//    val known_for: List<MediaObject>
+    @SerialName("total_results")
+    val totalResults: Int,
 )
+
 /*
  NOTE: EASY SEARCH AND REPLACE:
  Just write top like "SerialName("adult")"
@@ -33,61 +31,55 @@ $1
 \tval $2: ,
 ----------------------
 And just write the type (this could be made so you don't even need to type @SerialName but i cant be arsed)
- */
+*/
 
 // ChatGPT: Recommended Parcelize
 @Parcelize
 @Serializable
 data class MediaObject(
     @SerialName("adult")
-	val adult: Boolean = true,
+    val adult: Boolean = true,
 
     @SerialName("backdrop_path")
-	val backdrop_path: String? = null,
+    val backdropPath: String? = null,
 
     @SerialName("id")
-	val id: Int,
+    val id: Int,
 
     @SerialName("profile_path")
-    val profile_path: String? = null,
+    val profilePath: String? = null,
 
     @SerialName("title")
-	val title: String = "",
+    val title: String = "",
 
     @SerialName("overview")
-	val overview: String = "",
+    val overview: String = "",
 
     @SerialName("poster_path")
-	val poster_path: String? = null,
+    val posterPath: String? = null,
 
     @SerialName("media_type")
-	var media_type: String? = null,
+    var mediaType: String? = null,
 
     @SerialName("genre_ids")
-	val genre_ids: List<Int> = listOf(),
+    val genreIds: List<Int> = listOf(),
 
     @SerialName("popularity")
-	val popularity: Float? = null,
+    val popularity: Float? = null,
 
     @SerialName("release_date")
-	val release_date: String = "",
+    val releaseDate: String = "",
 
     @SerialName("vote_average")
-	val vote_average: Float? = null,
+    val voteAverage: Float? = null,
 
     @SerialName("name")
     val name: String? = null,
 
     @SerialName("vote_count")
-	val vote_count: Int? = null,
-
-
-) : Parcelable {
+	val voteCount: Int? = null,
+): Parcelable {
     fun getUniqueStringIdentifier(): String {
-        return (media_type ?: "") + id
+        return (mediaType ?: "") + id
     }
-
 }
-
-
-

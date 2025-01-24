@@ -9,8 +9,9 @@ data class ProviderDataObject(
     val id: Int,
 
     @SerialName("results")
-    val result: Map<String,Result>
-    )
+    val results: Map<String, Result>
+)
+
 @Serializable
 data class Result(
     @SerialName("link")

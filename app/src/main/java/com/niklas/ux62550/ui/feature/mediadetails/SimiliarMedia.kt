@@ -1,7 +1,6 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,23 +16,26 @@ import com.niklas.ux62550.ui.feature.home.HorizontalLazyRowMovies
 
 @Composable
 fun SimilarMedia(
-    modifier: Modifier = Modifier,
     similarMediaState: SimilarMovieState,
-    onNavigateToOtherMedia: (MediaObject) -> Unit) {
-
+    onNavigateToOtherMedia: (MediaObject) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Text(
         "Movies similar to this one",
         style = TextStyle(
             fontSize = 18.sp,
             color = Color.White,
-            shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+            shadow = Shadow(blurRadius = 5f)
         ),
         modifier = modifier.padding(start = 20.dp)
     )
-    Box(modifier = Modifier.padding(bottom = 20.dp,)) {
+    Box(Modifier.padding(bottom = 20.dp)) {
         when (similarMediaState) {
-            SimilarMovieState.Empty -> {
+            is SimilarMovieState.Empty -> {
                 Text("NO PIC")
+            }
+            is SimilarMovieState.Error -> {
+                Text("Network error")
             }
             is SimilarMovieState.Data -> {
                 HorizontalLazyRowMovies(
@@ -45,9 +47,6 @@ fun SimilarMedia(
                     onNavigateToMedia = onNavigateToOtherMedia,
                     fetchEnBackdrop = true
                 )
-            }
-            is SimilarMovieState.Error -> {
-                Text("Network error")
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.niklas.ux62550.ui.feature.mediadetails
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.examples.MediaDetailExample
 import com.niklas.ux62550.data.examples.SearchDataExamples
@@ -17,32 +16,34 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MovieViewModel() : ViewModel() {
+class MovieViewModel : ViewModel() {
     private val mediaExtendedDetailsRepository = DataModule.mediaExtendedDetailsRepository
     private val mediaDetailsRepository = DataModule.mediaDetailRepository
-    private val _movieReviewID = MutableStateFlow<Map<String, Double>>(emptyMap())
-    val movieReviewID: StateFlow<Map<String, Double>> = _movieReviewID
+    private val mutableMovieReviewId = MutableStateFlow<Map<String, Double>>(emptyMap())
+    val movieReviewId: StateFlow<Map<String, Double>> = mutableMovieReviewId
 
-    fun getDetailReviews(movieID: Int) {
+    fun getDetailReviews(movieId: Int) {
         viewModelScope.launch {
-            val reviews = RemoteFirebase.getReview(movieID)
-            _movieReviewID.value = reviews
+            val reviews = RemoteFirebase.getReview(movieId)
+            mutableMovieReviewId.value = reviews
         }
     }
 
-    private fun getSimilarMovies(MovieID : Int) = viewModelScope.launch {
-        mediaExtendedDetailsRepository.getSimilarsMovies(MovieID)
+    private fun getSimilarMovies(movieId: Int) = viewModelScope.launch {
+        mediaExtendedDetailsRepository.getSimilarMovies(movieId)
     }
 
-    private fun getProviderForMovies(MovieID: Int) = viewModelScope.launch {
-        mediaExtendedDetailsRepository.getProvider(MovieID) // TODO: Don't hardcore this, get some proper featured films
+    private fun getProviderForMovies(movieId: Int) = viewModelScope.launch {
+        mediaExtendedDetailsRepository.getProvider(movieId) // TODO: Don't hardcore this, get some proper featured films
     }
-    private fun getTrailerForMovies(MovieID : Int) = viewModelScope.launch {
-        mediaExtendedDetailsRepository.getTrailer(MovieID) // TODO: Don't hardcore this, get some proper featured films
+
+    private fun getTrailerForMovies(movieId: Int) = viewModelScope.launch {
+        mediaExtendedDetailsRepository.getTrailer(movieId) // TODO: Don't hardcore this, get some proper featured films
     }
-    fun updateToDatabase(media: MediaObject, remove: Boolean = false){
+
+    fun updateToDatabase(media: MediaObject, remove: Boolean = false) {
         viewModelScope.launch {
-            RemoteFirebase.UpdateToWatchList(media, remove)
+            RemoteFirebase.updateToWatchList(media, remove)
         }
     }
 
@@ -58,10 +59,6 @@ class MovieViewModel() : ViewModel() {
     private val mutableTrailerState = MutableStateFlow<TrailerState>(TrailerState.Empty)
     val trailerState: StateFlow<TrailerState> = mutableTrailerState
 
-    private val mutableWatchlistState = MutableStateFlow<WatchlistState>(WatchlistState.Empty)
-    val watchlistState: StateFlow<WatchlistState> = mutableWatchlistState
-
-
     fun init(media: MediaObject) {
         viewModelScope.launch {
             mediaDetailsRepository.getWithKey(
@@ -74,44 +71,40 @@ class MovieViewModel() : ViewModel() {
                 } else {
                     mutableMovieState.update { MovieState.Error }
                 }
-
             }
         }
         viewModelScope.launch {
-            mediaExtendedDetailsRepository.similarFlow.collect { searchDataObject ->
+            mediaExtendedDetailsRepository.similarMoviesFlow.collect { searchDataObject ->
                 mutableSimilarMovieState.update {
                     run { // Append media_type before updating data
                         if (searchDataObject.isSuccess) {
-                            searchDataObject.getOrThrow().results.forEach { res -> res.media_type = "movie" } // TODO: Movies are hardcoded in discover, make this change smoothly when fetching TV
+                            searchDataObject.getOrThrow().results.forEach { res -> res.mediaType = "movie" } // TODO: Movies are hardcoded in discover, make this change smoothly when fetching TV
                             SimilarMovieState.Data(searchDataObject.getOrThrow().results)
-                        }
-                        else { SimilarMovieState.Error }
-
+                        } else { SimilarMovieState.Error }
                     }
-
                 }
             }
         }
         viewModelScope.launch {
-            mediaExtendedDetailsRepository.providerFlow.collect { ProviderDataObject ->
+            mediaExtendedDetailsRepository.providerFlow.collect { providerDataObject ->
                 mutableProviderState.update {
-                    if (ProviderDataObject.isSuccess) { ProviderState.Data(ProviderDataObject.getOrThrow().result) }
+                    if (providerDataObject.isSuccess) { ProviderState.Data(providerDataObject.getOrThrow().results) }
                     else { ProviderState.Error }
                 }
             }
         }
         viewModelScope.launch {
-            mediaExtendedDetailsRepository.trailerFlow.collect { TrailerObject ->
+            mediaExtendedDetailsRepository.trailerFlow.collect { trailerObject ->
                 mutableTrailerState.update {
-                    if (TrailerObject.isSuccess) { TrailerState.Data(TrailerObject.getOrThrow()) }
+                    if (trailerObject.isSuccess) { TrailerState.Data(trailerObject.getOrThrow()) }
                     else { TrailerState.Error }
                 }
             }
         }
 
-        getSimilarMovies(MovieID = media.id)
-        getProviderForMovies(MovieID = media.id)
-        getTrailerForMovies(MovieID = media.id)
+        getSimilarMovies(movieId = media.id)
+        getProviderForMovies(movieId = media.id)
+        getTrailerForMovies(movieId = media.id)
     }
 
     fun initPreview() {
@@ -128,8 +121,8 @@ class MovieViewModel() : ViewModel() {
 
         mutableProviderState.update {
             ProviderState.Data(
-                providerDataObject = mapOf<String,Result>(
-                    "DK" to Result(link = "", flatrate = listOf(Provider(logoPath = "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg", providerId=0, providerName = "Netflix")) )
+                providerDataObject = mapOf(
+                    "DK" to Result(link = "", flatrate = listOf(Provider(logoPath = "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg", providerId = 0, providerName = "Netflix")))
                 )
             )
         }
@@ -139,35 +132,29 @@ class MovieViewModel() : ViewModel() {
                 trailerObject = MediaDetailExample.TrailerObjectExample
             )
         }
-
     }
-
-
 }
 
 sealed class MovieState {
     data object Empty : MovieState()
-    data class Data(val mediaDetailObject: MovieDetailObject) : MovieState()
     data object Error : MovieState()
+    data class Data(val mediaDetailObject: MovieDetailObject) : MovieState()
 }
+
 sealed class SimilarMovieState {
-    object Empty : SimilarMovieState()
-    data class Data(val similarMoviesObject: List<MediaObject>) : SimilarMovieState()
+    data object Empty : SimilarMovieState()
     data object Error : SimilarMovieState()
+    data class Data(val similarMoviesObject: List<MediaObject>) : SimilarMovieState()
 }
 
 sealed class ProviderState {
-    object Empty : ProviderState()
-    data class Data(val providerDataObject: Map<String,Result>) : ProviderState()
+    data object Empty : ProviderState()
     data object Error : ProviderState()
+    data class Data(val providerDataObject: Map<String, Result>) : ProviderState()
 }
+
 sealed class TrailerState {
-    object Empty : TrailerState()
-    data class Data(val trailerObject: TrailerObject) : TrailerState()
+    data object Empty : TrailerState()
     data object Error : TrailerState()
-}
-sealed class WatchlistState {
-    data object Empty : WatchlistState()
-    data class Data(val mediaDetailObjects: MediaObject) : WatchlistState()
-    data object Error : WatchlistState()
+    data class Data(val trailerObject: TrailerObject) : TrailerState()
 }

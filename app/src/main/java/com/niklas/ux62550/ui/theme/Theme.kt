@@ -8,7 +8,7 @@ private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80,
-    background = Color_background,
+    background = BackgroundColor
 )
 
 @Composable
@@ -16,6 +16,6 @@ fun UX62550Theme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = DarkColorScheme,
         typography = Typography,
-        content = content,
+        content = content
     )
 }

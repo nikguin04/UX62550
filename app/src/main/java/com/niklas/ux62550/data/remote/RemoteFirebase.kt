@@ -11,11 +11,12 @@ import kotlinx.coroutines.tasks.await
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class FirebaseInstance { // We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
+// Firebase documentation has been used in this file
+// https://firebase.google.com/docs/firestore/query-data/get-data#kotlin_6
+// https://firebase.google.com/docs/firestore/manage-data/add-data
 
-    // firebase documentation has been used in this file
-    // https://firebase.google.com/docs/firestore/query-data/get-data#kotlin_6
-    // https://firebase.google.com/docs/firestore/manage-data/add-data
+// We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
+class FirebaseInstance {
     private val db = Firebase.firestore
 
     companion object {
@@ -24,38 +25,33 @@ class FirebaseInstance { // We need to make this an absolute singleton and not a
             if (instance == null) {
                 instance = FirebaseInstance()
             }
-            return instance.let { fb -> fb?.db }
+            return instance?.db
         }
-
     }
 }
 
 object RemoteFirebase {
-
     suspend fun getWatchList(mutableWatchListFlow: MutableSharedFlow<List<Int>?>) {
         // https://firebase.google.com/docs/firestore/manage-data/add-data
         try {
-            // if true then use the userId will be used else it will use the defult user
-            // in the real app there will be no defult user you need to sign in to used this function
-            var UserIdPath = "1NhBN640YoUdZq848o3C"
+            // if true then use the userId will be used else it will use the default user
+            // in the real app there will be no default user you need to sign in to used this function
+            var userId = "1NhBN640YoUdZq848o3C"
             if (FirebaseAuthController().getAuth().currentUser != null) {
-                UserIdPath = FirebaseAuthController().getAuth().uid.toString()
+                userId = FirebaseAuthController().getAuth().uid.toString()
             }
 
-
-            var document = FirebaseInstance.getDB()!!.collection("Watchlist").document(UserIdPath).get().await()
+            var document = FirebaseInstance.getDB()!!.collection("Watchlist").document(userId).get().await()
             val arrayData = document.data?.get("MovieIds") as List<*>
             val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
             mutableWatchListFlow.emit(intData)
-
-
         } catch (e: Exception) {
             Log.w("Firebase_info", "Error getting documents.", e)
             mutableWatchListFlow.emit(null)
         }
     }
 
-    //Help from chatGPT
+    // Help from ChatGPT
     suspend fun getReview(movieId: Int): Map<String, Double> {
         var totalMainRating = 0.0
         var totalActorRating = 0.0
@@ -69,8 +65,8 @@ object RemoteFirebase {
             if (document != null && document.isEmpty.not()) {
                 for (documents in document.documents) {
                     val mainRating = documents.get("MainRating") as Double
+                    @Suppress("UNCHECKED_CAST")
                     val ratings = documents.get("CategoryRatings") as Map<String, Double>
-
 
                     totalMainRating += mainRating
                     totalActorRating += ratings["Acting"] ?: 0.0
@@ -100,19 +96,20 @@ object RemoteFirebase {
             "Plot" to BigDecimal(averagePlotRating).setScale(1, RoundingMode.DOWN).toDouble()
         )
     }
+
     // https://firebase.google.com/docs/firestore/query-data/get-data#kotlin_6
-    suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean) {
-        val Watchlistlist = mapOf(
+    suspend fun updateToWatchList(data: MediaObject, remove: Boolean) {
+        val watchList = mapOf(
             "MovieIds" to listOf(data.id)
         )
-        // if true then use the userId will be used else it will use the defult user
-        // in the real app there will be no defult user you need to sign in to used this function
-        var UserIdPath = "1NhBN640YoUdZq848o3C"
+        // if true then use the userId will be used else it will use the default user
+        // in the real app there will be no default user you need to sign in to used this function
+        var userId = "1NhBN640YoUdZq848o3C"
         if (FirebaseAuthController().getAuth().currentUser != null) {
-            UserIdPath = FirebaseAuthController().getAuth().uid.toString()
+            userId = FirebaseAuthController().getAuth().uid.toString()
         }
 
-        val document = FirebaseFirestore.getInstance().collection("Watchlist").document(UserIdPath)
+        val document = FirebaseFirestore.getInstance().collection("Watchlist").document(userId)
 
         if (document.get().await().data != null) {
             document.update(
@@ -124,10 +121,8 @@ object RemoteFirebase {
                 }
             )
         } else {
-            document.set(Watchlistlist)
+            document.set(watchList)
         }
-
-
     }
 
     // https://firebase.google.com/docs/firestore/query-data/get-data#kotlin_6
@@ -135,18 +130,17 @@ object RemoteFirebase {
         try {
             // if true then use the userId will be used else it will use the default user
             // in the real app there will be no default user you need to sign in to used this function
-            var userIdPath = "1NhBN640YoUdZq848o3C"
+            var userId = "1NhBN640YoUdZq848o3C"
             if (FirebaseAuthController().getAuth().currentUser != null) {
-                userIdPath = FirebaseAuthController().getAuth().uid.toString()
+                userId = FirebaseAuthController().getAuth().uid.toString()
             }
 
             val document = FirebaseInstance.getDB()!!
-                .collection("UserData").document(userIdPath).get().await()
+                .collection("UserData").document(userId).get().await()
             val userName = document.data?.get("Name") as? String ?: "Default Name"
             val emailAddress = FirebaseAuthController().getAuth().currentUser?.email ?: "default@gmail.com"
 
             mutableUserFlow.emit(listOf(userName, emailAddress))
-
         } catch (e: Exception) {
             Log.w("Firebase_info", "Error getting documents.", e)
         }

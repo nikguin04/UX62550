@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,50 +45,32 @@ import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true)
-fun SearchPreview() {
-    UX62550Theme {
-
-        val viewModel: SearchViewModel = viewModel()
-        viewModel.initPreview()
-
-
-
-        Surface(modifier = Modifier.fillMaxSize()) {
-            SearchScreen(viewModel = viewModel, onNavigateToMedia = {})
-        }
-    }
-}
-
-@Composable
 fun SearchScreen(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modifier = Modifier, viewModel: SearchViewModel = viewModel()) {
-    val nonMoviesState = viewModel.nonMoviesState.collectAsState().value
     val moviesState = viewModel.movieItemsUIState.collectAsState().value
-    SearchContent(topModifier = topModifier, viewModel = viewModel, movieItemsUIState = moviesState, nonMovieBoxItemsUIState = nonMoviesState, onNavigateToMedia = onNavigateToMedia)
+    SearchContent(topModifier = topModifier, viewModel = viewModel, movieItemsUIState = moviesState, onNavigateToMedia = onNavigateToMedia)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun SearchContent(
     viewModel: SearchViewModel,
     movieItemsUIState: MovieItemsUIState,
-    nonMovieBoxItemsUIState: NonMovieBoxItemsUIState,
     onNavigateToMedia: (MediaObject) -> Unit,
     topModifier: Modifier = Modifier
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     var expanded by rememberSaveable { mutableStateOf(false) }
-    LazyColumn() {
-        item { Box (modifier=topModifier) }
+    LazyColumn {
+        item { Spacer(modifier = topModifier) }
         item {
             Row(
                 modifier = Modifier
-                    .padding(20.dp, 20.dp, 20.dp, 20.dp)
+                    .padding(20.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                // we used to exsample to get started on the searchBar
+                // We used the example to get started on the SearchBar
                 // androidx.compose.material3.samples.SearchBarSample
                 SearchBar(
                     inputField = {
@@ -112,7 +95,7 @@ fun SearchContent(
                                     contentDescription = "Search icon"
                                 )
                             },
-                                modifier = Modifier
+                            modifier = Modifier
                         )
                     },
 
@@ -121,21 +104,18 @@ fun SearchContent(
                     onExpandedChange = { expanded = it },
                     content = {},
                     modifier = Modifier
-                        .padding(0.dp, 0.dp, 0.dp, 20.dp)
+                        .padding(bottom = 20.dp)
                         .widthIn(max = 360.dp)
                 )
             }
         }
 
-
-
         when (movieItemsUIState) {
-            MovieItemsUIState.Empty -> {
+            is MovieItemsUIState.Empty -> {
                 item {
                     Box(
                         contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                        .fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
                             text = "No movies found",
@@ -146,9 +126,12 @@ fun SearchContent(
                     }
                 }
             }
+            is MovieItemsUIState.Error -> {
+                item { Text("Network error") }
+            }
             is MovieItemsUIState.Data -> {
-                val movieList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.media_type == "movie" }
-                val actorList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.media_type == "person" }
+                val movieList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.mediaType == "movie" }
+                val actorList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.mediaType == "person" }
 
                 item {
                     SectionHeader(title = "Movies")
@@ -167,14 +150,13 @@ fun SearchContent(
                                     .fillMaxWidth(0.7f)
                             )
                         }
-
                     }
                     MovieBoxRow(
                         movie = movieBoxItem,
-                        modifier = Modifier.clickable(
-                            onClick = { onNavigateToMedia(movieBoxItem) }
-                        ).padding(16.dp),
-                        infoRowModifier = Modifier.padding(start= 16.dp)
+                        modifier = Modifier
+                            .clickable { onNavigateToMedia(movieBoxItem) }
+                            .padding(16.dp),
+                        infoRowModifier = Modifier.padding(start = 16.dp)
                     )
                 }
 
@@ -182,7 +164,7 @@ fun SearchContent(
                     SectionHeader(title = "Actors")
                 }
                 itemsIndexed(actorList) { index, movieBoxItem ->
-                    if(index != 0){
+                    if (index != 0) {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.Center
@@ -200,13 +182,7 @@ fun SearchContent(
                     NonMovieBoxRow(person = movieBoxItem)
                 }
             }
-            is MovieItemsUIState.Error -> {
-                item {
-                    Text("Network error")
-                }
-            }
         }
-
     }
 }
 
@@ -240,5 +216,18 @@ fun SectionHeader(title: String) {
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(0.7f)
         )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun SearchPreview() {
+    UX62550Theme {
+        val viewModel: SearchViewModel = viewModel()
+        viewModel.initPreview()
+
+        Surface(modifier = Modifier.fillMaxSize()) {
+            SearchScreen(viewModel = viewModel, onNavigateToMedia = {})
+        }
     }
 }

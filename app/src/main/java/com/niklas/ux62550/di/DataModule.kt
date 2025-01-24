@@ -51,20 +51,16 @@ object DataModule {
 
     private val okHttpClient = OkHttpClient.Builder()
         .cache(cache)
-        .addInterceptor(ApiKeyInterceptor(BuildConfig.API_KEY)) // Add the interceptor
+        .addInterceptor(ApiKeyInterceptor(BuildConfig.API_KEY))
         .addInterceptor(loggingInterceptor)
         .addInterceptor(CacheInterceptor)
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .addConverterFactory(
-            json.asConverterFactory(CONTENT_TYPE.toMediaType())
-        )
+        .addConverterFactory(json.asConverterFactory(CONTENT_TYPE.toMediaType()))
         .baseUrl(BASE_URL)
         .client(okHttpClient)
         .build()
-
-
 
     private class ApiKeyInterceptor(private val apiKey: String) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
@@ -97,18 +93,18 @@ object DataModule {
     lateinit var reviewRepository: ReviewRepository
     lateinit var searchRepository: SearchRepository
     lateinit var watchListRepository: WatchListRepository
-    lateinit var profileRepository : ProfileRepository
-    
+    lateinit var profileRepository: ProfileRepository
+
     fun initialize() {
         castDetailsRepository = CastDetailsRepository(remoteDataSource = remoteMediaDataSource)
         discoverRepository = DiscoverRepository(remoteDataSource = remoteMediaDataSource)
         homeRepository = HomeRepository(remoteDataSource = remoteMediaDataSource)
         imageRepository = ImageRepository(remoteDataSource = remoteMediaDataSource)
-        mediaExtendedDetailsRepository = MediaExtendedDetailsRepository(remoteDataSource = remoteMediaDataSource, firebaseDataSource = remoteFirebaseDataSource)
+        mediaExtendedDetailsRepository = MediaExtendedDetailsRepository(remoteDataSource = remoteMediaDataSource)
         mediaDetailRepository = MediaDetailRepository(remoteDataSource = remoteMediaDataSource)
-        reviewRepository = ReviewRepository(firebaseDataSource = remoteFirebaseDataSource)
+        reviewRepository = ReviewRepository()
         searchRepository = SearchRepository(remoteDataSource = remoteMediaDataSource)
-        watchListRepository = WatchListRepository(remoteDataSource = remoteMediaDataSource, firebaseDataSource = remoteFirebaseDataSource)
-        profileRepository = ProfileRepository(remoteFirebaseDataSource)
+        watchListRepository = WatchListRepository(firebaseDataSource = remoteFirebaseDataSource)
+        profileRepository = ProfileRepository(firebaseDataSource = remoteFirebaseDataSource)
     }
 }

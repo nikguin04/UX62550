@@ -4,18 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.niklas.ux62550.data.model.GenreObject
-import com.niklas.ux62550.data.model.ImagesDataObject
 import com.niklas.ux62550.data.model.MediaObject
-import com.niklas.ux62550.data.remote.RemoteMediaDataSource
 import com.niklas.ux62550.di.DataModule
 import com.niklas.ux62550.domain.DiscoverKey
-import com.niklas.ux62550.domain.DiscoverRepository
-import com.niklas.ux62550.domain.common.KeyRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 
 class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
     private val discoverRepository = DataModule.discoverRepository
@@ -29,7 +24,6 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
         getDiscover(page = 1)
     }
 
-
     fun getDiscover(page: Int) {
         viewModelScope.launch {
             discoverRepository.getWithKey(
@@ -37,10 +31,10 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
                 getUnit = { (discoverRepository::getDiscoverMovies)(genreObject.id.toString(), page) },
                 scope = viewModelScope
             ).collect { searchDataObjectResult ->
-                // Append media_type before updating data
+                // Append mediaType before updating data
                 if (searchDataObjectResult.isSuccess) {
                     val searchDataObject = searchDataObjectResult.getOrThrow()
-                    searchDataObject.results.forEach { res -> res.media_type = "movie" }
+                    searchDataObject.results.forEach { res -> res.mediaType = "movie" }
                     // Either append to current data or make new data completely
                     when (discoverItemsState.value) {
                         is DiscoverItemsUIState.Data -> {
@@ -51,10 +45,10 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
                                 )
                             }
                         }
-                        DiscoverItemsUIState.Empty -> {
+                        is DiscoverItemsUIState.Empty -> {
                             mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
                         }
-                        DiscoverItemsUIState.Error -> {
+                        is DiscoverItemsUIState.Error -> {
                             mutableDiscoverItemsState.update { DiscoverItemsUIState.Data(searchDataObject.results) }
                         }
                     }
@@ -68,13 +62,13 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
 
 class DiscoverViewModelFactory(private val genreObject: GenreObject) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
         return DiscoverViewModel(genreObject) as T
     }
 }
 
 sealed class DiscoverItemsUIState {
     data object Empty : DiscoverItemsUIState()
-    data class Data(val mediaObjects: List<MediaObject>) : DiscoverItemsUIState()
     data object Error : DiscoverItemsUIState()
+    data class Data(val mediaObjects: List<MediaObject>) : DiscoverItemsUIState()
 }
-

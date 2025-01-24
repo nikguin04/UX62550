@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -34,23 +37,13 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.remote.FirebaseAuthController
 import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.theme.ButtonBlue
 import com.niklas.ux62550.ui.theme.RedColorGradient
-import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.TextFieldDescColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true, name = "Register preview")
-fun RegisterPreview() {
-    UX62550Theme {
-        Surface {
-            RegisterScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow =  {})
-        }
-    }
-}
-
-@Composable
-fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, topModifier: Modifier = Modifier, snackbarShow: (String) -> Unit) {
+fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, showSnackbar: (String) -> Unit, topModifier: Modifier = Modifier) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
@@ -58,27 +51,28 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
     Box(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Box(
             modifier = Modifier
-            .size(
-                    LocalConfiguration.current.screenWidthDp.dp,
-                    LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-                )
+                .fillMaxWidth()
+                .aspectRatio(3f / 2f)
                 .background(Brush.verticalGradient(colorStops = RedColorGradient))
         )
 
-
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Box (modifier=topModifier)
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = topModifier)
             Row(
-                modifier = Modifier.padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(0.dp, LocalConfiguration.current.screenWidthDp.dp / 4, 0.dp, 20.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                LogoBox(modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)), size = 200.dp)
+                LogoBox(size = 200.dp, modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(5)))
             }
             RegisterInputHolder(
                 usernameValue, emailValue, passValue, onNavigateToProfile,
-                snackbarShow = snackbarShow
+                showSnackbar = showSnackbar
             )
-
         }
 
         GeneralTopBar(navigateBack = navigateBack)
@@ -91,54 +85,60 @@ fun RegisterInputHolder(
     emailValue: MutableState<String>,
     passValue: MutableState<String>,
     onNavigateToProfile: (String) -> Unit,
-    snackbarShow: (String) -> Unit) {
-    Column {
+    showSnackbar: (String) -> Unit
+) {
+    Column(Modifier.padding(horizontal = 10.dp)) {
         TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp, 0.dp),
+            modifier = Modifier.fillMaxWidth(),
             value = usernameValue.value,
             onValueChange = { usernameValue.value = it },
-            label = { Text("Username") }
+            singleLine = true,
+            label = { Text("Username") },
+            placeholder = { Text("JohnDoe42") }
         )
         Text(
             text = "Please choose an appropriate username",
             color = TextFieldDescColor,
-            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+                .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
 
-        Box(Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp))
+        Spacer(Modifier.height(20.dp))
 
         TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp, 0.dp),
+            modifier = Modifier.fillMaxWidth(),
             value = emailValue.value,
             onValueChange = { emailValue.value = it },
-            label = { Text("Default@gmail.com") }
+            singleLine = true,
+            label = { Text("Email") },
+            placeholder = { Text("johndoe@example.com") }
         )
         Text(
             text = "Please choose your own email",
             color = TextFieldDescColor,
-            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+                .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
 
-        Box(Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp))
+        Spacer(Modifier.height(20.dp))
 
         TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp, 0.dp),
+            modifier = Modifier.fillMaxWidth(),
             value = passValue.value,
             onValueChange = { passValue.value = it },
+            singleLine = true,
             label = { Text("Password") }
         )
         Text(
             text = "Please choose a safe password",
             color = TextFieldDescColor,
-            modifier = Modifier.padding(10.dp, 4.dp).align(Alignment.Start),
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+                .align(Alignment.Start),
             style = TextStyle(fontSize = 12.sp, shadow = textShadow)
         )
 
@@ -148,18 +148,16 @@ fun RegisterInputHolder(
                     emailValue.value,
                     passValue.value,
                     usernameValue.value,
-                    onSuccess = { snackbarShow("Successfully registered") },
-                    onError = {snackbarShow("Failed to register")}
+                    onSuccess = { showSnackbar("Successfully registered") },
+                    onError = { showSnackbar("Failed to register") }
                 )
-                onNavigateToProfile("Register");
-
+                onNavigateToProfile("Register")
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = RegisterButtonBlue
+                containerColor = ButtonBlue
             ),
             modifier = Modifier
                 .size(145.dp, 45.dp)
-                .padding(10.dp, 0.dp)
                 .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
                 .align(Alignment.End)
         ) {
@@ -168,7 +166,16 @@ fun RegisterInputHolder(
                 color = Color.White,
                 style = TextStyle(fontSize = 20.sp, shadow = textShadow)
             )
+        }
+    }
+}
 
+@Composable
+@Preview(showBackground = true)
+fun RegisterPreview() {
+    UX62550Theme {
+        Surface {
+            RegisterScreen(navigateBack = {}, onNavigateToProfile = {}, showSnackbar = {})
         }
     }
 }

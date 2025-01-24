@@ -1,3 +1,5 @@
+package com.niklas.ux62550.ui.feature.popup
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,9 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AwardPopUp() {
+@OptIn(ExperimentalMaterial3Api::class)
+fun AwardPopup() {
     Row(
         modifier = Modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -42,7 +44,7 @@ fun AwardPopUp() {
             colorFilter = ColorFilter.tint(Color.Yellow),
             contentDescription = "Star icon"
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(Modifier.width(8.dp))
 
         Text("Awards...", color = AwardAndDetailRating)
         val sheetState = rememberModalBottomSheetState()
@@ -70,7 +72,6 @@ fun AwardPopUp() {
                     Row(
                         modifier = Modifier.padding(50.dp, 0.dp),
                         verticalAlignment = Alignment.CenterVertically
-
                     ) {
                         Text(
                             text = "Emmy ${2020 + i}",
@@ -79,9 +80,11 @@ fun AwardPopUp() {
                             color = Color.White
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(Modifier.height(4.dp))
                     HorizontalDivider(
-                        modifier = Modifier.width(300.dp).padding(50.dp, 0.dp),
+                        modifier = Modifier
+                            .width(300.dp)
+                            .padding(50.dp, 0.dp),
                         thickness = 0.5.dp,
                         color = Color.Gray
                     )

@@ -1,7 +1,5 @@
 package com.niklas.ux62550.ui.feature.review
 
-
-import ReviewViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -64,51 +62,34 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.math.roundToInt
 
 @Composable
-@Preview(showBackground = true)
-fun ReviewAndRatingPreview() {
-    UX62550Theme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {}, snackbarShow =  {})
-
-        }
-
-    }
-}
-
-@Composable
 fun ScreenReviewAndRating(
-    topModifier: Modifier = Modifier,
     media: MovieDetailObject,
-    navBack: () -> Unit,
-    snackbarShow: (String) -> Unit,
+    navigateBack: () -> Unit,
+    showSnackbar: (String) -> Unit,
+    topModifier: Modifier = Modifier,
     reviewViewModel: ReviewViewModel = viewModel()
 ) {
     val reviewState by reviewViewModel.reviewState.collectAsState()
 
     Box {
-        Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
-        ) {
+        Column(Modifier.verticalScroll(rememberScrollState())) {
             Header(modifier = topModifier, media = media, reviewViewModel = reviewViewModel)
 
-            PublishReview(stars = reviewState.rating,
+            PublishReview(
                 reviewText = reviewState.reviewText,
-                onRatingChange = { newRating -> reviewViewModel.updateRating(newRating) },
                 onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
                 onSubmit = {
-                    reviewViewModel.submitReview(mediaId = media.id, onSuccess = { snackbarShow("Successfully submitted review") }, onError = { snackbarShow("Failed to submit review") })
-                    navBack()
-                },
+                    reviewViewModel.submitReview(mediaId = media.id, onSuccess = { showSnackbar("Successfully submitted review") }, onError = { showSnackbar("Failed to submit review") })
+                    navigateBack()
+                }
             )
 
             MoreDetailedReview(reviewViewModel)
         }
 
-        GeneralTopBar(navigateBack = navBack)
+        GeneralTopBar(navigateBack = navigateBack)
     }
 }
-
-
 
 @Composable
 fun Header(
@@ -118,7 +99,8 @@ fun Header(
 ) {
     Box {
         MediaItem(
-            uri = media.backDropPath,
+            uri = media.backdropPath,
+            size = ImageSize.BACKDROP,
             modifier = Modifier
                 .fillMaxWidth()
                 .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
@@ -132,8 +114,7 @@ fun Header(
                         ),
                         blendMode = BlendMode.DstIn
                     )
-                },
-            size = ImageSize.BACKDROP
+                }
         )
         Column(modifier = modifier) {
             ReviewText()
@@ -142,7 +123,7 @@ fun Header(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(0.dp, 40.dp, 0.dp, 0.dp),
+                    .padding(top = 40.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
 
@@ -161,21 +142,16 @@ fun Header(
                         fontWeight = FontWeight.Bold
                     ),
                     color = Color.White,
-                    modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
+                    modifier = Modifier.padding(start = 4.dp)
                 )
-
             }
         }
     }
 }
 
-
-
 @Composable
 fun PublishReview(
-    stars: Float,
     reviewText: String,
-    onRatingChange: (Float) -> Unit,
     onReviewChange: (String) -> Unit,
     onSubmit: () -> Unit,
 ) {
@@ -208,18 +184,17 @@ fun PublishReview(
             contentAlignment = Alignment.Center
         ) {
             Button(
-                onClick =  {
-                    onSubmit()
-                },
+                onClick = onSubmit,
                 modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ReviewColor),
             ) {
-                Text("Publish",
+                Text(
+                    text = "Publish",
                     style = TextStyle(
-                        shadow = Shadow(
-                            color = Color.Black, blurRadius = 10f
-                        ),),
-                    color = Color.White)
+                        shadow = Shadow(blurRadius = 10f)
+                    ),
+                    color = Color.White
+                )
             }
         }
     }
@@ -258,27 +233,22 @@ fun MoreDetailedReview(reviewViewModel: ReviewViewModel) {
     }
 }
 
-
-
-
 @Composable
-    fun ReviewText() {
-        Text(
-            text = "Write a review for",
-            style = TextStyle(
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                shadow = Shadow(
-                    color = Color.Black, blurRadius = 2f
-                ),
-                textAlign = TextAlign.Center,
-                color = ReviewColor
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 120.dp, 0.dp, 0.dp)
-        )
-    }
+fun ReviewText() {
+    Text(
+        text = "Write a review for",
+        style = TextStyle(
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            shadow = Shadow(blurRadius = 2f),
+            textAlign = TextAlign.Center,
+            color = ReviewColor
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 120.dp)
+    )
+}
 
 @Composable
 fun TitleText(movieTitle: String) {
@@ -287,18 +257,16 @@ fun TitleText(movieTitle: String) {
         style = TextStyle(
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold,
-            shadow = Shadow(
-                color = Color.Black, blurRadius = 10f
-            ),
-            textAlign = TextAlign.Center,
+            shadow = Shadow(blurRadius = 10f),
+            textAlign = TextAlign.Center
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 5.dp, 0.dp, 0.dp)
+            .padding(top = 5.dp)
     )
 }
 
-//Used chat how to make stars bigger other places as a variable.
+// Used ChatGPT how to make stars bigger other places as a variable
 @Composable
 fun RatingStars(
     rating: Float,
@@ -322,21 +290,20 @@ fun RatingStars(
                         isHalfFilled -> Icons.AutoMirrored.Filled.StarHalf
                         else -> Icons.Outlined.StarOutline
                     },
-                    modifier = Modifier
-                        .requiredSize(starSize),
+                    modifier = Modifier.requiredSize(starSize),
                     colorFilter = ColorFilter.tint(
                         if (isFilled || isHalfFilled) Color.Yellow else Color.Gray
                     ),
                     contentDescription = "Star icon",
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(Modifier.width(4.dp))
             }
         }
 
         Slider(
-            modifier = Modifier.requiredSize(starSize*5, starSize),
+            modifier = Modifier.requiredSize(starSize * 5, starSize),
             value = 5f,
-            onValueChange = { currentRating = it.roundToInt().toFloat()/2; onRatingSelected(currentRating) },
+            onValueChange = { currentRating = it.roundToInt().toFloat() / 2; onRatingSelected(currentRating) },
             colors = SliderDefaults.colors(
                 thumbColor = Color.Transparent,
                 activeTrackColor = Color.Transparent,
@@ -350,7 +317,12 @@ fun RatingStars(
     }
 }
 
-
-
-
-
+@Composable
+@Preview(showBackground = true)
+fun ReviewAndRatingPreview() {
+    UX62550Theme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navigateBack = {}, showSnackbar = {})
+        }
+    }
+}

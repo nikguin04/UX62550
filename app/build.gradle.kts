@@ -105,8 +105,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
-
     // Firebase documentation
     // https://firebase.google.com/docs/auth/android/start
     // Import the Firebase BoM

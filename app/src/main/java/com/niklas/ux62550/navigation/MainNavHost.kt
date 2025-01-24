@@ -1,6 +1,5 @@
 package com.niklas.ux62550.navigation
 
-import android.util.Log
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,12 +26,11 @@ import com.niklas.ux62550.ui.feature.search.SearchScreen
 import com.niklas.ux62550.ui.feature.watchlist.WatchlistContent
 import com.niklas.ux62550.ui.feature.watchlist.WatchlistViewModel
 
-
 @Composable
 fun MainNavHost(
     navController: NavHostController,
     onRouteChanged: (Route) -> Unit,
-    snackbarShow: (String) -> Unit,
+    showSnackbar: (String) -> Unit,
     modifier: Modifier
 ) {
     NavHost(
@@ -82,10 +80,12 @@ fun MainNavHost(
                 navigateBack = navController::popBackStack,
                 onNavigateToReview = { mediaDetails ->
                     navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
-                    navController.navigate(Route.ReviewScreen) },
-                onNavigateToOtherMedia = { newmedia ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set("media", newmedia)
-                    navController.navigate(Route.MediaDetailsScreen) },
+                    navController.navigate(Route.ReviewScreen)
+                },
+                onNavigateToOtherMedia = { newMedia ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", newMedia)
+                    navController.navigate(Route.MediaDetailsScreen)
+                },
                 watchlistViewModel = watchlistViewModel
             )
         }
@@ -95,9 +95,9 @@ fun MainNavHost(
             LaunchedEffect(Unit) { onRouteChanged(it.toRoute<Route.ReviewScreen>()) }
             ScreenReviewAndRating(
                 topModifier = Modifier.statusBarsPadding(),
-                media = media?: MediaDetailExample.MediaDetailObjectExample,
-                navBack = navController::popBackStack,
-                snackbarShow = snackbarShow
+                media = media ?: MediaDetailExample.MediaDetailObjectExample,
+                navigateBack = navController::popBackStack,
+                showSnackbar = showSnackbar
             )
         }
 
@@ -116,7 +116,7 @@ fun MainNavHost(
                 topModifier = Modifier.statusBarsPadding(),
                 navigateBack = navController::popBackStack,
                 onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) },
-                snackbarShow = snackbarShow
+                showSnackbar = showSnackbar
             )
         }
 
@@ -126,7 +126,7 @@ fun MainNavHost(
                 topModifier = Modifier.statusBarsPadding(),
                 navigateBack = navController::popBackStack,
                 onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) },
-                snackbarShow = snackbarShow
+                showSnackbar = showSnackbar
             )
         }
 
@@ -168,7 +168,7 @@ fun NavHostController.navigateAndClearBackStack(route: Route) {
 
 private fun <T> getRelevantBackstackMedia(navController: NavHostController, name: String): T? {
     val toReturn =
-        navController.previousBackStackEntry?.savedStateHandle?.get<T>(name)?: // Current media when on screen
+        navController.previousBackStackEntry?.savedStateHandle?.get<T>(name) ?: // Current media when on screen
         navController.currentBackStackEntry?.savedStateHandle?.get<T>(name) // Current media when navigating back
     return toReturn
 }

@@ -1,7 +1,6 @@
 package com.niklas.ux62550.ui.feature.home
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,48 +28,27 @@ import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true)
-fun HomePreview() {
-    val mvm: HomeViewModel = viewModel()
-    mvm.initPreview()
-
-    UX62550Theme {
-        HomeScreen(onNavigateToMedia = {}, homeViewModel = mvm)
-        // TODO: perhaps split up the feature items and genre items into composables so we can preview them individually
-    }
-}
-
-@Preview
-@Composable
-fun HomeScreenErrorPreview() {
-    val homeViewModel: HomeViewModel = viewModel()
-    homeViewModel.initErrorPreview()
-
-    HomeScreen( homeViewModel = viewModel(), onNavigateToMedia = {} )
-}
-
-@Composable
 fun HomeScreen(
+    onNavigateToMedia: (MediaObject) -> Unit,
     topModifier: Modifier = Modifier,
-    homeViewModel: HomeViewModel = viewModel(),
-    onNavigateToMedia: (MediaObject) -> Unit
+    homeViewModel: HomeViewModel = viewModel()
 ) {
     val mediaItemsUIState: MediaItemsUIState = homeViewModel.mediaItemsState.collectAsState().value
     val movieGenresDataState: GenresDataState = homeViewModel.movieGenresState.collectAsState().value
     when (mediaItemsUIState) {
-        MediaItemsUIState.Empty -> {
+        is MediaItemsUIState.Empty -> {
             LoadingScreen()
+        }
+        is MediaItemsUIState.Error -> {
+            Text("Network error")
         }
         is MediaItemsUIState.Data -> {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-                Box(modifier=topModifier)
+                Spacer(modifier = topModifier)
                 HomeWelcomeTopBar()
                 FeaturedMediaScroller(mediaItemsUIState.mediaObjects, onNavigateToMedia)
                 GenreMediaStack(movieGenresDataState, onNavigateToMedia)
             }
-        }
-        is MediaItemsUIState.Error -> {
-            Text(text = "Network error")
         }
     }
 }
@@ -79,7 +57,9 @@ fun HomeScreen(
 fun HomeWelcomeTopBar(modifier: Modifier = Modifier) {
     Row(
         // TODO: nicer padding values? what about 30 all-around?
-        modifier.fillMaxWidth().padding(32.dp, 32.dp, 0.dp, 38.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(32.dp, 32.dp, 0.dp, 38.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -103,10 +83,12 @@ fun FeaturedMediaScroller(featuredMedia: List<MediaObject>, onNavigateToMedia: (
 @Composable
 fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (MediaObject) -> Unit) {
     when (movieGenresDataState) {
-        GenresDataState.Empty -> {
+        is GenresDataState.Empty -> {
             // TODO: We should make a loading screen for all the genres, so that they are only displayed when ALL genre fetching is done. Async image loading may be neglected from said fetching
         }
-
+        is GenresDataState.Error -> {
+            Text("Network error")
+        }
         is GenresDataState.Data -> {
             for (genre in movieGenresDataState.genres) {
                 DiscoverSlider(
@@ -117,8 +99,28 @@ fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (M
             }
             Spacer(Modifier.height(20.dp))
         }
-        is GenresDataState.Error -> {
-            Text(text = "Network error")
-        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun HomePreview() {
+    val homeViewModel: HomeViewModel = viewModel()
+    homeViewModel.initPreview()
+
+    UX62550Theme {
+        HomeScreen(onNavigateToMedia = {}, homeViewModel = homeViewModel)
+        // TODO: perhaps split up the feature items and genre items into composables so we can preview them individually
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun HomeScreenErrorPreview() {
+    val homeViewModel: HomeViewModel = viewModel()
+    homeViewModel.initErrorPreview()
+
+    UX62550Theme {
+        HomeScreen(onNavigateToMedia = {})
     }
 }

@@ -1,15 +1,18 @@
 package com.niklas.ux62550.ui.feature.profile
 
-import DrawCircle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -33,7 +36,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,35 +43,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.remote.FirebaseAuthController
-import com.niklas.ux62550.ui.theme.LoginButtonGray
+import com.niklas.ux62550.ui.feature.common.DrawCircle
+import com.niklas.ux62550.ui.theme.ButtonGray
+import com.niklas.ux62550.ui.theme.PlaceholderIconColor
 import com.niklas.ux62550.ui.theme.RedColorGradient
+import com.niklas.ux62550.ui.theme.StarYellow
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import com.niklas.ux62550.ui.theme.placeholderIconColor
-import com.niklas.ux62550.ui.theme.starYellow
 
-@Composable
-@Preview(showBackground = true)
-fun ProfilePreview() {
-    UX62550Theme {
-        Surface {
-            ProfileScreen(onNavigateToLoginRegister = {})
-        }
-    }
-}
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, topModifier: Modifier = Modifier) {
-    when(val profile = viewModel.profileState.collectAsState().value){
-        UserData.Empty -> {
-
-        }
+    when (val profile = viewModel.profileState.collectAsState().value) {
+        UserData.Empty -> {}
+        UserData.Error -> {}
         is UserData.Data -> {
             ProfileContent(profile = profile, onNavigateToLoginRegister = onNavigateToLoginRegister, topModifier = topModifier)
         }
-        UserData.Error -> {
-
-        }
     }
 }
+
 @Composable
 fun ProfileContent(
     onNavigateToLoginRegister: (String) -> Unit,
@@ -82,18 +73,18 @@ fun ProfileContent(
 
     Box(
         modifier = Modifier
-            .size(
-                LocalConfiguration.current.screenWidthDp.dp,
-                LocalConfiguration.current.screenWidthDp.dp / 3 * 2
-            )
+            .fillMaxWidth()
+            .aspectRatio(3f / 2f)
             .background(Brush.verticalGradient(colorStops = RedColorGradient))
     )
 
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(modifier = topModifier.size(0.dp, 70.dp))
+        Spacer(topModifier.height(70.dp))
 
         // Profile name and picture
         Row(
@@ -104,17 +95,16 @@ fun ProfileContent(
         ) {
             Column {
                 Box {
-                    DrawCircle(Modifier.size(105.dp), color = placeholderIconColor)
+                    DrawCircle(PlaceholderIconColor, Modifier.size(105.dp))
 
                     Box(Modifier.padding(((105 - 26) / 2).dp)) {
                         Icon(
                             imageVector = Icons.Outlined.AddCircleOutline,
                             contentDescription = null,
-                            Modifier.size(26.dp),
-                            Color.Black
+                            modifier = Modifier.size(26.dp),
+                            tint = Color.Black
                         )
                     }
-
                 }
 
                 Text(
@@ -122,40 +112,40 @@ fun ProfileContent(
                     style = TextStyle(fontSize = 12.sp, shadow = textShadow),
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .padding(0.dp, 4.dp, 0.dp, 0.dp)
+                        .padding(top = 4.dp)
                 )
             }
         }
 
         // Your top rated movies??
-        Box(Modifier.size(0.dp, 30.dp))
+        Spacer(Modifier.height(30.dp))
         Text(
             text = "Your Top Rated Movies",
             style = TextStyle(fontSize = 20.sp, shadow = textShadow),
             modifier = Modifier
-                .padding(18.dp, 0.dp, 0.dp, 0.dp)
+                .padding(start = 18.dp)
                 .align(Alignment.Start)
         )
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(0.dp, 12.dp, 0.dp, 0.dp),
+                .padding(top = 12.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "Red: The Movie",
                 style = TextStyle(fontSize = 12.sp, shadow = textShadow),
-                modifier = Modifier.padding(18.dp, 0.dp, 0.dp, 0.dp)
+                modifier = Modifier.padding(start = 18.dp)
             )
-            Box(Modifier.size(13.dp, 0.dp))
-            for (i in 0..4) {
+            Spacer(Modifier.width(13.dp))
+            repeat (5) {
                 Icon(
                     modifier = Modifier.size(18.dp),
                     imageVector = Icons.Filled.Star,
                     contentDescription = null,
-                    tint = starYellow
+                    tint = StarYellow
                 )
             }
             Text(
@@ -165,35 +155,35 @@ fun ProfileContent(
                     shadow = textShadow,
                     fontWeight = FontWeight.Bold
                 ),
-                modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)
+                modifier = Modifier.padding(start = 4.dp)
             )
         }
 
         // Profile data
-        Box(Modifier.size(0.dp, 30.dp))
+        Spacer(Modifier.height(30.dp))
         ProfileAttribute("Display Name", nameValueTemp)
-        Box(Modifier.size(0.dp, 17.dp))
+        Spacer(Modifier.height(17.dp))
         ProfileAttribute("Email", emailValueTemp)
-        Box(Modifier.size(0.dp, 110.dp))
+        Spacer(Modifier.height(110.dp))
         ProfileAttribute("Password", passwordValueTemp)
 
-            Box(Modifier.size(0.dp, 20.dp))
-            Button(
-                onClick = { FirebaseAuthController().logout(); onNavigateToLoginRegister("Sign out") },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = LoginButtonGray
-                ),
-                modifier = Modifier
-                    .size(145.dp, 45.dp)
-                    .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
-            ) {
-                Text(
-                    text = "Sign out",
-                    color = Color.White,
-                    style = TextStyle(fontSize = 20.sp, shadow = textShadow)
-                )
-            }
+        Spacer(Modifier.height(20.dp))
 
+        Button(
+            onClick = { FirebaseAuthController().logOut(); onNavigateToLoginRegister("Sign out") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = ButtonGray
+            ),
+            modifier = Modifier
+                .size(145.dp, 45.dp)
+                .shadow(elevation = 4.dp, shape = ButtonDefaults.shape)
+        ) {
+            Text(
+                text = "Sign out",
+                color = Color.White,
+                style = TextStyle(fontSize = 20.sp, shadow = textShadow)
+            )
+        }
     }
 }
 
@@ -203,39 +193,47 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
         Column(Modifier.padding(horizontal = 20.dp)) {
             Box(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color.Gray)
                     .padding(6.dp)
                     .shadow(
                         elevation = 15.dp,
-                        shape = RoundedCornerShape(8.dp),
-                        ambientColor = Color.Black.copy(alpha = 255f),
-                        spotColor = Color.Black.copy(alpha = 255f)
+                        shape = RoundedCornerShape(8.dp)
                     )
-                    .fillMaxWidth()
             ) {
                 Text(
-                    label,
-                    style =TextStyle(
+                    text = label,
+                    style = TextStyle(
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
-                        shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                        shadow = Shadow(blurRadius = 5f)
                     ),
                     modifier = Modifier.padding(start = 10.dp)
                 )
                 Text(
                     text = value.value,
-                    style =TextStyle(
+                    style = TextStyle(
                         fontSize = 18.sp,
                         color = Color.White,
-                        shadow = Shadow(color = Color.Black, blurRadius = 5.0f)
+                        shadow = Shadow(blurRadius = 5f)
                     ),
                     modifier = Modifier
                         .padding(start = 10.dp, top = 10.dp)
                         .align(Alignment.CenterStart)
                 )
             }
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ProfilePreview() {
+    UX62550Theme {
+        Surface {
+            ProfileScreen(onNavigateToLoginRegister = {})
         }
     }
 }
