@@ -43,16 +43,6 @@ import com.niklas.ux62550.ui.theme.TextFieldDescColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true, name = "Register preview")
-fun RegisterPreview() {
-    UX62550Theme {
-        Surface {
-            RegisterScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow = {})
-        }
-    }
-}
-
-@Composable
 fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit, topModifier: Modifier = Modifier) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
@@ -171,6 +161,16 @@ fun RegisterInputHolder(
                 color = Color.White,
                 style = TextStyle(fontSize = 20.sp, shadow = textShadow)
             )
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun RegisterPreview() {
+    UX62550Theme {
+        Surface {
+            RegisterScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow = {})
         }
     }
 }

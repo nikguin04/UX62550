@@ -43,20 +43,6 @@ import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 
 @Composable
-@Preview
-fun PreviewActorsAndDirectors() {
-    val creditState = CreditState.Data(
-        creditObject = CreditObject(
-            cast = listOf(
-                Cast(castName = "Name 1", castProfilePath = "/asd.jpg", character = "Character 1")
-            ),
-            crew = listOf()
-        )
-    )
-    ActorsAndDirectors(creditState = creditState)
-}
-
-@Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun ActorsAndDirectors(creditState: CreditState.Data, modifier: Modifier = Modifier) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
@@ -186,4 +172,18 @@ fun CrewRow(crew: Crew, modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+@Composable
+@Preview
+fun PreviewActorsAndDirectors() {
+    val creditState = CreditState.Data(
+        creditObject = CreditObject(
+            cast = listOf(
+                Cast(castName = "Dwayne Johnson", castProfilePath = "/5QApZVV8FUFlVxQpIK3Ew6cqotq.jpg", character = "Character 1")
+            ),
+            crew = listOf()
+        )
+    )
+    ActorsAndDirectors(creditState = creditState)
 }

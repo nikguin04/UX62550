@@ -28,27 +28,6 @@ import com.niklas.ux62550.ui.feature.loadingscreen.LoadingScreen
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true)
-fun HomePreview() {
-    val mvm: HomeViewModel = viewModel()
-    mvm.initPreview()
-
-    UX62550Theme {
-        HomeScreen(onNavigateToMedia = {}, homeViewModel = mvm)
-        // TODO: perhaps split up the feature items and genre items into composables so we can preview them individually
-    }
-}
-
-@Composable
-@Preview
-fun HomeScreenErrorPreview() {
-    val homeViewModel: HomeViewModel = viewModel()
-    homeViewModel.initErrorPreview()
-
-    HomeScreen(homeViewModel = viewModel(), onNavigateToMedia = {})
-}
-
-@Composable
 fun HomeScreen(
     onNavigateToMedia: (MediaObject) -> Unit,
     topModifier: Modifier = Modifier,
@@ -120,5 +99,28 @@ fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (M
         is GenresDataState.Error -> {
             Text("Network error")
         }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun HomePreview() {
+    val mvm: HomeViewModel = viewModel()
+    mvm.initPreview()
+
+    UX62550Theme {
+        HomeScreen(onNavigateToMedia = {}, homeViewModel = mvm)
+        // TODO: perhaps split up the feature items and genre items into composables so we can preview them individually
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun HomeScreenErrorPreview() {
+    val homeViewModel: HomeViewModel = viewModel()
+    homeViewModel.initErrorPreview()
+
+    UX62550Theme {
+        HomeScreen(onNavigateToMedia = {})
     }
 }

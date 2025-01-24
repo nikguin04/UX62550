@@ -30,16 +30,6 @@ import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true)
-fun WatchlistPreview() {
-    UX62550Theme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-//            WatchlistScreen(onNavigateToMedia = {})
-        }
-    }
-}
-
-@Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun WatchlistContent(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modifier = Modifier, watchlistViewModel: WatchlistViewModel = viewModel()) {
     Column(
@@ -97,6 +87,16 @@ fun WatchlistContent(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modi
             is MovieIds.Error -> {
                 Text("Network Error")
             }
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun WatchlistPreview() {
+    UX62550Theme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            WatchlistContent(onNavigateToMedia = {})
         }
     }
 }

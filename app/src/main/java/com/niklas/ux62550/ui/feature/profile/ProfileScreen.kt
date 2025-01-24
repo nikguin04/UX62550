@@ -51,15 +51,6 @@ import com.niklas.ux62550.ui.theme.placeholderIconColor
 import com.niklas.ux62550.ui.theme.starYellow
 
 @Composable
-@Preview(showBackground = true)
-fun ProfilePreview() {
-    UX62550Theme {
-        Surface {
-            ProfileScreen(onNavigateToLoginRegister = {})
-        }
-    }
-}
-@Composable
 fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, topModifier: Modifier = Modifier) {
     when (val profile = viewModel.profileState.collectAsState().value) {
         UserData.Empty -> {}
@@ -233,6 +224,16 @@ fun ProfileAttribute(label: String, value: MutableState<String>) {
                         .align(Alignment.CenterStart)
                 )
             }
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ProfilePreview() {
+    UX62550Theme {
+        Surface {
+            ProfileScreen(onNavigateToLoginRegister = {})
         }
     }
 }

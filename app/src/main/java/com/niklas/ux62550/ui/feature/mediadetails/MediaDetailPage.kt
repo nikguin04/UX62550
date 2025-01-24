@@ -76,22 +76,6 @@ import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
-@Preview(showBackground = true)
-fun MediaDetailPagePreview() {
-    val movieViewModel: MovieViewModel = viewModel()
-    movieViewModel.initPreview()
-
-    val creditsViewModel: CreditViewModel = viewModel()
-    creditsViewModel.initPreview()
-
-    UX62550Theme {
-        Surface {
-            MediaDetailsScreen(movieViewModel = movieViewModel, creditsViewModel = creditsViewModel, navigateBack = {}, onNavigateToOtherMedia = {}, onNavigateToReview = {})
-        }
-    }
-}
-
-@Composable
 fun MediaDetailsScreen(
     movieViewModel: MovieViewModel,
     creditsViewModel: CreditViewModel,
@@ -340,5 +324,21 @@ fun BookmarkButton(media: MediaObject, movieViewModel: MovieViewModel, watchlist
             imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
             contentDescription = "Bookmark"
         )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun MediaDetailPagePreview() {
+    val movieViewModel: MovieViewModel = viewModel()
+    movieViewModel.initPreview()
+
+    val creditsViewModel: CreditViewModel = viewModel()
+    creditsViewModel.initPreview()
+
+    UX62550Theme {
+        Surface {
+            MediaDetailsScreen(movieViewModel = movieViewModel, creditsViewModel = creditsViewModel, navigateBack = {}, onNavigateToOtherMedia = {}, onNavigateToReview = {})
+        }
     }
 }

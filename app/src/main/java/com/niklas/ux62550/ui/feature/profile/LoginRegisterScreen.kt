@@ -37,26 +37,6 @@ import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true, device = "spec:width=411dp,height=700dp")
-fun LoginRegisterPreview() {
-    UX62550Theme {
-        Surface {
-            LoginRegisterScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
-        }
-    }
-}
-
-@Composable
-@Preview(showBackground = true, device = "spec:width=300dp,height=500dp")
-fun LoginRegisterPreviewSmall() {
-    UX62550Theme {
-        Surface {
-            LoginRegisterScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
-        }
-    }
-}
-
-@Composable
 fun LoginRegisterScreen(
     onNavigateToLoginScreen: (String) -> Unit,
     onNavigateToRegisterScreen: (String) -> Unit,
@@ -119,5 +99,16 @@ fun LoginRegisterScreen(
         }
 
         Spacer(Modifier.height(140.dp))
+    }
+}
+
+@Composable
+@Preview(showBackground = true, device = "spec:width=411dp,height=700dp")
+@Preview(showBackground = true, device = "spec:width=300dp,height=500dp", name = "Small")
+fun LoginRegisterPreview() {
+    UX62550Theme {
+        Surface {
+            LoginRegisterScreen(onNavigateToLoginScreen = {}, onNavigateToRegisterScreen = {})
+        }
     }
 }

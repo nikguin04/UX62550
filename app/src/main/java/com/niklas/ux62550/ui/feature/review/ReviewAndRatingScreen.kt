@@ -62,16 +62,6 @@ import com.niklas.ux62550.ui.theme.UX62550Theme
 import kotlin.math.roundToInt
 
 @Composable
-@Preview(showBackground = true)
-fun ReviewAndRatingPreview() {
-    UX62550Theme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {}, snackbarShow = {})
-        }
-    }
-}
-
-@Composable
 fun ScreenReviewAndRating(
     media: MovieDetailObject,
     navBack: () -> Unit,
@@ -323,5 +313,15 @@ fun RatingStars(
             steps = 10,
             valueRange = 0f..10f
         )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ReviewAndRatingPreview() {
+    UX62550Theme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {}, snackbarShow = {})
+        }
     }
 }

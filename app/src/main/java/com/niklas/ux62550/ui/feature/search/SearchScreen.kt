@@ -45,19 +45,6 @@ import com.niklas.ux62550.ui.theme.SearchColorForText
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-@Preview(showBackground = true)
-fun SearchPreview() {
-    UX62550Theme {
-        val viewModel: SearchViewModel = viewModel()
-        viewModel.initPreview()
-
-        Surface(modifier = Modifier.fillMaxSize()) {
-            SearchScreen(viewModel = viewModel, onNavigateToMedia = {})
-        }
-    }
-}
-
-@Composable
 fun SearchScreen(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modifier = Modifier, viewModel: SearchViewModel = viewModel()) {
     val moviesState = viewModel.movieItemsUIState.collectAsState().value
     SearchContent(topModifier = topModifier, viewModel = viewModel, movieItemsUIState = moviesState, onNavigateToMedia = onNavigateToMedia)
@@ -227,5 +214,18 @@ fun SectionHeader(title: String) {
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(0.7f)
         )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun SearchPreview() {
+    UX62550Theme {
+        val viewModel: SearchViewModel = viewModel()
+        viewModel.initPreview()
+
+        Surface(modifier = Modifier.fillMaxSize()) {
+            SearchScreen(viewModel = viewModel, onNavigateToMedia = {})
+        }
     }
 }
