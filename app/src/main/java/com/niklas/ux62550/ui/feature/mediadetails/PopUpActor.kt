@@ -46,6 +46,9 @@ import com.niklas.ux62550.ui.feature.common.CreditViewModel
 import com.niklas.ux62550.ui.feature.common.ImageSize
 import com.niklas.ux62550.ui.feature.common.MediaItem
 
+
+//Used this website for bottomsheets
+//https://www.geeksforgeeks.org/android-bottomsheet-example-in-kotlin/
 @Composable
 @Preview
 fun PreviewActorsAndDirectors() {
