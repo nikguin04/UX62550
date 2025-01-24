@@ -48,7 +48,7 @@ fun DiscoverSlider(discoverViewModel: DiscoverViewModel, headerTitle: String, on
             lastVisibleItem?.index != 0 && lastVisibleItem?.index == listState.layoutInfo.totalItemsCount - buffer
         }
     }
-    // Load more if scrolled to bottom
+    // Load more if scrolled to bottom - taken from https://medium.com/@giorgos.patronas1/endless-scrolling-in-android-with-jetpack-compose-af1f55a03d1a
     LaunchedEffect(reachedBottom) {
         if (reachedBottom) {
             discoverViewModel.getDiscover(discoverViewModel.lastPage + 1)
