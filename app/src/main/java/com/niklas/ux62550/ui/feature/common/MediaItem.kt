@@ -325,6 +325,7 @@ fun debugPlaceholder(@DrawableRes debugPreview: Int) = painterResource(
     }
 )
 
+// ChatGPT: Animation generated partially and expended on by ourselves
 @Composable
 fun AnimatedImagePlaceholder(animationProgress: State<Float>, modifier: Modifier = Modifier) {
     // Placeholder with animated cross-fading gradients

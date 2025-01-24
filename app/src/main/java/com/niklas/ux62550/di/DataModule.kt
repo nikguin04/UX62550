@@ -33,6 +33,7 @@ object DataModule {
         ignoreUnknownKeys = true
     }
 
+    // ChatGPT: Recommended caching in this way
     private val cacheSize = 25L * 1024 * 1024 // 25 MB
     private val cache = Cache(File("http_cache"), cacheSize)
     private val CacheInterceptor = Interceptor { chain ->
