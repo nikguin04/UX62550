@@ -35,6 +35,7 @@ $1
 And just write the type (this could be made so you don't even need to type @SerialName but i cant be arsed)
  */
 
+// ChatGPT: Recommended Parcelize
 @Parcelize
 @Serializable
 data class MediaObject(
