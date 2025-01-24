@@ -45,6 +45,10 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.model.MovieDetailObject
 import com.niklas.ux62550.ui.theme.ReviewColor
 
+
+
+//Used this website for bottomsheets
+//https://www.geeksforgeeks.org/android-bottomsheet-example-in-kotlin/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailedRating(
