@@ -39,7 +39,7 @@ class ReviewViewModel : ViewModel() {
         )
 
         viewModelScope.launch {
-            reviewRepository.addReivewToFirebase(review = review, onSuccess = onSuccess, onError = onError)
+            reviewRepository.addReviewToFirebase(review = review, onSuccess = onSuccess, onError = onError)
         }
     }
 

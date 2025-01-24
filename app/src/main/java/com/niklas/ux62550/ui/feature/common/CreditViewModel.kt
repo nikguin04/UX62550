@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 class CreditViewModel : ViewModel() {
     private val creditDetailsRepository = DataModule.castDetailsRepository
 
-    private fun getCredit(movieID: Int) = viewModelScope.launch {
-        creditDetailsRepository.getCredits(movieID) // TODO: Don't hardcore this, get some proper featured films
+    private fun getCredit(movieId: Int) = viewModelScope.launch {
+        creditDetailsRepository.getCredits(movieId) // TODO: Don't hardcore this, get some proper featured films
     }
 
     private val mutableCreditState = MutableStateFlow<CreditState>(CreditState.Empty)
@@ -30,14 +30,14 @@ class CreditViewModel : ViewModel() {
 
     fun init(media: MediaObject) {
         viewModelScope.launch {
-            creditDetailsRepository.creditFlow.collect { creditDetailObject ->
+            creditDetailsRepository.creditsFlow.collect { creditDetailObject ->
                 mutableCreditState.update {
                     if (creditDetailObject.isSuccess) { CreditState.Data(creditDetailObject.getOrThrow()) }
                     else { CreditState.Error }
                 }
             }
         }
-        getCredit(movieID = media.id)
+        getCredit(movieId = media.id)
     }
 }
 

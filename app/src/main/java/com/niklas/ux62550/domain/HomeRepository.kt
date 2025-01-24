@@ -11,8 +11,8 @@ class HomeRepository(
 ) {
     private val mutableFeaturedMediaFlow = MutableSharedFlow<Result<SearchDataObject>>()
     val featuredMediaFlow = mutableFeaturedMediaFlow.asSharedFlow()
-    suspend fun getTrending(time_window: String = "day") = mutableFeaturedMediaFlow.emit(
-        try { Result.success(remoteDataSource.getTrending(time_window)) }
+    suspend fun getTrending(timeWindow: String = "day") = mutableFeaturedMediaFlow.emit(
+        try { Result.success(remoteDataSource.getTrending(timeWindow)) }
         catch (e: Exception) { Result.failure(e) }
     )
 

@@ -30,7 +30,7 @@ import com.niklas.ux62550.ui.feature.watchlist.WatchlistViewModel
 fun MainNavHost(
     navController: NavHostController,
     onRouteChanged: (Route) -> Unit,
-    snackbarShow: (String) -> Unit,
+    showSnackbar: (String) -> Unit,
     modifier: Modifier
 ) {
     NavHost(
@@ -82,8 +82,8 @@ fun MainNavHost(
                     navController.currentBackStackEntry?.savedStateHandle?.set("reviewMedia", mediaDetails)
                     navController.navigate(Route.ReviewScreen)
                 },
-                onNavigateToOtherMedia = { newmedia ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set("media", newmedia)
+                onNavigateToOtherMedia = { newMedia ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("media", newMedia)
                     navController.navigate(Route.MediaDetailsScreen)
                 },
                 watchlistViewModel = watchlistViewModel
@@ -96,8 +96,8 @@ fun MainNavHost(
             ScreenReviewAndRating(
                 topModifier = Modifier.statusBarsPadding(),
                 media = media ?: MediaDetailExample.MediaDetailObjectExample,
-                navBack = navController::popBackStack,
-                snackbarShow = snackbarShow
+                navigateBack = navController::popBackStack,
+                showSnackbar = showSnackbar
             )
         }
 
@@ -116,7 +116,7 @@ fun MainNavHost(
                 topModifier = Modifier.statusBarsPadding(),
                 navigateBack = navController::popBackStack,
                 onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) },
-                snackbarShow = snackbarShow
+                showSnackbar = showSnackbar
             )
         }
 
@@ -126,7 +126,7 @@ fun MainNavHost(
                 topModifier = Modifier.statusBarsPadding(),
                 navigateBack = navController::popBackStack,
                 onNavigateToProfile = { navController.navigateAndClearBackStack(Route.ProfileScreen) },
-                snackbarShow = snackbarShow
+                showSnackbar = showSnackbar
             )
         }
 

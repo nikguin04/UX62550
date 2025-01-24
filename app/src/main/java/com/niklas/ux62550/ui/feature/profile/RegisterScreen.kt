@@ -37,13 +37,13 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.remote.FirebaseAuthController
 import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.theme.ButtonBlue
 import com.niklas.ux62550.ui.theme.RedColorGradient
-import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.TextFieldDescColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit, topModifier: Modifier = Modifier) {
+fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, showSnackbar: (String) -> Unit, topModifier: Modifier = Modifier) {
     var usernameValue = remember { mutableStateOf("") }
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
@@ -71,7 +71,7 @@ fun RegisterScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Un
             }
             RegisterInputHolder(
                 usernameValue, emailValue, passValue, onNavigateToProfile,
-                snackbarShow = snackbarShow
+                showSnackbar = showSnackbar
             )
         }
 
@@ -85,7 +85,7 @@ fun RegisterInputHolder(
     emailValue: MutableState<String>,
     passValue: MutableState<String>,
     onNavigateToProfile: (String) -> Unit,
-    snackbarShow: (String) -> Unit
+    showSnackbar: (String) -> Unit
 ) {
     Column(Modifier.padding(horizontal = 10.dp)) {
         TextField(
@@ -148,13 +148,13 @@ fun RegisterInputHolder(
                     emailValue.value,
                     passValue.value,
                     usernameValue.value,
-                    onSuccess = { snackbarShow("Successfully registered") },
-                    onError = { snackbarShow("Failed to register") }
+                    onSuccess = { showSnackbar("Successfully registered") },
+                    onError = { showSnackbar("Failed to register") }
                 )
                 onNavigateToProfile("Register")
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = RegisterButtonBlue
+                containerColor = ButtonBlue
             ),
             modifier = Modifier
                 .size(145.dp, 45.dp)
@@ -175,7 +175,7 @@ fun RegisterInputHolder(
 fun RegisterPreview() {
     UX62550Theme {
         Surface {
-            RegisterScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow = {})
+            RegisterScreen(navigateBack = {}, onNavigateToProfile = {}, showSnackbar = {})
         }
     }
 }

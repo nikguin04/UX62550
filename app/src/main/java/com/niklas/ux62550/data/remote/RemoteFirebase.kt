@@ -31,12 +31,12 @@ object RemoteFirebase {
         try {
             // if true then use the userId will be used else it will use the default user
             // in the real app there will be no default user you need to sign in to used this function
-            var UserIdPath = "1NhBN640YoUdZq848o3C"
+            var userId = "1NhBN640YoUdZq848o3C"
             if (FirebaseAuthController().getAuth().currentUser != null) {
-                UserIdPath = FirebaseAuthController().getAuth().uid.toString()
+                userId = FirebaseAuthController().getAuth().uid.toString()
             }
 
-            var document = FirebaseInstance.getDB()!!.collection("Watchlist").document(UserIdPath).get().await()
+            var document = FirebaseInstance.getDB()!!.collection("Watchlist").document(userId).get().await()
             Log.d("Firebase_info", "${document.id} => ${document.data}")
             val arrayData = document.data?.get("MovieIds") as List<*>
             val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
@@ -93,18 +93,18 @@ object RemoteFirebase {
         )
     }
 
-    suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean) {
-        val Watchlistlist = mapOf(
+    suspend fun updateToWatchList(data: MediaObject, remove: Boolean) {
+        val watchList = mapOf(
             "MovieIds" to listOf(data.id)
         )
         // if true then use the userId will be used else it will use the default user
         // in the real app there will be no default user you need to sign in to used this function
-        var UserIdPath = "1NhBN640YoUdZq848o3C"
+        var userId = "1NhBN640YoUdZq848o3C"
         if (FirebaseAuthController().getAuth().currentUser != null) {
-            UserIdPath = FirebaseAuthController().getAuth().uid.toString()
+            userId = FirebaseAuthController().getAuth().uid.toString()
         }
 
-        val document = FirebaseFirestore.getInstance().collection("Watchlist").document(UserIdPath)
+        val document = FirebaseFirestore.getInstance().collection("Watchlist").document(userId)
 
         if (document.get().await().data != null) {
             document.update(
@@ -116,7 +116,7 @@ object RemoteFirebase {
                 }
             )
         } else {
-            document.set(Watchlistlist)
+            document.set(watchList)
         }
     }
 

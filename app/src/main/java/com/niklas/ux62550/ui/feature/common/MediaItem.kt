@@ -65,9 +65,9 @@ const val CrossfadeDuration = 200
 @Composable
 @Preview
 fun NoMediaPreview() {
-    val mediaItem = SearchDataExamples.MediaObjectExample.copy(backdrop_path = null)
-    val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + mediaItem.id)
-    imageViewModel.initPreview_NoFetch()
+    val mediaItem = SearchDataExamples.MediaObjectExample.copy(backdropPath = null)
+    val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.mediaType ?: "") + mediaItem.id)
+    imageViewModel.initPreviewNoFetch()
 
     val width = 350.dp
 
@@ -122,8 +122,8 @@ fun MediaPreview() {
     val width = 350.dp
 
     Column {
-        val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + "1")
-        imageViewModel.initPreview_NoFetch()
+        val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.mediaType ?: "") + "1")
+        imageViewModel.initPreviewNoFetch()
         MediaItemBackdropIntercept(
             fetchEnBackdrop = true,
             mediaItem = mediaItem.copy(title = "Ridiculously long movie title here: Goes over regular backdrop"),
@@ -134,7 +134,7 @@ fun MediaPreview() {
                 .clip(RoundedCornerShape(6.dp))
         )
         Spacer(Modifier.height(10.dp))
-        val imageViewModelData: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.media_type ?: "") + "2")
+        val imageViewModelData: ImageViewModel = viewModel(factory = ImageViewModelFactory(mediaItem), key = (mediaItem.mediaType ?: "") + "2")
         imageViewModelData.initPreview()
         MediaItemBackdropIntercept(
             fetchEnBackdrop = true,
@@ -177,7 +177,7 @@ fun MediaItemBackdropIntercept(
                 val enBackdrop = imagesDataUIState.media.getFirstEnBackdrop()
                 enBackdrop?.let {
                     MediaItem(
-                        uri = it.file_path,
+                        uri = it.filePath,
                         size = ImageSize.BACKDROP,
                         animationProgress = animationProgress,
                         modifier = modifier
@@ -195,7 +195,7 @@ fun MediaItemBackdropIntercept(
         }
     } else {
         MediaItem(
-            uri = mediaItem.backdrop_path,
+            uri = mediaItem.backdropPath,
             size = ImageSize.BACKDROP,
             modifier = modifier.clip(RoundedCornerShape(6.dp))
         )
@@ -226,7 +226,7 @@ fun MediaItemBackdropFallback(
 ) {
     Box(modifier = modifier) {
         MediaItem(
-            uri = media.backdrop_path,
+            uri = media.backdropPath,
             size = size,
             animationProgress = animationProgress,
             modifier = modifier
@@ -278,8 +278,8 @@ fun MediaItem(
     var isLoading by remember { mutableStateOf(true) }
     var hasCrossFaded by remember { mutableStateOf(false) }
 
-    uri?.let { uriNotNull ->
-        val imgUri = "$BASE_IMAGE_URL$sizeStr/$uriNotNull"
+    uri?.let { uri ->
+        val imgUri = "$BASE_IMAGE_URL$sizeStr/$uri"
         Box { // Box so that async image and the placeholder overlaps
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current).data(imgUri).crossfade(CrossfadeDuration).build(),

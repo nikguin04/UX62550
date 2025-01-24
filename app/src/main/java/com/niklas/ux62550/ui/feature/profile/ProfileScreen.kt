@@ -44,11 +44,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.niklas.ux62550.data.remote.FirebaseAuthController
 import com.niklas.ux62550.ui.feature.common.DrawCircle
-import com.niklas.ux62550.ui.theme.LoginButtonGray
+import com.niklas.ux62550.ui.theme.ButtonGray
+import com.niklas.ux62550.ui.theme.PlaceholderIconColor
 import com.niklas.ux62550.ui.theme.RedColorGradient
+import com.niklas.ux62550.ui.theme.StarYellow
 import com.niklas.ux62550.ui.theme.UX62550Theme
-import com.niklas.ux62550.ui.theme.placeholderIconColor
-import com.niklas.ux62550.ui.theme.starYellow
 
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), onNavigateToLoginRegister: (String) -> Unit, topModifier: Modifier = Modifier) {
@@ -95,7 +95,7 @@ fun ProfileContent(
         ) {
             Column {
                 Box {
-                    DrawCircle(placeholderIconColor, Modifier.size(105.dp))
+                    DrawCircle(PlaceholderIconColor, Modifier.size(105.dp))
 
                     Box(Modifier.padding(((105 - 26) / 2).dp)) {
                         Icon(
@@ -145,7 +145,7 @@ fun ProfileContent(
                     modifier = Modifier.size(18.dp),
                     imageVector = Icons.Filled.Star,
                     contentDescription = null,
-                    tint = starYellow
+                    tint = StarYellow
                 )
             }
             Text(
@@ -170,9 +170,9 @@ fun ProfileContent(
         Spacer(Modifier.height(20.dp))
 
         Button(
-            onClick = { FirebaseAuthController().logout(); onNavigateToLoginRegister("Sign out") },
+            onClick = { FirebaseAuthController().logOut(); onNavigateToLoginRegister("Sign out") },
             colors = ButtonDefaults.buttonColors(
-                containerColor = LoginButtonGray
+                containerColor = ButtonGray
             ),
             modifier = Modifier
                 .size(145.dp, 45.dp)

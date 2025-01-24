@@ -61,9 +61,9 @@ fun WatchlistContent(onNavigateToMedia: (MediaObject) -> Unit, topModifier: Modi
             }
             is MovieIds.Data -> {
                 // Display list of movie items in LazyColumn
-                val movieIDList: List<Int> = watchListState.movies ?: emptyList()
+                val movieIdList: List<Int> = watchListState.movies ?: emptyList()
                 Column {
-                    movieIDList.forEachIndexed { index, id ->
+                    movieIdList.forEachIndexed { index, id ->
                         if (index != 0) {
                             Box(
                                 modifier = Modifier.fillMaxWidth(),

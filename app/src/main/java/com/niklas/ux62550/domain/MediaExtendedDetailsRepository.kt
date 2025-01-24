@@ -11,23 +11,23 @@ class MediaExtendedDetailsRepository(
     private val remoteDataSource: RemoteMediaDataSource
 ) {
     private val mutableSimilarMoviesFlow = MutableSharedFlow<Result<SearchDataObject>>()
-    val similarFlow = mutableSimilarMoviesFlow.asSharedFlow()
-    suspend fun getSimilarsMovies(movie_id: Int) = mutableSimilarMoviesFlow.emit(
-        try { Result.success(remoteDataSource.getSimilarMoviesDetail(movie_id)) }
+    val similarMoviesFlow = mutableSimilarMoviesFlow.asSharedFlow()
+    suspend fun getSimilarMovies(movieId: Int) = mutableSimilarMoviesFlow.emit(
+        try { Result.success(remoteDataSource.getSimilarMoviesDetail(movieId)) }
         catch (e: Exception) { Result.failure(e) }
     )
 
     private val mutableProviderFlow = MutableSharedFlow<Result<ProviderDataObject>>()
     val providerFlow = mutableProviderFlow.asSharedFlow()
-    suspend fun getProvider(movie_id: Int) = mutableProviderFlow.emit(
-        try { Result.success(remoteDataSource.getProviders(movie_id)) }
+    suspend fun getProvider(movieId: Int) = mutableProviderFlow.emit(
+        try { Result.success(remoteDataSource.getProviders(movieId)) }
         catch (e: Exception) { Result.failure(e) }
     )
 
     private val mutableTrailerFlow = MutableSharedFlow<Result<TrailerObject>>()
     val trailerFlow = mutableTrailerFlow.asSharedFlow()
-    suspend fun getTrailer(movie_id: Int) = mutableTrailerFlow.emit(
-        try { Result.success(remoteDataSource.getTrailer(movie_id)) }
+    suspend fun getTrailer(movieId: Int) = mutableTrailerFlow.emit(
+        try { Result.success(remoteDataSource.getTrailer(movieId)) }
         catch (e: Exception) { Result.failure(e) }
     )
 }

@@ -6,10 +6,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TrailerObject(
     @SerialName("id")
-    val movieTrailerID: Int,
+    val id: Int,
 
     @SerialName("results")
-    val resultsTrailerLinks: List<TrailerLink>,
+    val results: List<TrailerLink>,
 )
 
 @Serializable

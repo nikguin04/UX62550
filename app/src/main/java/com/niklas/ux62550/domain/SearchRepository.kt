@@ -10,9 +10,9 @@ class SearchRepository(
     private val remoteDataSource: RemoteMediaDataSource
 ) {
     private val mutableSearchFlow = MutableSharedFlow<Result<SearchDataObject>>()
-    val SearchFlow = mutableSearchFlow.asSharedFlow()
-    suspend fun getUserSearch(search_query: String) = mutableSearchFlow.emit(
-        try { Result.success(remoteDataSource.getUserSearch(search_query)) }
+    val searchFlow = mutableSearchFlow.asSharedFlow()
+    suspend fun getUserSearch(searchQuery: String) = mutableSearchFlow.emit(
+        try { Result.success(remoteDataSource.getUserSearch(searchQuery)) }
         catch (e: Exception) { Result.failure(e) }
     )
 }

@@ -33,7 +33,7 @@ import com.niklas.ux62550.ui.theme.AwardAndDetailRating
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AwardPopUp() {
+fun AwardPopup() {
     Row(
         modifier = Modifier.padding(4.dp, 10.dp, 0.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically

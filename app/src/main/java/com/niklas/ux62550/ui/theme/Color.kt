@@ -10,7 +10,7 @@ val Purple40 = Color(0xFF6650A4)
 val PurpleGrey40 = Color(0xFF625B71)
 val Pink40 = Color(0xFF7D5260)
 
-val Color_background = Color(0xFF393939)
+val BackgroundColor = Color(0xFF393939)
 
 val SearchColorForText = Color(0xFF958E9F)
 val DescriptionColor = Color(0xFFB2B2B2)
@@ -20,12 +20,12 @@ val ReviewColor = Color(0xFFF1D338)
 val TextFieldColor = Color(0xFFD9D9D9)
 val TextFieldDescColor = Color(0xFFB9B9B9)
 
-val placeholderIconColor = Color(0xFFD9D9D9)
-val starYellow = Color(0xFFF1D338)
+val PlaceholderIconColor = Color(0xFFD9D9D9)
+val StarYellow = Color(0xFFF1D338)
 
-val ProfileBtnRed = Color(0xFFFF1D21)
-val RegisterButtonBlue = Color(0xFF1D9DFF)
-val LoginButtonGray = Color(0xFF656565)
+val ButtonRed = Color(0xFFFF1D21)
+val ButtonBlue = Color(0xFF1D9DFF)
+val ButtonGray = Color(0xFF656565)
 
 val RedColorGradient = arrayOf(
     0.00f to Color(0x00FF0000, 0.75f),

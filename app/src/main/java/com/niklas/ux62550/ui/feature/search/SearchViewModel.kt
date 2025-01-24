@@ -19,11 +19,11 @@ class SearchViewModel : ViewModel() {
     private val mutableMovieItemsUIState = MutableStateFlow<MovieItemsUIState>(MovieItemsUIState.Empty)
     val movieItemsUIState: StateFlow<MovieItemsUIState> = mutableMovieItemsUIState
 
-    private val _searchQuery = MutableStateFlow("")
+    private val searchQuery = MutableStateFlow("")
 
     init {
         viewModelScope.launch {
-            _searchQuery.debounce(200)
+            searchQuery.debounce(200)
                 .collect { query ->
                     if (query.isNotBlank()) {
                         getDetails(query)
@@ -32,9 +32,9 @@ class SearchViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-            searchRepository.SearchFlow.collect { SearchDataObject ->
+            searchRepository.searchFlow.collect { searchDataObject ->
                 mutableMovieItemsUIState.update {
-                    if (SearchDataObject.isSuccess) { MovieItemsUIState.Data(SearchDataObject.getOrThrow()) }
+                    if (searchDataObject.isSuccess) { MovieItemsUIState.Data(searchDataObject.getOrThrow()) }
                     else { MovieItemsUIState.Error }
                 }
             }
@@ -42,7 +42,7 @@ class SearchViewModel : ViewModel() {
     }
 
     fun onSearchQueryChanged(query: String) {
-        _searchQuery.value = query
+        searchQuery.value = query
     }
 
     private fun getDetails(query: String) = viewModelScope.launch {
@@ -51,13 +51,13 @@ class SearchViewModel : ViewModel() {
 
     fun initPreview() {
         val movies = listOf(
-            MediaObject(title = "RED: The Movie", release_date = "2022", vote_average = 3.5f, id = 1, popularity = 1f, backdrop_path = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
-            MediaObject(title = "Where's the Blue?", release_date = "2014", vote_average = 3.5f, id = 1, popularity = 1f/*, backdrop_path = "/8UOAYjhwSF3aPZhm6wgLuyHRyrR.jpg"*/),
-            MediaObject(title = "Green Man", release_date = "1998", vote_average = 3.5f, id = 1, popularity = 1f, backdrop_path = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
+            MediaObject(title = "RED: The Movie", releaseDate = "2022", voteAverage = 3.5f, id = 1, popularity = 1f, backdropPath = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
+            MediaObject(title = "Where's the Blue?", releaseDate = "2014", voteAverage = 3.5f, id = 1, popularity = 1f/*, backdropPath = "/8UOAYjhwSF3aPZhm6wgLuyHRyrR.jpg"*/),
+            MediaObject(title = "Green Man", releaseDate = "1998", voteAverage = 3.5f, id = 1, popularity = 1f, backdropPath = "/2meX1nMdScFOoV4370rqHWKmXhY.jpg"),
         )
         mutableMovieItemsUIState.update {
             MovieItemsUIState.Data(
-                movies = SearchDataObject(total_results = 1, page = 1, total_pages = 1, results = movies)
+                movies = SearchDataObject(totalResults = 1, page = 1, totalPages = 1, results = movies)
             )
         }
     }

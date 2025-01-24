@@ -25,7 +25,7 @@ fun NonMovieBoxRow(person: MediaObject, modifier: Modifier = Modifier) {
             .padding(16.dp)
     ) {
         MediaItem(
-            uri = person.profile_path,
+            uri = person.profilePath,
             size = ImageSize.BACKDROP,
             modifier = modifier
                 .size(50.dp, 80.dp)

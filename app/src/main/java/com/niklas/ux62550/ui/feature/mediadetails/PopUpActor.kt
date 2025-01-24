@@ -70,7 +70,7 @@ fun ActorsAndDirectors(creditState: CreditState.Data, modifier: Modifier = Modif
         ) {
             for (i in 0 until minOf(maxActors, creditState.creditObject.cast.size)) {
                 MediaItem(
-                    uri = creditState.creditObject.cast[i].castProfilePath,
+                    uri = creditState.creditObject.cast[i].profilePath,
                     size = ImageSize.PROFILE,
                     modifier = modifier
                         .clip(RoundedCornerShape(25))
@@ -110,7 +110,7 @@ fun ActorsAndDirectors(creditState: CreditState.Data, modifier: Modifier = Modif
 fun CastRow(cast: Cast, modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         MediaItem(
-            uri = cast.castProfilePath,
+            uri = cast.profilePath,
             size = ImageSize.PROFILE,
             modifier = modifier
                 .clip(RoundedCornerShape(25))
@@ -120,7 +120,7 @@ fun CastRow(cast: Cast, modifier: Modifier = Modifier) {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = cast.castName,
+                    text = cast.name,
                     fontSize = 14.sp,
                     textDecoration = TextDecoration.Underline,
                     fontWeight = FontWeight.Bold,
@@ -144,7 +144,7 @@ fun CastRow(cast: Cast, modifier: Modifier = Modifier) {
 fun CrewRow(crew: Crew, modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         MediaItem(
-            uri = crew.castProfilePath,
+            uri = crew.profilePath,
             size = ImageSize.PROFILE,
             modifier = modifier
                 .clip(RoundedCornerShape(25))
@@ -154,7 +154,7 @@ fun CrewRow(crew: Crew, modifier: Modifier = Modifier) {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = crew.castName,
+                    text = crew.name,
                     fontSize = 14.sp,
                     textDecoration = TextDecoration.Underline,
                     fontWeight = FontWeight.Bold,
@@ -180,7 +180,7 @@ fun PreviewActorsAndDirectors() {
     val creditState = CreditState.Data(
         creditObject = CreditObject(
             cast = listOf(
-                Cast(castName = "Dwayne Johnson", castProfilePath = "/5QApZVV8FUFlVxQpIK3Ew6cqotq.jpg", character = "Character 1")
+                Cast(name = "Dwayne Johnson", profilePath = "/5QApZVV8FUFlVxQpIK3Ew6cqotq.jpg", character = "Character 1")
             ),
             crew = listOf()
         )

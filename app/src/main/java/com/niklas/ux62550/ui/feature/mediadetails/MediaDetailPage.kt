@@ -107,10 +107,10 @@ fun MediaDetailsScreen(
                     Column(modifier = topModifier) {
                         InfoRow(movieState = movieState)
                         Genres(genres = movieState, providerState = providerState)
-                        DescriptionText(description = movieState.mediaDetailObject.Description)
+                        DescriptionText(description = movieState.mediaDetailObject.description)
 
                         ActorsAndDirectors(creditState = creditState)
-                        DetailedRating(movieViewModel = movieViewModel, movieID = movieState, onNavigateToReview = onNavigateToReview)
+                        DetailedRating(movieViewModel = movieViewModel, movieId = movieState, onNavigateToReview = onNavigateToReview)
                         SimilarMedia(modifier = Modifier.padding(vertical = 20.dp), similarMediaState = similarMediaState, onNavigateToOtherMedia = onNavigateToOtherMedia)
                     }
 
@@ -129,7 +129,7 @@ fun Header(movieState: MovieState.Data, trailerState: TrailerState, modifier: Mo
     Box(modifier = modifier.fillMaxWidth()) {
         // Background Image with Transparency
         MediaItem(
-            uri = movieState.mediaDetailObject.backDropPath,
+            uri = movieState.mediaDetailObject.backdropPath,
             size = ImageSize.BACKDROP,
             modifier = Modifier
                 .alpha(0.5f)
@@ -151,11 +151,11 @@ fun Header(movieState: MovieState.Data, trailerState: TrailerState, modifier: Mo
                 Text("Network error")
             }
             is TrailerState.Data -> {
-                var youtubeUrl = trailerState.trailerObject.resultsTrailerLinks.find { it.type == "Trailer" }?.let {
+                var youtubeUrl = trailerState.trailerObject.results.find { it.type == "Trailer" }?.let {
                     "https://www.youtube.com/watch?v=${it.key}"
                 }
-                if (youtubeUrl == null && trailerState.trailerObject.resultsTrailerLinks.isNotEmpty()) {
-                    youtubeUrl = "https://www.youtube.com/watch?v=${trailerState.trailerObject.resultsTrailerLinks[0].key}"
+                if (youtubeUrl == null && trailerState.trailerObject.results.isNotEmpty()) {
+                    youtubeUrl = "https://www.youtube.com/watch?v=${trailerState.trailerObject.results[0].key}"
                 }
 
                 Column(
@@ -225,7 +225,7 @@ fun InfoRow(movieState: MovieState.Data, modifier: Modifier = Modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val rating = movieState.mediaDetailObject.vote_average / 2
+            val rating = movieState.mediaDetailObject.voteAverage / 2
             for (i in 1..5) {
                 val starIcon = when {
                     i <= rating -> Icons.Outlined.Star

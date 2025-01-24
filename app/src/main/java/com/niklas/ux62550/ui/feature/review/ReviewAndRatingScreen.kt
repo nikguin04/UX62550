@@ -64,8 +64,8 @@ import kotlin.math.roundToInt
 @Composable
 fun ScreenReviewAndRating(
     media: MovieDetailObject,
-    navBack: () -> Unit,
-    snackbarShow: (String) -> Unit,
+    navigateBack: () -> Unit,
+    showSnackbar: (String) -> Unit,
     topModifier: Modifier = Modifier,
     reviewViewModel: ReviewViewModel = viewModel()
 ) {
@@ -79,15 +79,15 @@ fun ScreenReviewAndRating(
                 reviewText = reviewState.reviewText,
                 onReviewChange = { newReview -> reviewViewModel.updateReviewText(newReview) },
                 onSubmit = {
-                    reviewViewModel.submitReview(mediaId = media.id, onSuccess = { snackbarShow("Successfully submitted review") }, onError = { snackbarShow("Failed to submit review") })
-                    navBack()
+                    reviewViewModel.submitReview(mediaId = media.id, onSuccess = { showSnackbar("Successfully submitted review") }, onError = { showSnackbar("Failed to submit review") })
+                    navigateBack()
                 }
             )
 
             MoreDetailedReview(reviewViewModel)
         }
 
-        GeneralTopBar(navigateBack = navBack)
+        GeneralTopBar(navigateBack = navigateBack)
     }
 }
 
@@ -99,7 +99,7 @@ fun Header(
 ) {
     Box {
         MediaItem(
-            uri = media.backDropPath,
+            uri = media.backdropPath,
             size = ImageSize.BACKDROP,
             modifier = Modifier
                 .fillMaxWidth()
@@ -321,7 +321,7 @@ fun RatingStars(
 fun ReviewAndRatingPreview() {
     UX62550Theme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navBack = {}, snackbarShow = {})
+            ScreenReviewAndRating(media = MediaDetailExample.MediaDetailObjectExample, navigateBack = {}, showSnackbar = {})
         }
     }
 }

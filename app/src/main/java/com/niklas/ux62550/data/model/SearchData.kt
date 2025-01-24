@@ -14,10 +14,10 @@ data class SearchDataObject(
     val results: List<MediaObject>,
 
     @SerialName("total_pages")
-    val total_pages: Int,
+    val totalPages: Int,
 
     @SerialName("total_results")
-    val total_results: Int,
+    val totalResults: Int,
 )
 
 /*
@@ -40,13 +40,13 @@ data class MediaObject(
     val adult: Boolean = true,
 
     @SerialName("backdrop_path")
-    val backdrop_path: String? = null,
+    val backdropPath: String? = null,
 
     @SerialName("id")
     val id: Int,
 
     @SerialName("profile_path")
-    val profile_path: String? = null,
+    val profilePath: String? = null,
 
     @SerialName("title")
     val title: String = "",
@@ -55,30 +55,30 @@ data class MediaObject(
     val overview: String = "",
 
     @SerialName("poster_path")
-    val poster_path: String? = null,
+    val posterPath: String? = null,
 
     @SerialName("media_type")
-    var media_type: String? = null,
+    var mediaType: String? = null,
 
     @SerialName("genre_ids")
-    val genre_ids: List<Int> = listOf(),
+    val genreIds: List<Int> = listOf(),
 
     @SerialName("popularity")
     val popularity: Float? = null,
 
     @SerialName("release_date")
-    val release_date: String = "",
+    val releaseDate: String = "",
 
     @SerialName("vote_average")
-    val vote_average: Float? = null,
+    val voteAverage: Float? = null,
 
     @SerialName("name")
     val name: String? = null,
 
     @SerialName("vote_count")
-	val vote_count: Int? = null,
+	val voteCount: Int? = null,
 ): Parcelable {
     fun getUniqueStringIdentifier(): String {
-        return (media_type ?: "") + id
+        return (mediaType ?: "") + id
     }
 }

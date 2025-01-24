@@ -31,10 +31,10 @@ class DiscoverViewModel(private val genreObject: GenreObject) : ViewModel() {
                 getUnit = { (discoverRepository::getDiscoverMovies)(genreObject.id.toString(), page) },
                 scope = viewModelScope
             ).collect { searchDataObjectResult ->
-                // Append media_type before updating data
+                // Append mediaType before updating data
                 if (searchDataObjectResult.isSuccess) {
                     val searchDataObject = searchDataObjectResult.getOrThrow()
-                    searchDataObject.results.forEach { res -> res.media_type = "movie" }
+                    searchDataObject.results.forEach { res -> res.mediaType = "movie" }
                     // Either append to current data or make new data completely
                     when (discoverItemsState.value) {
                         is DiscoverItemsUIState.Data -> {

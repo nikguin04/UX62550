@@ -52,16 +52,16 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 val snackbarHostState = remember { SnackbarHostState() }
-                val scope = rememberCoroutineScope()
-                val snackbarShow: (String) -> Unit = { message ->
-                    scope.launch {
+                val snackbarScope = rememberCoroutineScope()
+                val showSnackbar: (String) -> Unit = { message ->
+                    snackbarScope.launch {
                         snackbarHostState.showSnackbar(message)
                     }
                 }
                 @Suppress("KotlinConstantConditions")
                 if (BuildConfig.API_KEY == "") {
                     Log.e("API_KEY_MISSING", "No API key for TMDB has been provided, network errors will occur\nPlease defined the API key in the 'local.properties' file with following line:\nAPI_KEY=.....")
-                    LaunchedEffect(Unit) { scope.launch { snackbarHostState.showSnackbar(message = "Missing API key, app will not work", duration = SnackbarDuration.Indefinite) } }
+                    LaunchedEffect(Unit) { snackbarScope.launch { snackbarHostState.showSnackbar(message = "Missing API key, app will not work", duration = SnackbarDuration.Indefinite) } }
                 }
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
                     MainNavHost(
                         navController = navController,
                         onRouteChanged = {},
-                        snackbarShow = snackbarShow,
+                        showSnackbar = showSnackbar,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

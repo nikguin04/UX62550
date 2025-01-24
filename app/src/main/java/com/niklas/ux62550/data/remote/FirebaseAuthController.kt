@@ -31,8 +31,8 @@ class FirebaseAuthController : Activity() {
             .addOnFailureListener { onError() }
     }
 
-    private fun addUsername(nameID: String) {
-        val userName = mapOf("Name" to nameID)
+    private fun addUsername(nameId: String) {
+        val userName = mapOf("Name" to nameId)
         FirebaseInstance.getDB()!!.collection("UserData").document(getAuth().currentUser?.uid.toString()).set(userName)
     }
 
@@ -41,7 +41,7 @@ class FirebaseAuthController : Activity() {
         return auth
     }
 
-    fun logout() {
+    fun logOut() {
         auth = Firebase.auth
         return auth.signOut()
     }

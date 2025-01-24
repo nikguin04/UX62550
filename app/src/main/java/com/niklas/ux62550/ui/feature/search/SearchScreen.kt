@@ -128,8 +128,8 @@ fun SearchContent(
                 item { Text("Network error") }
             }
             is MovieItemsUIState.Data -> {
-                val movieList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.media_type == "movie" }
-                val actorList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.media_type == "person" }
+                val movieList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.mediaType == "movie" }
+                val actorList: List<MediaObject> = movieItemsUIState.movies.results.filter { it.mediaType == "person" }
 
                 item {
                     SectionHeader(title = "Movies")

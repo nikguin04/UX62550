@@ -9,25 +9,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MovieDetailObject(
     @SerialName("spoken_languages")
-    val spokenLanguages: List<SpokenLanguages>?,
+    val spokenLanguages: List<SpokenLanguage>?,
 
     @SerialName("genres")
-    val genre: List<Genre>,
+    val genres: List<Genre>,
 
     @SerialName("adult")
     val adult: Boolean = false,
 
     @SerialName("backdrop_path")
-    val backDropPath: String?,
+    val backdropPath: String?,
 
     @SerialName("homepage")
     val homePage: String = "",
 
     @SerialName("original_title")
-    val Originaltitle: String,
+    val originalTitle: String,
 
     @SerialName("overview")
-    val Description: String = "",
+    val description: String = "",
 
     @SerialName("poster_path")
     val posterPath: String?,
@@ -39,7 +39,7 @@ data class MovieDetailObject(
     val title: String = "",
 
     @SerialName("vote_average")
-    val vote_average: Double,
+    val voteAverage: Double,
 
     @SerialName("runtime")
     val runTime: Int = 0,
@@ -50,14 +50,14 @@ data class MovieDetailObject(
     fun toMediaObject(): MediaObject {
         return MediaObject(
             adult = adult,
-            backdrop_path = backDropPath,
+            backdropPath = backdropPath,
             id = id,
             title = title,
-            poster_path = posterPath,
-            genre_ids = genre.map { it.genreID }, // TODO: check this mapping is right
-            release_date = releaseDate,
-            media_type = "movie", // This is hardcoded because the MovieDetailObject is called "movie", for fetching tv shows this should be changed
-            vote_average = vote_average.toFloat()
+            posterPath = posterPath,
+            genreIds = genres.map { it.id }, // TODO: check this mapping is right
+            releaseDate = releaseDate,
+            mediaType = "movie", // This is hardcoded because the MovieDetailObject is called "movie", for fetching tv shows this should be changed
+            voteAverage = voteAverage.toFloat()
         )
     }
 }
@@ -66,21 +66,21 @@ data class MovieDetailObject(
 @Serializable
 data class Genre(
     @SerialName("id")
-    val genreID: Int = 0,
+    val id: Int = 0,
 
     @SerialName("name")
-    val genreName: String = ""
+    val name: String = ""
 ) : Parcelable
 
 @Parcelize
 @Serializable
-data class SpokenLanguages(
+data class SpokenLanguage(
     @SerialName("english_name")
-    val languageName: String = "",
+    val name: String = "",
 
     @SerialName("iso_639_1")
-    val isoNumber: String = "",
+    val code: String = "",
 
     @SerialName("name")
-    val spokenName: String = ""
+    val nativeName: String = ""
 ) : Parcelable

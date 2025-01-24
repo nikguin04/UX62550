@@ -105,11 +105,11 @@ fun GenreMediaStack(movieGenresDataState: GenresDataState, onNavigateToMedia: (M
 @Composable
 @Preview(showBackground = true)
 fun HomePreview() {
-    val mvm: HomeViewModel = viewModel()
-    mvm.initPreview()
+    val homeViewModel: HomeViewModel = viewModel()
+    homeViewModel.initPreview()
 
     UX62550Theme {
-        HomeScreen(onNavigateToMedia = {}, homeViewModel = mvm)
+        HomeScreen(onNavigateToMedia = {}, homeViewModel = homeViewModel)
         // TODO: perhaps split up the feature items and genre items into composables so we can preview them individually
     }
 }

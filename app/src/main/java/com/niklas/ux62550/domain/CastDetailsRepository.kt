@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 class CastDetailsRepository(
     private val remoteDataSource: RemoteMediaDataSource
 ) {
-    private val mutableCreditFlow = MutableSharedFlow<Result<CreditObject>>()
-    val creditFlow = mutableCreditFlow.asSharedFlow()
-    suspend fun getCredits(movie_id: Int) = mutableCreditFlow.emit(
-        try { Result.success(remoteDataSource.getCreditDetails(movie_id)) }
+    private val mutableCreditsFlow = MutableSharedFlow<Result<CreditObject>>()
+    val creditsFlow = mutableCreditsFlow.asSharedFlow()
+    suspend fun getCredits(movieId: Int) = mutableCreditsFlow.emit(
+        try { Result.success(remoteDataSource.getCreditDetails(movieId)) }
         catch (e: Exception) { Result.failure(e) }
     )
 }

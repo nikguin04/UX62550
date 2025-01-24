@@ -32,7 +32,7 @@ fun Genres(genres: MovieState.Data, providerState: ProviderState, modifier: Modi
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val firstGenres = genres.mediaDetailObject.genre.take(3)
+        val firstGenres = genres.mediaDetailObject.genres.take(3)
         firstGenres.forEachIndexed { index, genre ->
             Box(
                 modifier = Modifier
@@ -45,7 +45,7 @@ fun Genres(genres: MovieState.Data, providerState: ProviderState, modifier: Modi
                     )
             ) {
                 Text(
-                    text = genre.genreName,
+                    text = genre.name,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,

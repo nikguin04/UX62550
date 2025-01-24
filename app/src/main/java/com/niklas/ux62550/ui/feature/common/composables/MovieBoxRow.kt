@@ -38,7 +38,7 @@ import com.niklas.ux62550.ui.feature.mediadetails.MovieState
 fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifier: Modifier = Modifier) {
     Row(modifier.fillMaxWidth()) {
         MediaItem(
-            uri = movie.backdrop_path,
+            uri = movie.backdropPath,
             size = ImageSize.BACKDROP,
             modifier = Modifier
                 .width(110.dp)
@@ -71,7 +71,7 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifi
                             contentDescription = "Star icon"
                         )
                         Text(
-                            text = String.format("%.1f", movie.vote_average?.div(2)) + "/5", // Converting the 10/10 to an 5/5 rating system
+                            text = String.format("%.1f", movie.voteAverage?.div(2)) + "/5", // Converting the 10/10 to an 5/5 rating system
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -79,8 +79,8 @@ fun MovieBoxRow(movie: MediaObject, modifier: Modifier = Modifier, infoRowModifi
                         Spacer(Modifier.width(62.dp)) // TODO: Fix this, why is it hardcoded
 
                         Text(
-                            text = if (movie.release_date.count() > 4) {
-                                movie.release_date.toString().substring(0, 4)
+                            text = if (movie.releaseDate.count() > 4) {
+                                movie.releaseDate.toString().substring(0, 4)
                             } else {
                                 "N/A"
                             },

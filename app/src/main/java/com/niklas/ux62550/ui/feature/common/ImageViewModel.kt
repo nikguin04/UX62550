@@ -20,7 +20,7 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
     val imagesDataState: StateFlow<ImagesDataUIState> = mutableImagesDataState
 
     init {
-        media.media_type?.let {
+        media.mediaType?.let {
             viewModelScope.launch {
                 imageRepo.getWithKey(
                     itemKey = media.id,
@@ -35,10 +35,10 @@ class ImageViewModel(private val media: MediaObject) : ViewModel() {
                     }
                 }
             }
-        } ?: Log.w("NO_MEDIA_TYPE", "Media passed to ImageViewModel contained no media_type, so we can not fetch images, Please note that this sometimes need to be set manually when fetching data since endpoints for specific media will not include the media_type")
+        } ?: Log.w("NO_MEDIA_TYPE", "Media passed to ImageViewModel contained no mediaType, so we can not fetch images, Please note that this sometimes need to be set manually when fetching data since endpoints for specific media will not include the mediaType")
     }
 
-    fun initPreview_NoFetch() {
+    fun initPreviewNoFetch() {
         mutableImagesDataState.update { ImagesDataUIState.Data(ImagesDataObject.EmptyExample) }
     }
 

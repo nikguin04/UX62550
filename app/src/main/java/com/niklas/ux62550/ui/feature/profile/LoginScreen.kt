@@ -37,13 +37,13 @@ import androidx.compose.ui.unit.sp
 import com.niklas.ux62550.data.remote.FirebaseAuthController
 import com.niklas.ux62550.navigation.GeneralTopBar
 import com.niklas.ux62550.ui.feature.common.LogoBox
+import com.niklas.ux62550.ui.theme.ButtonBlue
 import com.niklas.ux62550.ui.theme.RedColorGradient
-import com.niklas.ux62550.ui.theme.RegisterButtonBlue
 import com.niklas.ux62550.ui.theme.TextFieldDescColor
 import com.niklas.ux62550.ui.theme.UX62550Theme
 
 @Composable
-fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, snackbarShow: (String) -> Unit, topModifier: Modifier = Modifier) {
+fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit, showSnackbar: (String) -> Unit, topModifier: Modifier = Modifier) {
     var emailValue = remember { mutableStateOf("") }
     var passValue = remember { mutableStateOf("") }
 
@@ -71,7 +71,7 @@ fun LoginScreen(navigateBack: () -> Unit, onNavigateToProfile: (String) -> Unit,
         }
         LoginInputHolder(
             emailValue, passValue, onNavigateToProfile,
-            snackbarShow = snackbarShow
+            showSnackbar = showSnackbar
         )
     }
 
@@ -83,7 +83,7 @@ fun LoginInputHolder(
     emailValue: MutableState<String>,
     passValue: MutableState<String>,
     onNavigateToProfile: (String) -> Unit,
-    snackbarShow: (String) -> Unit
+    showSnackbar: (String) -> Unit
 ) {
     Column(Modifier.padding(horizontal = 10.dp)) {
         TextField(
@@ -126,13 +126,13 @@ fun LoginInputHolder(
                 FirebaseAuthController().signIn(
                     emailValue.value,
                     passValue.value,
-                    onSuccess = { snackbarShow("Successfully logged in") },
-                    onError = { snackbarShow("Failed to sign in") }
+                    onSuccess = { showSnackbar("Successfully logged in") },
+                    onError = { showSnackbar("Failed to sign in") }
                 )
                 onNavigateToProfile("Login")
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = RegisterButtonBlue
+                containerColor = ButtonBlue
             ),
             modifier = Modifier
                 .size(145.dp, 45.dp)
@@ -153,7 +153,7 @@ fun LoginInputHolder(
 fun LoginPreview() {
     UX62550Theme {
         Surface {
-            LoginScreen(navigateBack = {}, onNavigateToProfile = {}, snackbarShow = {})
+            LoginScreen(navigateBack = {}, onNavigateToProfile = {}, showSnackbar = {})
         }
     }
 }

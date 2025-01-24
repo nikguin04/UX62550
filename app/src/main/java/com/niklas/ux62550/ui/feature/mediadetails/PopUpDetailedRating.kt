@@ -49,15 +49,15 @@ import com.niklas.ux62550.ui.theme.ReviewColor
 @OptIn(ExperimentalMaterial3Api::class)
 fun DetailedRating(
     movieViewModel: MovieViewModel,
-    movieID: MovieState.Data,
+    movieId: MovieState.Data,
     onNavigateToReview: (MovieDetailObject) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val movieReviewID by movieViewModel.movieReviewID.collectAsState()
+    val movieReviewId by movieViewModel.movieReviewId.collectAsState()
 
     // Help from chat
-    LaunchedEffect(movieID) {
-        movieViewModel.getDetailReviews(movieID.mediaDetailObject.id)
+    LaunchedEffect(movieId) {
+        movieViewModel.getDetailReviews(movieId.mediaDetailObject.id)
     }
     Column(modifier.padding(20.dp, 25.dp, 20.dp, 5.dp)) {
         Text(
@@ -69,8 +69,8 @@ fun DetailedRating(
             ),
             textAlign = TextAlign.Center
         )
-        OverallRating(movieReviewID["MainRating"] ?: 0.0, modifier)
-        ReviewButton(movieID, onNavigateToReview)
+        OverallRating(movieReviewId["MainRating"] ?: 0.0, modifier)
+        ReviewButton(movieId, onNavigateToReview)
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 "Detailed Rating",
@@ -99,10 +99,10 @@ fun DetailedRating(
                     sheetState = sheetState
                 ) {
                     Column {
-                        DetailRatingRow("Acting", movieReviewID["Acting"] ?: 0.0)
-                        DetailRatingRow("Directing", movieReviewID["Directing"] ?: 0.0)
-                        DetailRatingRow("Plot", movieReviewID["Plot"] ?: 0.0)
-                        DetailRatingRow("Music", movieReviewID["Music"] ?: 0.0)
+                        DetailRatingRow("Acting", movieReviewId["Acting"] ?: 0.0)
+                        DetailRatingRow("Directing", movieReviewId["Directing"] ?: 0.0)
+                        DetailRatingRow("Plot", movieReviewId["Plot"] ?: 0.0)
+                        DetailRatingRow("Music", movieReviewId["Music"] ?: 0.0)
                     }
                 }
             }
