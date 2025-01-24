@@ -87,6 +87,8 @@ fun SearchContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
+                // we used to exsample to get started on the searchBar
+                // androidx.compose.material3.samples.SearchBarSample
                 SearchBar(
                     inputField = {
                         SearchBarDefaults.InputField(

@@ -12,6 +12,10 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class FirebaseInstance { // We need to make this an absolute singleton and not an object, since a static reference to a firestore database causes a memory leak
+
+    // firebase documentation has been used in this file
+    // https://firebase.google.com/docs/firestore/query-data/get-data#kotlin_6
+    // https://firebase.google.com/docs/firestore/manage-data/add-data
     private val db = Firebase.firestore
 
     companion object {
@@ -29,7 +33,7 @@ class FirebaseInstance { // We need to make this an absolute singleton and not a
 object RemoteFirebase {
 
     suspend fun getWatchList(mutableWatchListFlow: MutableSharedFlow<List<Int>?>) {
-
+        // https://firebase.google.com/docs/firestore/manage-data/add-data
         try {
             // if true then use the userId will be used else it will use the defult user
             // in the real app there will be no defult user you need to sign in to used this function
@@ -40,7 +44,6 @@ object RemoteFirebase {
 
 
             var document = FirebaseInstance.getDB()!!.collection("Watchlist").document(UserIdPath).get().await()
-            Log.d("Firebase_info", "${document.id} => ${document.data}")
             val arrayData = document.data?.get("MovieIds") as List<*>
             val intData = arrayData.mapNotNull { (it as? Long)?.toInt() } // Filters out everything that is not a long, and converts it to Int (movie_id is int32 according to TMDB)
             mutableWatchListFlow.emit(intData)
@@ -97,7 +100,7 @@ object RemoteFirebase {
             "Plot" to BigDecimal(averagePlotRating).setScale(1, RoundingMode.DOWN).toDouble()
         )
     }
-
+    // https://firebase.google.com/docs/firestore/query-data/get-data#kotlin_6
     suspend fun UpdateToWatchList(data: MediaObject, remove: Boolean) {
         val Watchlistlist = mapOf(
             "MovieIds" to listOf(data.id)
@@ -127,8 +130,11 @@ object RemoteFirebase {
 
     }
 
+    // https://firebase.google.com/docs/firestore/query-data/get-data#kotlin_6
     suspend fun getUserData(mutableUserFlow: MutableSharedFlow<List<String>>) {
         try {
+            // if true then use the userId will be used else it will use the default user
+            // in the real app there will be no default user you need to sign in to used this function
             var userIdPath = "1NhBN640YoUdZq848o3C"
             if (FirebaseAuthController().getAuth().currentUser != null) {
                 userIdPath = FirebaseAuthController().getAuth().uid.toString()
@@ -136,12 +142,10 @@ object RemoteFirebase {
 
             val document = FirebaseInstance.getDB()!!
                 .collection("UserData").document(userIdPath).get().await()
-            Log.d("Firebase_info", "${document.id} => ${document.data}")
             val userName = document.data?.get("Name") as? String ?: "Default Name"
             val emailAddress = FirebaseAuthController().getAuth().currentUser?.email ?: "default@gmail.com"
 
             mutableUserFlow.emit(listOf(userName, emailAddress))
-
 
         } catch (e: Exception) {
             Log.w("Firebase_info", "Error getting documents.", e)
